@@ -19,4 +19,6 @@
     <color name="whiteHigh">#dedede</color>
     <color name="whiteMedium">#999999</color>
     <color name="whiteLow">#616161</color>
+
+    <color name="drawerFadeColor">#BB000000</color>
 </resources>

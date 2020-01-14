@@ -62,8 +62,8 @@ public class WidgetGroup extends ViewGroup {
 
             final LayoutParams lp = (LayoutParams) child.getLayoutParams();
 
-            int x = (int) (lp.tilesX * tileWidth);
-            int y = (int) (startH + lp.tilesY * tileWidth);
+            int x = (int) (getPaddingLeft() + lp.tilesX * tileWidth);
+            int y = (int) (getPaddingTop() + startH + lp.tilesY * tileWidth);
             int w = (int) (lp.tilesWidth * tileWidth);
             int h = (int) (lp.tilesHeight * tileWidth);
 
@@ -97,17 +97,17 @@ public class WidgetGroup extends ViewGroup {
 
     @Override
     public void onDraw(Canvas canvas) {
-        float width = getWidth();
-        float height = getHeight();
+        float startX = getPaddingTop();
+        float endX = getHeight() - this.getPaddingBottom();
+        float startY = getPaddingTop();
+        float endY = getHeight() - this.getPaddingBottom();
 
         // Draw x's
         float lineLen = Utils.dpToPx(getContext(), 5)/2;
 
-        for(int y = 0; y <= tilesY; y++){
-            float drawY = height - y*tileWidth;
+        for(float drawY = endY; drawY > startY; drawY -= tileWidth){
 
-            for(int x = 0; x <= tilesX; x++){
-                float drawX = x*tileWidth;
+            for(float drawX = startX; drawX < endX; drawX += tileWidth){
 
                 canvas.drawLine(drawX-lineLen, drawY, drawX+lineLen, drawY, crossPaint);
                 canvas.drawLine(drawX, drawY-lineLen, drawX, drawY+lineLen, crossPaint);
@@ -116,8 +116,8 @@ public class WidgetGroup extends ViewGroup {
     }
 
     public void calculateTiles() {
-        float width = getWidth();
-        float height = getHeight();
+        float width = getWidth() - getPaddingLeft() - getPaddingRight();
+        float height = getHeight() - getPaddingBottom() - getPaddingTop();
 
         tilesX = 8;
         tileWidth = width/tilesX;
