@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black00dp"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar"
+
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent">
+
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/my_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/black01dp"
+            android:elevation="8dp"
+            app:menu="@menu/toolbar_menu"
+            app:titleTextColor="@color/whiteMedium"
+            app:title="Loomo Steuerung"/>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <com.schneewittchen.rosandroidlib.widgets.WidgetGroup
+        android:id="@+id/fullscreen_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:keepScreenOn="true"
+        app:crossColor="@color/black06dp">
+
+        <com.schneewittchen.rosandroidlib.widgets.JoystickView
+            android:id="@+id/joystick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:stickColor="@color/whiteLight"
+            app:outerRingColor="@color/whiteMedium"
+            app:decorationColor="@color/whiteLow"
+            app:tilesX="0"
+            app:tilesY="5"
+            app:tilesWidth="8"
+            app:tilesHeight="8"/>
+
+        <com.schneewittchen.rosandroidlib.widgets.OccupancyGridWidget
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:tilesX="0"
+            app:tilesY="0"
+            app:tilesWidth="8"
+            app:tilesHeight="5"/>
+
+    </com.schneewittchen.rosandroidlib.widgets.WidgetGroup>
+
+    <!--
+
+            app:stickColor="@color/whiteLight"
+            app:outerRingColor="@color/whiteMedium"
+            app:decorationColor="@color/whiteLow"
+
+    <com.schneewittchen.roscontrol.JoystickView
+        android:id="@+id/joystick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:tilesHeight="6"
+        app:tilesWidth="6"
+        app:tilesX="0"
+        app:tilesY="4" />
+
+    <com.schneewittchen.rosandroid.GridBgView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        custom:crossColor="@color/whiteLow">
+
+
+    </com.schneewittchen.rosandroid.GridBgView>
+    -->
+
+</LinearLayout>

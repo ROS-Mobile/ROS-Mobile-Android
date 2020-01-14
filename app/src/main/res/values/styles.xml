@@ -1,0 +1,29 @@
+<resources
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="@style/Theme.MaterialComponents.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/black01dp</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+        <item name="windowNoTitle">true</item>
+        <item name="actionOverflowMenuStyle">@style/MyOverflowMenu</item>
+        <item name="android:navigationBarColor">@color/black01dp</item>
+        </style>
+
+
+        <style name="GalaxyZooThemeToolbarDarkOverflow" parent="Theme.AppCompat.NoActionBar">
+            <item name="android:textColorPrimary">@color/abc_primary_text_material_light</item>
+            <item name="actionMenuTextColor">@color/abc_primary_text_material_light</item>
+            <item name="android:textColorSecondary">@color/abc_secondary_text_material_light</item>
+        </style>
+
+        <style name="MyOverflowMenu" parent="Widget.AppCompat.PopupMenu.Overflow">
+            <item name="overlapAnchor">false</item>
+            <item name="android:overlapAnchor" tools:ignore="NewApi">false</item>
+            <item name="android:dropDownVerticalOffset">8.0dp</item>
+        </style>
+
+        </resources>
