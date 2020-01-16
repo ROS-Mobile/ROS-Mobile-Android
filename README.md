@@ -15,11 +15,12 @@ The ROS Android Application is designed for dynamic control and visualization fo
 
 Open the application and create a new device
 
-<img src="\images\exampleLayout1.jpeg" style="zoom:33%;" />
+<p float="left" align="middle">
+  <img src="/images/exampleLayout2.jpeg" title="Choice" width="300 hspace="50" />
+  <img src="/images/exampleLayout1.jpeg" width="300 hspace="50" />
+</p>
 
 You can choose between different devices
-
-<img src="\images\exampleLayout2.jpeg" style="zoom:33%;" />
 
 ## Supported ROS Messages
 
