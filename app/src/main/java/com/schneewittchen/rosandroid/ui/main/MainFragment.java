@@ -1,6 +1,5 @@
 package com.schneewittchen.rosandroid.ui.main;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -20,10 +19,18 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.android.material.tabs.TabLayout;
-import com.schneewittchen.rosandroid.OnBackPressedListener;
+import com.schneewittchen.rosandroid.ui.activity.OnBackPressedListener;
 import com.schneewittchen.rosandroid.R;
 
-
+/**
+ * TODO: Description
+ *
+ * @author Nico Studt
+ * @version 1.0.0
+ * @created on 10.01.20
+ * @updated on 16.01.20
+ * @modified by
+ */
 public class MainFragment extends Fragment implements OnBackPressedListener {
 
     ConfigTabsPagerAdapter pagerAdapter;
@@ -103,7 +110,7 @@ public class MainFragment extends Fragment implements OnBackPressedListener {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.configuration_layout, container, false);
+        return inflater.inflate(R.layout.fragment_whole_configuration, container, false);
     }
 
 }

@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         app:cardCornerRadius="8dp">
 
-        <include layout="@layout/detail_card_layout" />
+        <include layout="@layout/card_detail_layout" />
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         app:cardCornerRadius="8dp">
 
-        <include layout="@layout/detail_card_layout" />
+        <include layout="@layout/card_detail_layout" />
     </androidx.cardview.widget.CardView>
 
     <Button

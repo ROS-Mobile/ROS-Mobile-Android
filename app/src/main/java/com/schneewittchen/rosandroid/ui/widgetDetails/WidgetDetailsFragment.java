@@ -1,4 +1,4 @@
-package com.schneewittchen.rosandroid.ui.configDetails;
+package com.schneewittchen.rosandroid.ui.widgetDetails;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,13 +12,21 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.schneewittchen.rosandroid.R;
 
+/**
+ * TODO: Description
+ *
+ * @author Nico Studt
+ * @version 1.0.0
+ * @created on 10.01.20
+ * @updated on 16.01.20
+ * @modified by
+ */
+public class WidgetDetailsFragment extends Fragment {
 
-public class ConfigDetailsFragment extends Fragment {
+    private WidgetDetailsViewModel mViewModel;
 
-    private ConfigDetailsViewModel mViewModel;
-
-    public static ConfigDetailsFragment newInstance() {
-        return new ConfigDetailsFragment();
+    public static WidgetDetailsFragment newInstance() {
+        return new WidgetDetailsFragment();
     }
 
 
@@ -26,14 +34,14 @@ public class ConfigDetailsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.config_details_layout, container, false);
+        return inflater.inflate(R.layout.fragment_widgets_details, container, false);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        mViewModel = ViewModelProviders.of(this).get(ConfigDetailsViewModel.class);
+        mViewModel = ViewModelProviders.of(this).get(WidgetDetailsViewModel.class);
         // TODO: Use the ViewModel
     }
 

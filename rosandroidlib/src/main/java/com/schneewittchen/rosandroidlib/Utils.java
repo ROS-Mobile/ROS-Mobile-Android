@@ -5,6 +5,15 @@ import android.content.Context;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 
+/**
+ * TODO: Description
+ *
+ * @author Nico Studt
+ * @version 1.0.0
+ * @created on 10.01.20
+ * @updated on 16.01.20
+ * @modified by
+ */
 public class Utils {
 
     public static float pxToCm(Context context, float px) {

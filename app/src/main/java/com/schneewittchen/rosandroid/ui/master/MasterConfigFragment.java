@@ -11,9 +11,16 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.schneewittchen.rosandroid.R;
-import com.schneewittchen.rosandroid.ui.main.MainViewModel;
 
-
+/**
+ * TODO: Description
+ *
+ * @author Nico Studt
+ * @version 1.0.0
+ * @created on 10.01.20
+ * @updated on 16.01.20
+ * @modified by
+ */
 public class MasterConfigFragment extends Fragment {
 
     private MasterConfigViewModel mViewModel;
@@ -27,7 +34,7 @@ public class MasterConfigFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.master_layout, container, false);
+        return inflater.inflate(R.layout.fragment_master, container, false);
     }
 
     @Override

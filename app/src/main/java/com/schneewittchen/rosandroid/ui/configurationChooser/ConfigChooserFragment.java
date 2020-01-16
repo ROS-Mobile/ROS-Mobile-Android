@@ -12,7 +12,15 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.schneewittchen.rosandroid.R;
 
-
+/**
+ * TODO: Description
+ *
+ * @author Nico Studt
+ * @version 1.0.0
+ * @created on 10.01.20
+ * @updated on 16.01.20
+ * @modified by
+ */
 public class ConfigChooserFragment extends Fragment {
 
     private ConfigChooserViewModel mViewModel;
@@ -26,7 +34,7 @@ public class ConfigChooserFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.configation_chooser_fragment, container, false);
+        return inflater.inflate(R.layout.fragment_configation_chooser, container, false);
     }
 
     @Override

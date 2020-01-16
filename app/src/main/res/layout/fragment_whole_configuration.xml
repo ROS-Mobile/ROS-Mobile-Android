@@ -88,7 +88,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/navigation_header_height"
-            tools:layout="@layout/configation_chooser_fragment" />
+            tools:layout="@layout/fragment_configation_chooser" />
 
 
     </com.google.android.material.navigation.NavigationView>

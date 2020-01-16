@@ -1,6 +1,14 @@
 package com.schneewittchen.rosandroidlib;
 
-
+/**
+ * TODO: Description
+ *
+ * @author Nico Studt
+ * @version 1.0.0
+ * @created on 10.01.20
+ * @updated on 16.01.20
+ * @modified by
+ */
 public class ObservableVariable<T> {
 
     public T mVariable;

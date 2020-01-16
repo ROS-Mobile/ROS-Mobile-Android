@@ -10,7 +10,15 @@ import androidx.annotation.Nullable;
 
 import com.schneewittchen.rosandroidlib.R;
 
-
+/**
+ * TODO: Description
+ *
+ * @author Nico Studt
+ * @version 1.0.0
+ * @created on 18.10.19
+ * @updated on 10.01.20
+ * @modified by
+ */
 public class OccupancyGridWidget extends View {
 
     Paint paint;

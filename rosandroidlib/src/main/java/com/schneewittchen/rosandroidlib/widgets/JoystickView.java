@@ -15,7 +15,15 @@ import androidx.annotation.Nullable;
 import com.schneewittchen.rosandroidlib.R;
 import com.schneewittchen.rosandroidlib.Utils;
 
-
+/**
+ * TODO: Description
+ *
+ * @author Nico Studt
+ * @version 1.1.0
+ * @created on 18.10.19
+ * @updated on 10.01.20
+ * @modified by
+ */
 public class JoystickView extends View {
 
     Handler mHandler;
