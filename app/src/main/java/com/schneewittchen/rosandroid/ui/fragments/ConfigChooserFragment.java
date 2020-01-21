@@ -1,4 +1,4 @@
-package com.schneewittchen.rosandroid.ui.master;
+package com.schneewittchen.rosandroid.ui.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.schneewittchen.rosandroid.R;
+import com.schneewittchen.rosandroid.viewmodel.ConfigChooserViewModel;
 
 /**
  * TODO: Description
@@ -21,12 +22,12 @@ import com.schneewittchen.rosandroid.R;
  * @updated on 16.01.20
  * @modified by
  */
-public class MasterConfigFragment extends Fragment {
+public class ConfigChooserFragment extends Fragment {
 
-    private MasterConfigViewModel mViewModel;
+    private ConfigChooserViewModel mViewModel;
 
-    public static MasterConfigFragment newInstance() {
-        return new MasterConfigFragment();
+    public static ConfigChooserFragment newInstance() {
+        return new ConfigChooserFragment();
     }
 
 
@@ -34,14 +35,14 @@ public class MasterConfigFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_master, container, false);
+        return inflater.inflate(R.layout.fragment_configation_chooser, container, false);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        mViewModel = ViewModelProviders.of(this).get(MasterConfigViewModel.class);
+        mViewModel = ViewModelProviders.of(this).get(ConfigChooserViewModel.class);
         // TODO: Use the ViewModel
     }
 

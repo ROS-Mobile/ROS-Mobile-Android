@@ -4,6 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.schneewittchen.rosandroid">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         tools:replace="android:icon"
         android:allowBackup="true"
@@ -15,8 +18,7 @@
 
         <activity
             android:name=".ui.activity.MainActivity"
-            android:screenOrientation="portrait"
-            >
+            android:screenOrientation="portrait">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,6 +26,13 @@
             </intent-filter>
 
         </activity>
+
+
+        <service android:name="org.ros.android.NodeMainExecutorService" >
+            <intent-filter>
+                <action android:name="org.ros.android.NodeMainExecutorService" />
+            </intent-filter>
+        </service>
 
     </application>
 

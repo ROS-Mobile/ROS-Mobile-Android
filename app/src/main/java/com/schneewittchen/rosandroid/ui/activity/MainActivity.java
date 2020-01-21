@@ -8,7 +8,10 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import com.schneewittchen.rosandroid.R;
-import com.schneewittchen.rosandroid.ui.main.MainFragment;
+import com.schneewittchen.rosandroid.ui.fragments.MainFragment;
+import com.schneewittchen.rosandroid.ui.helper.OnBackPressedListener;
+import com.schneewittchen.rosandroidlib.RosRepo;
+import com.schneewittchen.rosandroidlib.TestListener;
 
 
 /**
@@ -17,7 +20,7 @@ import com.schneewittchen.rosandroid.ui.main.MainFragment;
  * @author Nico Studt
  * @version 1.0.0
  * @created on 16.01.20
- * @updated on 16.01.20
+ * @updated on 17.01.20
  * @modified by
  */
 public class MainActivity extends AppCompatActivity {
@@ -36,6 +39,21 @@ public class MainActivity extends AppCompatActivity {
                     .replace(R.id.main_container, MainFragment.newInstance())
                     .commitNow();
         }
+
+        // Let ROS know about the application context
+        RosRepo rosRepo = RosRepo.getInstance();
+        RosRepo.getInstance().setContext(this);
+
+        // Test ROS
+        TestListener testListener = new TestListener();
+        rosRepo.registerNode(testListener);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        RosRepo.getInstance().destroyService();
     }
 
     @Override

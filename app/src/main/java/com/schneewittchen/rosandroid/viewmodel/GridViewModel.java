@@ -1,4 +1,4 @@
-package com.schneewittchen.rosandroid.ui.grid;
+package com.schneewittchen.rosandroid.viewmodel;
 
 import androidx.lifecycle.ViewModel;
 

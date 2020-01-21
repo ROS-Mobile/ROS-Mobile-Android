@@ -29,6 +29,13 @@ dependencies {
 
     implementation 'androidx.appcompat:appcompat:1.1.0'
 
+    implementation "org.ros.rosjava_core:rosjava:0.3.6"
+    implementation "org.ros.rosjava_messages:diagnostic_msgs:1.12.7"
+    implementation 'org.ros.rosjava_messages:geometry_msgs:1.12.7'
+    implementation 'org.ros.rosjava_messages:nav_msgs:1.12.7'
+    implementation 'org.ros.rosjava_messages:std_msgs:0.5.11'
+    implementation 'org.ros.rosjava_messages:sensor_msgs:1.12.7'
+    implementation 'org.ros.rosjava_bootstrap:message_generation:[0.3, 0.4)'
     implementation 'org.ros.android_core:android_core_components:0.4.0'
 
     testImplementation 'junit:junit:4.13'

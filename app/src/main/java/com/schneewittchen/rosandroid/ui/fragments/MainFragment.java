@@ -1,4 +1,4 @@
-package com.schneewittchen.rosandroid.ui.main;
+package com.schneewittchen.rosandroid.ui.fragments;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,8 +19,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.android.material.tabs.TabLayout;
-import com.schneewittchen.rosandroid.ui.activity.OnBackPressedListener;
+import com.schneewittchen.rosandroid.ui.helper.OnBackPressedListener;
 import com.schneewittchen.rosandroid.R;
+import com.schneewittchen.rosandroid.ui.helper.ConfigTabsPagerAdapter;
+import com.schneewittchen.rosandroid.ui.helper.LockableViewPager;
+import com.schneewittchen.rosandroid.viewmodel.MainViewModel;
 
 /**
  * TODO: Description

@@ -1,4 +1,4 @@
-package com.schneewittchen.rosandroid.ui.master;
+package com.schneewittchen.rosandroid.viewmodel;
 
 import androidx.lifecycle.ViewModel;
 
@@ -11,6 +11,6 @@ import androidx.lifecycle.ViewModel;
  * @updated on 16.01.20
  * @modified by
  */
-public class MasterConfigViewModel extends ViewModel {
+public class ConfigChooserViewModel extends ViewModel {
     // TODO: Implement the ViewModel
 }

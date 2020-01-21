@@ -3,4 +3,5 @@
     <string name="add_widget">Add widget</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="widget_joystick">Joystick</string>
 </resources>

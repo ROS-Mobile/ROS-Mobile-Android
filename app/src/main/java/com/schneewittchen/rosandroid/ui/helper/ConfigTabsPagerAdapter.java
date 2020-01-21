@@ -1,13 +1,13 @@
-package com.schneewittchen.rosandroid.ui.main;
+package com.schneewittchen.rosandroid.ui.helper;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.schneewittchen.rosandroid.ui.widgetDetails.WidgetDetailsFragment;
-import com.schneewittchen.rosandroid.ui.grid.GridFragment;
-import com.schneewittchen.rosandroid.ui.master.MasterConfigFragment;
+import com.schneewittchen.rosandroid.ui.fragments.WidgetDetailsFragment;
+import com.schneewittchen.rosandroid.ui.fragments.GridFragment;
+import com.schneewittchen.rosandroid.ui.fragments.MasterConfigFragment;
 
 /**
  * TODO: Description

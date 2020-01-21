@@ -1,4 +1,4 @@
-package com.schneewittchen.rosandroid.ui.main;
+package com.schneewittchen.rosandroid.ui.helper;
 
 import android.content.Context;
 import android.util.AttributeSet;

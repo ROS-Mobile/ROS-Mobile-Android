@@ -1,4 +1,4 @@
-package com.schneewittchen.rosandroid.ui.grid;
+package com.schneewittchen.rosandroid.ui.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.schneewittchen.rosandroid.R;
+import com.schneewittchen.rosandroid.viewmodel.GridViewModel;
 
 
 /**

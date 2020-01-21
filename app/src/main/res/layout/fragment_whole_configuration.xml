@@ -63,7 +63,7 @@
         </com.google.android.material.appbar.AppBarLayout>
 
 
-        <com.schneewittchen.rosandroid.ui.main.LockableViewPager
+        <com.schneewittchen.rosandroid.ui.helper.LockableViewPager
             android:id="@+id/configViewpager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -84,7 +84,7 @@
 
         <fragment
             android:id="@+id/fragment"
-            android:name="com.schneewittchen.rosandroid.ui.configurationChooser.ConfigChooserFragment"
+            android:name="com.schneewittchen.rosandroid.ui.fragments.ConfigChooserFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/navigation_header_height"

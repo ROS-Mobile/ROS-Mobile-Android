@@ -1,4 +1,4 @@
-package com.schneewittchen.rosandroid.ui.activity;
+package com.schneewittchen.rosandroid.ui.helper;
 
 /**
  * TODO: Description
@@ -10,5 +10,6 @@ package com.schneewittchen.rosandroid.ui.activity;
  * @modified by
  */
 public interface OnBackPressedListener {
+
     boolean onBackPressed();
 }
