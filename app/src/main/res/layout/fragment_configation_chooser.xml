@@ -25,7 +25,7 @@
                 android:tint="@color/colorAccent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_favorite_black_24dp" />
+                app:srcCompat="@drawable/ic_favorite_white_24dp" />
 
             <TextView
                 android:id="@+id/textView5"
@@ -51,7 +51,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/textView5"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/textView5"
-                app:srcCompat="@drawable/ic_expand_less_black_24dp" />
+                app:srcCompat="@drawable/ic_expand_less_white_24dp" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -111,7 +111,7 @@
                 android:tint="@color/colorAccent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_filter_black_24dp" />
+                app:srcCompat="@drawable/ic_filter_white_24dp" />
 
             <TextView
                 android:id="@+id/textView10"
@@ -137,7 +137,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/textView10"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/textView10"
-                app:srcCompat="@drawable/ic_expand_less_black_24dp" />
+                app:srcCompat="@drawable/ic_expand_less_white_24dp" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -206,7 +206,7 @@
                 android:tint="@color/colorAccent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_delete_black_24dp" />
+                app:srcCompat="@drawable/ic_delete_white_24dp" />
 
             <TextView
                 android:id="@+id/textView20"
@@ -232,7 +232,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/textView20"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/textView20"
-                app:srcCompat="@drawable/ic_expand_more_black_24dp" />
+                app:srcCompat="@drawable/ic_expand_more_white_24dp" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

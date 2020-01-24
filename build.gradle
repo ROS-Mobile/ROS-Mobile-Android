@@ -3,7 +3,13 @@ ext {
 }// Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    apply from: "https://github.com/rosjava/android_core/raw/kinetic/buildscript.gradle"
+    apply from: "https://github.com/rosjava/rosjava_bootstrap/raw/kinetic/buildscript.gradle"
+
+    dependencies {
+        classpath "com.android.tools.build:gradle:3.5.3"
+    }
+
+    //apply from: "https://github.com/rosjava/android_core/raw/kinetic/buildscript.gradle"
 }
 
 subprojects {
@@ -25,7 +31,7 @@ allprojects {
     repositories {
         google()
         jcenter()
-        
+        maven { url 'https://repo1.maven.org/maven2' }
     }
 }
 

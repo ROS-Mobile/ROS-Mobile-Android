@@ -4,18 +4,23 @@ android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
 
-
     defaultConfig {
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
+
+        apply plugin: 'maven'   //*
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
     }
 
     buildTypes {
+        repositories {
+            jcenter()
+            mavenCentral()
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -29,18 +34,21 @@ dependencies {
 
     implementation 'androidx.appcompat:appcompat:1.1.0'
 
+    // Tests
+    testImplementation 'junit:junit:4.13'
+    androidTestImplementation 'junit:junit:4.13'
+
+    // ROS
     implementation "org.ros.rosjava_core:rosjava:0.3.6"
     implementation "org.ros.rosjava_messages:diagnostic_msgs:1.12.7"
     implementation 'org.ros.rosjava_messages:geometry_msgs:1.12.7'
     implementation 'org.ros.rosjava_messages:nav_msgs:1.12.7'
     implementation 'org.ros.rosjava_messages:std_msgs:0.5.11'
     implementation 'org.ros.rosjava_messages:sensor_msgs:1.12.7'
-    implementation 'org.ros.rosjava_bootstrap:message_generation:[0.3, 0.4)'
+    implementation 'org.ros.rosjava_bootstrap:message_generation:0.3.3'
     implementation 'org.ros.android_core:android_core_components:0.4.0'
 
-    testImplementation 'junit:junit:4.13'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
-
+    // Parsing
+    implementation 'com.google.code.gson:gson:2.8.6'
 }

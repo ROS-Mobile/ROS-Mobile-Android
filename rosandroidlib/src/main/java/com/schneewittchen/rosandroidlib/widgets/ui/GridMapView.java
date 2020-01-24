@@ -1,4 +1,4 @@
-package com.schneewittchen.rosandroidlib.widgets;
+package com.schneewittchen.rosandroidlib.widgets.ui;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -19,12 +19,12 @@ import com.schneewittchen.rosandroidlib.R;
  * @updated on 10.01.20
  * @modified by
  */
-public class OccupancyGridWidget extends View {
+public class GridMapView extends View {
 
     Paint paint;
 
 
-    public OccupancyGridWidget(Context context, @Nullable AttributeSet attrs) {
+    public GridMapView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
         paint = new Paint();

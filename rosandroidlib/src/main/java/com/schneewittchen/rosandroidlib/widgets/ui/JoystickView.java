@@ -1,4 +1,4 @@
-package com.schneewittchen.rosandroidlib.widgets;
+package com.schneewittchen.rosandroidlib.widgets.ui;
 
 import android.animation.ValueAnimator;
 import android.content.Context;

@@ -3,5 +3,7 @@
     <string name="add_widget">Add widget</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="widget_joystick">Joystick</string>
+    <string name="add_widgets_to_your_configuration">Add one or more widgets to this configuration.</string>
+    <string name="delete">delete</string>
+    <string name="widget_undo">%1$s removed from config!</string>
 </resources>

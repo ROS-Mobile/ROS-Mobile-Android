@@ -31,16 +31,13 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
 
-    testImplementation 'junit:junit:4.13'
+    implementation 'com.google.android.material:material:1.0.0'
+    implementation "androidx.viewpager2:viewpager2:1.0.0"
 
+    testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
     implementation project(path: ':rosandroidlib')
-    implementation 'com.google.android.material:material:1.0.0'
-    implementation "androidx.viewpager2:viewpager2:1.0.0"
 
-
-    implementation 'org.ros.rosjava_bootstrap:message_generation:[0.3, 0.4)'
-    implementation 'org.ros.android_core:android_core_components:0.4.0'
 }

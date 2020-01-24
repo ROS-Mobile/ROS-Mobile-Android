@@ -160,7 +160,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/NotificationTitleChoiceText"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/NotificationTitleText"
-                app:srcCompat="@drawable/ic_mode_edit_black_24dp" />
+                app:srcCompat="@drawable/ic_mode_edit_white_24dp" />
 
             <ImageButton
                 android:id="@+id/notification_ticker_edit_button"
@@ -171,7 +171,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/TickerTitleChoiceText"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/TickerTitleText"
-                app:srcCompat="@drawable/ic_mode_edit_black_24dp" />
+                app:srcCompat="@drawable/ic_mode_edit_white_24dp" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -263,7 +263,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/ip_address_choice_text"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/IpAddressText"
-                app:srcCompat="@drawable/ic_place_black_24dp" />
+                app:srcCompat="@drawable/ic_place_white_24dp" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

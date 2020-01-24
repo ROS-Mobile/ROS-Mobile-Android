@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">ROSAndroidLIB</string>
+
+    <!-- Widget names -->
+    <string name="widget_joystick">Joystick</string>
+    <string name="widget_gridmap">Grid Map</string>
 </resources>

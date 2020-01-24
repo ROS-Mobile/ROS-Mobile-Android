@@ -11,7 +11,7 @@ import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.ui.fragments.MainFragment;
 import com.schneewittchen.rosandroid.ui.helper.OnBackPressedListener;
 import com.schneewittchen.rosandroidlib.RosRepo;
-import com.schneewittchen.rosandroidlib.TestListener;
+import com.schneewittchen.rosandroidlib.parser.ConfigurationParser;
 
 
 /**
@@ -41,12 +41,11 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // Let ROS know about the application context
-        RosRepo rosRepo = RosRepo.getInstance();
         RosRepo.getInstance().setContext(this);
 
-        // Test ROS
-        TestListener testListener = new TestListener();
-        rosRepo.registerNode(testListener);
+
+        ConfigurationParser parser = new ConfigurationParser();
+        parser.test();
     }
 
     @Override

@@ -4,6 +4,8 @@
     <color name="colorPrimaryDark">#121212</color>
     <color name="colorAccent">#81D4FA</color>
 
+    <color name="delete_red">#f44336</color>
+    <color name="color_attention">#ffc107</color>
     <color name="black00dp">#121212</color>
     <color name="black01dp">#1D1D1D</color>
     <color name="black02dp">#212121</color>
@@ -20,5 +22,6 @@
     <color name="whiteMedium">#999999</color>
     <color name="whiteLow">#616161</color>
 
-    <color name="drawerFadeColor">#BB000000</color>
+    <color name="drawerFadeColor">#BB121212</color>
+    <color name="drawerHeaderBGColor">#BB121212</color>
 </resources>
