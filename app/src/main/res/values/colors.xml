@@ -11,7 +11,7 @@
     <color name="black02dp">#212121</color>
     <color name="black03dp">#242424</color>
     <color name="black04dp">#272727</color>
-    <color name="black06dp">#2c2c2c</color>
+    <color name="black06dp">#2C2C2C</color>
     <color name="black08dp">#2d2d2d</color>
     <color name="black12dp">#323232</color>
     <color name="black16dp">#353535</color>
@@ -21,6 +21,7 @@
     <color name="whiteHigh">#DEDEDE</color>
     <color name="whiteMedium">#999999</color>
     <color name="whiteLow">#616161</color>
+    <color name="white4p">#09FFFFFF</color>
 
     <color name="drawerFadeColor">#BB121212</color>
     <color name="drawerHeaderBGColor">#BB121212</color>

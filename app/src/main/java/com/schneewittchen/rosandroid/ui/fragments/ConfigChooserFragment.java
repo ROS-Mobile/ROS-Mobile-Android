@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,6 +26,8 @@ import com.schneewittchen.rosandroid.viewmodel.ConfigChooserViewModel;
 public class ConfigChooserFragment extends Fragment {
 
     private ConfigChooserViewModel mViewModel;
+    private Button addConfigButton;
+
 
     public static ConfigChooserFragment newInstance() {
         return new ConfigChooserFragment();
@@ -39,11 +42,20 @@ public class ConfigChooserFragment extends Fragment {
     }
 
     @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        addConfigButton = view.findViewById(R.id.add_config_button);
+    }
+
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         mViewModel = ViewModelProviders.of(this).get(ConfigChooserViewModel.class);
-        // TODO: Use the ViewModel
+
+
+        addConfigButton.setOnClickListener(v -> mViewModel.addConfig());
     }
 
 }

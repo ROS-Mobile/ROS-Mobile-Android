@@ -10,7 +10,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.schneewittchen.rosandroid.R;
-import com.schneewittchen.rosandroidlib.widgets.model.Widget;
+import com.schneewittchen.rosandroidlib.model.entities.Widget;
 
 import java.util.ArrayList;
 import java.util.List;

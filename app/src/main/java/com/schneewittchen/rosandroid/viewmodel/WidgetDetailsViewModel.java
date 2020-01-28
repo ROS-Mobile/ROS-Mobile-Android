@@ -1,16 +1,18 @@
 package com.schneewittchen.rosandroid.viewmodel;
 
-import android.database.Observable;
+import android.app.Application;
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModel;
 
 import com.schneewittchen.rosandroid.model.WidgetModel;
-import com.schneewittchen.rosandroidlib.widgets.model.JoystickWidget;
-import com.schneewittchen.rosandroidlib.widgets.model.Widget;
+import com.schneewittchen.rosandroidlib.model.entities.Configuration;
+import com.schneewittchen.rosandroidlib.model.entities.Widget;
+import com.schneewittchen.rosandroidlib.model.entities.WidgetJoystick;
+import com.schneewittchen.rosandroidlib.model.repos.ConfigRepository;
+import com.schneewittchen.rosandroidlib.model.repos.ConfigRepositoryImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,21 +21,34 @@ import java.util.List;
  * TODO: Description
  *
  * @author Nico Studt
- * @version 1.0.0
+ * @version 1.0.3
  * @created on 10.01.20
- * @updated on 16.01.20
+ * @updated on 28.01.20
  * @modified by
  */
-public class WidgetDetailsViewModel extends ViewModel {
+public class WidgetDetailsViewModel extends AndroidViewModel {
 
 
-    private MutableLiveData<List<Widget>> widgetList;
+    private ConfigRepository configRepository;
+    private MediatorLiveData<List<Widget>> widgetList;
     private MediatorLiveData<Boolean> widgetsEmpty;
+    private LiveData<Configuration> mConfig;
 
 
-    public WidgetDetailsViewModel() {
+    public WidgetDetailsViewModel(@NonNull Application application) {
+        super(application);
 
-        widgetList = new MutableLiveData<>(new ArrayList<>());
+        configRepository = ConfigRepositoryImpl.getInstance();
+
+        mConfig = configRepository.getCurrentConfig();
+
+        widgetList = new MediatorLiveData<>();
+        widgetList.setValue(new ArrayList<>());
+        widgetList.addSource(mConfig, configuration -> {
+            System.out.println(configuration.widgets.size());
+            widgetList.setValue(configuration.widgets);
+        });
+
         widgetsEmpty = new MediatorLiveData<>();
         widgetsEmpty.addSource(widgetList, widgets -> widgetsEmpty.setValue(widgets.isEmpty()));
     }
@@ -44,16 +59,11 @@ public class WidgetDetailsViewModel extends ViewModel {
     }
 
     public void deleteWidget(Widget widget) {
-        List<Widget> widgets = widgetList.getValue();
-        widgets.remove(widget);
-        widgetList.setValue(widgets);
     }
 
     public void addWidget(String selectedText) {
         if (selectedText.toLowerCase().equals("joystick")){
-            List<Widget> widgets = widgetList.getValue();
-            widgets.add(new JoystickWidget());
-            widgetList.setValue(widgets);
+            configRepository.setWidget(new WidgetJoystick(), 0);
         }
     }
 

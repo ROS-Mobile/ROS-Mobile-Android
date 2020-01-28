@@ -237,12 +237,12 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/add_config_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="32dp"
-            android:text="Add configuration"
+            android:text="@string/add_configuration"
             android:textColor="@color/black01dp" />
 
     </LinearLayout>

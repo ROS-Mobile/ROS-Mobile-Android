@@ -6,4 +6,7 @@
     <string name="add_widgets_to_your_configuration">Add one or more widgets to this configuration.</string>
     <string name="delete">delete</string>
     <string name="widget_undo">%1$s removed from config!</string>
+    <string name="add_configuration">Add configuration</string>
+    <string name="master_ip_hint">Master URL</string>
+    <string name="master_port_hint">Master port</string>
 </resources>

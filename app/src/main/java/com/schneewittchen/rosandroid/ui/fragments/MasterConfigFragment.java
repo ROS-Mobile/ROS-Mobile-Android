@@ -10,17 +10,16 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.viewmodel.MasterConfigViewModel;
 
@@ -28,19 +27,25 @@ import com.schneewittchen.rosandroid.viewmodel.MasterConfigViewModel;
  * TODO: Description
  *
  * @author Nico Studt
- * @version 1.0.1
+ * @version 1.2.1
  * @created on 10.01.20
- * @updated on 19.01.20
+ * @updated on 28.01.20
  * @modified by
  */
 public class MasterConfigFragment extends Fragment {
 
     private MasterConfigViewModel mViewModel;
 
-    private EditText masterIpEdittext;
+    private TextInputLayout masterIpInputLayout;
+    private TextInputEditText masterIpEditText;
+    private TextInputLayout masterPortInputLayout;
+    private TextInputEditText masterPortEditText;
+
     private CheckBox affixesCheckbox;
     private ImageButton notificationTitleEditButton;
     private ImageButton notificationTickerEditButton;
+    private TextView notificationTitleText;
+    private TextView notificationTickerTitleText;
     private TextView networkSSIDChoiceText;
     private TextView ipAddressChoiceText;
     private Button connectButton;
@@ -62,10 +67,15 @@ public class MasterConfigFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        masterIpEdittext = view.findViewById(R.id.master_ip_edittext);
+        masterIpInputLayout = view.findViewById(R.id.master_ip_inputLayout);
+        masterIpEditText = view.findViewById(R.id.master_ip_editText);
+        masterPortInputLayout = view.findViewById(R.id.master_port_inputLayout);
+        masterPortEditText = view.findViewById(R.id.master_port_editText);
         affixesCheckbox = view.findViewById(R.id.affixes_checkbox);
         notificationTitleEditButton = view.findViewById(R.id.notification_title_edit_button);
         notificationTickerEditButton = view.findViewById(R.id.notification_ticker_edit_button);
+        notificationTitleText = view.findViewById(R.id.NotificationTitleChoiceText);
+        notificationTickerTitleText = view.findViewById(R.id.TickerTitleChoiceText);
         networkSSIDChoiceText = view.findViewById(R.id.network_SSID_choice_text);
         ipAddressChoiceText = view.findViewById(R.id.ip_address_choice_text);
         connectButton = view.findViewById(R.id.connectButton);
@@ -78,28 +88,42 @@ public class MasterConfigFragment extends Fragment {
         mViewModel = ViewModelProviders.of(this).get(MasterConfigViewModel.class);
 
 
-        mViewModel.getCurrentNetworkSSID().observe(this, networkSSID -> {
-            networkSSIDChoiceText.setText(networkSSID);
-        });
+        // View model connection -------------------------------------------------------------------
 
-        mViewModel.getDeviceIp().observe(this, (deviceIp) -> {
-            ipAddressChoiceText.setText(deviceIp);
-        });
+        mViewModel.getNotificationTitle().observe(this, s -> notificationTitleText.setText(s));
+        mViewModel.getTickerTitle().observe(this, s -> notificationTickerTitleText.setText(s));
+        mViewModel.getMasterIp().observe(this, s -> masterIpEditText.setText(s));
+        mViewModel.getMasterPort().observe(this, s -> masterPortEditText.setText(s));
+        mViewModel.getCurrentNetworkSSID().observe(this, networkSSID -> networkSSIDChoiceText.setText(networkSSID));
+        mViewModel.getDeviceIp().observe(this, (deviceIp) -> ipAddressChoiceText.setText(deviceIp));
+
+
+        // User input ------------------------------------------------------------------------------
 
         affixesCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             mViewModel.useIpWithAffixes(isChecked);
         });
 
-        masterIpEdittext.setOnEditorActionListener((v, actionId, event) -> {
-            if (actionId == EditorInfo.IME_ACTION_DONE ){
-                mViewModel.setMasterIp(masterIpEdittext.getText().toString());
-                hideSoftKeyboard();
+        TextView.OnEditorActionListener actionListener = (v, actionId, event) -> {
+            System.out.println(actionId +  " Event: " + event);
 
+            if (actionId == EditorInfo.IME_ACTION_DONE){
+                if (v.getId() == masterIpEditText.getId() && masterIpEditText.getText() != null)
+                    mViewModel.setMasterIp(masterIpEditText.getText().toString());
+
+                if (v.getId() == masterPortEditText.getId() && masterPortEditText.getText() != null)
+                    mViewModel.setMasterPort(masterPortEditText.getText().toString());
+
+                v.clearFocus();
+                hideSoftKeyboard();
                 return true;
             }
 
             return false;
-        });
+        };
+
+        masterIpEditText.setOnEditorActionListener(actionListener);
+        masterPortEditText.setOnEditorActionListener(actionListener);
 
         notificationTitleEditButton.setOnClickListener(v -> {
             System.out.println("Ticker title pressed");
@@ -118,12 +142,8 @@ public class MasterConfigFragment extends Fragment {
     }
 
     public void hideSoftKeyboard() {
-        if (getActivity() != null && getActivity().getCurrentFocus() == null) {
-            return;
-        }
-
-        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
+        final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
     }
 
 }

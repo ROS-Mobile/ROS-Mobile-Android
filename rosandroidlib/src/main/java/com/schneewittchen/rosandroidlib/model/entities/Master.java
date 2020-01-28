@@ -1,4 +1,4 @@
-package com.schneewittchen.rosandroidlib.configuration;
+package com.schneewittchen.rosandroidlib.model.entities;
 
 /**
  * TODO: Description
@@ -16,11 +16,4 @@ public class Master {
     public String notificationTitle;
     public String notificationTickerTitle;
 
-
-    public Master(){
-        this.ip = "masterIP";
-        this.port = 11311;
-        this.notificationTitle = "title";
-        this.notificationTickerTitle = "tickerTitle";
-    }
 }

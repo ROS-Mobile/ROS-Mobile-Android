@@ -21,7 +21,7 @@ public class ObservableVariable<T> {
     }
 
 
-    public void addObserver(Listener listener){
+    public void addObserver(Listener<T> listener){
         mListener = listener;
     }
 

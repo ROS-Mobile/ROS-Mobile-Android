@@ -1,21 +1,14 @@
 package com.schneewittchen.rosandroidlib.parser;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
 import com.google.gson.TypeAdapter;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import com.schneewittchen.rosandroidlib.configuration.Configuration;
-import com.schneewittchen.rosandroidlib.widgets.model.Widget;
+import com.schneewittchen.rosandroidlib.model.entities.Widget;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 
 /**
  * TODO: Description

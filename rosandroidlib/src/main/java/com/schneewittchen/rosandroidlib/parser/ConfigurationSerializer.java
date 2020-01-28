@@ -5,8 +5,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.google.gson.reflect.TypeToken;
-import com.schneewittchen.rosandroidlib.configuration.Configuration;
-import com.schneewittchen.rosandroidlib.widgets.model.Widget;
+import com.schneewittchen.rosandroidlib.model.entities.Configuration;
+import com.schneewittchen.rosandroidlib.model.entities.Widget;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -23,16 +23,18 @@ import java.util.ArrayList;
 public class ConfigurationSerializer implements JsonSerializer<Configuration>{
 
     @Override
-    public JsonElement serialize(Configuration src, Type typeOfSrc, JsonSerializationContext context) {
+    public JsonElement serialize(Configuration config, Type typeOfSrc, JsonSerializationContext context) {
+
+        TypeToken<ArrayList<Widget>> typeDescription = new TypeToken<ArrayList<Widget>>() {};
+        JsonElement widgets = context.serialize(config.widgets, typeDescription.getType());
 
         JsonObject obj = new JsonObject();
 
-        obj.addProperty("name", src.name);
-        obj.addProperty("isFavourite", src.isFavourite);
-        obj.add("master", context.serialize(src.master));
-
-        TypeToken<ArrayList<Widget>> typeDescription = new TypeToken<ArrayList<Widget>>() {};
-        JsonElement widgets = context.serialize(src.widgets, typeDescription.getType());
+        obj.addProperty("id", config.id);
+        obj.addProperty("name", config.name);
+        obj.addProperty("creationTime", config.creationTime);
+        obj.addProperty("isFavourite", config.isFavourite);
+        obj.add("master", context.serialize(config.master));
         obj.add("widgets", widgets);
 
         return obj;

@@ -1,6 +1,12 @@
 package com.schneewittchen.rosandroid.viewmodel;
 
-import androidx.lifecycle.ViewModel;
+import android.app.Application;
+
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
+
+import com.schneewittchen.rosandroidlib.model.repos.ConfigRepository;
+import com.schneewittchen.rosandroidlib.model.repos.ConfigRepositoryImpl;
 
 /**
  * TODO: Description
@@ -11,6 +17,20 @@ import androidx.lifecycle.ViewModel;
  * @updated on 16.01.20
  * @modified by
  */
-public class ConfigChooserViewModel extends ViewModel {
-    // TODO: Implement the ViewModel
+public class ConfigChooserViewModel extends AndroidViewModel {
+
+    ConfigRepository configRepo;
+
+
+    public ConfigChooserViewModel(@NonNull Application application) {
+        super(application);
+
+        configRepo = ConfigRepositoryImpl.getInstance();
+    }
+
+
+    public void addConfig() {
+        configRepo.createConfig();
+    }
+
 }

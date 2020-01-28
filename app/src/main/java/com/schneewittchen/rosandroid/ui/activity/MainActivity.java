@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
 
-        RosRepo.getInstance().destroyService();
+        //RosRepo.getInstance().destroyService();
     }
 
     @Override

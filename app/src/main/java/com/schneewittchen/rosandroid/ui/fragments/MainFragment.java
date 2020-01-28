@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Bundle;
@@ -83,9 +84,17 @@ public class MainFragment extends Fragment implements OnBackPressedListener {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-
         mViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
-        // TODO: Use the ViewModel
+
+        mViewModel.getConfigTitle().observe(this, s -> setTitle(s));
+    }
+
+    private void setTitle(String newTitle) {
+        if (newTitle.equals(toolbar.getTitle().toString())) {
+            return;
+        }
+
+        toolbar.setTitle(newTitle);
     }
 
     public boolean onBackPressed(){

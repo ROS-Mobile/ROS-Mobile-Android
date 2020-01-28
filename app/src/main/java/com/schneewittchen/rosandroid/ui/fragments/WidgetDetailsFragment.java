@@ -25,7 +25,7 @@ import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.ui.helper.RecyclerItemTouchHelper;
 import com.schneewittchen.rosandroid.ui.helper.WidgetListAdapter;
 import com.schneewittchen.rosandroid.viewmodel.WidgetDetailsViewModel;
-import com.schneewittchen.rosandroidlib.widgets.model.Widget;
+import com.schneewittchen.rosandroidlib.model.entities.Widget;
 
 import java.util.List;
 
@@ -34,9 +34,9 @@ import java.util.List;
  * TODO: Description
  *
  * @author Nico Studt
- * @version 1.2.0
+ * @version 1.2.1
  * @created on 10.01.20
- * @updated on 24.01.20
+ * @updated on 28.01.20
  * @modified by
  */
 public class WidgetDetailsFragment extends Fragment implements RecyclerItemTouchHelper.TouchListener{

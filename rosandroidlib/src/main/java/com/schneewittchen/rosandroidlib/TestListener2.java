@@ -20,6 +20,7 @@ import geometry_msgs.Twist;
  */
 public class TestListener2 implements MessageListener<Twist>, NodeMain {
 
+
     @Override
     public void onNewMessage(Twist twist) {
         System.out.println("Listener2:" + twist.getLinear().getX());
