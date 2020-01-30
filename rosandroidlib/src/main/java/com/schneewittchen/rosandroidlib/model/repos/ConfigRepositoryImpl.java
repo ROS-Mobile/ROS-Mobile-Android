@@ -41,8 +41,6 @@ public class ConfigRepositoryImpl implements ConfigRepository {
         mCurrentConfig = new MediatorLiveData<>();
         mCurrentConfigId = new MutableLiveData<>();
 
-        System.out.println("1" + mCurrentConfig);
-
         mCurrentConfig.addSource(mCurrentConfigId, id -> {
             if (mAllConfigs.getValue() == null){
                 return;
@@ -125,8 +123,14 @@ public class ConfigRepositoryImpl implements ConfigRepository {
     }
 
     @Override
+    public void deleteWidget(Widget widget) {
+        Configuration config = mCurrentConfig.getValue();
+        config.widgets.remove(widget);
+        mCurrentConfig.setValue(config);
+    }
+
+    @Override
     public LiveData<Configuration> getCurrentConfig() {
-        System.out.println("2" + mCurrentConfig);
         return mCurrentConfig;
     }
 

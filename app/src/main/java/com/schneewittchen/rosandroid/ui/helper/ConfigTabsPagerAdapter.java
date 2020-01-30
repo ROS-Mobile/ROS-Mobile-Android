@@ -13,9 +13,9 @@ import com.schneewittchen.rosandroid.ui.fragments.MasterConfigFragment;
  * TODO: Description
  *
  * @author Nico Studt
- * @version 1.0.0
+ * @version 1.0.1
  * @created on 10.01.20
- * @updated on 16.01.20
+ * @updated on 29.01.20
  * @modified by
  */
 public class ConfigTabsPagerAdapter extends FragmentPagerAdapter {
@@ -31,9 +31,6 @@ public class ConfigTabsPagerAdapter extends FragmentPagerAdapter {
     @NonNull
     @Override
     public Fragment getItem(int position) {
-
-        System.out.println("Get item for " + position);
-
         switch (position){
             case 0:
                 return MasterConfigFragment.newInstance();

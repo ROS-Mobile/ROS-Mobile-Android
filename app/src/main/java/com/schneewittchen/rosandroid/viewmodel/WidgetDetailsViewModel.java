@@ -10,6 +10,7 @@ import androidx.lifecycle.MediatorLiveData;
 import com.schneewittchen.rosandroid.model.WidgetModel;
 import com.schneewittchen.rosandroidlib.model.entities.Configuration;
 import com.schneewittchen.rosandroidlib.model.entities.Widget;
+import com.schneewittchen.rosandroidlib.model.entities.WidgetGridMap;
 import com.schneewittchen.rosandroidlib.model.entities.WidgetJoystick;
 import com.schneewittchen.rosandroidlib.model.repos.ConfigRepository;
 import com.schneewittchen.rosandroidlib.model.repos.ConfigRepositoryImpl;
@@ -54,16 +55,19 @@ public class WidgetDetailsViewModel extends AndroidViewModel {
     }
 
 
-    public int[] getAllWidgetNames() {
+    public int[] getAvailableWidgetNames() {
         return WidgetModel.getWidgetNames();
     }
 
     public void deleteWidget(Widget widget) {
+        configRepository.deleteWidget(widget);
     }
 
     public void addWidget(String selectedText) {
         if (selectedText.toLowerCase().equals("joystick")){
             configRepository.setWidget(new WidgetJoystick(), 0);
+        }else if (selectedText.toLowerCase().equals("grid map")){
+            configRepository.setWidget(new WidgetGridMap(), 0);
         }
     }
 

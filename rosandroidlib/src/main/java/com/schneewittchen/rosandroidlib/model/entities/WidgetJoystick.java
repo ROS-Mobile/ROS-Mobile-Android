@@ -13,6 +13,6 @@ public class WidgetJoystick extends Widget {
 
     @Override
     public String getType() {
-        return null;
+        return "Joystick";
     }
 }

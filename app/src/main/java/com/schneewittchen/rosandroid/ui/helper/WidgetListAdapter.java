@@ -27,12 +27,10 @@ import java.util.List;
  */
 public class WidgetListAdapter extends RecyclerView.Adapter<WidgetListAdapter.MyViewHolder> {
 
-    private Context context;
     private List<Widget> widgetList;
 
 
-    public WidgetListAdapter(Context context) {
-        this.context = context;
+    public WidgetListAdapter() {
         widgetList = new ArrayList<>();
     }
 

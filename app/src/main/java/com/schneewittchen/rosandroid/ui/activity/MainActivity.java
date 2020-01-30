@@ -42,10 +42,6 @@ public class MainActivity extends AppCompatActivity {
 
         // Let ROS know about the application context
         RosRepo.getInstance().setContext(this);
-
-
-        ConfigurationParser parser = new ConfigurationParser();
-        parser.test();
     }
 
     @Override

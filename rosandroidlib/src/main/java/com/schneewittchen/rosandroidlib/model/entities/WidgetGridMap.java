@@ -13,6 +13,6 @@ public class WidgetGridMap extends Widget {
     
     @Override
     public String getType() {
-        return null;
+        return "Grid Map";
     }
 }

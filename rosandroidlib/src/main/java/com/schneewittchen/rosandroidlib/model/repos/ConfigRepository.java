@@ -37,9 +37,13 @@ public interface ConfigRepository {
 
     void setWidget(Widget widget, long configId);
 
+    void deleteWidget(Widget widget);
+
     Configuration getNewConfig();
 
     LiveData<List<Configuration>> getAllConfigs();
 
     LiveData<Configuration> getCurrentConfig();
+
+
 }

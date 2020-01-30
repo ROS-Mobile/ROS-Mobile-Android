@@ -1,6 +1,7 @@
 package com.schneewittchen.rosandroid.ui.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ import com.schneewittchen.rosandroid.ui.helper.WidgetListAdapter;
 import com.schneewittchen.rosandroid.viewmodel.WidgetDetailsViewModel;
 import com.schneewittchen.rosandroidlib.model.entities.Widget;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -41,12 +43,15 @@ import java.util.List;
  */
 public class WidgetDetailsFragment extends Fragment implements RecyclerItemTouchHelper.TouchListener{
 
+    static final String TAG = WidgetDetailsFragment.class.getCanonicalName();
+
     private WidgetDetailsViewModel mViewModel;
     private CoordinatorLayout coordinatorLayout;
     private TextView noWidgetTextView;
     private RecyclerView recyclerView;
     private FloatingActionButton addWidgetButton;
     private WidgetListAdapter mAdapter;
+    private List<Widget> mWidgets;
 
 
     public static WidgetDetailsFragment newInstance() {
@@ -79,18 +84,20 @@ public class WidgetDetailsFragment extends Fragment implements RecyclerItemTouch
 
         addWidgetButton.setOnClickListener((View v) -> showDialogWithWidgetNames());
 
-        mAdapter = new WidgetListAdapter(this.getContext());
+        mAdapter = new WidgetListAdapter();
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this.getContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new DividerItemDecoration(this.getContext(), DividerItemDecoration.VERTICAL));
         recyclerView.setAdapter(mAdapter);
-        recyclerView.hasFixedSize();
+        //recyclerView.hasFixedSize();
 
-        mViewModel.getAllWidgets().observe(this, widgets -> {
-            mAdapter.setWidgets(widgets);
-            System.out.println("Changed");
+        mViewModel.getAllWidgets().observe(this, newWidgets -> {
+            mWidgets = new ArrayList<>();
+            mWidgets.addAll(newWidgets);
+            mAdapter.setWidgets(mWidgets);
+            Log.i(TAG, "Widgets changed");
         });
 
         mViewModel.widgetsEmpty().observe(this, empty ->
@@ -108,7 +115,7 @@ public class WidgetDetailsFragment extends Fragment implements RecyclerItemTouch
     private void showDialogWithWidgetNames() {
         Preconditions.checkArgument(getContext() != null);
 
-        int[] mWidgetIds = mViewModel.getAllWidgetNames();
+        int[] mWidgetIds = mViewModel.getAvailableWidgetNames();
 
         String[] widgetNames = new String[mWidgetIds.length];
 
@@ -121,7 +128,8 @@ public class WidgetDetailsFragment extends Fragment implements RecyclerItemTouch
         dialogBuilder.setItems(widgetNames, (dialog, item) -> {
             String selectedText = widgetNames[item];  //Selected item in listview
             mViewModel.addWidget(selectedText);
-            System.out.println(selectedText);
+
+            Log.i(TAG, "Selected Text: " + selectedText);
         });
 
         //Create alert dialog object via builder
@@ -145,6 +153,7 @@ public class WidgetDetailsFragment extends Fragment implements RecyclerItemTouch
 
             // remove the item from recycler view
             mAdapter.removeItem(viewHolder.getAdapterPosition());
+            mViewModel.deleteWidget(deletedItem);
 
             // showing snack bar with Undo option
             String undoText = getString(R.string.widget_undo, name);
@@ -153,14 +162,18 @@ public class WidgetDetailsFragment extends Fragment implements RecyclerItemTouch
             snackbar.setAction("UNDO", view -> {
                 // undo is selected, restore the deleted item
                 mAdapter.restoreItem(deletedItem, deletedIndex);
+                mViewModel.deleteWidget(deletedItem);
             });
+
+            /*
             snackbar.addCallback(new Snackbar.Callback() {
 
                 @Override
                 public void onDismissed(Snackbar snackbar, int event) {
                     if (event == Snackbar.Callback.DISMISS_EVENT_TIMEOUT) {
                         mViewModel.deleteWidget(deletedItem);
-                        System.out.println("Widget deleted");
+
+                        Log.i(TAG, "Widget deleted: " + deletedItem);
                     }
                 }
 
@@ -168,6 +181,7 @@ public class WidgetDetailsFragment extends Fragment implements RecyclerItemTouch
                 public void onShown(Snackbar snackbar) {
                 }
             });
+             */
 
 
             snackbar.setActionTextColor(getResources().getColor(R.color.color_attention));

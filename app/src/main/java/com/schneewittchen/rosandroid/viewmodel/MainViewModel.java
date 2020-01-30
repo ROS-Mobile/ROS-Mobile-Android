@@ -43,7 +43,7 @@ public class MainViewModel extends AndroidViewModel {
 
         // TODO: Remove Test
         android.os.Handler handler = new Handler();
-        handler.postDelayed(() -> configRepo.createConfig(), 5000);
+        handler.postDelayed(() -> configRepo.createConfig(), 1);
     }
 
     public LiveData<String> getConfigTitle() {
