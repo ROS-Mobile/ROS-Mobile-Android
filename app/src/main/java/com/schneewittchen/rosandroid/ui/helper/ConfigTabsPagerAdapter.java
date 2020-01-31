@@ -9,6 +9,7 @@ import com.schneewittchen.rosandroid.ui.fragments.WidgetDetailsFragment;
 import com.schneewittchen.rosandroid.ui.fragments.GridFragment;
 import com.schneewittchen.rosandroid.ui.fragments.MasterConfigFragment;
 
+
 /**
  * TODO: Description
  *

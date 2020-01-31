@@ -2,7 +2,7 @@ package com.schneewittchen.rosandroid.ui.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.view.KeyEvent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,23 +16,26 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.viewmodel.MasterConfigViewModel;
 
+
 /**
  * TODO: Description
  *
  * @author Nico Studt
- * @version 1.2.1
+ * @version 1.2.2
  * @created on 10.01.20
- * @updated on 28.01.20
+ * @updated on 31.01.20
  * @modified by
  */
 public class MasterConfigFragment extends Fragment {
+
+    private static final String TAG = MasterConfigFragment.class.getCanonicalName();
 
     private MasterConfigViewModel mViewModel;
 
@@ -85,17 +88,26 @@ public class MasterConfigFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        mViewModel = ViewModelProviders.of(this).get(MasterConfigViewModel.class);
+        mViewModel = new ViewModelProvider(this).get(MasterConfigViewModel.class);
 
 
         // View model connection -------------------------------------------------------------------
 
-        mViewModel.getNotificationTitle().observe(this, s -> notificationTitleText.setText(s));
-        mViewModel.getTickerTitle().observe(this, s -> notificationTickerTitleText.setText(s));
-        mViewModel.getMasterIp().observe(this, s -> masterIpEditText.setText(s));
-        mViewModel.getMasterPort().observe(this, s -> masterPortEditText.setText(s));
-        mViewModel.getCurrentNetworkSSID().observe(this, networkSSID -> networkSSIDChoiceText.setText(networkSSID));
-        mViewModel.getDeviceIp().observe(this, (deviceIp) -> ipAddressChoiceText.setText(deviceIp));
+        mViewModel.getMaster().observe(getViewLifecycleOwner(), master -> {
+            Log.i(TAG, "New Master: " + master);
+
+            if (master == null) return;
+
+            notificationTitleText.setText(master.notificationTitle);
+            notificationTickerTitleText.setText(master.notificationTickerTitle);
+            masterIpEditText.setText(master.ip);
+            masterPortEditText.setText(String.format("%d", master.port));
+        });
+
+        mViewModel.getCurrentNetworkSSID().observe(getViewLifecycleOwner(),
+                networkSSID -> networkSSIDChoiceText.setText(networkSSID));
+        mViewModel.getDeviceIp().observe(getViewLifecycleOwner(),
+                deviceIp -> ipAddressChoiceText.setText(deviceIp));
 
 
         // User input ------------------------------------------------------------------------------

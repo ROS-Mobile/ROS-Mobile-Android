@@ -6,6 +6,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Bundle;
@@ -30,9 +31,9 @@ import com.schneewittchen.rosandroid.viewmodel.MainViewModel;
  * TODO: Description
  *
  * @author Nico Studt
- * @version 1.0.0
+ * @version 1.0.1
  * @created on 10.01.20
- * @updated on 16.01.20
+ * @updated on 31.01.20
  * @modified by
  */
 public class MainFragment extends Fragment implements OnBackPressedListener {
@@ -84,9 +85,9 @@ public class MainFragment extends Fragment implements OnBackPressedListener {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        mViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        mViewModel = new ViewModelProvider(this).get(MainViewModel.class);
 
-        mViewModel.getConfigTitle().observe(this, s -> setTitle(s));
+        mViewModel.getConfigTitle().observe(getViewLifecycleOwner(), s -> setTitle(s));
     }
 
     private void setTitle(String newTitle) {

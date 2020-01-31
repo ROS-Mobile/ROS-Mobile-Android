@@ -1,2 +1,2 @@
-include ':app', ':rosandroidlib'
+include ':app'
 rootProject.name='RosAndroid'

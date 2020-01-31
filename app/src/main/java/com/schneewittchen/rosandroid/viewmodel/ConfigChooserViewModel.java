@@ -5,8 +5,8 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 
-import com.schneewittchen.rosandroidlib.model.repos.ConfigRepository;
-import com.schneewittchen.rosandroidlib.model.repos.ConfigRepositoryImpl;
+import com.schneewittchen.rosandroid.model.repositories.ConfigRepository;
+import com.schneewittchen.rosandroid.model.repositories.ConfigRepositoryImpl;
 
 /**
  * TODO: Description
@@ -25,7 +25,7 @@ public class ConfigChooserViewModel extends AndroidViewModel {
     public ConfigChooserViewModel(@NonNull Application application) {
         super(application);
 
-        configRepo = ConfigRepositoryImpl.getInstance();
+        configRepo = ConfigRepositoryImpl.getInstance(application);
     }
 
 
