@@ -120,6 +120,11 @@ public class ConfigRepositoryImpl implements ConfigRepository {
     @Override
     public void setWidget(WidgetEntity widget, long configId) {
         ConfigEntity config = mCurrentConfig.getValue();
+
+        if(config == null) {
+            return;
+        }
+
         config.widgets.add(widget);
         mCurrentConfig.setValue(config);
     }

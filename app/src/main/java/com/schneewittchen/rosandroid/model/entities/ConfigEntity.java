@@ -32,4 +32,7 @@ public class ConfigEntity {
     @Ignore
     public ArrayList<WidgetEntity> widgets;
 
+    public ConfigEntity() {
+        widgets = new ArrayList<>();
+    }
 }

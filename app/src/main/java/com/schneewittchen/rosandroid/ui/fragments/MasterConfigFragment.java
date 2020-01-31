@@ -98,6 +98,8 @@ public class MasterConfigFragment extends Fragment {
 
             if (master == null) return;
 
+            Log.i(TAG, "New Master port: " + master.port);
+
             notificationTitleText.setText(master.notificationTitle);
             notificationTickerTitleText.setText(master.notificationTickerTitle);
             masterIpEditText.setText(master.ip);

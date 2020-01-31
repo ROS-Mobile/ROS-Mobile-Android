@@ -45,6 +45,9 @@ public class WidgetDetailsViewModel extends AndroidViewModel {
         widgetList = new MediatorLiveData<>();
         widgetList.setValue(new ArrayList<>());
         widgetList.addSource(mConfig, configuration -> {
+            if (configuration.widgets == null) {
+                return;
+            }
             System.out.println(configuration.widgets.size());
             widgetList.setValue(configuration.widgets);
         });
