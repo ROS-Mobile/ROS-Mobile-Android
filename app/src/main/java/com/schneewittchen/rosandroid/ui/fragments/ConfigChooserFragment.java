@@ -9,10 +9,12 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.viewmodel.ConfigChooserViewModel;
+
 
 /**
  * TODO: Description
@@ -52,8 +54,7 @@ public class ConfigChooserFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        mViewModel = ViewModelProviders.of(this).get(ConfigChooserViewModel.class);
-
+        mViewModel = new ViewModelProvider(this).get(ConfigChooserViewModel.class);
 
         addConfigButton.setOnClickListener(v -> mViewModel.addConfig());
     }

@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">RosAndroid</string>
+
     <string name="add_widget">Add widget</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -9,4 +10,17 @@
     <string name="add_configuration">Add configuration</string>
     <string name="master_ip_hint">Master URL</string>
     <string name="master_port_hint">Master port</string>
+
+    <!-- Widget names -->
+    <string name="widget_joystick">Joystick</string>
+    <string name="widget_gridmap">Grid Map</string>
+
+    <!-- Default config -->
+    <string name="default_config_name">New Config</string>
+    <string name="default_master_ip">123.456.789.01</string>
+    <string name="default_master_ticker_title">Default ticker title</string>
+    <string name="default_master_notification_title">Default title</string>
+
+    <!-- Preference key -->
+    <string name="preference_file_key">prefs_configs</string>
 </resources>

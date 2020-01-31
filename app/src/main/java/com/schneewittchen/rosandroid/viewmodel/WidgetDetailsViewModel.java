@@ -7,13 +7,12 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 
-import com.schneewittchen.rosandroid.model.WidgetModel;
-import com.schneewittchen.rosandroidlib.model.entities.Configuration;
-import com.schneewittchen.rosandroidlib.model.entities.Widget;
-import com.schneewittchen.rosandroidlib.model.entities.WidgetGridMap;
-import com.schneewittchen.rosandroidlib.model.entities.WidgetJoystick;
-import com.schneewittchen.rosandroidlib.model.repos.ConfigRepository;
-import com.schneewittchen.rosandroidlib.model.repos.ConfigRepositoryImpl;
+import com.schneewittchen.rosandroid.model.repositories.WidgetModel;
+import com.schneewittchen.rosandroid.model.entities.ConfigEntity;
+import com.schneewittchen.rosandroid.model.entities.WidgetEntity;
+import com.schneewittchen.rosandroid.model.entities.WidgetJoystickEntity;
+import com.schneewittchen.rosandroid.model.repositories.ConfigRepository;
+import com.schneewittchen.rosandroid.model.repositories.ConfigRepositoryImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,24 +21,24 @@ import java.util.List;
  * TODO: Description
  *
  * @author Nico Studt
- * @version 1.0.3
+ * @version 1.0.4
  * @created on 10.01.20
- * @updated on 28.01.20
+ * @updated on 31.01.20
  * @modified by
  */
 public class WidgetDetailsViewModel extends AndroidViewModel {
 
 
     private ConfigRepository configRepository;
-    private MediatorLiveData<List<Widget>> widgetList;
+    private MediatorLiveData<List<WidgetEntity>> widgetList;
     private MediatorLiveData<Boolean> widgetsEmpty;
-    private LiveData<Configuration> mConfig;
+    private LiveData<ConfigEntity> mConfig;
 
 
     public WidgetDetailsViewModel(@NonNull Application application) {
         super(application);
 
-        configRepository = ConfigRepositoryImpl.getInstance();
+        configRepository = ConfigRepositoryImpl.getInstance(application);
 
         mConfig = configRepository.getCurrentConfig();
 
@@ -59,19 +58,20 @@ public class WidgetDetailsViewModel extends AndroidViewModel {
         return WidgetModel.getWidgetNames();
     }
 
-    public void deleteWidget(Widget widget) {
+    public void deleteWidget(WidgetEntity widget) {
         configRepository.deleteWidget(widget);
     }
 
     public void addWidget(String selectedText) {
         if (selectedText.toLowerCase().equals("joystick")){
-            configRepository.setWidget(new WidgetJoystick(), 0);
-        }else if (selectedText.toLowerCase().equals("grid map")){
-            configRepository.setWidget(new WidgetGridMap(), 0);
+            configRepository.setWidget(new WidgetJoystickEntity(), 0);
         }
+        /*else if (selectedText.toLowerCase().equals("grid map")){
+            configRepository.setWidget(new WidgetGridMap(), 0);
+        }*/
     }
 
-    public LiveData<List<Widget>> getAllWidgets() {
+    public LiveData<List<WidgetEntity>> getAllWidgets() {
         return widgetList;
     }
 

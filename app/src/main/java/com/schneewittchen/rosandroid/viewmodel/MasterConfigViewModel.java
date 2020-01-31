@@ -9,61 +9,44 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
 
-import com.schneewittchen.rosandroidlib.RosRepo;
-import com.schneewittchen.rosandroidlib.model.entities.Configuration;
-import com.schneewittchen.rosandroidlib.model.repos.ConfigRepository;
-import com.schneewittchen.rosandroidlib.model.repos.ConfigRepositoryImpl;
+import com.schneewittchen.rosandroid.model.entities.ConfigEntity;
+import com.schneewittchen.rosandroid.model.entities.MasterEntity;
+import com.schneewittchen.rosandroid.model.repositories.RosRepo;
+import com.schneewittchen.rosandroid.model.repositories.ConfigRepository;
+import com.schneewittchen.rosandroid.model.repositories.ConfigRepositoryImpl;
 
 
 /**
  * TODO: Description
  *
  * @author Nico Studt
- * @version 1.1.0
+ * @version 1.1.1
  * @created on 10.01.20
- * @updated on 28.01.20
+ * @updated on 31.01.20
  * @modified by
  */
 public class MasterConfigViewModel extends AndroidViewModel {
 
+    private static final String TAG = MasterConfigViewModel.class.getCanonicalName();
+
     RosRepo rosRepo;
     ConfigRepository configRepo;
 
-    LiveData<Configuration> currentConfig;
+    LiveData<ConfigEntity> mCurrentConfig;
+    MediatorLiveData<MasterEntity> mMaster;
     MutableLiveData<String> deviceIpLiveData;
     MutableLiveData<String> networkSSIDLiveData;
-    MediatorLiveData<String> mNotificationTitle;
-    MediatorLiveData<String> mTickerTitle;
-    MediatorLiveData<String> mMasterIp;
-    MediatorLiveData<String> mMasterPort;
 
 
     public MasterConfigViewModel(@NonNull Application application) {
         super(application);
 
         rosRepo = RosRepo.getInstance();
-        configRepo = ConfigRepositoryImpl.getInstance();
+        configRepo = ConfigRepositoryImpl.getInstance(application);
 
-
-        mNotificationTitle = new MediatorLiveData<>();
-        mTickerTitle = new MediatorLiveData<>();
-        mMasterIp = new MediatorLiveData<>();
-        mMasterPort = new MediatorLiveData<>();
-
-        currentConfig = configRepo.getCurrentConfig();
-
-        mNotificationTitle.addSource(currentConfig, configuration ->
-                mNotificationTitle.setValue(configuration.master.notificationTitle));
-
-        mTickerTitle.addSource(currentConfig, configuration ->
-                mTickerTitle.setValue(configuration.master.notificationTickerTitle));
-
-        mMasterIp.addSource(currentConfig, configuration ->
-                mMasterIp.setValue(configuration.master.ip));
-
-        mMasterPort.addSource(currentConfig, configuration ->
-                mMasterPort.setValue(Integer.toString(configuration.master.port)));
+        mCurrentConfig = configRepo.getCurrentConfig();
     }
 
 
@@ -91,12 +74,7 @@ public class MasterConfigViewModel extends AndroidViewModel {
         }
 
         Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                deviceIpLiveData.postValue("My Test IP 123");
-            }
-        }, 5000);
+        handler.postDelayed(() -> deviceIpLiveData.postValue("My Test IP 123"), 5000);
 
         return deviceIpLiveData;
     }
@@ -107,32 +85,16 @@ public class MasterConfigViewModel extends AndroidViewModel {
         }
 
         Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                networkSSIDLiveData.postValue("WLANDiesDas");
-            }
-        }, 8000);
+        handler.postDelayed(() -> networkSSIDLiveData.postValue("WLANDiesDas"), 8000);
 
 
         return networkSSIDLiveData;
     }
 
-    public LiveData<String> getNotificationTitle() {
-        return mNotificationTitle;
+    public LiveData<MasterEntity> getMaster() {
+        return Transformations.switchMap(mCurrentConfig, config -> {
+            if (config == null) return new MediatorLiveData<>();
+            return configRepo.getMasterOfConfig(config.id);
+        });
     }
-
-    public LiveData<String> getTickerTitle() {
-        return mTickerTitle;
-    }
-
-    public LiveData<String> getMasterIp() {
-        return mMasterIp;
-    }
-
-    public LiveData<String> getMasterPort() {
-        return mMasterPort;
-    }
-
-
 }

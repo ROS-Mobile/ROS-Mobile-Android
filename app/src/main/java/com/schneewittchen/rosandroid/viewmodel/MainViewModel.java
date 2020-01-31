@@ -1,27 +1,28 @@
 package com.schneewittchen.rosandroid.viewmodel;
 
 import android.app.Application;
-import android.os.Handler;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 
-import com.schneewittchen.rosandroidlib.model.repos.ConfigRepository;
-import com.schneewittchen.rosandroidlib.model.repos.ConfigRepositoryImpl;
+import com.schneewittchen.rosandroid.model.repositories.ConfigRepository;
+import com.schneewittchen.rosandroid.model.repositories.ConfigRepositoryImpl;
 
 /**
  * TODO: Description
  *
  * @author Nico Studt
- * @version 1.0.0
+ * @version 1.0.1
  * @created on 10.01.20
- * @updated on 16.01.20
+ * @updated on 31.01.20
  * @modified by
  */
 public class MainViewModel extends AndroidViewModel {
 
+    private static final String TAG = MainViewModel.class.getCanonicalName();
 
     ConfigRepository configRepo;
     MediatorLiveData<String> configTitle;
@@ -35,15 +36,20 @@ public class MainViewModel extends AndroidViewModel {
 
 
     private void init() {
-        configRepo = ConfigRepositoryImpl.getInstance();
+        configRepo = ConfigRepositoryImpl.getInstance(getApplication());
 
         configTitle = new MediatorLiveData<>();
-        configTitle.addSource(configRepo.getCurrentConfig(),
-                configuration -> configTitle.setValue(configuration.name));
+        configTitle.addSource(configRepo.getCurrentConfig(), configuration -> {
+            Log.i(TAG, "New Config: " + configuration);
 
-        // TODO: Remove Test
-        android.os.Handler handler = new Handler();
-        handler.postDelayed(() -> configRepo.createConfig(), 1);
+            if (configuration == null) {
+                Log.i(TAG, "But its null");
+
+                return;
+            }
+
+            configTitle.setValue(configuration.name);
+        });
     }
 
     public LiveData<String> getConfigTitle() {

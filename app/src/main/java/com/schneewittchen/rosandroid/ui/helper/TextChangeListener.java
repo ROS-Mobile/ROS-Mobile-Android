@@ -3,6 +3,7 @@ package com.schneewittchen.rosandroid.ui.helper;
 import android.text.Editable;
 import android.text.TextWatcher;
 
+
 /**
  * TODO: Description
  *

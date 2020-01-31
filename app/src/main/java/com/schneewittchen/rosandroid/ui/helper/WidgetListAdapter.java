@@ -1,6 +1,5 @@
 package com.schneewittchen.rosandroid.ui.helper;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +9,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.schneewittchen.rosandroid.R;
-import com.schneewittchen.rosandroidlib.model.entities.Widget;
+import com.schneewittchen.rosandroid.model.entities.WidgetEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,14 +19,14 @@ import java.util.List;
  * TODO: Description
  *
  * @author Nico Studt
- * @version 1.0.0
+ * @version 1.0.1
  * @created on 24.01.20
- * @updated on 24.01.20
+ * @updated on 31.01.20
  * @modified by
  */
 public class WidgetListAdapter extends RecyclerView.Adapter<WidgetListAdapter.MyViewHolder> {
 
-    private List<Widget> widgetList;
+    private List<WidgetEntity> widgetList;
 
 
     public WidgetListAdapter() {
@@ -45,7 +44,7 @@ public class WidgetListAdapter extends RecyclerView.Adapter<WidgetListAdapter.My
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
-        final Widget widget = widgetList.get(position);
+        final WidgetEntity widget = widgetList.get(position);
 
         holder.type.setText(widget.getType());
         holder.description.setText("Description");
@@ -57,7 +56,7 @@ public class WidgetListAdapter extends RecyclerView.Adapter<WidgetListAdapter.My
         return widgetList.size();
     }
 
-    public void setWidgets(List<Widget> widgets){
+    public void setWidgets(List<WidgetEntity> widgets){
         this.widgetList = widgets;
         notifyDataSetChanged();
     }
@@ -70,7 +69,7 @@ public class WidgetListAdapter extends RecyclerView.Adapter<WidgetListAdapter.My
         notifyItemRemoved(position);
     }
 
-    public void restoreItem(Widget widget, int position) {
+    public void restoreItem(WidgetEntity widget, int position) {
         widgetList.add(position, widget);
         // notify item added by position
         notifyItemInserted(position);

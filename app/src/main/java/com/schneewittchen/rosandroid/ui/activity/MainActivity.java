@@ -10,17 +10,16 @@ import androidx.fragment.app.Fragment;
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.ui.fragments.MainFragment;
 import com.schneewittchen.rosandroid.ui.helper.OnBackPressedListener;
-import com.schneewittchen.rosandroidlib.RosRepo;
-import com.schneewittchen.rosandroidlib.parser.ConfigurationParser;
+import com.schneewittchen.rosandroid.model.repositories.RosRepo;
 
 
 /**
  * TODO: Description
  *
  * @author Nico Studt
- * @version 1.0.0
+ * @version 1.0.1
  * @created on 16.01.20
- * @updated on 17.01.20
+ * @updated on 31.01.20
  * @modified by
  */
 public class MainActivity extends AppCompatActivity {
