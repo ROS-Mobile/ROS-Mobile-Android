@@ -1,6 +1,5 @@
 package com.schneewittchen.rosandroid.model.entities;
 
-
 /**
  * TODO: Description
  *
@@ -10,10 +9,10 @@ package com.schneewittchen.rosandroid.model.entities;
  * @updated on 31.01.20
  * @modified by
  */
-public class WidgetJoystickEntity extends WidgetEntity {
+public class WidgetGridMapEntity extends WidgetEntity {
 
     @Override
     public String getType() {
-        return "Joystick";
+        return "Grid Map";
     }
 }

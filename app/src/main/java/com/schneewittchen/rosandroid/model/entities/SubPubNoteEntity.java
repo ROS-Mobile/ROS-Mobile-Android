@@ -15,5 +15,5 @@ import org.ros.internal.message.Message;
 public class SubPubNoteEntity {
 
     public String topic;
-    public Class<? extends Message> messageType;
+    public String messageType;
 }

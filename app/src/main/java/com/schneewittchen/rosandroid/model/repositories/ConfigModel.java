@@ -5,8 +5,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 
-import androidx.lifecycle.MutableLiveData;
-
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.model.entities.ConfigEntity;
 import com.schneewittchen.rosandroid.model.entities.MasterEntity;
@@ -32,9 +30,6 @@ public class ConfigModel {
 
     private WeakReference<Application> appRef;
     private ListLiveData<ConfigEntity> mConfigs;
-    private MutableLiveData<ConfigEntity> mCurrentConfig;
-
-
 
 
     public static ConfigModel getInstance(Application application) {
@@ -136,14 +131,6 @@ public class ConfigModel {
         newConfig.master = master;
 
         return newConfig;
-    }
-
-    public ListLiveData<ConfigEntity> getAllConfigurations() {
-        if (mConfigs == null) {
-            mConfigs = new ListLiveData<>();
-        }
-
-        return mConfigs;
     }
 
     private long getMaxId () {

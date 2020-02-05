@@ -21,7 +21,6 @@
         android:id="@+id/imageView2"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:layout_marginBottom="8dp"
         android:background="@drawable/circle"
         app:layout_constraintBottom_toTopOf="@+id/textView4"
         app:layout_constraintEnd_toEndOf="@+id/textView4"
@@ -32,11 +31,15 @@
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="24dp"
+        android:alpha="0.8"
         android:text="ROS-Android"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="@android:color/background_dark"
+        android:textStyle="bold"
+        android:typeface="monospace"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
 

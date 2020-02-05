@@ -35,15 +35,26 @@ public interface ConfigRepository {
 
     void setConfig(ConfigEntity config, long configId);
 
-    void setWidget(WidgetEntity widget, long configId);
 
-    void deleteWidget(WidgetEntity widget);
 
     ConfigEntity getNewConfig();
 
     LiveData<List<ConfigEntity>> getAllConfigs();
 
+    LiveData<Long> getCurrentConfigId();
+
+    LiveData<ConfigEntity> getConfig(long id);
+
     LiveData<ConfigEntity> getCurrentConfig();
 
-    LiveData<MasterEntity> getMasterOfConfig(long configId);
+    LiveData<MasterEntity> getMaster(long configId);
+
+    LiveData<List<WidgetEntity>> getWidgets(long id);
+
+
+    void createWidget(String widgetType);
+
+    void deleteWidget(WidgetEntity widget);
+
+    void addWidget(WidgetEntity widget);
 }

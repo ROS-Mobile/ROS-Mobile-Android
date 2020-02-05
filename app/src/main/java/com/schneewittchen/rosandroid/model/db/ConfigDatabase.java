@@ -12,6 +12,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.schneewittchen.rosandroid.model.entities.ConfigEntity;
 import com.schneewittchen.rosandroid.model.entities.MasterEntity;
+import com.schneewittchen.rosandroid.model.entities.WidgetEntity;
 import com.schneewittchen.rosandroid.utility.Constants;
 import com.schneewittchen.rosandroid.utility.LambdaTask;
 
@@ -23,19 +24,20 @@ import java.util.Random;
  * TODO: Description
  *
  * @author Nico Studt
- * @version 1.0.0
+ * @version 1.0.2
  * @created on 31.01.20
- * @updated on 31.01.20
+ * @updated on 05.02.20
  * @modified by
  */
 @Database(entities =
-        {ConfigEntity.class, MasterEntity.class},
+        {ConfigEntity.class, MasterEntity.class, WidgetEntity.class},
         version = 1,
         exportSchema = false)
 public abstract class ConfigDatabase extends RoomDatabase {
 
     // Static instance -----------------------------------------------------------------------------
 
+    private static final String TAG = ConfigDatabase.class.getCanonicalName();
     private static ConfigDatabase instance;
 
     public static synchronized ConfigDatabase getInstance(Context context) {
@@ -55,26 +57,25 @@ public abstract class ConfigDatabase extends RoomDatabase {
 
     public abstract ConfigDao configDao();
     public abstract MasterDao masterDao();
+    public abstract WidgetDao widgetDao();
 
 
-    public void insertCompleteConfig(ConfigEntity config) {
-        new LambdaTask(() -> configDao().insertComplete(config)).execute();
-    }
+    // Config methods ------------------------------------------------------------------------------
 
-    public void insertJustConfigEntity(ConfigEntity config) {
+    public void addConfig(ConfigEntity config) {
         new LambdaTask(() -> configDao().insert(config)).execute();
     }
 
-    public void update(ConfigEntity... configs) {
-        new LambdaTask(() -> configDao().update(configs[0])).execute();
+    public void updateConfig(ConfigEntity config) {
+        new LambdaTask(() -> configDao().update(config)).execute();
     }
 
-    public void delete(ConfigEntity... configs) {
-        new LambdaTask(() -> configDao().delete(configs[0])).execute();
+    public void deleteConfig(ConfigEntity config) {
+        new LambdaTask(() -> configDao().delete(config)).execute();
     }
 
-    public LiveData<MasterEntity> getMaster(long id) {
-        return masterDao().getMaster(id);
+    public LiveData<ConfigEntity> getConfig(long id) {
+        return configDao().getConfig(id);
     }
 
     public LiveData<ConfigEntity> getLatestConfig() {
@@ -83,6 +84,38 @@ public abstract class ConfigDatabase extends RoomDatabase {
 
     public LiveData<List<ConfigEntity>> getAllConfigs() {
         return configDao().getAllConfigs();
+    }
+
+    // Master methods ------------------------------------------------------------------------------
+
+    public void updataMaster(MasterEntity master) {
+        new LambdaTask(() -> masterDao().update(master)).execute();
+    }
+
+    public LiveData<MasterEntity> getMaster(long id) {
+        return masterDao().getMaster(id);
+    }
+
+
+    // Widget methods ------------------------------------------------------------------------------
+
+    public void addWidget(WidgetEntity widget) {
+        new LambdaTask(() -> widgetDao().insert(widget)).execute();
+    }
+
+    public void updataWidget(WidgetEntity widget) {
+        new LambdaTask(() -> widgetDao().update(widget)).execute();
+    }
+
+    public void deleteWidget(WidgetEntity widget) {
+        new LambdaTask(() -> {
+            int id = widgetDao().delete(widget);
+            System.out.println("Id deleted: " + id);
+        }).execute();
+    }
+
+    public LiveData<List<WidgetEntity>> getWidgets(long id) {
+        return widgetDao().getWidgets(id);
     }
 
 
@@ -104,11 +137,13 @@ public abstract class ConfigDatabase extends RoomDatabase {
         // TODO: Delete this and run only if new created db
         private final ConfigDao configDao;
         private final MasterDao masterDao;
+        private final WidgetDao widgetDao;
 
 
         PopulateDbAsync(ConfigDatabase db) {
             configDao = db.configDao();
             masterDao = db.masterDao();
+            widgetDao = db.widgetDao();
         }
 
 
@@ -119,13 +154,14 @@ public abstract class ConfigDatabase extends RoomDatabase {
             // when it is first created
             configDao.deleteAll();
             masterDao.deleteAll();
+            widgetDao.deleteAll();
 
             // Create master data
             MasterEntity master = new MasterEntity();
 
             Random random = new Random();
             master.ip = "123.456.789.01";
-            master.port = random.nextInt(99999);
+            master.port = 99999;
             master.notificationTickerTitle = "Ticker name";
             master.notificationTitle = "Title name";
 

@@ -2,15 +2,18 @@ package com.schneewittchen.rosandroid.model.repositories;
 
 import android.app.Application;
 import android.content.Context;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
-import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
 
 import com.schneewittchen.rosandroid.model.db.ConfigDatabase;
 import com.schneewittchen.rosandroid.model.entities.ConfigEntity;
 import com.schneewittchen.rosandroid.model.entities.MasterEntity;
 import com.schneewittchen.rosandroid.model.entities.WidgetEntity;
+import com.schneewittchen.rosandroid.model.entities.WidgetGridMapEntity;
+import com.schneewittchen.rosandroid.model.entities.WidgetJoystickEntity;
 
 import java.util.List;
 
@@ -19,57 +22,30 @@ import java.util.List;
  * TODO: Description
  *
  * @author Nico Studt
- * @version 1.0.4
+ * @version 1.0.5
  * @created on 26.01.20
- * @updated on 31.01.20
+ * @updated on 05.02.20
  * @modified by
  */
 public class ConfigRepositoryImpl implements ConfigRepository {
 
+    private static final String TAG = ConfigRepositoryImpl.class.getCanonicalName();
     private static ConfigRepositoryImpl mInstance;
 
     private ConfigDatabase mConfigDatabase;
     private ConfigModel mConfigModel;
-    private MutableLiveData<Long> mCurrentConfigId;
-    private LiveData<List<ConfigEntity>> mAllConfigs;
-    private MediatorLiveData<ConfigEntity> mCurrentConfig;
+    private MediatorLiveData<Long> mCurrentConfigId;
 
 
     private ConfigRepositoryImpl(Application application){
         mConfigDatabase = ConfigDatabase.getInstance(application);
         mConfigModel = ConfigModel.getInstance(application);
 
-        mAllConfigs = mConfigDatabase.getAllConfigs();
-        mCurrentConfig = new MediatorLiveData<>();
-        mCurrentConfigId = new MutableLiveData<>();
-
-        mCurrentConfig.addSource(mCurrentConfigId, id -> {
-            if (mAllConfigs.getValue() == null){
-                return;
-            }
-
-            for (ConfigEntity configuration: mAllConfigs.getValue()) {
-                if (configuration.id == id) {
-                    mCurrentConfig.setValue(configuration);
-                }
-            }
+        mCurrentConfigId = new MediatorLiveData<>();
+        mCurrentConfigId.addSource(mConfigDatabase.getLatestConfig(), config -> {
+            if(config != null)
+                mCurrentConfigId.postValue(config.id);
         });
-
-        mCurrentConfig.addSource(mAllConfigs, configs -> {
-            if (configs == null || mCurrentConfigId.getValue() == null){
-                return;
-            }
-
-            long id = mCurrentConfigId.getValue();
-
-            for (ConfigEntity configuration: configs) {
-                if (configuration.id == id) {
-                    mCurrentConfig.setValue(configuration);
-                }
-            }
-        });
-
-        mCurrentConfigId.setValue(0L);
     }
 
 
@@ -84,7 +60,9 @@ public class ConfigRepositoryImpl implements ConfigRepository {
 
     @Override
     public void chooseConfig(long configId) {
-
+        if(mCurrentConfigId.getValue() == null || mCurrentConfigId.getValue() != configId){
+            mCurrentConfigId.postValue(configId);
+        }
     }
 
     @Override
@@ -95,7 +73,8 @@ public class ConfigRepositoryImpl implements ConfigRepository {
     @Override
     public void createConfig() {
         ConfigEntity config = mConfigModel.getNewConfig();
-        mConfigDatabase.insertCompleteConfig(config);
+        mConfigDatabase.addConfig(config);
+        // TODO: switch config return value id from config at insert
     }
 
     @Override
@@ -118,28 +97,56 @@ public class ConfigRepositoryImpl implements ConfigRepository {
     }
 
     @Override
-    public void setWidget(WidgetEntity widget, long configId) {
-        ConfigEntity config = mCurrentConfig.getValue();
-
-        if(config == null) {
+    public void createWidget(String widgetType) {
+        if (mCurrentConfigId.getValue() == null) {
             return;
         }
 
-        config.widgets.add(widget);
-        mCurrentConfig.setValue(config);
+        WidgetEntity widget;
+
+        if (widgetType.equals("Joystick")) {
+            widget = new WidgetJoystickEntity();
+        } else if (widgetType.equals("Grid Map")) {
+            Log.i(TAG, "Add Grid map");
+            widget = new WidgetGridMapEntity();
+        } else {
+            return;
+        }
+
+        widget.configId = mCurrentConfigId.getValue();
+        widget.type = widget.getType();
+        widget.creationTime = System.nanoTime();
+
+        mConfigDatabase.addWidget(widget);
+        Log.i(TAG, "Widget added to database: " + widget);
     }
 
     @Override
     public void deleteWidget(WidgetEntity widget) {
-        ConfigEntity config = mCurrentConfig.getValue();
-        config.widgets.remove(widget);
-        mCurrentConfig.setValue(config);
+        mConfigDatabase.deleteWidget(widget);
+
+        Log.i(TAG, "Widget deleted");
     }
 
+    @Override
+    public void addWidget(WidgetEntity widget) {
+        mConfigDatabase.addWidget(widget);
+    }
+
+    @Override
+    public LiveData<Long> getCurrentConfigId() {
+        return mCurrentConfigId;
+    }
+
+    @Override
+    public LiveData<ConfigEntity> getConfig(long id) {
+        return mConfigDatabase.getConfig(id);
+    }
 
     @Override
     public LiveData<ConfigEntity> getCurrentConfig() {
-        return mConfigDatabase.getLatestConfig();
+        return Transformations.switchMap(mCurrentConfigId, id ->
+            mConfigDatabase.getConfig(id));
     }
 
     @Override
@@ -152,9 +159,13 @@ public class ConfigRepositoryImpl implements ConfigRepository {
         return mConfigDatabase.getAllConfigs();
     }
 
+    @Override
+    public LiveData<MasterEntity> getMaster(long configId) {
+        return mConfigDatabase.getMaster(configId);
+    }
 
     @Override
-    public LiveData<MasterEntity> getMasterOfConfig(long configId) {
-        return mConfigDatabase.getMaster(configId);
+    public LiveData<List<WidgetEntity>> getWidgets(long id) {
+        return mConfigDatabase.getWidgets(id);
     }
 }

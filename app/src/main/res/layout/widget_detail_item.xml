@@ -21,7 +21,7 @@
             android:minHeight="48dp">
 
             <ImageView
-                android:id="@+id/delete_icon"
+                android:id="@+id/deleteIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/padd_10"
-                android:layout_toLeftOf="@id/delete_icon"
+                android:layout_toLeftOf="@id/deleteIcon"
                 android:text="@string/delete"
                 android:textAllCaps="true"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
@@ -73,7 +73,7 @@
                         android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
                     <ImageButton
-                        android:id="@+id/item_description_img"
+                        android:id="@+id/open_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical|end"

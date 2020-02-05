@@ -31,28 +31,28 @@ public class MainViewModel extends AndroidViewModel {
     public MainViewModel(@NonNull Application application) {
         super(application);
 
-        this.init();
-    }
-
-
-    private void init() {
         configRepo = ConfigRepositoryImpl.getInstance(getApplication());
-
-        configTitle = new MediatorLiveData<>();
-        configTitle.addSource(configRepo.getCurrentConfig(), configuration -> {
-            Log.i(TAG, "New Config: " + configuration);
-
-            if (configuration == null) {
-                Log.i(TAG, "But its null");
-
-                return;
-            }
-
-            configTitle.setValue(configuration.name);
-        });
     }
+
 
     public LiveData<String> getConfigTitle() {
-        return this.configTitle;
+        if (configTitle == null) {
+            configTitle = new MediatorLiveData<>();
+
+            configTitle.addSource(configRepo.getCurrentConfig(), configuration -> {
+                Log.i(TAG, "New Config: " + configuration);
+
+                if (configuration == null) {
+                    Log.i(TAG, "But its null");
+
+                    return;
+                }
+
+                configTitle.setValue(configuration.name);
+            });
+
+        }
+
+        return configTitle;
     }
 }

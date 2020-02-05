@@ -2,20 +2,47 @@
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-
-    android:background="@color/black01dp"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
         android:orientation="vertical"
-        android:layout_margin="16dp">
+        android:paddingTop="16dp"
+        android:paddingBottom="32dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="16dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView9"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Current Config"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/current_config_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Config name"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+        </LinearLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp">
 
 
             <ImageView
@@ -41,7 +68,7 @@
 
 
             <ImageButton
-                android:id="@+id/item_description_img"
+                android:id="@+id/favorites_more_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.1"
@@ -53,48 +80,18 @@
                 app:layout_constraintTop_toTopOf="@+id/textView5"
                 app:srcCompat="@drawable/ic_expand_less_white_24dp" />
 
-            <LinearLayout
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/favorite_opened_recyclerview"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:orientation="vertical"
-                android:divider="@drawable/empty_divider"
-                android:showDividers="middle"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:overScrollMode="never"
+                app:layout_constraintEnd_toStartOf="@+id/favorites_more_button"
                 app:layout_constraintStart_toStartOf="@+id/textView5"
-                app:layout_constraintTop_toBottomOf="@+id/textView5">
-
-                <TextView
-                    android:id="@+id/textView6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Loomo Steuerung"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-
-                <TextView
-                    android:id="@+id/textView7"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Drone 12"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-
-                <TextView
-                    android:id="@+id/textView8"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Project Boat"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-
-                <View
-                    android:id="@+id/divider"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_weight="1"
-                    android:background="?android:attr/listDivider" />
-            </LinearLayout>
+                app:layout_constraintTop_toBottomOf="@+id/textView5"
+                tools:itemCount="3"
+                tools:listitem="@layout/config_chooser_item" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -127,7 +124,7 @@
 
 
             <ImageButton
-                android:id="@+id/item_description_img2"
+                android:id="@+id/last_opened_more_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.1"
@@ -139,56 +136,18 @@
                 app:layout_constraintTop_toTopOf="@+id/textView10"
                 app:srcCompat="@drawable/ic_expand_less_white_24dp" />
 
-            <LinearLayout
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/last_opened_recyclerview"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:divider="@drawable/empty_divider"
                 android:orientation="vertical"
-                android:showDividers="middle"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:overScrollMode="never"
+                app:layout_constraintEnd_toStartOf="@+id/last_opened_more_button"
                 app:layout_constraintStart_toStartOf="@+id/textView10"
-                app:layout_constraintTop_toBottomOf="@+id/textView10">
-
-                <TextView
-                    android:id="@+id/textView11"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Loomo Steuerung"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-
-                <TextView
-                    android:id="@+id/textView12"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Project Boat"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-
-                <TextView
-                    android:id="@+id/textView13"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Tests Campus"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-
-                <TextView
-                    android:id="@+id/textView14"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Drone 12"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-
-                <View
-                    android:id="@+id/divider2"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_weight="1"
-                    android:background="?android:attr/listDivider" />
-            </LinearLayout>
+                app:layout_constraintTop_toBottomOf="@+id/textView10"
+                tools:itemCount="3"
+                tools:listitem="@layout/config_chooser_item" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

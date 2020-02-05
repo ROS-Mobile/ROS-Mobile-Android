@@ -3,6 +3,7 @@ package com.schneewittchen.rosandroid.ui.helper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -19,14 +20,14 @@ import java.util.List;
  * TODO: Description
  *
  * @author Nico Studt
- * @version 1.0.1
+ * @version 1.0.2
  * @created on 24.01.20
- * @updated on 31.01.20
+ * @updated on 05.02.20
  * @modified by
  */
 public class WidgetListAdapter extends RecyclerView.Adapter<WidgetListAdapter.MyViewHolder> {
 
-    private List<WidgetEntity> widgetList;
+    public List<WidgetEntity> widgetList;
 
 
     public WidgetListAdapter() {
@@ -37,7 +38,7 @@ public class WidgetListAdapter extends RecyclerView.Adapter<WidgetListAdapter.My
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.card_detail_layout, parent, false);
+                .inflate(R.layout.widget_detail_item, parent, false);
 
         return new MyViewHolder(itemView);
     }
@@ -56,29 +57,25 @@ public class WidgetListAdapter extends RecyclerView.Adapter<WidgetListAdapter.My
         return widgetList.size();
     }
 
-    public void setWidgets(List<WidgetEntity> widgets){
-        this.widgetList = widgets;
+    public void setWidgets(List<WidgetEntity> newWidgets){
+        // TODO: Implement Diff callback with widgets
+        /*
+        WidgetDiffCallback diffCallback = new WidgetDiffCallback(this.widgetList, newWidgets);
+        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
+        diffResult.dispatchUpdatesTo(this);
+        */
+
+
+        this.widgetList.clear();
+        this.widgetList.addAll(newWidgets);
         notifyDataSetChanged();
-    }
-
-    public void removeItem(int position) {
-        widgetList.remove(position);
-        // notify the item removed by position
-        // to perform recycler view delete animations
-        // NOTE: don't call notifyDataSetChanged()
-        notifyItemRemoved(position);
-    }
-
-    public void restoreItem(WidgetEntity widget, int position) {
-        widgetList.add(position, widget);
-        // notify item added by position
-        notifyItemInserted(position);
     }
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         public TextView type, description;
+        public ImageButton openButton;
         public RelativeLayout viewBackground, viewForeground;
 
 
@@ -86,9 +83,17 @@ public class WidgetListAdapter extends RecyclerView.Adapter<WidgetListAdapter.My
             super(view);
 
             type = view.findViewById(R.id.title);
+            openButton = view.findViewById(R.id.open_button);
             description = view.findViewById(R.id.description);
             viewBackground = view.findViewById(R.id.view_background);
             viewForeground = view.findViewById(R.id.view_foreground);
+
+            System.out.println("Create");
+            openButton.setOnClickListener(v -> {
+                System.out.println("Click");
+                int vis = description.getVisibility() == View.GONE? View.VISIBLE : View.GONE;
+                description.setVisibility(vis);
+            });
         }
     }
 }

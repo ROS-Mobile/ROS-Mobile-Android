@@ -284,7 +284,7 @@ public class VirtualJoystick extends RelativeLayout implements Animation.Animati
         // turn-in-place mode easy. Since the actual heading is irrelevant it does
         // no harm.
         currentOrientation = (float) -heading;
-        // Only update the orientation images if the turn-in-place mode is active.
+        // Only updateConfig the orientation images if the turn-in-place mode is active.
         if (turnInPlaceMode) {
             post(new Runnable() {
                 @Override
@@ -820,7 +820,7 @@ public class VirtualJoystick extends RelativeLayout implements Animation.Animati
      * Update the linear velocity text view.
      */
     private void updateMagnitudeText() {
-        // Don't update when the user is turning in place.
+        // Don't updateConfig when the user is turning in place.
         if (!turnInPlaceMode) {
             magnitudeText.setText(String.valueOf((int) (normalizedMagnitude * 100)) + "%");
             magnitudeText.setTranslationX((float) (parentSize / 4 * Math.cos((90 + contactTheta)
@@ -832,7 +832,7 @@ public class VirtualJoystick extends RelativeLayout implements Animation.Animati
 
     /**
      * Based on the difference between the current orientation and the orientation
-     * when the turn-in-place mode was initiated, update the visuals.
+     * when the turn-in-place mode was initiated, updateConfig the visuals.
      */
     private void updateTurnInPlaceRotation() {
         final float currentTheta = (currentOrientation + 360) % 360;

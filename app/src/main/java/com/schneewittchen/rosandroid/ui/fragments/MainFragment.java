@@ -78,6 +78,8 @@ public class MainFragment extends Fragment implements OnBackPressedListener {
         // Setup tabs for navigation
         pagerAdapter = new ConfigTabsPagerAdapter(this.getChildFragmentManager());
         viewPager.setAdapter(pagerAdapter);
+        viewPager.setCurrentItem(1,false);
+
         tabLayout.setupWithViewPager(viewPager);
     }
 
@@ -101,6 +103,11 @@ public class MainFragment extends Fragment implements OnBackPressedListener {
     public boolean onBackPressed(){
         if(drawerLayout.isDrawerOpen(GravityCompat.START)){
             drawerLayout.closeDrawer(GravityCompat.START);
+            return true;
+        }
+
+        if (viewPager.getCurrentItem() != 1) {
+            viewPager.setCurrentItem(1,true);
             return true;
         }
 

@@ -9,6 +9,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.Transformations;
 
 import com.schneewittchen.rosandroid.model.entities.ConfigEntity;
@@ -22,9 +23,9 @@ import com.schneewittchen.rosandroid.model.repositories.ConfigRepositoryImpl;
  * TODO: Description
  *
  * @author Nico Studt
- * @version 1.1.1
+ * @version 1.1.2
  * @created on 10.01.20
- * @updated on 31.01.20
+ * @updated on 05.02.20
  * @modified by
  */
 public class MasterConfigViewModel extends AndroidViewModel {
@@ -32,10 +33,9 @@ public class MasterConfigViewModel extends AndroidViewModel {
     private static final String TAG = MasterConfigViewModel.class.getCanonicalName();
 
     RosRepo rosRepo;
-    ConfigRepository configRepo;
+    ConfigRepository configRepository;
 
-    LiveData<ConfigEntity> mCurrentConfig;
-    MediatorLiveData<MasterEntity> mMaster;
+    LiveData<MasterEntity> currentMaster;
     MutableLiveData<String> deviceIpLiveData;
     MutableLiveData<String> networkSSIDLiveData;
 
@@ -44,9 +44,10 @@ public class MasterConfigViewModel extends AndroidViewModel {
         super(application);
 
         rosRepo = RosRepo.getInstance();
-        configRepo = ConfigRepositoryImpl.getInstance(application);
+        configRepository = ConfigRepositoryImpl.getInstance(application);
 
-        mCurrentConfig = configRepo.getCurrentConfig();
+        currentMaster = Transformations.switchMap(configRepository.getCurrentConfigId(),
+                configId -> configRepository.getMaster(configId));
     }
 
 
@@ -92,9 +93,6 @@ public class MasterConfigViewModel extends AndroidViewModel {
     }
 
     public LiveData<MasterEntity> getMaster() {
-        return Transformations.switchMap(mCurrentConfig, config -> {
-            if (config == null) return new MediatorLiveData<>();
-            return configRepo.getMasterOfConfig(config.id);
-        });
+        return this.currentMaster;
     }
 }

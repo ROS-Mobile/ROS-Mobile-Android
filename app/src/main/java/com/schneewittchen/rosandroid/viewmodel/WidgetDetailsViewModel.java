@@ -6,33 +6,34 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
+import androidx.lifecycle.Transformations;
 
 import com.schneewittchen.rosandroid.model.repositories.WidgetModel;
 import com.schneewittchen.rosandroid.model.entities.ConfigEntity;
 import com.schneewittchen.rosandroid.model.entities.WidgetEntity;
-import com.schneewittchen.rosandroid.model.entities.WidgetJoystickEntity;
 import com.schneewittchen.rosandroid.model.repositories.ConfigRepository;
 import com.schneewittchen.rosandroid.model.repositories.ConfigRepositoryImpl;
 
-import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  * TODO: Description
  *
  * @author Nico Studt
- * @version 1.0.4
+ * @version 1.0.5
  * @created on 10.01.20
- * @updated on 31.01.20
+ * @updated on 05.02.20
  * @modified by
  */
 public class WidgetDetailsViewModel extends AndroidViewModel {
 
-
+    private static final String TAG = WidgetDetailsViewModel.class.getCanonicalName();
     private ConfigRepository configRepository;
-    private MediatorLiveData<List<WidgetEntity>> widgetList;
+
+    private LiveData<List<WidgetEntity>> currentWidgets;
     private MediatorLiveData<Boolean> widgetsEmpty;
-    private LiveData<ConfigEntity> mConfig;
+    private WidgetEntity lastDeletedWidget;
 
 
     public WidgetDetailsViewModel(@NonNull Application application) {
@@ -40,20 +41,8 @@ public class WidgetDetailsViewModel extends AndroidViewModel {
 
         configRepository = ConfigRepositoryImpl.getInstance(application);
 
-        mConfig = configRepository.getCurrentConfig();
-
-        widgetList = new MediatorLiveData<>();
-        widgetList.setValue(new ArrayList<>());
-        widgetList.addSource(mConfig, configuration -> {
-            if (configuration.widgets == null) {
-                return;
-            }
-            System.out.println(configuration.widgets.size());
-            widgetList.setValue(configuration.widgets);
-        });
-
-        widgetsEmpty = new MediatorLiveData<>();
-        widgetsEmpty.addSource(widgetList, widgets -> widgetsEmpty.setValue(widgets.isEmpty()));
+        currentWidgets = Transformations.switchMap(configRepository.getCurrentConfigId(),
+                configId -> configRepository.getWidgets(configId));
     }
 
 
@@ -62,23 +51,33 @@ public class WidgetDetailsViewModel extends AndroidViewModel {
     }
 
     public void deleteWidget(WidgetEntity widget) {
+        lastDeletedWidget = widget;
         configRepository.deleteWidget(widget);
     }
 
-    public void addWidget(String selectedText) {
-        if (selectedText.toLowerCase().equals("joystick")){
-            configRepository.setWidget(new WidgetJoystickEntity(), 0);
-        }
+    public void restoreWidget() {
+        configRepository.addWidget(lastDeletedWidget);
+    }
+
+    public void createWidget(String selectedText) {
+        configRepository.createWidget(selectedText);
         /*else if (selectedText.toLowerCase().equals("grid map")){
-            configRepository.setWidget(new WidgetGridMap(), 0);
+            configRepository.addWidget(new WidgetGridMap(), 0);
         }*/
     }
 
-    public LiveData<List<WidgetEntity>> getAllWidgets() {
-        return widgetList;
+    public LiveData<List<WidgetEntity>> getCurrentWidgets() {
+        return this.currentWidgets;
     }
 
     public LiveData<Boolean> widgetsEmpty() {
+        if (widgetsEmpty == null) {
+            widgetsEmpty = new MediatorLiveData<>();
+
+            widgetsEmpty.addSource(getCurrentWidgets(), widgets ->
+                    widgetsEmpty.postValue(widgets.isEmpty()));
+        }
+
         return widgetsEmpty;
     }
 }
