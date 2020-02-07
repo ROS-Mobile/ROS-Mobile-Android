@@ -58,7 +58,7 @@ public class WidgetGroup extends ViewGroup {
 
         calculateTiles();
 
-        float startH = getHeight() - tilesY * tileWidth;
+        float lowestPos = getHeight() - getPaddingBottom(); //- tilesY * tileWidth;
         int count = getChildCount();
 
         for (int i = 0; i < count; i++) {
@@ -70,10 +70,11 @@ public class WidgetGroup extends ViewGroup {
 
             final LayoutParams lp = (LayoutParams) child.getLayoutParams();
 
-            int x = (int) (getPaddingLeft() + lp.tilesX * tileWidth);
-            int y = (int) (getPaddingTop() + startH + lp.tilesY * tileWidth);
+            // Y pos from bottom up
             int w = (int) (lp.tilesWidth * tileWidth);
             int h = (int) (lp.tilesHeight * tileWidth);
+            int x = (int) (getPaddingLeft() + lp.tilesX * tileWidth);
+            int y = (int) (lowestPos - lp.tilesY * tileWidth - h);
 
             // Place the child.
             child.layout(x, y, x + w, y + h);

@@ -21,10 +21,11 @@
         android:id="@+id/imageView2"
         android:layout_width="80dp"
         android:layout_height="80dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginBottom="24dp"
         android:background="@drawable/circle"
-        app:layout_constraintBottom_toTopOf="@+id/textView4"
-        app:layout_constraintEnd_toEndOf="@+id/textView4"
-        app:layout_constraintStart_toStartOf="@+id/textView4"
+        app:layout_constraintBottom_toBottomOf="@+id/textView4"
+        app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@mipmap/ic_launcher_foreground" />
 
     <TextView
@@ -35,9 +36,10 @@
         android:alpha="0.8"
         android:text="ROS-Android"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:textColor="@android:color/background_dark"
+        android:textColor="@color/colorAccent"
         android:textStyle="bold"
         android:typeface="monospace"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

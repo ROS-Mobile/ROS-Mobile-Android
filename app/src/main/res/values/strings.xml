@@ -23,4 +23,6 @@
 
     <!-- Preference key -->
     <string name="preference_file_key">prefs_configs</string>
+    <string name="new_config_name">New config name</string>
+    <string name="ok">OK</string>
 </resources>

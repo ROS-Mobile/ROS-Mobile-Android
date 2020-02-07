@@ -6,8 +6,43 @@
     android:layout_height="match_parent">
 
     <com.schneewittchen.rosandroid.ui.custum_views.WidgetGroup
+        android:id="@+id/widget_groupview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="8dp"
-        app:crossColor="@color/black24dp"/>
+        app:crossColor="@color/black24dp">
+
+        <com.schneewittchen.rosandroid.ui.custum_views.JoystickView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:decorationColor="@color/whiteLow"
+            app:outerRingColor="@color/whiteMedium"
+            app:stickColor="@color/whiteLight"
+            app:tilesHeight="4"
+            app:tilesWidth="4"
+            app:tilesX="0"
+            app:tilesY="0" />
+
+        <com.schneewittchen.rosandroid.ui.custum_views.JoystickView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:stickColor="@color/whiteLight"
+            app:outerRingColor="@color/whiteMedium"
+            app:decorationColor="@color/whiteLow"
+            app:tilesHeight="4"
+            app:tilesWidth="4"
+            app:tilesX="4"
+            app:tilesY="0"/>
+
+        <com.schneewittchen.rosandroid.ui.custum_views.GridMapView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:tilesHeight="4"
+            app:tilesWidth="8"
+            app:tilesX="0"
+            app:tilesY="6"/>
+
+    </com.schneewittchen.rosandroid.ui.custum_views.WidgetGroup>
+
+
 </LinearLayout>

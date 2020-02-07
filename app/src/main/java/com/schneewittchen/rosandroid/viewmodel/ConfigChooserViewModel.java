@@ -1,13 +1,15 @@
 package com.schneewittchen.rosandroid.viewmodel;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
+import androidx.lifecycle.Transformations;
 
 import com.schneewittchen.rosandroid.model.entities.ConfigEntity;
-import com.schneewittchen.rosandroid.model.entities.WidgetEntity;
 import com.schneewittchen.rosandroid.model.repositories.ConfigRepository;
 import com.schneewittchen.rosandroid.model.repositories.ConfigRepositoryImpl;
 
@@ -24,16 +26,29 @@ import java.util.List;
  */
 public class ConfigChooserViewModel extends AndroidViewModel {
 
-    private ConfigRepository configRepo;
+    private ConfigRepository configRepository;
     private LiveData<List<ConfigEntity>> lastOpenedConfigs;
+    private LiveData<ConfigEntity> currentConfig;
+    private MediatorLiveData<String> currentConfigTitle;
 
 
     public ConfigChooserViewModel(@NonNull Application application) {
         super(application);
 
-        configRepo = ConfigRepositoryImpl.getInstance(application);
+        configRepository = ConfigRepositoryImpl.getInstance(application);
 
-        lastOpenedConfigs = configRepo.getAllConfigs();
+        lastOpenedConfigs = configRepository.getAllConfigs();
+        currentConfigTitle = new MediatorLiveData<>();
+
+        currentConfig = Transformations.switchMap(configRepository.getCurrentConfigId(),
+                configId -> configRepository.getConfig(configId));
+
+
+        currentConfigTitle.addSource(currentConfig, configuration -> {
+            if (configuration != null) {
+                currentConfigTitle.postValue(configuration.name);
+            }
+        });
     }
 
 
@@ -42,10 +57,14 @@ public class ConfigChooserViewModel extends AndroidViewModel {
     }
 
     public void addConfig() {
-        configRepo.createConfig();
+        configRepository.createConfig();
     }
 
     public void chooseConfig(long configId) {
-        configRepo.chooseConfig(configId);
+        configRepository.chooseConfig(configId);
+    }
+
+    public LiveData<String> getConfigTitle() {
+        return currentConfigTitle;
     }
 }

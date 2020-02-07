@@ -1,15 +1,21 @@
 package com.schneewittchen.rosandroid.ui.fragments;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -29,9 +35,9 @@ import com.schneewittchen.rosandroid.viewmodel.ConfigChooserViewModel;
  * TODO: Description
  *
  * @author Nico Studt
- * @version 1.0.1
+ * @version 1.0.2
  * @created on 10.01.20
- * @updated on 05.02.20
+ * @updated on 06.02.20
  * @modified by
  */
 public class ConfigChooserFragment extends Fragment {
@@ -43,6 +49,8 @@ public class ConfigChooserFragment extends Fragment {
     private ImageButton lastOpenedMoreButton;
     private RecyclerView favouriteRV;
     private ConfigListAdapter favouriteAdapter;
+    private TextView currentConfigTextview;
+    private ImageButton currentConfigRenameButton;
 
 
     @Nullable
@@ -60,6 +68,8 @@ public class ConfigChooserFragment extends Fragment {
         lastOpenedRV = view.findViewById(R.id.last_opened_recyclerview);
         favouriteRV = view.findViewById(R.id.favorite_opened_recyclerview);
         lastOpenedMoreButton = view.findViewById(R.id.last_opened_more_button);
+        currentConfigTextview = view.findViewById(R.id.current_config_textview);
+        currentConfigRenameButton = view.findViewById(R.id.current_config_rename_button);
     }
 
     @Override
@@ -68,7 +78,10 @@ public class ConfigChooserFragment extends Fragment {
 
         mViewModel = new ViewModelProvider(this).get(ConfigChooserViewModel.class);
 
+        this.setUpRecyclerViews();
+
         addConfigButton.setOnClickListener(v -> this.addNewConfig());
+        currentConfigRenameButton.setOnClickListener(v -> this.showConfigRenameDialog());
 
         lastOpenedMoreButton.setOnClickListener(v -> {
             if (lastOpenedRV.getVisibility() == View.GONE) {
@@ -80,6 +93,16 @@ public class ConfigChooserFragment extends Fragment {
             }
         });
 
+        mViewModel.getLastOpenedConfigs().observe(getViewLifecycleOwner(), configs -> {
+            lastOpenedAdapter.setConfigs(configs);
+            favouriteAdapter.setConfigs(configs);
+        });
+
+        mViewModel.getConfigTitle().observe(getViewLifecycleOwner(), s ->
+                currentConfigTextview.setText(s));
+    }
+
+    private void setUpRecyclerViews() {
         favouriteRV.setLayoutManager(new CustumLinearLayoutManager(this.getContext()));
         favouriteRV.setItemAnimator(new DefaultItemAnimator());
         favouriteAdapter = new ConfigListAdapter();
@@ -89,12 +112,6 @@ public class ConfigChooserFragment extends Fragment {
         lastOpenedRV.setItemAnimator(new DefaultItemAnimator());
         lastOpenedAdapter = new ConfigListAdapter();
         lastOpenedRV.setAdapter(lastOpenedAdapter);
-
-        mViewModel.getLastOpenedConfigs().observe(getViewLifecycleOwner(), configs -> {
-            lastOpenedAdapter.setConfigs(configs);
-            favouriteAdapter.setConfigs(configs);
-        });
-
 
         lastOpenedRV.addOnItemTouchListener(new CustomRVItemTouchListener(this.getContext(), lastOpenedRV,
                 (parent, view, position) -> openConfig(parent, position)));
@@ -108,5 +125,23 @@ public class ConfigChooserFragment extends Fragment {
         ConfigEntity config = lastOpenedAdapter.configList.get(position);
 
         mViewModel.chooseConfig(config.id);
+    }
+
+    private void showConfigRenameDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this.getContext());
+        builder.setTitle(R.string.new_config_name);
+
+        // Set up the input
+        final EditText input = new EditText(this.getContext());
+        // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        builder.setView(input);
+
+        // Set up the buttons
+        builder.setPositiveButton(R.string.ok, (dialog, which) ->
+                System.out.println(input.getText().toString()));
+        builder.setNegativeButton(R.string.cancel, (dialog, which) -> dialog.cancel());
+
+        builder.show();
     }
 }

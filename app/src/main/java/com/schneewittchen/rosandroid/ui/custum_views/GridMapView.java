@@ -9,6 +9,7 @@ import android.view.View;
 import androidx.annotation.Nullable;
 
 import com.schneewittchen.rosandroid.R;
+import com.schneewittchen.rosandroid.utility.Utils;
 
 /**
  * TODO: Description
@@ -22,11 +23,12 @@ import com.schneewittchen.rosandroid.R;
 public class GridMapView extends View {
 
     Paint paint;
-
+    float cornerWidth;
 
     public GridMapView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
+        this.cornerWidth = Utils.dpToPx(getContext(), 8);
         paint = new Paint();
         paint.setColor(getResources().getColor(R.color.whiteHigh));
         paint.setStyle(Paint.Style.STROKE);
@@ -38,8 +40,7 @@ public class GridMapView extends View {
     public void onDraw(Canvas canvas) {
         float width = getWidth();
         float height = getHeight();
-
-        canvas.drawRect(5, 5, width-5, height-5,  paint);
+        canvas.drawRoundRect(2, 2, width-2, height-2,cornerWidth, cornerWidth, paint);
     }
 
 }
