@@ -5,10 +5,11 @@ import android.util.Log;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.schneewittchen.rosandroid.jcraft.jsch.ChannelShell;
-import com.schneewittchen.rosandroid.jcraft.jsch.JSch;
-import com.schneewittchen.rosandroid.jcraft.jsch.JSchException;
-import com.schneewittchen.rosandroid.jcraft.jsch.Session;
+
+import com.jcraft.jsch.ChannelShell;
+import com.jcraft.jsch.JSch;
+import com.jcraft.jsch.JSchException;
+import com.jcraft.jsch.Session;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -32,6 +33,7 @@ public class SshRepositoryImpl implements SshRepository {
     public static final String TAG = SshRepositoryImpl.class.getSimpleName();
     private static SshRepositoryImpl mInstance;
 
+    
     JSch jsch;
     Session session;
     ChannelShell channelssh;
@@ -39,6 +41,7 @@ public class SshRepositoryImpl implements SshRepository {
     InputStream output_from_the_channel;
     PrintStream commander;
     BufferedReader br;
+
     MutableLiveData<String> outputData;
 
 
