@@ -46,13 +46,8 @@ public class WidgetDiffCallback extends DiffUtil.Callback{
         WidgetEntity oldWidget = oldWidgets.get(oldItemPosition);
         WidgetEntity newWidget = newWidgets.get(newItemPosition);
 
-        return oldWidget.id == newWidget.id;
+        return oldWidget.id == newWidget.id
+                && oldWidget.type == newWidget.type;
     }
 
-    @Nullable
-    @Override
-    public Object getChangePayload(int oldItemPosition, int newItemPosition) {
-        //you can return particular field for changed item.
-        return super.getChangePayload(oldItemPosition, newItemPosition);
-    }
 }

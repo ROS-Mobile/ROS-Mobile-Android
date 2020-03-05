@@ -16,7 +16,6 @@ import androidx.core.util.Preconditions;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,12 +24,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.ui.helper.RecyclerItemTouchHelper;
-import com.schneewittchen.rosandroid.ui.helper.WidgetListAdapter;
+import com.schneewittchen.rosandroid.ui.helper.WidgetDetailListAdapter;
 import com.schneewittchen.rosandroid.viewmodel.WidgetDetailsViewModel;
 import com.schneewittchen.rosandroid.model.entities.WidgetEntity;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -51,8 +47,8 @@ public class WidgetDetailsFragment extends Fragment implements RecyclerItemTouch
     private TextView noWidgetTextView;
     private RecyclerView recyclerView;
     private FloatingActionButton addWidgetButton;
-    private WidgetListAdapter mAdapter;
-    private List<WidgetEntity> mWidgets;
+    private WidgetDetailListAdapter mAdapter;
+
 
     public static WidgetDetailsFragment newInstance() {
         return new WidgetDetailsFragment();
@@ -86,15 +82,12 @@ public class WidgetDetailsFragment extends Fragment implements RecyclerItemTouch
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.addItemDecoration(new DividerItemDecoration(this.getContext(), DividerItemDecoration.VERTICAL));
-        mAdapter = new WidgetListAdapter();
+        mAdapter = new WidgetDetailListAdapter();
         recyclerView.setAdapter(mAdapter);
 
         mViewModel.getCurrentWidgets().observe(getViewLifecycleOwner(), newWidgets -> {
-            mWidgets = new ArrayList<>();
-            mWidgets.addAll(newWidgets);
-            mAdapter.setWidgets(mWidgets);
-            Log.i(TAG, "Widgets changed with amount: " + mWidgets.size());
+            mAdapter.setWidgets(newWidgets);
+            Log.i(TAG, "Widgets changed with amount: " + newWidgets.size());
         });
 
         mViewModel.widgetsEmpty().observe(getViewLifecycleOwner(), empty ->
@@ -139,7 +132,7 @@ public class WidgetDetailsFragment extends Fragment implements RecyclerItemTouch
 
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
-        if (viewHolder instanceof WidgetListAdapter.MyViewHolder) {
+        if (viewHolder instanceof WidgetDetailListAdapter.MyViewHolder) {
             new Handler().postDelayed(() ->
                     deleteWidget(viewHolder.getAdapterPosition())
                     , 500);
@@ -150,7 +143,7 @@ public class WidgetDetailsFragment extends Fragment implements RecyclerItemTouch
         // get the removed item name to display it in snack bar
         final WidgetEntity deletedWidget = mAdapter.widgetList.get(index);
 
-        String name = deletedWidget.getType();
+        String name = deletedWidget.getName();
 
         // remove the item from recycler view
         //mAdapter.removeItem(viewHolder.getAdapterPosition());

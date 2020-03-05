@@ -36,7 +36,7 @@ public class WidgetAdapterFactory implements TypeAdapterFactory {
         @Override
         public void write(JsonWriter out, WidgetEntity widget) throws IOException {
             out.beginObject();
-            out.value(widget.getType());
+            out.value(widget.getName());
             out.endObject();
         }
 

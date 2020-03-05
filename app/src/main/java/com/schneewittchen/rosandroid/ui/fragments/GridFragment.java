@@ -1,6 +1,7 @@
 package com.schneewittchen.rosandroid.ui.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,8 @@ import java.util.List;
  * @modified by
  */
 public class GridFragment extends Fragment {
+
+    public static final String TAG = GridFragment.class.getCanonicalName();
 
     private GridViewModel mViewModel;
     private WidgetGroup widgetGroupview;
@@ -59,11 +62,8 @@ public class GridFragment extends Fragment {
 
         mViewModel = new ViewModelProvider(this).get(GridViewModel.class);
 
-        mViewModel.getCurrentWidgets().observe(getViewLifecycleOwner(), new Observer<List<WidgetEntity>>() {
-            @Override
-            public void onChanged(List<WidgetEntity> widgetEntities) {
-
-            }
+        mViewModel.getCurrentWidgets().observe(getViewLifecycleOwner(), widgetEntities -> {
+            widgetGroupview.setWidgets(widgetEntities);
         });
     }
 

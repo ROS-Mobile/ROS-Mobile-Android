@@ -3,8 +3,8 @@ package com.schneewittchen.rosandroid.ui.helper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.RelativeLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,36 +25,56 @@ import java.util.List;
  * @updated on 05.02.20
  * @modified by
  */
-public class WidgetListAdapter extends RecyclerView.Adapter<WidgetListAdapter.MyViewHolder> {
+public class WidgetDetailListAdapter extends RecyclerView.Adapter<WidgetDetailListAdapter.MyViewHolder> {
 
     public List<WidgetEntity> widgetList;
 
 
-    public WidgetListAdapter() {
+    public WidgetDetailListAdapter() {
         widgetList = new ArrayList<>();
     }
 
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.widget_detail_item, parent, false);
+        LayoutInflater inflator = LayoutInflater.from(parent.getContext());
+
+        View itemView = inflator.inflate(R.layout.widget_detail_item, parent, false);
+
+        int addLayoutId = getWidgetLayout(viewType);
+
+        LinearLayout ll = itemView.findViewById(R.id.detailContend);
+        inflator.inflate(addLayoutId, ll, true);
 
         return new MyViewHolder(itemView);
+    }
+
+    private int getWidgetLayout(int viewType) {
+        switch (viewType) {
+            case WidgetEntity.JOYSTICK:
+                return R.layout.widget_detail_joystick;
+            case WidgetEntity.MAP:
+                return R.layout.widget_detail_map;
+        }
+
+        return -1;
     }
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
         final WidgetEntity widget = widgetList.get(position);
 
-        holder.type.setText(widget.getType());
-        holder.description.setText("Description");
-
+        holder.title.setText(widget.getName());
     }
 
     @Override
     public int getItemCount() {
         return widgetList.size();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return widgetList.get(position).type;
     }
 
     public void setWidgets(List<WidgetEntity> newWidgets){
@@ -65,34 +85,38 @@ public class WidgetListAdapter extends RecyclerView.Adapter<WidgetListAdapter.My
         diffResult.dispatchUpdatesTo(this);
         */
 
-
         this.widgetList.clear();
         this.widgetList.addAll(newWidgets);
+
         notifyDataSetChanged();
     }
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView type, description;
-        public ImageButton openButton;
-        public RelativeLayout viewBackground, viewForeground;
+        public TextView title;
+        public View detailContend;
+        public ImageView openButton;
+        public View viewBackground, viewForeground;
 
 
         public MyViewHolder(View view) {
             super(view);
 
-            type = view.findViewById(R.id.title);
+            title = view.findViewById(R.id.title);
+            detailContend = view.findViewById(R.id.detailContend);
             openButton = view.findViewById(R.id.open_button);
-            description = view.findViewById(R.id.description);
             viewBackground = view.findViewById(R.id.view_background);
             viewForeground = view.findViewById(R.id.view_foreground);
 
-            System.out.println("Create");
             openButton.setOnClickListener(v -> {
-                System.out.println("Click");
-                int vis = description.getVisibility() == View.GONE? View.VISIBLE : View.GONE;
-                description.setVisibility(vis);
+                if (detailContend.getVisibility() == View.GONE) {
+                    detailContend.setVisibility(View.VISIBLE);
+                    openButton.setImageResource(R.drawable.ic_expand_less_white_24dp);
+                }else{
+                    detailContend.setVisibility(View.GONE);
+                    openButton.setImageResource(R.drawable.ic_expand_more_white_24dp);
+                }
             });
         }
     }

@@ -5,11 +5,22 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ListUpdateCallback;
+
 import com.schneewittchen.rosandroid.R;
+import com.schneewittchen.rosandroid.model.entities.WidgetEntity;
+import com.schneewittchen.rosandroid.ui.helper.WidgetDiffCallback;
 import com.schneewittchen.rosandroid.utility.Utils;
+
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * TODO: Description
@@ -22,15 +33,19 @@ import com.schneewittchen.rosandroid.utility.Utils;
  */
 public class WidgetGroup extends ViewGroup {
 
+    public static final String TAG = WidgetGroup.class.getCanonicalName();
+
     Paint crossPaint;
     int tilesX;
     int tilesY;
     float tileWidth;
+    List<WidgetEntity> widgetList;
 
 
     public WidgetGroup(Context context, AttributeSet attrs) {
         super(context, attrs);
 
+        this.widgetList = new ArrayList<>();
         this.setWillNotDraw(false);
 
         TypedArray a = getContext().obtainStyledAttributes(attrs,
@@ -40,7 +55,6 @@ public class WidgetGroup extends ViewGroup {
                 getResources().getColor(R.color.colorAccent));
 
         a.recycle();
-
 
         float stroke = Utils.dpToPx(getContext(), 1);
 
@@ -54,58 +68,48 @@ public class WidgetGroup extends ViewGroup {
      * Position all children within this layout.
      */
     @Override
-    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-
+    protected void
+    onLayout(boolean changed, int left, int top, int right, int bottom) {
+        Log.i(TAG, "On Layout");
         calculateTiles();
 
-        float lowestPos = getHeight() - getPaddingBottom(); //- tilesY * tileWidth;
-        int count = getChildCount();
-
-        for (int i = 0; i < count; i++) {
-            final View child = getChildAt(i);
-
-            // Check if view is visible
-            if(child.getVisibility() == GONE)
-                continue;
-
-            final LayoutParams lp = (LayoutParams) child.getLayoutParams();
-
-            // Y pos from bottom up
-            int w = (int) (lp.tilesWidth * tileWidth);
-            int h = (int) (lp.tilesHeight * tileWidth);
-            int x = (int) (getPaddingLeft() + lp.tilesX * tileWidth);
-            int y = (int) (lowestPos - lp.tilesY * tileWidth - h);
-
-            // Place the child.
-            child.layout(x, y, x + w, y + h);
+        for (int i = 0; i < getChildCount(); i++) {
+            positionChild(i);
         }
     }
 
-    private int getBestTilesX(float usedLenght){
-        if(usedLenght == 0)
-            return 1;
+    private void calculateTiles() {
+        float width = getWidth() - getPaddingLeft() - getPaddingRight();
+        float height = getHeight() - getPaddingBottom() - getPaddingTop();
 
-        float bestError = Float.MAX_VALUE;
-        int bestTileX = 1;
+        tilesX = 8;
+        tileWidth = width/tilesX;
+        tilesY = (int)(height/tileWidth);
+    }
 
-        for(int i = 1 ; i < 100; i++){
-            float tileWidth = usedLenght/i;
-            float cm = Utils.pxToCm(getContext(), tileWidth);
-            float error = Math.abs(cm-1);
+    private void positionChild(int i) {
+        float lowestPos = getHeight() - getPaddingBottom(); //- tilesY * tileWidth;
+        final View child = getChildAt(i);
 
-            if(error < bestError){
-                bestError = error;
-                bestTileX = i;
-            }else{
-                break;
-            }
-        }
+        // Check if view is visible
+        if(child.getVisibility() == GONE)
+            return;
 
-        return bestTileX;
+        final LayoutParams lp = (LayoutParams) child.getLayoutParams();
+
+        // Y pos from bottom up
+        int w = (int) (lp.tilesWidth * tileWidth);
+        int h = (int) (lp.tilesHeight * tileWidth);
+        int x = (int) (getPaddingLeft() + lp.tilesX * tileWidth);
+        int y = (int) (lowestPos - lp.tilesY * tileWidth - h);
+
+        // Place the child.
+        child.layout(x, y, x + w, y + h);
     }
 
     @Override
     public void onDraw(Canvas canvas) {
+        Log.i(TAG, "On Draw");
         float startX = getPaddingTop();
         float endX = getHeight() - this.getPaddingBottom();
         float startY = getPaddingTop();
@@ -115,39 +119,43 @@ public class WidgetGroup extends ViewGroup {
         float lineLen = Utils.dpToPx(getContext(), 5)/2;
 
         for(float drawY = endY; drawY > startY; drawY -= tileWidth){
-
             for(float drawX = startX; drawX < endX; drawX += tileWidth){
-
                 canvas.drawLine(drawX-lineLen, drawY, drawX+lineLen, drawY, crossPaint);
                 canvas.drawLine(drawX, drawY-lineLen, drawX, drawY+lineLen, crossPaint);
             }
         }
     }
 
-    public void calculateTiles() {
-        float width = getWidth() - getPaddingLeft() - getPaddingRight();
-        float height = getHeight() - getPaddingBottom() - getPaddingTop();
 
-        tilesX = 8;
-        tileWidth = width/tilesX;
-        tilesY = (int)(height/tileWidth);
-        /*
-        tilesX = getBestTilesX(width);
+    public void setWidgets(List<WidgetEntity> newWidgets) {
+        WidgetDiffCallback diffCallback = new WidgetDiffCallback(newWidgets, this.widgetList);
+        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
 
-        tileWidth = width / tilesX;
+        this.widgetList.clear();
+        this.widgetList.addAll(newWidgets);
 
-        tilesY = (int) (height / tileWidth);
-
-        while (true) {
-            float pxSpace = height - tilesY * tileWidth;
-
-            if (Utils.pxToCm(getContext(), pxSpace) < 0.8) {
-                tilesY--;
-            } else {
-                break;
+        diffResult.dispatchUpdatesTo(new ListUpdateCallback() {
+            @Override
+            public void onInserted(int position, int count) {
+                Log.i(TAG, "Inserted: Position " + position + " count " + count);
+                //getChildAt(position).
             }
-        }
-        */
+
+            @Override
+            public void onRemoved(int position, int count) {
+                Log.i(TAG, "Removed: Position " + position + " count " + count);
+            }
+
+            @Override
+            public void onMoved(int fromPosition, int toPosition) {
+                Log.i(TAG, "Moved: From " + fromPosition + " to " + toPosition);
+            }
+
+            @Override
+            public void onChanged(int position, int count, @Nullable Object payload) {
+                Log.i(TAG, "Changed: From " + position + " count " + count);
+            }
+        });
     }
 
     @Override
@@ -174,6 +182,8 @@ public class WidgetGroup extends ViewGroup {
     protected boolean checkLayoutParams(ViewGroup.LayoutParams p) {
         return p instanceof LayoutParams;
     }
+
+
 
 
     public static class LayoutParams extends MarginLayoutParams {

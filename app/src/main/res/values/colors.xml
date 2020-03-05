@@ -25,4 +25,5 @@
 
     <color name="drawerFadeColor">#BB121212</color>
     <color name="drawerHeaderBGColor">#BB121212</color>
+    <color name="mtrl_textinput_default_box_stroke_color">@color/whiteMedium</color>
 </resources>

@@ -21,9 +21,9 @@ import java.util.List;
  * TODO: Description
  *
  * @author Nico Studt
- * @version 1.0.5
+ * @version 1.0.6
  * @created on 10.01.20
- * @updated on 05.02.20
+ * @updated on 16.02.20
  * @modified by
  */
 public class WidgetDetailsViewModel extends AndroidViewModel {
@@ -60,10 +60,11 @@ public class WidgetDetailsViewModel extends AndroidViewModel {
     }
 
     public void createWidget(String selectedText) {
-        configRepository.createWidget(selectedText);
-        /*else if (selectedText.toLowerCase().equals("grid map")){
-            configRepository.addWidget(new WidgetGridMap(), 0);
-        }*/
+        if (selectedText.toLowerCase().equals("joystick")){
+            configRepository.createWidget(WidgetEntity.JOYSTICK);
+        }else if (selectedText.toLowerCase().equals("map")){
+            configRepository.createWidget(WidgetEntity.MAP);
+        }
     }
 
     public LiveData<List<WidgetEntity>> getCurrentWidgets() {

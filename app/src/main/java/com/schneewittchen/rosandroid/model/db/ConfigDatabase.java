@@ -31,7 +31,7 @@ import java.util.Random;
  */
 @Database(entities =
         {ConfigEntity.class, MasterEntity.class, WidgetEntity.class},
-        version = 1,
+        version = 2,
         exportSchema = false)
 public abstract class ConfigDatabase extends RoomDatabase {
 
@@ -85,6 +85,7 @@ public abstract class ConfigDatabase extends RoomDatabase {
     public LiveData<List<ConfigEntity>> getAllConfigs() {
         return configDao().getAllConfigs();
     }
+
 
     // Master methods ------------------------------------------------------------------------------
 

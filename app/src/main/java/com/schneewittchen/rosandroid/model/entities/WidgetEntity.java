@@ -11,13 +11,17 @@ import androidx.room.PrimaryKey;
  * TODO: Description
  *
  * @author Nico Studt
- * @version 1.0.1
+ * @version 1.0.2
  * @created on 30.01.20
- * @updated on 31.01.20
+ * @updated on 16.02.20
  * @modified by
  */
 @Entity(tableName = "widget_table")
 public class WidgetEntity {
+
+    public static final int JOYSTICK = 0;
+    public static final int MAP = 1;
+
 
     @PrimaryKey(autoGenerate = true)
     public long id;
@@ -32,7 +36,11 @@ public class WidgetEntity {
 
     @ColumnInfo(name = "widget_type")
     @NonNull
-    public String type;
+    public int type;
+
+    @ColumnInfo(name = "widget_name")
+    @NonNull
+    public int name;
 
     @ColumnInfo(name = "widget_position_x")
     @NonNull
@@ -57,8 +65,11 @@ public class WidgetEntity {
     public SubPubNoteEntity publisher;
 
 
-    public String getType() {
+    public String getName() {
         return "widget";
     }
 
+    protected void setType(int type) {
+        this.type = type;
+    }
 }

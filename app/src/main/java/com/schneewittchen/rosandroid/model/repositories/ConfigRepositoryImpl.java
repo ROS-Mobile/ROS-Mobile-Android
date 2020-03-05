@@ -97,25 +97,32 @@ public class ConfigRepositoryImpl implements ConfigRepository {
     }
 
     @Override
-    public void createWidget(String widgetType) {
+    public void createWidget(int widgetType) {
         if (mCurrentConfigId.getValue() == null) {
             return;
         }
 
         WidgetEntity widget;
 
-        if (widgetType.equals("Joystick")) {
-            widget = new WidgetJoystickEntity();
-        } else if (widgetType.equals("Grid Map")) {
-            Log.i(TAG, "Add Grid map");
-            widget = new WidgetGridMapEntity();
-        } else {
-            return;
+        switch (widgetType) {
+            case WidgetEntity.JOYSTICK:
+                widget = new WidgetJoystickEntity();
+                break;
+
+            case WidgetEntity.MAP:
+                widget = new WidgetGridMapEntity();
+                break;
+
+            default:
+                return;
         }
 
         widget.configId = mCurrentConfigId.getValue();
-        widget.type = widget.getType();
         widget.creationTime = System.nanoTime();
+        widget.posX = 0;
+        widget.posY = 0;
+        widget.width = 1;
+        widget.height = 1;
 
         mConfigDatabase.addWidget(widget);
         Log.i(TAG, "Widget added to database: " + widget);

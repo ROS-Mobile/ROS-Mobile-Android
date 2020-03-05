@@ -52,7 +52,7 @@ public interface ConfigRepository {
     LiveData<List<WidgetEntity>> getWidgets(long id);
 
 
-    void createWidget(String widgetType);
+    void createWidget(int widgetType);
 
     void deleteWidget(WidgetEntity widget);
 

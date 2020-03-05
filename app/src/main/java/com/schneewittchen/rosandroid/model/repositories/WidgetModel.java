@@ -15,8 +15,8 @@ import com.schneewittchen.rosandroid.R;
 public class WidgetModel {
 
     static int[] widget_names = new int[]{
-            R.string.widget_joystick,
-            R.string.widget_gridmap
+            R.string.widget_joystick_name,
+            R.string.widget_map_name
     };
 
     public static int[] getWidgetNames() {
@@ -25,7 +25,7 @@ public class WidgetModel {
 
     public static int getWidgetLayout(int id){
         switch (id){
-            case R.string.widget_gridmap:
+            case R.string.widget_map_name:
                 return R.layout.fragment_grid;
         }
 

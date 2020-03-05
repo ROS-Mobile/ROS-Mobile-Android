@@ -12,8 +12,13 @@ package com.schneewittchen.rosandroid.model.entities;
  */
 public class WidgetJoystickEntity extends WidgetEntity {
 
+    public WidgetJoystickEntity() {
+        this.setType(WidgetEntity.JOYSTICK);
+    }
+
+
     @Override
-    public String getType() {
+    public String getName() {
         return "Joystick";
     }
 }

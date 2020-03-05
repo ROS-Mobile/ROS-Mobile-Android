@@ -11,9 +11,12 @@
     <string name="master_ip_hint">Master URL</string>
     <string name="master_port_hint">Master port</string>
 
-    <!-- Widget names -->
-    <string name="widget_joystick">Joystick</string>
-    <string name="widget_gridmap">Grid Map</string>
+    <!-- Widgets -->
+    <string name="widget_joystick_name">Joystick</string>
+    <string name="widget_joystick_desc">A virtual Joystick</string>
+
+    <string name="widget_map_name">Map</string>
+    <string name="widget_map_desc">Displays an occupancy grid on the ground plane from a nav_msgs::OccupancyGrid.</string>
 
     <!-- Default config -->
     <string name="default_config_name">New Config</string>

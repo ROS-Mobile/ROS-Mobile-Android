@@ -9,10 +9,9 @@ import java.util.List;
  * TODO: Description
  *
  * @author Nico Studt
- * @version 1.0.1
+ * @version 1.0.2
  * @created on 03.02.20
- * @updated on 05.02.20
- * @modified by
+ * @updated on 16.02.20
  */
 public class WidgetFactory {
 
@@ -33,11 +32,12 @@ public class WidgetFactory {
         WidgetEntity widget = null;
 
         switch (widgetParent.type) {
-            case "Joystick":
+            case WidgetEntity.JOYSTICK:
                 widget = new WidgetJoystickEntity();
                 break;
 
-            case "Grid Map":
+            case WidgetEntity.MAP:
+                // TODO: Set map variables
                 widget = new WidgetGridMapEntity();
                 break;
 
