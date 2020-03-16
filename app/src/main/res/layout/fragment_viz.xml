@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+
 
     <com.schneewittchen.rosandroid.ui.custum_views.WidgetGroup
         android:id="@+id/widget_groupview"
@@ -12,7 +15,7 @@
         android:padding="8dp"
         app:crossColor="@color/black24dp">
 
-        <com.schneewittchen.rosandroid.ui.custum_views.JoystickView
+        <com.schneewittchen.rosandroid.widgets.joystick.JoystickView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:decorationColor="@color/whiteLow"
@@ -21,9 +24,9 @@
             app:tilesHeight="4"
             app:tilesWidth="4"
             app:tilesX="0"
-            app:tilesY="0" />
+            app:tilesY="0"/>
 
-        <com.schneewittchen.rosandroid.ui.custum_views.JoystickView
+        <com.schneewittchen.rosandroid.widgets.joystick.JoystickView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:stickColor="@color/whiteLight"
@@ -34,15 +37,15 @@
             app:tilesX="4"
             app:tilesY="0"/>
 
-        <com.schneewittchen.rosandroid.ui.custum_views.GridMapView
+        <com.schneewittchen.rosandroid.widgets.gridmap.GridMapView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:tilesHeight="4"
-            app:tilesWidth="8"
-            app:tilesX="0"
+            app:tilesWidth="3"
+            app:tilesX="1"
             app:tilesY="6"/>
 
     </com.schneewittchen.rosandroid.ui.custum_views.WidgetGroup>
 
 
-</LinearLayout>
+</RelativeLayout>

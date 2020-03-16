@@ -12,8 +12,8 @@ import com.schneewittchen.rosandroid.model.db.ConfigDatabase;
 import com.schneewittchen.rosandroid.model.entities.ConfigEntity;
 import com.schneewittchen.rosandroid.model.entities.MasterEntity;
 import com.schneewittchen.rosandroid.model.entities.WidgetEntity;
-import com.schneewittchen.rosandroid.model.entities.WidgetGridMapEntity;
-import com.schneewittchen.rosandroid.model.entities.WidgetJoystickEntity;
+import com.schneewittchen.rosandroid.widgets.gridmap.WidgetGridMapEntity;
+import com.schneewittchen.rosandroid.widgets.joystick.WidgetJoystickEntity;
 
 import java.util.List;
 

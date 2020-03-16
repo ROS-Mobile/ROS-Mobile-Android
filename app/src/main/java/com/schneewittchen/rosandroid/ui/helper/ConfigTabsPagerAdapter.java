@@ -6,7 +6,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.schneewittchen.rosandroid.ui.fragments.WidgetDetailsFragment;
-import com.schneewittchen.rosandroid.ui.fragments.GridFragment;
+import com.schneewittchen.rosandroid.ui.fragments.VizFragment;
 import com.schneewittchen.rosandroid.ui.fragments.MasterConfigFragment;
 
 
@@ -36,7 +36,7 @@ public class ConfigTabsPagerAdapter extends FragmentPagerAdapter {
             case 0:
                 return MasterConfigFragment.newInstance();
             case 1:
-                return GridFragment.newInstance();
+                return VizFragment.newInstance();
             case 2:
                 return WidgetDetailsFragment.newInstance();
 

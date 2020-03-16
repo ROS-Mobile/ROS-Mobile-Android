@@ -1,4 +1,4 @@
-package com.schneewittchen.rosandroid.ui.custum_views;
+package com.schneewittchen.rosandroid.widgets.joystick;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.os.Handler;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -14,6 +15,7 @@ import androidx.annotation.Nullable;
 
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.utility.Utils;
+
 
 /**
  * TODO: Description
@@ -25,6 +27,8 @@ import com.schneewittchen.rosandroid.utility.Utils;
  * @modified by
  */
 public class JoystickView extends View {
+
+    public static final String TAG = "JoystickView";
 
     Handler mHandler;
     Runnable mRunnable;
@@ -137,10 +141,13 @@ public class JoystickView extends View {
 
     @Override
     public void onDraw(Canvas canvas) {
+        Log.i(TAG, "On draw");
         float width = getWidth();
         float height = getHeight();
 
         float[] px = convertFromPolarToPx(posX, posY);
+
+        Log.i(TAG, "Draw circle at " + width/2 + " " + height/2);
 
         // Outer ring
         canvas.drawCircle(width/2, height/2, width/2-joystickRadius, outerPaint);

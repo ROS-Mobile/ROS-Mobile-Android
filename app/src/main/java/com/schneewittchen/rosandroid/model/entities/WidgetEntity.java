@@ -6,6 +6,8 @@ import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.schneewittchen.rosandroid.widgets.base.WidgetNode;
+
 
 /**
  * TODO: Description
@@ -40,7 +42,7 @@ public class WidgetEntity {
 
     @ColumnInfo(name = "widget_name")
     @NonNull
-    public int name;
+    public String name;
 
     @ColumnInfo(name = "widget_position_x")
     @NonNull
@@ -69,7 +71,12 @@ public class WidgetEntity {
         return "widget";
     }
 
+    public Class<? extends WidgetNode> getNodeType() {
+        return null;
+    }
+
     protected void setType(int type) {
         this.type = type;
     }
+
 }

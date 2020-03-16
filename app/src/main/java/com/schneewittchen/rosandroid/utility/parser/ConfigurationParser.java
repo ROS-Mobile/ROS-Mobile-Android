@@ -5,7 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.schneewittchen.rosandroid.model.entities.ConfigEntity;
 import com.schneewittchen.rosandroid.model.entities.WidgetEntity;
-import com.schneewittchen.rosandroid.model.entities.WidgetJoystickEntity;
+import com.schneewittchen.rosandroid.widgets.joystick.WidgetJoystickEntity;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;

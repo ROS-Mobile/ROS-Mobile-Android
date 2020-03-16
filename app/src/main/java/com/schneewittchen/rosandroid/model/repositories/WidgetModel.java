@@ -26,7 +26,7 @@ public class WidgetModel {
     public static int getWidgetLayout(int id){
         switch (id){
             case R.string.widget_map_name:
-                return R.layout.fragment_grid;
+                return R.layout.fragment_viz;
         }
 
         return -1;

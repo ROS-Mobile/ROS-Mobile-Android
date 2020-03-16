@@ -1,9 +1,11 @@
-package com.schneewittchen.rosandroid.ui.widget_details;
+package com.schneewittchen.rosandroid.widgets.joystick;
 
 import android.view.View;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
+
+import com.schneewittchen.rosandroid.widgets.base.WidgetDetailViewHandler;
+
 
 /**
  * TODO: Description
@@ -14,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
  * @updated on 13.02.20
  * @modified by
  */
-public class JoystickDetailVH extends RecyclerView.ViewHolder {
+public class JoystickDetailVH extends WidgetDetailViewHandler {
 
     public JoystickDetailVH(@NonNull View itemView) {
         super(itemView);

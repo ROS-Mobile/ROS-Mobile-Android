@@ -1,9 +1,10 @@
-package com.schneewittchen.rosandroid.ui.custum_views;
+package com.schneewittchen.rosandroid.widgets.gridmap;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.Nullable;
@@ -22,6 +23,8 @@ import com.schneewittchen.rosandroid.utility.Utils;
  */
 public class GridMapView extends View {
 
+    public static final String TAG = "GridmapView";
+
     Paint paint;
     float cornerWidth;
 
@@ -38,6 +41,7 @@ public class GridMapView extends View {
 
     @Override
     public void onDraw(Canvas canvas) {
+        Log.i(TAG, "On draw");
         float width = getWidth();
         float height = getHeight();
         canvas.drawRoundRect(2, 2, width-2, height-2,cornerWidth, cornerWidth, paint);

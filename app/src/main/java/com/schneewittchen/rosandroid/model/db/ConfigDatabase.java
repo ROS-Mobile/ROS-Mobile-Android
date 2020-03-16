@@ -31,7 +31,7 @@ import java.util.Random;
  */
 @Database(entities =
         {ConfigEntity.class, MasterEntity.class, WidgetEntity.class},
-        version = 2,
+        version = 1,
         exportSchema = false)
 public abstract class ConfigDatabase extends RoomDatabase {
 

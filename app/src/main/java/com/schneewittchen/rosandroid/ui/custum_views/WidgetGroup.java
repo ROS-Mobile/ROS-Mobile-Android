@@ -17,6 +17,9 @@ import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.model.entities.WidgetEntity;
 import com.schneewittchen.rosandroid.ui.helper.WidgetDiffCallback;
 import com.schneewittchen.rosandroid.utility.Utils;
+import com.schneewittchen.rosandroid.widgets.base.BaseView;
+import com.schneewittchen.rosandroid.widgets.base.DataListener;
+import com.schneewittchen.rosandroid.widgets.base.WidgetData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,20 +36,23 @@ import java.util.List;
  */
 public class WidgetGroup extends ViewGroup {
 
-    public static final String TAG = WidgetGroup.class.getCanonicalName();
+    public static final String TAG = "WidgetGroup";
 
     Paint crossPaint;
     int tilesX;
     int tilesY;
     float tileWidth;
     List<WidgetEntity> widgetList;
+    DataListener widgetDataListener;
+    DataListener dataListener;
 
 
     public WidgetGroup(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         this.widgetList = new ArrayList<>();
-        this.setWillNotDraw(false);
+        this.widgetDataListener = new WidgetDataListener();
+        //this.setWillNotDraw(true);
 
         TypedArray a = getContext().obtainStyledAttributes(attrs,
                         R.styleable.WidgetGroup, 0, 0);
@@ -68,8 +74,7 @@ public class WidgetGroup extends ViewGroup {
      * Position all children within this layout.
      */
     @Override
-    protected void
-    onLayout(boolean changed, int left, int top, int right, int bottom) {
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         Log.i(TAG, "On Layout");
         calculateTiles();
 
@@ -103,6 +108,8 @@ public class WidgetGroup extends ViewGroup {
         int x = (int) (getPaddingLeft() + lp.tilesX * tileWidth);
         int y = (int) (lowestPos - lp.tilesY * tileWidth - h);
 
+
+        Log.i(TAG, "place child " + x + " " + y+ " " + (x + w)+ " " + (y + h));
         // Place the child.
         child.layout(x, y, x + w, y + h);
     }
@@ -124,8 +131,35 @@ public class WidgetGroup extends ViewGroup {
                 canvas.drawLine(drawX, drawY-lineLen, drawX, drawY+lineLen, crossPaint);
             }
         }
+
+        /*
+        for (int i = 0; i < getChildCount(); i++) {
+            Log.w(TAG, "Child draw " + i);
+            getChildAt(i).draw(canvas);
+        }
+
+         */
+
+        //super.onDraw(canvas);
     }
 
+    public void setDataListener(DataListener listener) {
+        this.dataListener = listener;
+    }
+
+    public void removeDataListener() {
+        this.dataListener = null;
+    }
+
+    public void informDataChange(WidgetData data) {
+        if(dataListener != null) {
+            dataListener.onNewData(data);
+        }
+    }
+
+    private void registerWidgetListener(BaseView view) {
+        view.setDataListener(widgetDataListener);
+    }
 
     public void setWidgets(List<WidgetEntity> newWidgets) {
         WidgetDiffCallback diffCallback = new WidgetDiffCallback(newWidgets, this.widgetList);
@@ -183,7 +217,18 @@ public class WidgetGroup extends ViewGroup {
         return p instanceof LayoutParams;
     }
 
+    public List<WidgetEntity> getWidgets() {
+        return this.widgetList;
+    }
 
+
+    class WidgetDataListener implements DataListener {
+
+        @Override
+        public void onNewData(WidgetData data) {
+            informDataChange(data);
+        }
+    }
 
 
     public static class LayoutParams extends MarginLayoutParams {

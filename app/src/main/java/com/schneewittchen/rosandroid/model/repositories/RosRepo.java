@@ -1,5 +1,6 @@
 package com.schneewittchen.rosandroid.model.repositories;
 
+import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -7,9 +8,14 @@ import android.content.ServiceConnection;
 import android.os.Handler;
 import android.os.IBinder;
 
+import androidx.annotation.Nullable;
 import androidx.core.util.Preconditions;
 
+import com.schneewittchen.rosandroid.model.entities.WidgetEntity;
 import com.schneewittchen.rosandroid.utility.Utils;
+import com.schneewittchen.rosandroid.widgets.base.WidgetData;
+import com.schneewittchen.rosandroid.widgets.base.WidgetNode;
+import com.schneewittchen.rosandroid.widgets.joystick.JoystickNode;
 
 import org.ros.address.InetAddressFactory;
 import org.ros.android.NodeMainExecutorService;
@@ -20,10 +26,12 @@ import org.ros.node.NodeMainExecutor;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
+import java.lang.reflect.Constructor;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * TODO: Description
@@ -53,6 +61,7 @@ public class RosRepo {
     private NodeConfiguration nodeConfiguration;
     private Handler nodeHandler;
     private ArrayList<NodeMain> nodesWaitList;
+    private HashMap<Long, WidgetNode> widgetNodes;
 
 
     public static RosRepo getInstance(){
@@ -66,17 +75,30 @@ public class RosRepo {
 
     private RosRepo(){
         nodesWaitList = new ArrayList<>();
+        widgetNodes = new HashMap<>();
     }
 
 
     public void connectToMaster(){
         nodeMainExecutorServiceConnection = new NodeMainExecutorServiceConnection(masterURI);
-
         this.bindNodeMainExecutorService();
     }
 
     public void disconnectFromMaster(){
         nodeConfiguration = null;
+    }
+
+    public void registerNode(WidgetEntity widgetEntity) {
+        Class<? extends WidgetNode> clazz = widgetEntity.getNodeType();
+
+        try {
+            Constructor<? extends WidgetNode> cons  = clazz.getConstructor();
+            WidgetNode widgetNode = cons.newInstance();
+            registerNode(widgetNode);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void registerNode(NodeMain node){
@@ -198,6 +220,15 @@ public class RosRepo {
         nodesWaitList.clear();
     }
 
+    public void informWidgetDataChange(WidgetData data) {
+        WidgetNode node = widgetNodes.get(data.id);
+
+        if(node == null) {
+            return;
+        }
+
+        node.onNewData(data);
+    }
 
 
     private final class NodeMainExecutorServiceConnection implements ServiceConnection {
@@ -221,12 +252,9 @@ public class RosRepo {
                 nodeMainExecutorService.setRosHostname(getDefaultHostAddress());
             }
 
-            serviceListener = new NodeMainExecutorServiceListener() {
-                @Override
-                public void onShutdown(NodeMainExecutorService nodeMainExecutorService) {
-                    System.out.println("On shutdown");
-                    shutdownSignalReceived = true;
-                }
+            serviceListener = nodeMainExecutorService -> {
+                System.out.println("On shutdown");
+                shutdownSignalReceived = true;
             };
 
             nodeMainExecutorService.addListener(serviceListener);

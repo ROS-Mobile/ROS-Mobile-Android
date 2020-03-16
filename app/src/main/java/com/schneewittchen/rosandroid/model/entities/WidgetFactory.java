@@ -2,6 +2,9 @@ package com.schneewittchen.rosandroid.model.entities;
 
 import android.util.Log;
 
+import com.schneewittchen.rosandroid.widgets.gridmap.WidgetGridMapEntity;
+import com.schneewittchen.rosandroid.widgets.joystick.WidgetJoystickEntity;
+
 import java.util.ArrayList;
 import java.util.List;
 

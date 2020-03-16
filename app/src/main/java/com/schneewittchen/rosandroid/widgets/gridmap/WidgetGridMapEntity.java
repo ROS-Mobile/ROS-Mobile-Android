@@ -1,4 +1,6 @@
-package com.schneewittchen.rosandroid.model.entities;
+package com.schneewittchen.rosandroid.widgets.gridmap;
+
+import com.schneewittchen.rosandroid.model.entities.WidgetEntity;
 
 /**
  * TODO: Description
