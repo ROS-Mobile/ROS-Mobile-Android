@@ -1,9 +1,11 @@
 package com.schneewittchen.rosandroid.ui.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
@@ -14,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.schneewittchen.rosandroid.R;
@@ -40,20 +43,14 @@ public class SshFragment extends Fragment {
     private SshRecyclerViewAdapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
 
-    private TextInputLayout ipAddressInputLayout;
     private TextInputEditText ipAddressEditText;
-    private TextInputLayout portInputLayout;
     private TextInputEditText portEditText;
-    private TextInputLayout usernameInputLayout;
     private TextInputEditText usernameEditText;
-    private TextInputLayout passwordInputLayout;
     private TextInputEditText passwordEditText;
-
-    private TextInputLayout terminalInputLayout;
     private TextInputEditText terminalEditText;
 
     private Button connectButton;
-    private Button sendButton;
+    private FloatingActionButton sendButton;
 
     private boolean connected;
 
@@ -82,19 +79,11 @@ public class SshFragment extends Fragment {
         mAdapter = new SshRecyclerViewAdapter();
         recyclerView.setAdapter(mAdapter);
 
-
-        ipAddressInputLayout    = view.findViewById(R.id.ip_address_inputLayout);
         ipAddressEditText       = view.findViewById(R.id.ip_address_editText);
-        portInputLayout         = view.findViewById(R.id.port_inputLayout);
         portEditText            = view.findViewById(R.id.port_editText);
-        usernameInputLayout     = view.findViewById(R.id.username_inputLayout);
         usernameEditText        = view.findViewById(R.id.username_editText);
-        passwordInputLayout     = view.findViewById(R.id.password_inputLayout);
         passwordEditText        = view.findViewById(R.id.password_editText);
-
-        terminalInputLayout     = view.findViewById(R.id.terminal_inputLayout);
         terminalEditText        = view.findViewById(R.id.terminal_editText);
-
         connectButton           = view.findViewById(R.id.sshConnectButton);
         sendButton              = view.findViewById(R.id.sshSendButton);
     }
@@ -117,28 +106,30 @@ public class SshFragment extends Fragment {
         sendButton.setOnClickListener(v -> {
             final String message = terminalEditText.getText().toString();
             mViewModel.sendViaSSH(message);
+            terminalEditText.setText("");
+            hideKeyBoard();
         });
 
-        mViewModel.getOutputData().observe(this.getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-                mAdapter.addItem(s);
-                recyclerView.scrollToPosition(mAdapter.getItemCount() - 1);
-            }
+        mViewModel.getOutputData().observe(this.getViewLifecycleOwner(), s -> {
+            mAdapter.addItem(s);
+            recyclerView.scrollToPosition(mAdapter.getItemCount() - 1);
         });
 
-        mViewModel.isConnected().observe(this.getViewLifecycleOwner(), new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean aBoolean) {
-                if (aBoolean) {
-                    connected = true;
-                    connectButton.setText("Disconnect");
-                } else {
-                    connected = false;
-                    connectButton.setText("Connect");
-                }
+        mViewModel.isConnected().observe(this.getViewLifecycleOwner(), connectionFlag -> {
+            connected = connectionFlag;
+
+            if (connectionFlag) {
+                connectButton.setText("Disconnect");
+            } else {
+                connected = false;
+                connectButton.setText("Connect");
             }
         });
+    }
+
+    private void hideKeyBoard() {
+        final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
     }
 
     private void connectSsh() {
