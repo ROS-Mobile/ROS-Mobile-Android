@@ -8,6 +8,8 @@ public interface SshRepository {
 
     void stopSession();
 
+    LiveData<Boolean> isConnected();
+
     void sendMessage(String message);
 
     LiveData<String> getOutputData();
