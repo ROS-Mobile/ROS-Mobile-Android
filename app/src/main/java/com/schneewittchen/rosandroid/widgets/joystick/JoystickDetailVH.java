@@ -4,7 +4,7 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 
-import com.schneewittchen.rosandroid.widgets.base.WidgetDetailViewHandler;
+import com.schneewittchen.rosandroid.widgets.base.BaseDetailViewHolder;
 
 
 /**
@@ -16,7 +16,8 @@ import com.schneewittchen.rosandroid.widgets.base.WidgetDetailViewHandler;
  * @updated on 13.02.20
  * @modified by
  */
-public class JoystickDetailVH extends WidgetDetailViewHandler {
+public class JoystickDetailVH extends BaseDetailViewHolder {
+
 
     public JoystickDetailVH(@NonNull View itemView) {
         super(itemView);

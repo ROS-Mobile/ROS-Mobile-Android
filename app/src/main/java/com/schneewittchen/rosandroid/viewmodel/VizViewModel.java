@@ -37,7 +37,7 @@ import java.util.List;
  */
 public class VizViewModel extends AndroidViewModel {
 
-    private static final String TAG = VizViewModel.class.getCanonicalName();
+    private static final String TAG = VizViewModel.class.getSimpleName();
     private ConfigRepository configRepository;
     private RosRepo rosRepo;
     private LiveData<List<WidgetEntity>> currentWidgets;
@@ -51,20 +51,6 @@ public class VizViewModel extends AndroidViewModel {
 
         currentWidgets = Transformations.switchMap(configRepository.getCurrentConfigId(),
                 configId -> configRepository.getWidgets(configId));
-    }
-
-
-    public void setupGame() {
-        MediatorLiveData<ArrayList<Integer>> mediatorLiveData = new MediatorLiveData<>();
-        MutableLiveData<Integer> mut = new MutableLiveData<>();
-
-        mediatorLiveData.addSource(mut, new Observer<Integer>() {
-            @Override
-            public void onChanged(Integer integer) {
-
-                mediatorLiveData.removeSource(mut);
-            }
-        });
     }
 
     public void connectToRos() {

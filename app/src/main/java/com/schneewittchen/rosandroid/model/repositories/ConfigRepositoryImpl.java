@@ -98,6 +98,7 @@ public class ConfigRepositoryImpl implements ConfigRepository {
 
     @Override
     public void createWidget(int widgetType) {
+        // TODO: Make generic
         if (mCurrentConfigId.getValue() == null) {
             return;
         }
@@ -119,6 +120,7 @@ public class ConfigRepositoryImpl implements ConfigRepository {
 
         widget.configId = mCurrentConfigId.getValue();
         widget.creationTime = System.nanoTime();
+        widget.name = widget.getName();
         widget.posX = 0;
         widget.posY = 0;
         widget.width = 1;

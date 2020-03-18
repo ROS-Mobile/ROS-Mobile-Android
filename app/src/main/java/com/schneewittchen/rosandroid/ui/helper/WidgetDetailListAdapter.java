@@ -7,10 +7,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.model.entities.WidgetEntity;
+import com.schneewittchen.rosandroid.ui.fragments.WidgetDetailsFragment;
+import com.schneewittchen.rosandroid.widgets.base.BaseDetailViewHolder;
+import com.schneewittchen.rosandroid.widgets.base.DetailListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,18 +29,32 @@ import java.util.List;
  * @updated on 05.02.20
  * @modified by
  */
-public class WidgetDetailListAdapter extends RecyclerView.Adapter<WidgetDetailListAdapter.MyViewHolder> {
+public class WidgetDetailListAdapter extends RecyclerView.Adapter<BaseDetailViewHolder> implements DetailListener{
 
     public List<WidgetEntity> widgetList;
+    private DetailListener detailListener;
 
 
     public WidgetDetailListAdapter() {
         widgetList = new ArrayList<>();
     }
 
+    @NonNull
+    @Override
+    public BaseDetailViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return null;
+    }
 
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public void onBindViewHolder(@NonNull BaseDetailViewHolder holder, int position) {
+        holder.update(widgetList.get(position));
+    }
+
+
+    /*
+    @Override
+    public MyViewHolder onCreateViewHolder(ViewGroup parent, int position) {
+        widgetList.get(position).getDetailViewHolderType();
         LayoutInflater inflator = LayoutInflater.from(parent.getContext());
 
         View itemView = inflator.inflate(R.layout.widget_detail_item, parent, false);
@@ -48,6 +66,7 @@ public class WidgetDetailListAdapter extends RecyclerView.Adapter<WidgetDetailLi
 
         return new MyViewHolder(itemView);
     }
+    */
 
     private int getWidgetLayout(int viewType) {
         switch (viewType) {
@@ -60,6 +79,7 @@ public class WidgetDetailListAdapter extends RecyclerView.Adapter<WidgetDetailLi
         return -1;
     }
 
+    /*
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
         final WidgetEntity widget = widgetList.get(position);
@@ -68,14 +88,16 @@ public class WidgetDetailListAdapter extends RecyclerView.Adapter<WidgetDetailLi
     }
 
     @Override
+    public int getItemViewType(int position) {
+        return widgetList.get(position).type;
+    }*/
+
+    @Override
     public int getItemCount() {
         return widgetList.size();
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        return widgetList.get(position).type;
-    }
+
 
     public void setWidgets(List<WidgetEntity> newWidgets){
         // TODO: Implement Diff callback with widgets
@@ -89,6 +111,17 @@ public class WidgetDetailListAdapter extends RecyclerView.Adapter<WidgetDetailLi
         this.widgetList.addAll(newWidgets);
 
         notifyDataSetChanged();
+    }
+
+    public void setChangeListener(DetailListener detailListener) {
+        this.detailListener = detailListener;
+    }
+
+    @Override
+    public void onDetailsChanged(int widgetId) {
+        if(detailListener != null) {
+            this.detailListener.onDetailsChanged(widgetId);
+        }
     }
 
 

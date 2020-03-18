@@ -107,4 +107,14 @@ public class CounterViewTest extends androidx.appcompat.widget.AppCompatTextView
     public void removeDataListener() {
         this.dataListener = null;
     }
+
+    @Override
+    public void setDataId(long id) {
+
+    }
+
+    @Override
+    public long getDataId() {
+        return 0;
+    }
 }

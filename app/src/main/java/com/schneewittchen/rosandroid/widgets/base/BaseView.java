@@ -3,9 +3,9 @@ package com.schneewittchen.rosandroid.widgets.base;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
+
 
 
 /**
@@ -21,6 +21,8 @@ public class BaseView extends View implements Interactable {
 
     DataListener dataListener;
     long dataId;
+    Position position;
+
 
     public BaseView(Context context) {
         super(context);
@@ -67,4 +69,11 @@ public class BaseView extends View implements Interactable {
         return this.dataId;
     }
 
+    public void setPosition(Position position) {
+        this.position = position;
+    }
+
+    public Position getPosition() {
+        return this.position;
+    }
 }

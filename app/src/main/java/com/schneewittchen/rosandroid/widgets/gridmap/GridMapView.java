@@ -10,7 +10,10 @@ import android.view.View;
 import androidx.annotation.Nullable;
 
 import com.schneewittchen.rosandroid.R;
+import com.schneewittchen.rosandroid.model.entities.WidgetEntity;
 import com.schneewittchen.rosandroid.utility.Utils;
+import com.schneewittchen.rosandroid.widgets.base.BaseView;
+import com.schneewittchen.rosandroid.widgets.joystick.JoystickView;
 
 /**
  * TODO: Description
@@ -21,16 +24,26 @@ import com.schneewittchen.rosandroid.utility.Utils;
  * @updated on 10.01.20
  * @modified by
  */
-public class GridMapView extends View {
+public class GridMapView extends BaseView {
 
     public static final String TAG = "GridmapView";
 
     Paint paint;
     float cornerWidth;
 
+
+    public GridMapView(Context context) {
+        super(context);
+        init();
+    }
+
     public GridMapView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
+        init();
+    }
+
+    private void init() {
         this.cornerWidth = Utils.dpToPx(getContext(), 8);
         paint = new Paint();
         paint.setColor(getResources().getColor(R.color.whiteHigh));
@@ -44,7 +57,7 @@ public class GridMapView extends View {
         Log.i(TAG, "On draw");
         float width = getWidth();
         float height = getHeight();
-        canvas.drawRoundRect(2, 2, width-2, height-2,cornerWidth, cornerWidth, paint);
+        canvas.drawRoundRect(2, 2, width - 2, height - 2, cornerWidth, cornerWidth, paint);
     }
 
 }

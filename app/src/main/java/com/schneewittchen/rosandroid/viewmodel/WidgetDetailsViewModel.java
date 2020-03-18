@@ -60,6 +60,7 @@ public class WidgetDetailsViewModel extends AndroidViewModel {
     }
 
     public void createWidget(String selectedText) {
+        // TODO: Make generic
         if (selectedText.toLowerCase().equals("joystick")){
             configRepository.createWidget(WidgetEntity.JOYSTICK);
         }else if (selectedText.toLowerCase().equals("map")){

@@ -14,7 +14,9 @@ import android.view.View;
 import androidx.annotation.Nullable;
 
 import com.schneewittchen.rosandroid.R;
+import com.schneewittchen.rosandroid.model.entities.WidgetEntity;
 import com.schneewittchen.rosandroid.utility.Utils;
+import com.schneewittchen.rosandroid.widgets.base.BaseView;
 
 
 /**
@@ -26,7 +28,7 @@ import com.schneewittchen.rosandroid.utility.Utils;
  * @updated on 10.01.20
  * @modified by
  */
-public class JoystickView extends View {
+public class JoystickView extends BaseView {
 
     public static final String TAG = "JoystickView";
 
@@ -49,37 +51,29 @@ public class JoystickView extends View {
     float lastPosX;
     float lastPosY;
 
+    public JoystickView(Context context) {
+        super(context);
+        init();
+    }
 
     public JoystickView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-
-        init(attrs);
+        init();
     }
 
 
-    private void init(AttributeSet attrs){
-        TypedArray a = getContext().obtainStyledAttributes(attrs,
-                R.styleable.JoystickView, 0, 0);
-
-        int joystickColor = a.getColor(R.styleable.JoystickView_stickColor,
-                                getResources().getColor(R.color.colorAccent));
-        int outerColor = a.getColor(R.styleable.JoystickView_outerRingColor,
-                                getResources().getColor(R.color.colorPrimary));
-        int lineColor = a.getColor(R.styleable.JoystickView_decorationColor,
-                                getResources().getColor(R.color.colorPrimaryDark));
-        a.recycle();
-
+    private void init(){
         joystickRadius = Utils.cmToPx(getContext(), 1)/2;
         joystickPaint = new Paint();
-        joystickPaint.setColor(joystickColor);
+        joystickPaint.setColor(getResources().getColor(R.color.colorAccent));
 
         outerPaint = new Paint();
-        outerPaint.setColor(outerColor);
+        outerPaint.setColor(getResources().getColor(R.color.colorPrimary));
         outerPaint.setStyle(Paint.Style.STROKE);
         outerPaint.setStrokeWidth(Utils.dpToPx(getContext(), 3));
 
         linePaint = new Paint();
-        linePaint.setColor(lineColor);
+        linePaint.setColor(getResources().getColor(R.color.colorPrimaryDark));
         linePaint.setStyle(Paint.Style.STROKE);
         linePaint.setStrokeWidth(Utils.dpToPx(getContext(), 2));
 
@@ -146,8 +140,6 @@ public class JoystickView extends View {
         float height = getHeight();
 
         float[] px = convertFromPolarToPx(posX, posY);
-
-        Log.i(TAG, "Draw circle at " + width/2 + " " + height/2);
 
         // Outer ring
         canvas.drawCircle(width/2, height/2, width/2-joystickRadius, outerPaint);

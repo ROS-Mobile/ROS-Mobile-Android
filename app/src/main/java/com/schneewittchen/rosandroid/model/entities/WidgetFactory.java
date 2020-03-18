@@ -50,6 +50,7 @@ public class WidgetFactory {
 
         widget.id = widgetParent.id;
         widget.type = widgetParent.type;
+        widget.name = widgetParent.name;
         widget.configId = widgetParent.configId;
         widget.creationTime = widgetParent.creationTime;
         widget.posX = widgetParent.posX;

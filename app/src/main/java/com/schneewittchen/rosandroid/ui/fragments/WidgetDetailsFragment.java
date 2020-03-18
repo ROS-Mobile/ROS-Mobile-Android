@@ -35,7 +35,7 @@ import com.schneewittchen.rosandroid.model.entities.WidgetEntity;
  * @author Nico Studt
  * @version 1.2.3
  * @created on 10.01.20
- * @updated on 05.02.20
+ * @updated on 17.03.20
  * @modified by
  */
 public class WidgetDetailsFragment extends Fragment implements RecyclerItemTouchHelper.TouchListener{
@@ -80,11 +80,19 @@ public class WidgetDetailsFragment extends Fragment implements RecyclerItemTouch
 
         addWidgetButton.setOnClickListener((View v) -> showDialogWithWidgetNames());
 
+        // Setup recyclerview
+        mAdapter = new WidgetDetailListAdapter();
+        mAdapter.setChangeListener(this);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        mAdapter = new WidgetDetailListAdapter();
         recyclerView.setAdapter(mAdapter);
 
+        ItemTouchHelper.SimpleCallback touchHelper = new RecyclerItemTouchHelper(0,
+                ItemTouchHelper.LEFT, this);
+        new ItemTouchHelper(touchHelper).attachToRecyclerView(recyclerView);
+
+        // Bind to view model
         mViewModel.getCurrentWidgets().observe(getViewLifecycleOwner(), newWidgets -> {
             mAdapter.setWidgets(newWidgets);
             Log.i(TAG, "Widgets changed with amount: " + newWidgets.size());
@@ -92,19 +100,12 @@ public class WidgetDetailsFragment extends Fragment implements RecyclerItemTouch
 
         mViewModel.widgetsEmpty().observe(getViewLifecycleOwner(), empty ->
                 noWidgetTextView.setVisibility(empty? View.VISIBLE : View.GONE));
-
-        // adding item touch helper
-        // only ItemTouchHelper.LEFT added to detect Right to Left swipe
-        // if you want both Right -> Left and Left -> Right
-        // add pass ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT as param
-        ItemTouchHelper.SimpleCallback touchHelper = new RecyclerItemTouchHelper(0,
-                                                                ItemTouchHelper.LEFT, this);
-        new ItemTouchHelper(touchHelper).attachToRecyclerView(recyclerView);
-
     }
 
     private void showDialogWithWidgetNames() {
-        Preconditions.checkArgument(getContext() != null);
+        if(getContext() == null) {
+            return;
+        }
 
         int[] mWidgetIds = mViewModel.getAvailableWidgetNames();
 

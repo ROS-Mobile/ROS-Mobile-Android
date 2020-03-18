@@ -19,8 +19,11 @@ import com.schneewittchen.rosandroid.ui.helper.WidgetDiffCallback;
 import com.schneewittchen.rosandroid.utility.Utils;
 import com.schneewittchen.rosandroid.widgets.base.BaseView;
 import com.schneewittchen.rosandroid.widgets.base.DataListener;
+import com.schneewittchen.rosandroid.widgets.base.Position;
 import com.schneewittchen.rosandroid.widgets.base.WidgetData;
+import com.schneewittchen.rosandroid.widgets.base.WidgetNode;
 
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,7 +55,7 @@ public class WidgetGroup extends ViewGroup {
 
         this.widgetList = new ArrayList<>();
         this.widgetDataListener = new WidgetDataListener();
-        //this.setWillNotDraw(true);
+        this.setWillNotDraw(false);
 
         TypedArray a = getContext().obtainStyledAttributes(attrs,
                         R.styleable.WidgetGroup, 0, 0);
@@ -100,6 +103,16 @@ public class WidgetGroup extends ViewGroup {
         if(child.getVisibility() == GONE)
             return;
 
+
+        Position position = ((BaseView) child).getPosition();
+
+        // Y pos from bottom up
+        int w = (int) (position.width * tileWidth);
+        int h = (int) (position.height * tileWidth);
+        int x = (int) (getPaddingLeft() + position.x * tileWidth);
+        int y = (int) (lowestPos - position.y * tileWidth - h);
+
+        /*
         final LayoutParams lp = (LayoutParams) child.getLayoutParams();
 
         // Y pos from bottom up
@@ -107,6 +120,8 @@ public class WidgetGroup extends ViewGroup {
         int h = (int) (lp.tilesHeight * tileWidth);
         int x = (int) (getPaddingLeft() + lp.tilesX * tileWidth);
         int y = (int) (lowestPos - lp.tilesY * tileWidth - h);
+        */
+
 
 
         Log.i(TAG, "place child " + x + " " + y+ " " + (x + w)+ " " + (y + h));
@@ -161,6 +176,7 @@ public class WidgetGroup extends ViewGroup {
         view.setDataListener(widgetDataListener);
     }
 
+
     public void setWidgets(List<WidgetEntity> newWidgets) {
         WidgetDiffCallback diffCallback = new WidgetDiffCallback(newWidgets, this.widgetList);
         DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
@@ -172,6 +188,8 @@ public class WidgetGroup extends ViewGroup {
             @Override
             public void onInserted(int position, int count) {
                 Log.i(TAG, "Inserted: Position " + position + " count " + count);
+
+                addViewFor(widgetList.get(position));
                 //getChildAt(position).
             }
 
@@ -190,6 +208,26 @@ public class WidgetGroup extends ViewGroup {
                 Log.i(TAG, "Changed: From " + position + " count " + count);
             }
         });
+    }
+
+    private void addViewFor(WidgetEntity widgetEntity) {
+        Class<? extends BaseView> clazz = widgetEntity.getViewType();
+
+        try {
+            Constructor<? extends BaseView> cons  = clazz.getConstructor(Context.class);
+
+
+            Position position = new Position(widgetEntity.posX, widgetEntity.posY,
+                                            widgetEntity.width, widgetEntity.height);
+            BaseView widgetView = cons.newInstance(this.getContext());
+            widgetView.setDataListener(widgetDataListener);
+            widgetView.setPosition(position);
+
+            this.addView(widgetView);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

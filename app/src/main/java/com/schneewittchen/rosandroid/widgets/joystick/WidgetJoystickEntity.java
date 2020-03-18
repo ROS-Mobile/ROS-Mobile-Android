@@ -2,6 +2,7 @@ package com.schneewittchen.rosandroid.widgets.joystick;
 
 
 import com.schneewittchen.rosandroid.model.entities.WidgetEntity;
+import com.schneewittchen.rosandroid.widgets.base.BaseView;
 import com.schneewittchen.rosandroid.widgets.base.WidgetNode;
 
 /**
@@ -27,5 +28,9 @@ public class WidgetJoystickEntity extends WidgetEntity {
 
     public Class<? extends WidgetNode> getNodeType() {
         return JoystickNode.class;
+    }
+
+    public Class<? extends BaseView> getViewType() {
+        return JoystickView.class;
     }
 }
