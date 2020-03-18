@@ -24,10 +24,12 @@ public class SshViewModel extends AndroidViewModel {
 
     SshRepositoryImpl sshRepositoryImpl;
 
+
     public SshViewModel(@NonNull Application application) {
         super(application);
-        sshRepositoryImpl = sshRepositoryImpl.getInstance();
+        sshRepositoryImpl = SshRepositoryImpl.getInstance();
     }
+
 
     public void connectViaSSH(String username, String password, String ipAddress, int port) {
         sshRepositoryImpl.startSession(username, password, ipAddress, port);
@@ -37,12 +39,12 @@ public class SshViewModel extends AndroidViewModel {
         sshRepositoryImpl.stopSession();
     }
 
-    public LiveData<Boolean> isConnected() {
-        return sshRepositoryImpl.isConnected();
-    }
-
     public void sendViaSSH(String message) {
         sshRepositoryImpl.sendMessage(message);
+    }
+
+    public LiveData<Boolean> isConnected() {
+        return sshRepositoryImpl.isConnected();
     }
 
     public LiveData<String> getOutputData() {
