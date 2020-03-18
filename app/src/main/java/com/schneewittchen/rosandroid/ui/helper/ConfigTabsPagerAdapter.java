@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
+import com.schneewittchen.rosandroid.ui.fragments.SshFragment;
 import com.schneewittchen.rosandroid.ui.fragments.WidgetDetailsFragment;
 import com.schneewittchen.rosandroid.ui.fragments.VizFragment;
 import com.schneewittchen.rosandroid.ui.fragments.MasterConfigFragment;
@@ -21,7 +22,7 @@ import com.schneewittchen.rosandroid.ui.fragments.MasterConfigFragment;
  */
 public class ConfigTabsPagerAdapter extends FragmentPagerAdapter {
 
-    private String[] tabTitles = new String[]{"Master", "Viz", "Details"};
+    private String[] tabTitles = new String[]{"Master", "Viz", "Details", "SSH"};
 
 
     public ConfigTabsPagerAdapter(@NonNull FragmentManager fm) {
@@ -39,6 +40,8 @@ public class ConfigTabsPagerAdapter extends FragmentPagerAdapter {
                 return VizFragment.newInstance();
             case 2:
                 return WidgetDetailsFragment.newInstance();
+            case 3:
+                return SshFragment.newInstance();
 
         }
 
@@ -47,7 +50,7 @@ public class ConfigTabsPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 3;
+        return 4;
     }
 
     @Override

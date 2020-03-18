@@ -11,6 +11,19 @@
     <string name="master_ip_hint">Master URL</string>
     <string name="master_port_hint">Master port</string>
 
+    <!-- Buttons -->
+    <string name="button_connect">Connect</string>
+    <string name="button_send">Send</string>
+
+    <!-- SSH Connection -->
+    <string name="ssh_connection">SSH Connection Data</string>
+    <string name="ssh_terminal">SSH Terminal</string>
+    <string name="ip_address_hint">IP Address</string>
+    <string name="port_hint">Port</string>
+    <string name="username_hint">Username</string>
+    <string name="password_hint">Password</string>
+    <string name="terminal_hint">Terminal Input</string>
+
     <!-- Widgets -->
     <string name="widget_joystick_name">Joystick</string>
     <string name="widget_joystick_desc">A virtual Joystick</string>
@@ -23,6 +36,12 @@
     <string name="default_master_ip">123.456.789.01</string>
     <string name="default_master_ticker_title">Default ticker title</string>
     <string name="default_master_notification_title">Default title</string>
+
+    <!--Default SSH Settings -->
+    <string name="default_ip_address">192.168.1.1</string>
+    <string name="default_port">22</string>
+    <string name="default_username">pi</string>
+    <string name="default_password">raspberry</string>
 
     <!-- Preference key -->
     <string name="preference_file_key">prefs_configs</string>
