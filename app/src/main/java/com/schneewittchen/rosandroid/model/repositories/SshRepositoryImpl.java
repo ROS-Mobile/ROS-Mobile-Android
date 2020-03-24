@@ -43,10 +43,14 @@ public class SshRepositoryImpl implements SshRepository {
     BufferedReader br;
 
     MutableLiveData<String> outputData;
+    MutableLiveData<Boolean> connected;
 
 
     public SshRepositoryImpl() {
+        connected = new MutableLiveData<>();
         outputData = new MutableLiveData<>();
+
+        connected.equals(false);
     }
 
 
@@ -110,20 +114,24 @@ public class SshRepositoryImpl implements SshRepository {
             e.printStackTrace();
         }
 
+        // Check for connection
+        if (channelssh.isConnected()) {
+            connected.postValue(true);
+        }
+
         String line;
         while ((line = br.readLine()) != null && channelssh.isConnected()) {
+<<<<<<< HEAD
+            // TODO: Check if every line will be displayed
+
+=======
+>>>>>>> addSSH
             Log.i(TAG, "looper session");
-
-            /*line = line.replaceAll("[^\\x00-\\x7F]", "");
-            line = line.replaceAll("[\\p{Cntrl}&&[^\r\n\t]]", "");
-            line = line.replaceAll("\\p{C}", "");
-            line = line.replaceAll("\u001B\\[[;\\d]*m", "");*/
-
             // Remove ANSI control chars (Terminal VT 100)
             line = line.replaceAll("\u001B\\[[\\d;]*[^\\d;]","");
-
+            final String finalLine = line;
             // Publish lineData to LiveData
-            outputData.postValue(line);
+            outputData.postValue(finalLine);
         }
     }
 
@@ -131,12 +139,33 @@ public class SshRepositoryImpl implements SshRepository {
     public void stopSession() {
         if (channelssh.isConnected()) {
             channelssh.disconnect();
+            session.disconnect();
+            connected.postValue(false);
+        }
+    }
+
+    @Override
+    public LiveData<Boolean> isConnected() {
+        if(session != null && session.isConnected()){
+            Log.i(TAG, "Session is running already");
+            return connected;
+        } else {
+            return connected;
         }
     }
 
     @Override
     public void sendMessage(String message) {
-        commander.println(message);
+        new Thread((new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    commander.println(message);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        })).start();
     }
 
     @Override
