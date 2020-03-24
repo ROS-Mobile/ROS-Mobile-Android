@@ -128,7 +128,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/port_inputLayout"
-                app:layout_constraintTop_toBottomOf="@+id/ip_address_inputLayout">
+                app:layout_constraintTop_toBottomOf="@+id/ip_address_inputLayout"
+                app:passwordToggleEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/password_editText"
@@ -222,7 +223,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:imeOptions="actionDone"
+            android:imeOptions="actionSend"
             android:inputType="textNoSuggestions" />
     </com.google.android.material.textfield.TextInputLayout>
 
