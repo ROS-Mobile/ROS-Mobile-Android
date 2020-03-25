@@ -6,6 +6,7 @@ import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.schneewittchen.rosandroid.widgets.base.BaseDetailViewHolder;
 import com.schneewittchen.rosandroid.widgets.base.BaseView;
 import com.schneewittchen.rosandroid.widgets.base.WidgetNode;
 import com.schneewittchen.rosandroid.widgets.joystick.JoystickView;
@@ -78,6 +79,10 @@ public class WidgetEntity {
     }
 
     public Class<? extends BaseView> getViewType() { return null; }
+
+    public Class<? extends BaseDetailViewHolder> getDetailViewHolderType() { return null; }
+
+    public int getDetailViewLayoutId() { return 0; }
 
     protected void setType(int type) {
         this.type = type;

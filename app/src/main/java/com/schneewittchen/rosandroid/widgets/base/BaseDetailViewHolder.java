@@ -2,6 +2,7 @@ package com.schneewittchen.rosandroid.widgets.base;
 
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -22,9 +23,9 @@ import com.schneewittchen.rosandroid.model.entities.WidgetEntity;
 public class BaseDetailViewHolder extends RecyclerView.ViewHolder {
 
     private TextView title;
-    private View detailContend;
+    public LinearLayout detailContend;
     private ImageView openButton;
-    private View viewBackground, viewForeground;
+    public View viewBackground, viewForeground;
     private WidgetEntity entity;
 
     public BaseDetailViewHolder(@NonNull View view) {

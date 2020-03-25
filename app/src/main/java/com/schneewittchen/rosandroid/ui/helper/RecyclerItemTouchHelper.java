@@ -6,6 +6,8 @@ import android.view.View;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.schneewittchen.rosandroid.widgets.base.BaseDetailViewHolder;
+
 
 /**
  * TODO: Description
@@ -35,7 +37,7 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
     @Override
     public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState) {
         if (viewHolder != null) {
-            final View foregroundView = ((WidgetDetailListAdapter.MyViewHolder) viewHolder).viewForeground;
+            final View foregroundView = ((BaseDetailViewHolder)viewHolder).viewForeground;
 
             getDefaultUIUtil().onSelected(foregroundView);
         }
@@ -46,7 +48,7 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
                                 RecyclerView.ViewHolder viewHolder, float dX, float dY,
                                 int actionState, boolean isCurrentlyActive) {
 
-        final View foregroundView = ((WidgetDetailListAdapter.MyViewHolder) viewHolder).viewForeground;
+        final View foregroundView = ((BaseDetailViewHolder) viewHolder).viewForeground;
         getDefaultUIUtil().onDrawOver(canvas, recyclerView, foregroundView, dX, dY,
                 actionState, isCurrentlyActive);
     }
@@ -54,7 +56,7 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
     @Override
     public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
 
-        final View foregroundView = ((WidgetDetailListAdapter.MyViewHolder) viewHolder).viewForeground;
+        final View foregroundView = ((BaseDetailViewHolder) viewHolder).viewForeground;
         getDefaultUIUtil().clearView(foregroundView);
     }
 
@@ -63,7 +65,7 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
                             RecyclerView.ViewHolder viewHolder, float dX, float dY,
                             int actionState, boolean isCurrentlyActive) {
 
-        final View foregroundView = ((WidgetDetailListAdapter.MyViewHolder) viewHolder).viewForeground;
+        final View foregroundView = ((BaseDetailViewHolder) viewHolder).viewForeground;
 
         getDefaultUIUtil().onDraw(canvas, recyclerView, foregroundView, dX, dY,
                 actionState, isCurrentlyActive);

@@ -1,7 +1,9 @@
 package com.schneewittchen.rosandroid.widgets.joystick;
 
 
+import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.model.entities.WidgetEntity;
+import com.schneewittchen.rosandroid.widgets.base.BaseDetailViewHolder;
 import com.schneewittchen.rosandroid.widgets.base.BaseView;
 import com.schneewittchen.rosandroid.widgets.base.WidgetNode;
 
@@ -33,4 +35,13 @@ public class WidgetJoystickEntity extends WidgetEntity {
     public Class<? extends BaseView> getViewType() {
         return JoystickView.class;
     }
+
+    public Class<? extends BaseDetailViewHolder> getDetailViewHolderType() {
+        return JoystickDetailVH.class;
+    }
+
+    public int getDetailViewLayoutId() {
+        return R.layout.widget_detail_joystick;
+    }
+
 }

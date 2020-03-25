@@ -1,5 +1,6 @@
 package com.schneewittchen.rosandroid.ui.helper;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,14 +9,18 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.model.entities.WidgetEntity;
 import com.schneewittchen.rosandroid.ui.fragments.WidgetDetailsFragment;
 import com.schneewittchen.rosandroid.widgets.base.BaseDetailViewHolder;
+import com.schneewittchen.rosandroid.widgets.base.BaseView;
 import com.schneewittchen.rosandroid.widgets.base.DetailListener;
+import com.schneewittchen.rosandroid.widgets.base.Position;
 
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,56 +46,48 @@ public class WidgetDetailListAdapter extends RecyclerView.Adapter<BaseDetailView
 
     @NonNull
     @Override
-    public BaseDetailViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public BaseDetailViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int position) {
+        System.err.println("Get Viewholer for: " + position);
+
+        WidgetEntity entity = widgetList.get(position);
+        Class<? extends BaseDetailViewHolder> viewHolderClazz = entity.getDetailViewHolderType();
+        
+        try {
+            Constructor<? extends BaseDetailViewHolder> cons  = viewHolderClazz.getConstructor(View.class);
+            int detailContentLayout = entity.getDetailViewLayoutId();
+
+            LayoutInflater inflator = LayoutInflater.from(parent.getContext());
+            View itemView = inflator.inflate(R.layout.widget_detail_item, parent, false);
+
+            return cons.newInstance(itemView);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return null;
     }
 
     @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
+
+    @Override
     public void onBindViewHolder(@NonNull BaseDetailViewHolder holder, int position) {
+        System.err.println("Pos: " + position);
+
+        WidgetEntity entity = widgetList.get(position);
+
+        LayoutInflater inflator = LayoutInflater.from(holder.itemView.getContext());
+        holder.detailContend.removeView(holder.detailContend.getChildAt(1));
+
+        int detailContentLayout = entity.getDetailViewLayoutId();
+        inflator.inflate(detailContentLayout, holder.detailContend, true);
+
         holder.update(widgetList.get(position));
     }
-
-
-    /*
-    @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int position) {
-        widgetList.get(position).getDetailViewHolderType();
-        LayoutInflater inflator = LayoutInflater.from(parent.getContext());
-
-        View itemView = inflator.inflate(R.layout.widget_detail_item, parent, false);
-
-        int addLayoutId = getWidgetLayout(viewType);
-
-        LinearLayout ll = itemView.findViewById(R.id.detailContend);
-        inflator.inflate(addLayoutId, ll, true);
-
-        return new MyViewHolder(itemView);
-    }
-    */
-
-    private int getWidgetLayout(int viewType) {
-        switch (viewType) {
-            case WidgetEntity.JOYSTICK:
-                return R.layout.widget_detail_joystick;
-            case WidgetEntity.MAP:
-                return R.layout.widget_detail_map;
-        }
-
-        return -1;
-    }
-
-    /*
-    @Override
-    public void onBindViewHolder(MyViewHolder holder, final int position) {
-        final WidgetEntity widget = widgetList.get(position);
-
-        holder.title.setText(widget.getName());
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        return widgetList.get(position).type;
-    }*/
 
     @Override
     public int getItemCount() {
@@ -101,16 +98,13 @@ public class WidgetDetailListAdapter extends RecyclerView.Adapter<BaseDetailView
 
     public void setWidgets(List<WidgetEntity> newWidgets){
         // TODO: Implement Diff callback with widgets
-        /*
         WidgetDiffCallback diffCallback = new WidgetDiffCallback(this.widgetList, newWidgets);
         DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
-        diffResult.dispatchUpdatesTo(this);
-        */
 
         this.widgetList.clear();
         this.widgetList.addAll(newWidgets);
 
-        notifyDataSetChanged();
+        diffResult.dispatchUpdatesTo(this);
     }
 
     public void setChangeListener(DetailListener detailListener) {
@@ -121,36 +115,6 @@ public class WidgetDetailListAdapter extends RecyclerView.Adapter<BaseDetailView
     public void onDetailsChanged(int widgetId) {
         if(detailListener != null) {
             this.detailListener.onDetailsChanged(widgetId);
-        }
-    }
-
-
-    public class MyViewHolder extends RecyclerView.ViewHolder {
-
-        public TextView title;
-        public View detailContend;
-        public ImageView openButton;
-        public View viewBackground, viewForeground;
-
-
-        public MyViewHolder(View view) {
-            super(view);
-
-            title = view.findViewById(R.id.title);
-            detailContend = view.findViewById(R.id.detailContend);
-            openButton = view.findViewById(R.id.open_button);
-            viewBackground = view.findViewById(R.id.view_background);
-            viewForeground = view.findViewById(R.id.view_foreground);
-
-            openButton.setOnClickListener(v -> {
-                if (detailContend.getVisibility() == View.GONE) {
-                    detailContend.setVisibility(View.VISIBLE);
-                    openButton.setImageResource(R.drawable.ic_expand_less_white_24dp);
-                }else{
-                    detailContend.setVisibility(View.GONE);
-                    openButton.setImageResource(R.drawable.ic_expand_more_white_24dp);
-                }
-            });
         }
     }
 }

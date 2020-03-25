@@ -121,11 +121,7 @@ public class SshRepositoryImpl implements SshRepository {
 
         String line;
         while ((line = br.readLine()) != null && channelssh.isConnected()) {
-<<<<<<< HEAD
             // TODO: Check if every line will be displayed
-
-=======
->>>>>>> addSSH
             Log.i(TAG, "looper session");
             // Remove ANSI control chars (Terminal VT 100)
             line = line.replaceAll("\u001B\\[[\\d;]*[^\\d;]","");

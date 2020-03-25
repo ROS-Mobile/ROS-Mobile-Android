@@ -27,6 +27,8 @@ import com.schneewittchen.rosandroid.ui.helper.RecyclerItemTouchHelper;
 import com.schneewittchen.rosandroid.ui.helper.WidgetDetailListAdapter;
 import com.schneewittchen.rosandroid.viewmodel.WidgetDetailsViewModel;
 import com.schneewittchen.rosandroid.model.entities.WidgetEntity;
+import com.schneewittchen.rosandroid.widgets.base.BaseDetailViewHolder;
+import com.schneewittchen.rosandroid.widgets.base.DetailListener;
 
 
 /**
@@ -38,9 +40,9 @@ import com.schneewittchen.rosandroid.model.entities.WidgetEntity;
  * @updated on 17.03.20
  * @modified by
  */
-public class WidgetDetailsFragment extends Fragment implements RecyclerItemTouchHelper.TouchListener{
+public class WidgetDetailsFragment extends Fragment implements RecyclerItemTouchHelper.TouchListener, DetailListener {
 
-    static final String TAG = WidgetDetailsFragment.class.getCanonicalName();
+    static final String TAG = "WidgetDetailsFragment";
 
     private WidgetDetailsViewModel mViewModel;
     private CoordinatorLayout coordinatorLayout;
@@ -94,8 +96,8 @@ public class WidgetDetailsFragment extends Fragment implements RecyclerItemTouch
 
         // Bind to view model
         mViewModel.getCurrentWidgets().observe(getViewLifecycleOwner(), newWidgets -> {
-            mAdapter.setWidgets(newWidgets);
             Log.i(TAG, "Widgets changed with amount: " + newWidgets.size());
+            mAdapter.setWidgets(newWidgets);
         });
 
         mViewModel.widgetsEmpty().observe(getViewLifecycleOwner(), empty ->
@@ -133,10 +135,15 @@ public class WidgetDetailsFragment extends Fragment implements RecyclerItemTouch
 
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
-        if (viewHolder instanceof WidgetDetailListAdapter.MyViewHolder) {
+        if (viewHolder instanceof BaseDetailViewHolder) {
+            deleteWidget(viewHolder.getAdapterPosition());
+
+            /*
             new Handler().postDelayed(() ->
                     deleteWidget(viewHolder.getAdapterPosition())
                     , 500);
+
+             */
         }
     }
 
@@ -162,5 +169,10 @@ public class WidgetDetailsFragment extends Fragment implements RecyclerItemTouch
 
         snackbar.setActionTextColor(getResources().getColor(R.color.color_attention));
         snackbar.show();
+    }
+
+    @Override
+    public void onDetailsChanged(int widgetId) {
+
     }
 }
