@@ -143,7 +143,7 @@ public class WidgetDetailsFragment extends Fragment implements RecyclerItemTouch
                     deleteWidget(viewHolder.getAdapterPosition())
                     , 500);
 
-             */
+            */
         }
     }
 

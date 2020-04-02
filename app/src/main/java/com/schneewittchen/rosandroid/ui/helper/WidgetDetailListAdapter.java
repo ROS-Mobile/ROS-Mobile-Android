@@ -47,7 +47,7 @@ public class WidgetDetailListAdapter extends RecyclerView.Adapter<BaseDetailView
     @NonNull
     @Override
     public BaseDetailViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int position) {
-        System.err.println("Get Viewholer for: " + position);
+        System.err.println("Get ViewHolder for: " + position);
 
         WidgetEntity entity = widgetList.get(position);
         Class<? extends BaseDetailViewHolder> viewHolderClazz = entity.getDetailViewHolderType();
@@ -98,13 +98,15 @@ public class WidgetDetailListAdapter extends RecyclerView.Adapter<BaseDetailView
 
     public void setWidgets(List<WidgetEntity> newWidgets){
         // TODO: Implement Diff callback with widgets
-        WidgetDiffCallback diffCallback = new WidgetDiffCallback(this.widgetList, newWidgets);
-        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
+        // WidgetDiffCallback diffCallback = new WidgetDiffCallback(this.widgetList, newWidgets);
+        // DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
 
         this.widgetList.clear();
         this.widgetList.addAll(newWidgets);
 
-        diffResult.dispatchUpdatesTo(this);
+        // diffResult.dispatchUpdatesTo(this);
+        // TODO: Change that to DiffUtil, but does not work yet with diffUtil ("https://stackoverflow.com/questions/31759171/recyclerview-and-java-lang-indexoutofboundsexception-inconsistency-detected-in")
+        notifyDataSetChanged();
     }
 
     public void setChangeListener(DetailListener detailListener) {
