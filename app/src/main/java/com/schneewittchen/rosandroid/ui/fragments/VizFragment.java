@@ -18,6 +18,7 @@ import com.schneewittchen.rosandroid.model.entities.WidgetEntity;
 import com.schneewittchen.rosandroid.ui.custum_views.WidgetGroup;
 import com.schneewittchen.rosandroid.ui.helper.WidgetDiffCallback;
 import com.schneewittchen.rosandroid.viewmodel.VizViewModel;
+import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
 import com.schneewittchen.rosandroid.widgets.base.DataListener;
 import com.schneewittchen.rosandroid.widgets.base.WidgetData;
 
@@ -77,8 +78,8 @@ public class VizFragment extends Fragment implements DataListener {
         });
     }
 
-    private void updateWidgets(List<WidgetEntity> newWidgets) {
-        List<WidgetEntity> oldWidgets = widgetGroupview.getWidgets();
+    private void updateWidgets(List<BaseEntity> newWidgets) {
+        List<BaseEntity> oldWidgets = widgetGroupview.getWidgets();
 
         WidgetDiffCallback diffCallback = new WidgetDiffCallback(newWidgets, oldWidgets);
         DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);

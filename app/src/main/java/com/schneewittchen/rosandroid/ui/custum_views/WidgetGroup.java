@@ -17,6 +17,7 @@ import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.model.entities.WidgetEntity;
 import com.schneewittchen.rosandroid.ui.helper.WidgetDiffCallback;
 import com.schneewittchen.rosandroid.utility.Utils;
+import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
 import com.schneewittchen.rosandroid.widgets.base.BaseView;
 import com.schneewittchen.rosandroid.widgets.base.DataListener;
 import com.schneewittchen.rosandroid.widgets.base.Position;
@@ -45,7 +46,7 @@ public class WidgetGroup extends ViewGroup {
     int tilesX;
     int tilesY;
     float tileWidth;
-    List<WidgetEntity> widgetList;
+    List<BaseEntity> widgetList;
     DataListener widgetDataListener;
     DataListener dataListener;
 
@@ -177,7 +178,7 @@ public class WidgetGroup extends ViewGroup {
     }
 
 
-    public void setWidgets(List<WidgetEntity> newWidgets) {
+    public void setWidgets(List<BaseEntity> newWidgets) {
         WidgetDiffCallback diffCallback = new WidgetDiffCallback(newWidgets, this.widgetList);
         DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
 
@@ -210,7 +211,7 @@ public class WidgetGroup extends ViewGroup {
         });
     }
 
-    private void addViewFor(WidgetEntity widgetEntity) {
+    private void addViewFor(BaseEntity widgetEntity) {
         Class<? extends BaseView> clazz = widgetEntity.getViewType();
 
         try {
@@ -255,7 +256,7 @@ public class WidgetGroup extends ViewGroup {
         return p instanceof LayoutParams;
     }
 
-    public List<WidgetEntity> getWidgets() {
+    public List<BaseEntity> getWidgets() {
         return this.widgetList;
     }
 

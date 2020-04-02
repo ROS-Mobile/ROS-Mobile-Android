@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:divider="@drawable/empty_divider"
-    android:dividerPadding="8dp"
     android:orientation="vertical"
     android:padding="8dp"
     android:showDividers="middle">
@@ -40,13 +39,12 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/master_ip_inputLayout"
-                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:hint="@string/master_ip_hint"
-                app:boxBackgroundColor="@color/white4p"
-                app:boxBackgroundMode="filled"
+                app:boxBackgroundMode="outline"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView">
@@ -58,18 +56,17 @@
                     android:imeOptions="actionDone"
                     android:inputType="numberDecimal"
                     android:singleLine="true"
-                    android:text="meme" />
+                    android:text="http://168.0.0.1.21112" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/master_port_inputLayout"
-                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/master_port_hint"
-                app:boxBackgroundColor="@color/white4p"
-                app:boxBackgroundMode="filled"
+                app:boxBackgroundMode="outline"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/master_ip_inputLayout">
@@ -80,7 +77,8 @@
                     android:layout_height="wrap_content"
                     android:imeOptions="actionDone"
                     android:inputType="number"
-                    android:singleLine="true" />
+                    android:singleLine="true"
+                    android:text="21112" />
 
             </com.google.android.material.textfield.TextInputLayout>
 

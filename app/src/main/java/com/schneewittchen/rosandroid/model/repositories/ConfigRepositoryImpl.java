@@ -12,6 +12,7 @@ import com.schneewittchen.rosandroid.model.db.ConfigDatabase;
 import com.schneewittchen.rosandroid.model.entities.ConfigEntity;
 import com.schneewittchen.rosandroid.model.entities.MasterEntity;
 import com.schneewittchen.rosandroid.model.entities.WidgetEntity;
+import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
 import com.schneewittchen.rosandroid.widgets.gridmap.WidgetGridMapEntity;
 import com.schneewittchen.rosandroid.widgets.joystick.WidgetJoystickEntity;
 
@@ -103,7 +104,7 @@ public class ConfigRepositoryImpl implements ConfigRepository {
             return;
         }
 
-        WidgetEntity widget;
+        BaseEntity widget;
 
         switch (widgetType) {
             case WidgetEntity.JOYSTICK:
@@ -131,14 +132,14 @@ public class ConfigRepositoryImpl implements ConfigRepository {
     }
 
     @Override
-    public void deleteWidget(WidgetEntity widget) {
+    public void deleteWidget(BaseEntity widget) {
         mConfigDatabase.deleteWidget(widget);
 
         Log.i(TAG, "Widget deleted");
     }
 
     @Override
-    public void addWidget(WidgetEntity widget) {
+    public void addWidget(BaseEntity widget) {
         mConfigDatabase.addWidget(widget);
     }
 
@@ -174,7 +175,7 @@ public class ConfigRepositoryImpl implements ConfigRepository {
     }
 
     @Override
-    public LiveData<List<WidgetEntity>> getWidgets(long id) {
+    public LiveData<List<BaseEntity>> getWidgets(long id) {
         return mConfigDatabase.getWidgets(id);
     }
 }

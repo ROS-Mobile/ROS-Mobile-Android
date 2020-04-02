@@ -1,6 +1,7 @@
 package com.schneewittchen.rosandroid.widgets.base;
 
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -9,34 +10,39 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.schneewittchen.rosandroid.R;
-import com.schneewittchen.rosandroid.model.entities.WidgetEntity;
+
 
 /**
  * TODO: Description
  *
  * @author Nico Studt
- * @version 1.0.0
+ * @version 1.0.1
  * @created on 13.02.20
- * @updated on 13.02.20
+ * @updated on 2.04.20
  * @modified by
  */
-public class BaseDetailViewHolder extends RecyclerView.ViewHolder {
+public class BaseDetailViewHolder<T extends BaseEntity> extends RecyclerView.ViewHolder {
 
-    private TextView title;
-    public LinearLayout detailContend;
-    private ImageView openButton;
     public View viewBackground, viewForeground;
-    private WidgetEntity entity;
+    public LinearLayout detailContend;
+    protected TextView title;
+    protected ImageView openButton;
+    protected Button updateButton;
+    protected T entity;
+    DetailListener updateListener;
 
-    public BaseDetailViewHolder(@NonNull View view) {
+
+    public BaseDetailViewHolder(@NonNull View view, DetailListener updateListener) {
         super(view);
-
+        this.updateListener = updateListener;
         baseInit(view);
     }
+
 
     private void baseInit(View view) {
         title = view.findViewById(R.id.title);
         detailContend = view.findViewById(R.id.detailContend);
+        updateButton = view.findViewById(R.id.update_button);
         openButton = view.findViewById(R.id.open_button);
         viewBackground = view.findViewById(R.id.view_background);
         viewForeground = view.findViewById(R.id.view_foreground);
@@ -50,11 +56,14 @@ public class BaseDetailViewHolder extends RecyclerView.ViewHolder {
                 openButton.setImageResource(R.drawable.ic_expand_more_white_24dp);
             }
         });
+
+        updateButton.setOnClickListener(v -> {
+            updateListener.onDetailsChanged(entity);
+        });
     }
 
-    public void update(WidgetEntity entity) {
+    public void update(T entity) {
         this.entity = entity;
-
         this.title.setText(entity.getName());
     }
 }

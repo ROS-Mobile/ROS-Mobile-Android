@@ -2,6 +2,7 @@ package com.schneewittchen.rosandroid.model.entities;
 
 import android.util.Log;
 
+import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
 import com.schneewittchen.rosandroid.widgets.gridmap.WidgetGridMapEntity;
 import com.schneewittchen.rosandroid.widgets.joystick.WidgetJoystickEntity;
 
@@ -21,8 +22,8 @@ public class WidgetFactory {
     private static final String TAG = WidgetFactory.class.getCanonicalName();
 
 
-    public static List<WidgetEntity> convert(List<WidgetEntity> widgetParentList) {
-        List<WidgetEntity> widgetList = new ArrayList<>();
+    public static List<BaseEntity> convert(List<WidgetEntity> widgetParentList) {
+        List<BaseEntity> widgetList = new ArrayList<>();
 
         for (WidgetEntity widget: widgetParentList) {
             widgetList.add(convert(widget));
@@ -31,8 +32,8 @@ public class WidgetFactory {
         return  widgetList;
     }
 
-    public static WidgetEntity convert(WidgetEntity widgetParent) {
-        WidgetEntity widget = null;
+    public static BaseEntity convert(WidgetEntity widgetParent) {
+        BaseEntity widget = null;
 
         switch (widgetParent.type) {
             case WidgetEntity.JOYSTICK:

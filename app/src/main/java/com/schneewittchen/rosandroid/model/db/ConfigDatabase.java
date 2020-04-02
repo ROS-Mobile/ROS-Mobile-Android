@@ -15,6 +15,7 @@ import com.schneewittchen.rosandroid.model.entities.MasterEntity;
 import com.schneewittchen.rosandroid.model.entities.WidgetEntity;
 import com.schneewittchen.rosandroid.utility.Constants;
 import com.schneewittchen.rosandroid.utility.LambdaTask;
+import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
 
 import java.util.List;
 import java.util.Random;
@@ -115,7 +116,7 @@ public abstract class ConfigDatabase extends RoomDatabase {
         }).execute();
     }
 
-    public LiveData<List<WidgetEntity>> getWidgets(long id) {
+    public LiveData<List<BaseEntity>> getWidgets(long id) {
         return widgetDao().getWidgets(id);
     }
 

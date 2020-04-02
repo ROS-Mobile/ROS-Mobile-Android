@@ -6,11 +6,6 @@ import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import com.schneewittchen.rosandroid.widgets.base.BaseDetailViewHolder;
-import com.schneewittchen.rosandroid.widgets.base.BaseView;
-import com.schneewittchen.rosandroid.widgets.base.WidgetNode;
-import com.schneewittchen.rosandroid.widgets.joystick.JoystickView;
-
 
 /**
  * TODO: Description
@@ -70,6 +65,7 @@ public class WidgetEntity {
     public SubPubNoteEntity publisher;
 
 
+    /*
     public String getName() {
         return "widget";
     }
@@ -87,5 +83,5 @@ public class WidgetEntity {
     protected void setType(int type) {
         this.type = type;
     }
-
+     */
 }

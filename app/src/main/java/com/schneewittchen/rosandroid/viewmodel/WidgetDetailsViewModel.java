@@ -13,6 +13,7 @@ import com.schneewittchen.rosandroid.model.entities.ConfigEntity;
 import com.schneewittchen.rosandroid.model.entities.WidgetEntity;
 import com.schneewittchen.rosandroid.model.repositories.ConfigRepository;
 import com.schneewittchen.rosandroid.model.repositories.ConfigRepositoryImpl;
+import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
 
 import java.util.List;
 
@@ -31,9 +32,9 @@ public class WidgetDetailsViewModel extends AndroidViewModel {
     private static final String TAG = WidgetDetailsViewModel.class.getCanonicalName();
     private ConfigRepository configRepository;
 
-    private LiveData<List<WidgetEntity>> currentWidgets;
+    private LiveData<List<BaseEntity>> currentWidgets;
     private MediatorLiveData<Boolean> widgetsEmpty;
-    private WidgetEntity lastDeletedWidget;
+    private BaseEntity lastDeletedWidget;
 
 
     public WidgetDetailsViewModel(@NonNull Application application) {
@@ -50,7 +51,7 @@ public class WidgetDetailsViewModel extends AndroidViewModel {
         return WidgetModel.getWidgetNames();
     }
 
-    public void deleteWidget(WidgetEntity widget) {
+    public void deleteWidget(BaseEntity widget) {
         lastDeletedWidget = widget;
         configRepository.deleteWidget(widget);
     }
@@ -68,7 +69,7 @@ public class WidgetDetailsViewModel extends AndroidViewModel {
         }
     }
 
-    public LiveData<List<WidgetEntity>> getCurrentWidgets() {
+    public LiveData<List<BaseEntity>> getCurrentWidgets() {
         return this.currentWidgets;
     }
 

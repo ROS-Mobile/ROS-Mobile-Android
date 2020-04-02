@@ -15,6 +15,7 @@ import com.schneewittchen.rosandroid.model.repositories.ConfigRepository;
 import com.schneewittchen.rosandroid.model.repositories.ConfigRepositoryImpl;
 import com.schneewittchen.rosandroid.model.repositories.RosRepo;
 import com.schneewittchen.rosandroid.ui.custum_views.WidgetGroup;
+import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
 import com.schneewittchen.rosandroid.widgets.base.WidgetData;
 
 import org.ros.namespace.GraphName;
@@ -40,7 +41,7 @@ public class VizViewModel extends AndroidViewModel {
     private static final String TAG = VizViewModel.class.getSimpleName();
     private ConfigRepository configRepository;
     private RosRepo rosRepo;
-    private LiveData<List<WidgetEntity>> currentWidgets;
+    private LiveData<List<BaseEntity>> currentWidgets;
 
 
     public VizViewModel(@NonNull Application application) {
@@ -60,21 +61,21 @@ public class VizViewModel extends AndroidViewModel {
         //rosRepo.connectToMaster();
     }
 
-    public LiveData<List<WidgetEntity>> getCurrentWidgets() {
+    public LiveData<List<BaseEntity>> getCurrentWidgets() {
         return this.currentWidgets;
     }
 
 
-    public void register(WidgetEntity widget) {
+    public void register(BaseEntity widget) {
         // TODO: Create node
         rosRepo.registerNode(widget);
     }
 
-    public void unregister(WidgetEntity widget) {
+    public void unregister(BaseEntity widget) {
         rosRepo.unregisterNode(null);
     }
 
-    public void reregister(WidgetEntity widget) {
+    public void reregister(BaseEntity widget) {
         rosRepo.unregisterNode(null);
         //rosRepo.registerNode(null);
     }

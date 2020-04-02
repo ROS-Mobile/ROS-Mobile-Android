@@ -13,6 +13,7 @@ import androidx.core.util.Preconditions;
 
 import com.schneewittchen.rosandroid.model.entities.WidgetEntity;
 import com.schneewittchen.rosandroid.utility.Utils;
+import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
 import com.schneewittchen.rosandroid.widgets.base.WidgetData;
 import com.schneewittchen.rosandroid.widgets.base.WidgetNode;
 import com.schneewittchen.rosandroid.widgets.joystick.JoystickNode;
@@ -88,7 +89,7 @@ public class RosRepo {
         nodeConfiguration = null;
     }
 
-    public void registerNode(WidgetEntity widgetEntity) {
+    public void registerNode(BaseEntity widgetEntity) {
         Class<? extends WidgetNode> clazz = widgetEntity.getNodeType();
 
         try {
@@ -173,7 +174,6 @@ public class RosRepo {
 
     private void bindNodeMainExecutorService() {
         // Check if context alive
-        Preconditions.checkArgument(contextReference.get() != null);
         Context context = contextReference.get();
 
         // Create service intent
@@ -187,7 +187,6 @@ public class RosRepo {
 
         boolean binding = context.bindService(serviceIntent,
                             nodeMainExecutorServiceConnection, Context.BIND_AUTO_CREATE);
-        Preconditions.checkState(binding, "Failed to bind NodeMainExecutorService.");
     }
 
     private String getDefaultHostAddress() {
