@@ -35,6 +35,7 @@ public class WidgetFactory {
     public static BaseEntity convert(WidgetEntity widgetParent) {
         BaseEntity widget = null;
 
+        // TODO: Make generic
         switch (widgetParent.type) {
             case WidgetEntity.JOYSTICK:
                 widget = new WidgetJoystickEntity();

@@ -64,24 +64,4 @@ public class WidgetEntity {
     @Embedded(prefix = "pub_")
     public SubPubNoteEntity publisher;
 
-
-    /*
-    public String getName() {
-        return "widget";
-    }
-
-    public Class<? extends WidgetNode> getNodeType() {
-        return null;
-    }
-
-    public Class<? extends BaseView> getViewType() { return null; }
-
-    public Class<? extends BaseDetailViewHolder> getDetailViewHolderType() { return null; }
-
-    public int getDetailViewLayoutId() { return 0; }
-
-    protected void setType(int type) {
-        this.type = type;
-    }
-     */
 }

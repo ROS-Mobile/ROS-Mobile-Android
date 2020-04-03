@@ -1,6 +1,5 @@
 package com.schneewittchen.rosandroid.model.repositories;
 
-import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -8,15 +7,12 @@ import android.content.ServiceConnection;
 import android.os.Handler;
 import android.os.IBinder;
 
-import androidx.annotation.Nullable;
 import androidx.core.util.Preconditions;
 
-import com.schneewittchen.rosandroid.model.entities.WidgetEntity;
 import com.schneewittchen.rosandroid.utility.Utils;
 import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
 import com.schneewittchen.rosandroid.widgets.base.WidgetData;
 import com.schneewittchen.rosandroid.widgets.base.WidgetNode;
-import com.schneewittchen.rosandroid.widgets.joystick.JoystickNode;
 
 import org.ros.address.InetAddressFactory;
 import org.ros.android.NodeMainExecutorService;
