@@ -9,7 +9,9 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.AsyncListDiffer;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListUpdateCallback;
 
@@ -22,7 +24,6 @@ import com.schneewittchen.rosandroid.widgets.base.BaseView;
 import com.schneewittchen.rosandroid.widgets.base.DataListener;
 import com.schneewittchen.rosandroid.widgets.base.Position;
 import com.schneewittchen.rosandroid.widgets.base.WidgetData;
-import com.schneewittchen.rosandroid.widgets.base.WidgetNode;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
@@ -33,9 +34,9 @@ import java.util.List;
  * TODO: Description
  *
  * @author Nico Studt
- * @version 1.1.0
+ * @version 1.1.1
  * @created on 18.10.19
- * @updated on 9.01.20
+ * @updated on 05.04.20
  * @modified by
  */
 public class WidgetGroup extends ViewGroup {
@@ -74,19 +75,6 @@ public class WidgetGroup extends ViewGroup {
     }
 
 
-    /**
-     * Position all children within this layout.
-     */
-    @Override
-    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-        Log.i(TAG, "On Layout");
-        calculateTiles();
-
-        for (int i = 0; i < getChildCount(); i++) {
-            positionChild(i);
-        }
-    }
-
     private void calculateTiles() {
         float width = getWidth() - getPaddingLeft() - getPaddingRight();
         float height = getHeight() - getPaddingBottom() - getPaddingTop();
@@ -94,6 +82,19 @@ public class WidgetGroup extends ViewGroup {
         tilesX = 8;
         tileWidth = width/tilesX;
         tilesY = (int)(height/tileWidth);
+    }
+
+    /**
+     * Position all children within this layout.
+     */
+    @Override
+    public void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        Log.i(TAG, "On Layout");
+        calculateTiles();
+
+        for (int i = 0; i < getChildCount(); i++) {
+            positionChild(i);
+        }
     }
 
     private void positionChild(int i) {
@@ -113,26 +114,12 @@ public class WidgetGroup extends ViewGroup {
         int x = (int) (getPaddingLeft() + position.x * tileWidth);
         int y = (int) (lowestPos - position.y * tileWidth - h);
 
-        /*
-        final LayoutParams lp = (LayoutParams) child.getLayoutParams();
-
-        // Y pos from bottom up
-        int w = (int) (lp.tilesWidth * tileWidth);
-        int h = (int) (lp.tilesHeight * tileWidth);
-        int x = (int) (getPaddingLeft() + lp.tilesX * tileWidth);
-        int y = (int) (lowestPos - lp.tilesY * tileWidth - h);
-        */
-
-
-
-        Log.i(TAG, "place child " + x + " " + y+ " " + (x + w)+ " " + (y + h));
         // Place the child.
         child.layout(x, y, x + w, y + h);
     }
 
     @Override
     public void onDraw(Canvas canvas) {
-        Log.i(TAG, "On Draw");
         float startX = getPaddingTop();
         float endX = getHeight() - this.getPaddingBottom();
         float startY = getPaddingTop();
@@ -147,80 +134,59 @@ public class WidgetGroup extends ViewGroup {
                 canvas.drawLine(drawX, drawY-lineLen, drawX, drawY+lineLen, crossPaint);
             }
         }
-
-        /*
-        for (int i = 0; i < getChildCount(); i++) {
-            Log.w(TAG, "Child draw " + i);
-            getChildAt(i).draw(canvas);
-        }
-
-         */
-
-        //super.onDraw(canvas);
     }
 
-    public void setDataListener(DataListener listener) {
-        this.dataListener = listener;
-    }
-
-    public void removeDataListener() {
-        this.dataListener = null;
-    }
 
     public void informDataChange(WidgetData data) {
-        if(dataListener != null) {
+        if (dataListener != null) {
             dataListener.onNewData(data);
         }
     }
-
-    private void registerWidgetListener(BaseView view) {
-        view.setDataListener(widgetDataListener);
-    }
-
 
     public void setWidgets(List<BaseEntity> newWidgets) {
         WidgetDiffCallback diffCallback = new WidgetDiffCallback(newWidgets, this.widgetList);
         DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
 
-        this.widgetList.clear();
-        this.widgetList.addAll(newWidgets);
-
         diffResult.dispatchUpdatesTo(new ListUpdateCallback() {
             @Override
             public void onInserted(int position, int count) {
-                Log.i(TAG, "Inserted: Position " + position + " count " + count);
-
-                addViewFor(widgetList.get(position));
-                //getChildAt(position).
+                addViewFor(newWidgets.get(position));
             }
 
             @Override
             public void onRemoved(int position, int count) {
-                Log.i(TAG, "Removed: Position " + position + " count " + count);
+                removeViewFor(widgetList.get(position));
             }
 
             @Override
-            public void onMoved(int fromPosition, int toPosition) {
-                Log.i(TAG, "Moved: From " + fromPosition + " to " + toPosition);
-            }
+            public void onMoved(int fromPosition, int toPosition) { }
 
             @Override
             public void onChanged(int position, int count, @Nullable Object payload) {
-                Log.i(TAG, "Changed: From " + position + " count " + count);
+                for(int i = position; i < position +count; i++) {
+                    changeViewFor(newWidgets.get(i));
+                }
+
+                requestLayout();
             }
         });
+
+        this.widgetList.clear();
+        this.widgetList.addAll(newWidgets);
     }
 
-    private void addViewFor(BaseEntity widgetEntity) {
-        Class<? extends BaseView> clazz = widgetEntity.getViewType();
+
+
+    private void addViewFor(BaseEntity entity) {
+        Class<? extends BaseView> clazz = entity.getViewType();
 
         try {
             Constructor<? extends BaseView> cons  = clazz.getConstructor(Context.class);
 
-
-            Position position = new Position(widgetEntity.posX, widgetEntity.posY,
-                                            widgetEntity.width, widgetEntity.height);
+            Position position = new Position(entity.posX, entity.posY,
+                                            entity.width, entity.height);
             BaseView widgetView = cons.newInstance(this.getContext());
+            widgetView.setWidgetEntity(entity);
             widgetView.setDataListener(widgetDataListener);
             widgetView.setPosition(position);
 
@@ -231,33 +197,45 @@ public class WidgetGroup extends ViewGroup {
         }
     }
 
-    @Override
-    public boolean shouldDelayChildPressedState() {
-        return false;
+    private void changeViewFor(BaseEntity entity) {
+        for(int i = 0; i < this.getChildCount(); i++) {
+            BaseView view = (BaseView) this.getChildAt(i);
+
+            if (view.sameWidget(entity)) {
+                Position position = new Position(entity.posX, entity.posY,
+                        entity.width, entity.height);
+
+                view.setPosition(position);
+                return;
+            }
+        }
     }
 
-    @Override
-    public LayoutParams generateLayoutParams(AttributeSet attrs) {
-        return new WidgetGroup.LayoutParams(getContext(), attrs);
+    private void removeViewFor(BaseEntity entity) {
+        for(int i = 0; i < this.getChildCount(); i++) {
+            BaseView view = (BaseView) this.getChildAt(i);
+
+            if (view.sameWidget(entity)) {
+                this.removeView(view);
+                return;
+            }
+        }
     }
 
-    @Override
-    protected LayoutParams generateDefaultLayoutParams() {
-        return new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-    }
-
-    @Override
-    protected ViewGroup.LayoutParams generateLayoutParams(ViewGroup.LayoutParams p) {
-        return new LayoutParams(p);
-    }
-
-    @Override
-    protected boolean checkLayoutParams(ViewGroup.LayoutParams p) {
-        return p instanceof LayoutParams;
+    private void registerWidgetListener(BaseView view) {
+        view.setDataListener(widgetDataListener);
     }
 
     public List<BaseEntity> getWidgets() {
         return this.widgetList;
+    }
+
+    public void setDataListener(DataListener listener) {
+        this.dataListener = listener;
+    }
+
+    public void removeDataListener() {
+        this.dataListener = null;
     }
 
 
@@ -269,33 +247,5 @@ public class WidgetGroup extends ViewGroup {
         }
     }
 
-
-    public static class LayoutParams extends MarginLayoutParams {
-
-        int tilesX = 0;
-        int tilesY = 0;
-        int tilesWidth = 1;
-        int tilesHeight = 1;
-
-        LayoutParams(Context c, AttributeSet attrs) {
-            super(c, attrs);
-
-            TypedArray a = c.obtainStyledAttributes(attrs, R.styleable.LayoutParams);
-            tilesX = a.getInt(R.styleable.LayoutParams_tilesX, tilesX);
-            tilesY = a.getInt(R.styleable.LayoutParams_tilesY, tilesY);
-            tilesWidth = a.getInt(R.styleable.LayoutParams_tilesWidth, tilesWidth);
-            tilesHeight = a.getInt(R.styleable.LayoutParams_tilesHeight, tilesHeight);
-
-            a.recycle();
-        }
-
-        LayoutParams(int width, int height) {
-            super(width, height);
-        }
-
-        LayoutParams(ViewGroup.LayoutParams source) {
-            super(source);
-        }
-    }
 
 }

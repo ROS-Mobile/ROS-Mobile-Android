@@ -2,6 +2,7 @@ package com.schneewittchen.rosandroid.widgets.base;
 
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -30,6 +31,7 @@ public class BaseDetailViewHolder<T extends BaseEntity> extends RecyclerView.Vie
     protected Button updateButton;
     protected T entity;
     DetailListener updateListener;
+    EditText xEdittext, yEdittext, widthEditText, heightEdittext;
 
 
     public BaseDetailViewHolder(@NonNull View view, DetailListener updateListener) {
@@ -46,6 +48,10 @@ public class BaseDetailViewHolder<T extends BaseEntity> extends RecyclerView.Vie
         openButton = view.findViewById(R.id.open_button);
         viewBackground = view.findViewById(R.id.view_background);
         viewForeground = view.findViewById(R.id.view_foreground);
+        xEdittext = view.findViewById(R.id.x_edit_text);
+        yEdittext = view.findViewById(R.id.y_edit_text);
+        widthEditText = view.findViewById(R.id.width_edit_text);
+        heightEdittext = view.findViewById(R.id.height_edit_text);
 
         openButton.setOnClickListener(v -> {
             if (detailContend.getVisibility() == View.GONE) {
@@ -58,6 +64,11 @@ public class BaseDetailViewHolder<T extends BaseEntity> extends RecyclerView.Vie
         });
 
         updateButton.setOnClickListener(v -> {
+            entity.posX = Integer.parseInt(xEdittext.getText().toString());
+            entity.posY = Integer.parseInt(yEdittext.getText().toString());
+            entity.width = Integer.parseInt(widthEditText.getText().toString());
+            entity.height = Integer.parseInt(heightEdittext.getText().toString());
+
             updateListener.onDetailsChanged(entity);
         });
     }
@@ -65,5 +76,10 @@ public class BaseDetailViewHolder<T extends BaseEntity> extends RecyclerView.Vie
     public void update(T entity) {
         this.entity = entity;
         this.title.setText(entity.getName());
+
+        xEdittext.setText(String.valueOf(entity.posX));
+        yEdittext.setText(String.valueOf(entity.posY));
+        widthEditText.setText(String.valueOf(entity.width));
+        heightEdittext.setText(String.valueOf(entity.height));
     }
 }

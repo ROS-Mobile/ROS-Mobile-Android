@@ -61,7 +61,6 @@ public class JoystickView extends BaseView {
         init();
     }
 
-
     private void init(){
         joystickRadius = Utils.cmToPx(getContext(), 1)/2;
         joystickPaint = new Paint();
@@ -135,7 +134,6 @@ public class JoystickView extends BaseView {
 
     @Override
     public void onDraw(Canvas canvas) {
-        Log.i(TAG, "On draw");
         float width = getWidth();
         float height = getHeight();
 

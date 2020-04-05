@@ -144,6 +144,11 @@ public class ConfigRepositoryImpl implements ConfigRepository {
     }
 
     @Override
+    public void updateWidget(BaseEntity widget) {
+        mConfigDatabase.updataWidget(widget);
+    }
+
+    @Override
     public LiveData<Long> getCurrentConfigId() {
         return mCurrentConfigId;
     }

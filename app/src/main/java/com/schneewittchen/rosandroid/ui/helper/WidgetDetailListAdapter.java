@@ -5,6 +5,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.AsyncListDiffer;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.schneewittchen.rosandroid.R;
@@ -28,20 +30,19 @@ import java.util.List;
  */
 public class WidgetDetailListAdapter extends RecyclerView.Adapter<BaseDetailViewHolder> implements DetailListener{
 
-    public List<BaseEntity> widgetList;
     private DetailListener detailListener;
+    private AsyncListDiffer<BaseEntity> mDiffer;
 
 
     public WidgetDetailListAdapter() {
-        widgetList = new ArrayList<>();
+        mDiffer = new AsyncListDiffer<>(this, diffCallback);
     }
+
 
     @NonNull
     @Override
     public BaseDetailViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int position) {
-        System.err.println("Get ViewHolder for: " + position);
-
-        BaseEntity entity = widgetList.get(position);
+        BaseEntity entity = this.getItem(position);
         Class<? extends BaseDetailViewHolder> viewHolderClazz = entity.getDetailViewHolderType();
         
         try {
@@ -60,16 +61,8 @@ public class WidgetDetailListAdapter extends RecyclerView.Adapter<BaseDetailView
     }
 
     @Override
-    public int getItemViewType(int position) {
-        return position;
-    }
-
-
-    @Override
     public void onBindViewHolder(@NonNull BaseDetailViewHolder holder, int position) {
-        System.err.println("Pos: " + position);
-
-        BaseEntity entity = widgetList.get(position);
+        BaseEntity entity = this.getItem(position);
 
         LayoutInflater inflator = LayoutInflater.from(holder.itemView.getContext());
         holder.detailContend.removeView(holder.detailContend.getChildAt(1));
@@ -77,33 +70,32 @@ public class WidgetDetailListAdapter extends RecyclerView.Adapter<BaseDetailView
         int detailContentLayout = entity.getWidgetDetailViewId();
         inflator.inflate(detailContentLayout, holder.detailContend, true);
 
-        holder.update(widgetList.get(position));
+        holder.update(entity);
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
     }
 
     @Override
     public int getItemCount() {
-        return widgetList.size();
+        return mDiffer.getCurrentList().size();
     }
 
 
+    public BaseEntity getItem(int position) {
+        return mDiffer.getCurrentList().get(position);
+    }
 
     public void setWidgets(List<BaseEntity> newWidgets){
-        // TODO: Implement Diff callback with widgets
-        // WidgetDiffCallback diffCallback = new WidgetDiffCallback(this.widgetList, newWidgets);
-        // DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
-
-        this.widgetList.clear();
-        this.widgetList.addAll(newWidgets);
-
-        // diffResult.dispatchUpdatesTo(this);
-        // TODO: Change that to DiffUtil, but does not work yet with diffUtil
-        //  ("https://stackoverflow.com/questions/31759171/recyclerview-and-java-lang-indexoutofboundsexception-inconsistency-detected-in")
-        notifyDataSetChanged();
+        mDiffer.submitList(newWidgets);
     }
 
     public void setChangeListener(DetailListener detailListener) {
         this.detailListener = detailListener;
     }
+
 
     @Override
     public void onDetailsChanged(BaseEntity widgetId) {
@@ -111,4 +103,17 @@ public class WidgetDetailListAdapter extends RecyclerView.Adapter<BaseDetailView
             this.detailListener.onDetailsChanged(widgetId);
         }
     }
+
+
+    private DiffUtil.ItemCallback<BaseEntity> diffCallback = new DiffUtil.ItemCallback<BaseEntity>() {
+        @Override
+        public boolean areItemsTheSame(BaseEntity oldItem, BaseEntity newItem) {
+            return oldItem.id == newItem.id;
+        }
+
+        @Override
+        public boolean areContentsTheSame(BaseEntity oldItem, BaseEntity newItem) {
+            return oldItem.equals(newItem) && oldItem.equalContent(newItem);
+        }
+    };
 }

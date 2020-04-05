@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListUpdateCallback;
 
 import com.schneewittchen.rosandroid.R;
-import com.schneewittchen.rosandroid.model.entities.WidgetEntity;
 import com.schneewittchen.rosandroid.ui.custum_views.WidgetGroup;
 import com.schneewittchen.rosandroid.ui.helper.WidgetDiffCallback;
 import com.schneewittchen.rosandroid.viewmodel.VizViewModel;
@@ -22,16 +21,14 @@ import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
 import com.schneewittchen.rosandroid.widgets.base.DataListener;
 import com.schneewittchen.rosandroid.widgets.base.WidgetData;
 
-import java.util.List;
-
 
 /**
  * TODO: Description
  *
  * @author Nico Studt
- * @version 1.0.1
+ * @version 1.0.2
  * @created on 10.01.20
- * @updated on 13.03.20
+ * @updated on 05.04.20
  * @modified by
  */
 public class VizFragment extends Fragment implements DataListener {
@@ -69,50 +66,9 @@ public class VizFragment extends Fragment implements DataListener {
         mViewModel = new ViewModelProvider(this).get(VizViewModel.class);
 
         mViewModel.getCurrentWidgets().observe(getViewLifecycleOwner(), widgetEntities -> {
-            // Connect widgets with ros
-            updateWidgets(widgetEntities);
-
             // Set widgets on view
             widgetGroupview.setWidgets(widgetEntities);
 
-        });
-    }
-
-    private void updateWidgets(List<BaseEntity> newWidgets) {
-        List<BaseEntity> oldWidgets = widgetGroupview.getWidgets();
-
-        WidgetDiffCallback diffCallback = new WidgetDiffCallback(newWidgets, oldWidgets);
-        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
-
-        diffResult.dispatchUpdatesTo(new ListUpdateCallback() {
-            @Override
-            public void onInserted(int index, int count) {
-                Log.i(TAG, "Inserted: Position " + index + " count " + count);
-                mViewModel.register(newWidgets.get(index));
-            }
-
-            @Override
-            public void onRemoved(int index, int count) {
-                mViewModel.unregister(oldWidgets.get(index));
-                Log.i(TAG, "Removed: Position " + index + " count " + count);
-            }
-
-            @Override
-            public void onMoved(int fromPosition, int toPosition) {
-                Log.i(TAG, "Moved: From " + fromPosition + " to " + toPosition);
-            }
-
-            @Override
-            public void onChanged(int index, int count, @Nullable Object payload) {
-                for(int i = index; i < index +count; i++) {
-                    this.onChanged(i);
-                }
-                Log.i(TAG, "Changed: From " + index + " count " + count);
-            }
-
-            private void onChanged(int index) {
-                mViewModel.reregister(oldWidgets.get(index));
-            }
         });
     }
 

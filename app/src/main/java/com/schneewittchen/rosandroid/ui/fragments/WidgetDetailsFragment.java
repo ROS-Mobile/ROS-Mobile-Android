@@ -21,7 +21,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.schneewittchen.rosandroid.R;
-import com.schneewittchen.rosandroid.model.entities.WidgetEntity;
 import com.schneewittchen.rosandroid.ui.helper.RecyclerItemTouchHelper;
 import com.schneewittchen.rosandroid.ui.helper.WidgetDetailListAdapter;
 import com.schneewittchen.rosandroid.viewmodel.WidgetDetailsViewModel;
@@ -29,17 +28,14 @@ import com.schneewittchen.rosandroid.widgets.base.BaseDetailViewHolder;
 import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
 import com.schneewittchen.rosandroid.widgets.base.DetailListener;
 
-import java.util.ArrayList;
-import java.util.List;
-
 
 /**
  * TODO: Description
  *
  * @author Nico Studt
- * @version 1.2.4
+ * @version 1.2.5
  * @created on 10.01.20
- * @updated on 2.04.20
+ * @updated on 05.04.20
  * @modified by
  */
 public class WidgetDetailsFragment extends Fragment implements RecyclerItemTouchHelper.TouchListener, DetailListener {
@@ -98,16 +94,7 @@ public class WidgetDetailsFragment extends Fragment implements RecyclerItemTouch
 
         // Bind to view model
         mViewModel.getCurrentWidgets().observe(getViewLifecycleOwner(), newWidgets -> {
-            Log.i(TAG, "Widgets changed with amount: " + newWidgets.size());
-
-            // Convert to Base widgets
-            // Todo: Do this in the viewmodel
-            List<BaseEntity> baseWidgets = new ArrayList<>(newWidgets.size());
-            for (WidgetEntity widget : newWidgets) {
-                baseWidgets.add((BaseEntity)widget);
-            }
-
-            mAdapter.setWidgets(baseWidgets);
+            mAdapter.setWidgets(newWidgets);
         });
 
         mViewModel.widgetsEmpty().observe(getViewLifecycleOwner(), empty ->
@@ -159,7 +146,7 @@ public class WidgetDetailsFragment extends Fragment implements RecyclerItemTouch
 
     private void deleteWidget(int index) {
         // get the removed item name to display it in snack bar
-        final BaseEntity deletedWidget = mAdapter.widgetList.get(index);
+        final BaseEntity deletedWidget = mAdapter.getItem(index);
 
         String name = deletedWidget.getName();
 
@@ -183,6 +170,7 @@ public class WidgetDetailsFragment extends Fragment implements RecyclerItemTouch
 
     @Override
     public void onDetailsChanged(BaseEntity widgetEntity) {
-        Log.i(TAG, "Changed: " + widgetEntity.name);
+        Log.i(TAG, "Changed: " + widgetEntity.name + " " + widgetEntity.posX);
+        mViewModel.updateWidget(widgetEntity);
     }
 }

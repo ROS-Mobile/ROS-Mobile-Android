@@ -62,4 +62,9 @@ public class WidgetGridMapEntity extends BaseEntity {
     public Class<? extends WidgetNode> getNodeType() {
         return null;
     }
+
+    @Override
+    public boolean equalContent(BaseEntity other) {
+        return true;
+    }
 }

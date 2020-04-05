@@ -22,6 +22,7 @@ public class BaseView extends View implements Interactable {
     DataListener dataListener;
     long dataId;
     Position position;
+    BaseEntity widgetEntity;
 
 
     public BaseView(Context context) {
@@ -35,6 +36,7 @@ public class BaseView extends View implements Interactable {
     public BaseView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
+
 
     @Override
     public void informDataChange(WidgetData data) {
@@ -75,5 +77,13 @@ public class BaseView extends View implements Interactable {
 
     public Position getPosition() {
         return this.position;
+    }
+
+    public void setWidgetEntity(BaseEntity widgetEntity) {
+        this.widgetEntity = widgetEntity;
+    }
+    
+    public boolean sameWidget(BaseEntity other) {
+        return this.widgetEntity.id == other.id;
     }
 }

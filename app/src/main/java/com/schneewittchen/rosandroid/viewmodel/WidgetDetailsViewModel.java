@@ -51,6 +51,10 @@ public class WidgetDetailsViewModel extends AndroidViewModel {
         return WidgetModel.getWidgetNames();
     }
 
+    public void updateWidget(BaseEntity widget) {
+        configRepository.updateWidget(widget);
+    }
+
     public void deleteWidget(BaseEntity widget) {
         lastDeletedWidget = widget;
         configRepository.deleteWidget(widget);

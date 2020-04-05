@@ -1,5 +1,7 @@
 package com.schneewittchen.rosandroid.ui.helper;
 
+import android.util.Log;
+
 import androidx.recyclerview.widget.DiffUtil;
 import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
 import java.util.List;
@@ -15,6 +17,8 @@ import java.util.List;
  * @modified by
  */
 public class WidgetDiffCallback extends DiffUtil.Callback{
+
+    public static String TAG = WidgetDiffCallback.class.getSimpleName();
 
     List<BaseEntity> oldWidgets;
     List<BaseEntity> newWidgets;
@@ -36,7 +40,12 @@ public class WidgetDiffCallback extends DiffUtil.Callback{
 
     @Override
     public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-        return oldWidgets.get(oldItemPosition).id == newWidgets.get(newItemPosition).id;
+        BaseEntity oldWidget = oldWidgets.get(oldItemPosition);
+        BaseEntity newWidget = newWidgets.get(newItemPosition);
+        boolean itemsSame = oldWidget.id == newWidget.id;
+
+        Log.i(TAG, "Items same (" + oldItemPosition + " " + newItemPosition + "): " + itemsSame);
+        return itemsSame;
     }
 
     @Override
@@ -44,8 +53,12 @@ public class WidgetDiffCallback extends DiffUtil.Callback{
         BaseEntity oldWidget = oldWidgets.get(oldItemPosition);
         BaseEntity newWidget = newWidgets.get(newItemPosition);
 
-        return oldWidget.id == newWidget.id
-                && oldWidget.type == newWidget.type;
+        boolean objectEquals = oldWidget.equals(newWidget);
+        boolean contentSame = oldWidget.equalContent(newWidget);
+
+        Log.i(TAG, "(" + oldItemPosition + " " + newItemPosition + "): Objects equals " + objectEquals + "  Content same " + contentSame);
+
+        return  objectEquals && contentSame;
     }
 
 }

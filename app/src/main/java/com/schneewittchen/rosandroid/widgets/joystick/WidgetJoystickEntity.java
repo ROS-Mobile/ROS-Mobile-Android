@@ -58,4 +58,10 @@ public class WidgetJoystickEntity extends BaseEntity {
         return JoystickNode.class;
     }
 
+    @Override
+    public boolean equalContent(BaseEntity other) {
+        System.err.println("Check equal content");
+        return true;
+    }
+
 }

@@ -131,6 +131,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/textView6">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/x_edit_text"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:ems="3"
@@ -153,6 +154,7 @@
                         app:layout_constraintStart_toEndOf="@+id/textInputLayout">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/y_edit_text"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:ems="3"
@@ -175,6 +177,7 @@
                         app:layout_constraintStart_toEndOf="@+id/textInputLayout2">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/width_edit_text"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:ems="3"
@@ -197,6 +200,7 @@
                         app:layout_constraintStart_toEndOf="@+id/textInputLayout3">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/height_edit_text"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:ems="3"

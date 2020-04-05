@@ -58,4 +58,6 @@ public interface ConfigRepository {
     void deleteWidget(BaseEntity widget);
 
     void addWidget(BaseEntity widget);
+
+    void updateWidget(BaseEntity widget);
 }
