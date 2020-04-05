@@ -198,7 +198,7 @@ public abstract class KeyPair{
    * @param comment comment
    * @see #writePublicKey(java.io.OutputStream out, String comment)
    */
-  public void writePublicKey(String name, String comment) throws java.io.FileNotFoundException, IOException{
+  public void writePublicKey(String name, String comment) throws IOException{
     FileOutputStream fos=new FileOutputStream(name);
     writePublicKey(fos, comment);
     fos.close();
@@ -236,7 +236,7 @@ public abstract class KeyPair{
    * @param comment comment
    * @see #writeSECSHPublicKey(java.io.OutputStream out, String comment)
    */
-  public void writeSECSHPublicKey(String name, String comment) throws java.io.FileNotFoundException, IOException{
+  public void writeSECSHPublicKey(String name, String comment) throws IOException{
     FileOutputStream fos=new FileOutputStream(name);
     writeSECSHPublicKey(fos, comment);
     fos.close();
@@ -247,7 +247,7 @@ public abstract class KeyPair{
    * @param name file name
    * @see #writePrivateKey(String name,  byte[] passphrase)
    */
-  public void writePrivateKey(String name) throws java.io.FileNotFoundException, IOException{
+  public void writePrivateKey(String name) throws IOException{
     this.writePrivateKey(name, null);
   }
 
@@ -257,7 +257,7 @@ public abstract class KeyPair{
    * @param passphrase a passphrase to encrypt the private key
    * @see #writePrivateKey(java.io.OutputStream out,  byte[] passphrase)
    */
-  public void writePrivateKey(String name, byte[] passphrase) throws java.io.FileNotFoundException, IOException{
+  public void writePrivateKey(String name, byte[] passphrase) throws IOException{
     FileOutputStream fos=new FileOutputStream(name);
     writePrivateKey(fos, passphrase);
     fos.close();
@@ -386,7 +386,7 @@ public abstract class KeyPair{
   private Random genRandom(){
     if(random==null){
       try{
-	Class c=Class.forName(jsch.getConfig("random"));
+	Class c=Class.forName(JSch.getConfig("random"));
         random=(Random)(c.newInstance());
       }
       catch(Exception e){ System.err.println("connect: random "+e); }
@@ -396,7 +396,7 @@ public abstract class KeyPair{
 
   private HASH genHash(){
     try{
-      Class c=Class.forName(jsch.getConfig("md5"));
+      Class c=Class.forName(JSch.getConfig("md5"));
       hash=(HASH)(c.newInstance());
       hash.init();
     }
@@ -407,7 +407,7 @@ public abstract class KeyPair{
   private Cipher genCipher(){
     try{
       Class c;
-      c=Class.forName(jsch.getConfig("3des-cbc"));
+      c=Class.forName(JSch.getConfig("3des-cbc"));
       cipher=(Cipher)(c.newInstance());
     }
     catch(Exception e){
@@ -453,7 +453,7 @@ public abstract class KeyPair{
 	System.arraycopy(hn, 0, key, 0, key.length); 
       }
       else if(vendor==VENDOR_PUTTY){
-        Class c=Class.forName((String)jsch.getConfig("sha-1"));
+        Class c=Class.forName(JSch.getConfig("sha-1"));
         HASH sha1=(HASH)(c.newInstance());
         tmp = new byte[4];
         key = new byte[20*2];
@@ -540,7 +540,7 @@ public abstract class KeyPair{
       prvkey = Util.fromFile(prvfile);
     }
     catch(IOException e){
-      throw new JSchException(e.toString(), (Throwable)e);
+      throw new JSchException(e.toString(), e);
     }
 
     String _pubfile=pubfile;
@@ -553,7 +553,7 @@ public abstract class KeyPair{
     }
     catch(IOException e){
       if(pubfile!=null){  
-        throw new JSchException(e.toString(), (Throwable)e);
+        throw new JSchException(e.toString(), e);
       }
     }
 
@@ -669,8 +669,8 @@ public abstract class KeyPair{
         if(buf[i]=='A'&& i+7<len && buf[i+1]=='E'&& buf[i+2]=='S'&& buf[i+3]=='-' && 
            buf[i+4]=='2'&& buf[i+5]=='5'&& buf[i+6]=='6'&& buf[i+7]=='-'){
           i+=8;
-          if(Session.checkCipher((String)jsch.getConfig("aes256-cbc"))){
-            Class c=Class.forName((String)jsch.getConfig("aes256-cbc"));
+          if(Session.checkCipher(JSch.getConfig("aes256-cbc"))){
+            Class c=Class.forName(JSch.getConfig("aes256-cbc"));
             cipher=(Cipher)(c.newInstance());
             // key=new byte[cipher.getBlockSize()];
             iv=new byte[cipher.getIVSize()];
@@ -683,8 +683,8 @@ public abstract class KeyPair{
         if(buf[i]=='A'&& i+7<len && buf[i+1]=='E'&& buf[i+2]=='S'&& buf[i+3]=='-' && 
            buf[i+4]=='1'&& buf[i+5]=='9'&& buf[i+6]=='2'&& buf[i+7]=='-'){
           i+=8;
-          if(Session.checkCipher((String)jsch.getConfig("aes192-cbc"))){
-            Class c=Class.forName((String)jsch.getConfig("aes192-cbc"));
+          if(Session.checkCipher(JSch.getConfig("aes192-cbc"))){
+            Class c=Class.forName(JSch.getConfig("aes192-cbc"));
             cipher=(Cipher)(c.newInstance());
             // key=new byte[cipher.getBlockSize()];
             iv=new byte[cipher.getIVSize()];
@@ -697,8 +697,8 @@ public abstract class KeyPair{
         if(buf[i]=='A'&& i+7<len && buf[i+1]=='E'&& buf[i+2]=='S'&& buf[i+3]=='-' && 
            buf[i+4]=='1'&& buf[i+5]=='2'&& buf[i+6]=='8'&& buf[i+7]=='-'){
           i+=8;
-          if(Session.checkCipher((String)jsch.getConfig("aes128-cbc"))){
-            Class c=Class.forName((String)jsch.getConfig("aes128-cbc"));
+          if(Session.checkCipher(JSch.getConfig("aes128-cbc"))){
+            Class c=Class.forName(JSch.getConfig("aes128-cbc"));
             cipher=(Cipher)(c.newInstance());
             // key=new byte[cipher.getBlockSize()];
             iv=new byte[cipher.getIVSize()];
@@ -917,7 +917,7 @@ public abstract class KeyPair{
     catch(Exception e){
       if(e instanceof JSchException) throw (JSchException)e;
       if(e instanceof Throwable)
-        throw new JSchException(e.toString(), (Throwable)e);
+        throw new JSchException(e.toString(), e);
       throw new JSchException(e.toString());
     }
 
@@ -1067,9 +1067,9 @@ public abstract class KeyPair{
     kpair.vendor = VENDOR_PUTTY;
     kpair.publicKeyComment = (String)v.get("Comment");
     if(kpair.encrypted){
-      if(Session.checkCipher((String)jsch.getConfig("aes256-cbc"))){
+      if(Session.checkCipher(JSch.getConfig("aes256-cbc"))){
         try {
-          Class c=Class.forName((String)jsch.getConfig("aes256-cbc"));
+          Class c=Class.forName(JSch.getConfig("aes256-cbc"));
           kpair.cipher=(Cipher)(c.newInstance());
           kpair.iv=new byte[kpair.cipher.getIVSize()];
         }

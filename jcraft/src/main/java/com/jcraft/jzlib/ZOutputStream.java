@@ -75,7 +75,7 @@ public class ZOutputStream extends FilterOutputStream {
     write(buf1, 0, 1);
   }
 
-  public void write(byte b[], int off, int len) throws IOException {
+  public void write(byte[] b, int off, int len) throws IOException {
     if(len==0) return;
     if(compress){
       dos.write(b, off, len);

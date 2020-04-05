@@ -229,13 +229,13 @@ loop:
       if(e instanceof JSchException)
 	throw (JSchException)e;         
       if(e instanceof Throwable)
-        throw new JSchException(e.toString(), (Throwable)e);
+        throw new JSchException(e.toString(), e);
       throw new JSchException(e.toString());
     }
     finally {
       try{ input.close(); }
       catch(IOException e){
-        throw new JSchException(e.toString(), (Throwable)e);
+        throw new JSchException(e.toString(), e);
       }
     }
   }
@@ -351,7 +351,7 @@ loop:
   }
 
   public HostKey[] getHostKey(){
-    return getHostKey(null, (String)null);
+    return getHostKey(null, null);
   }
   public HostKey[] getHostKey(String host, String type){
     synchronized(pool){
@@ -408,7 +408,7 @@ loop:
     }
     }
     if(sync){
-      try{sync();}catch(Exception e){};
+      try{sync();}catch(Exception e){}
     }
   }
 
@@ -486,7 +486,7 @@ loop:
   private MAC getHMACSHA1(){
     if(hmacsha1==null){
       try{
-        Class c=Class.forName(jsch.getConfig("hmac-sha1"));
+        Class c=Class.forName(JSch.getConfig("hmac-sha1"));
         hmacsha1=(MAC)(c.newInstance());
       }
       catch(Exception e){ 

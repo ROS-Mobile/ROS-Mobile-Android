@@ -155,7 +155,7 @@ class PortWatcher implements Runnable{
       //System.err.println(e);
       String message="PortForwardingL: local port "+address+":"+lport+" cannot be bound.";
       if(e instanceof Throwable)
-        throw new JSchException(message, (Throwable)e);
+        throw new JSchException(message, e);
       throw new JSchException(message);
     }
     if(lport==0){
@@ -178,10 +178,10 @@ class PortWatcher implements Runnable{
         channel.setInputStream(in);
         channel.setOutputStream(out);
 	session.addChannel(channel);
-	((ChannelDirectTCPIP)channel).setHost(host);
-	((ChannelDirectTCPIP)channel).setPort(rport);
-	((ChannelDirectTCPIP)channel).setOrgIPAddress(socket.getInetAddress().getHostAddress());
-	((ChannelDirectTCPIP)channel).setOrgPort(socket.getPort());
+	channel.setHost(host);
+	channel.setPort(rport);
+	channel.setOrgIPAddress(socket.getInetAddress().getHostAddress());
+	channel.setOrgPort(socket.getPort());
         channel.connect(connectTimeout);
 	if(channel.exitstatus!=-1){
 	}

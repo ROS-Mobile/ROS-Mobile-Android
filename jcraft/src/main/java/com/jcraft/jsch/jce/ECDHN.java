@@ -104,9 +104,7 @@ public class ECDHN implements com.jcraft.jsch.ECDH {
                      add(x.modPow(three, p)).
                      mod(p);
     BigInteger y_2=y.modPow(two, p);
-    if(!(y_2.equals(tmp))){ 
-      return false;
-    }
+      return y_2.equals(tmp);
 
     // Step.3
     //   Check that nQ = O.
@@ -116,7 +114,6 @@ public class ECDHN implements com.jcraft.jsch.ECDH {
       return false;
     }
     */
-    return true;
   }
 
   private byte[] toPoint(byte[] r_array, byte[] s_array) {

@@ -30,9 +30,9 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package com.jcraft.jsch;
 
 public interface HostKeyRepository{
-  final int OK=0;
-  final int NOT_INCLUDED=1;
-  final int CHANGED=2;
+  int OK=0;
+  int NOT_INCLUDED=1;
+  int CHANGED=2;
 
   /**
    * Checks if <code>host</code> is included with the <code>key</code>. 

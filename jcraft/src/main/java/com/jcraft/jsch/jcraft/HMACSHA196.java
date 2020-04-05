@@ -36,9 +36,9 @@ public class HMACSHA196 extends HMACSHA1{
   private static final String name="hmac-sha1-96";
   private static final int BSIZE=12;
 
-  public int getBlockSize(){return BSIZE;};
+  public int getBlockSize(){return BSIZE;}
 
-  private final byte[] _buf16=new byte[20];
+    private final byte[] _buf16=new byte[20];
   public void doFinal(byte[] buf, int offset){
     super.doFinal(_buf16, 0);
     System.arraycopy(_buf16, 0, buf, offset, BSIZE);

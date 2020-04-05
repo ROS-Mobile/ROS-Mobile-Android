@@ -62,7 +62,7 @@ public class KeyPairDSA extends KeyPair{
   void generate(int key_size) throws JSchException{
     this.key_size=key_size;
     try{
-      Class c=Class.forName(jsch.getConfig("keypairgen.dsa"));
+      Class c=Class.forName(JSch.getConfig("keypairgen.dsa"));
       KeyPairGenDSA keypairgen=(KeyPairGenDSA)(c.newInstance());
       keypairgen.init(key_size);
       P_array=keypairgen.getP();
@@ -76,7 +76,7 @@ public class KeyPairDSA extends KeyPair{
     catch(Exception e){
       //System.err.println("KeyPairDSA: "+e); 
       if(e instanceof Throwable)
-        throw new JSchException(e.toString(), (Throwable)e);
+        throw new JSchException(e.toString(), e);
       throw new JSchException(e.toString());
     }
   }
@@ -249,7 +249,7 @@ public class KeyPairDSA extends KeyPair{
 
   public byte[] getSignature(byte[] data){
     try{      
-      Class c=Class.forName((String)jsch.getConfig("signature.dss"));
+      Class c=Class.forName(JSch.getConfig("signature.dss"));
       SignatureDSA dsa=(SignatureDSA)(c.newInstance());
       dsa.init();
       dsa.setPrvKey(prv_array, P_array, Q_array, G_array);
@@ -269,7 +269,7 @@ public class KeyPairDSA extends KeyPair{
 
   public Signature getVerifier(){
     try{      
-      Class c=Class.forName((String)jsch.getConfig("signature.dss"));
+      Class c=Class.forName(JSch.getConfig("signature.dss"));
       SignatureDSA dsa=(SignatureDSA)(c.newInstance());
       dsa.init();
 

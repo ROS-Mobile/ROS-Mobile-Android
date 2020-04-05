@@ -530,35 +530,35 @@ public class VirtualJoystick extends RelativeLayout implements Animation.Animati
         setGravity(Gravity.CENTER);
         // Instantiate the elements from the layout XML file.
         LayoutInflater.from(context).inflate(R.layout.virtual_joystick, this, true);
-        mainLayout = (RelativeLayout) findViewById(R.id.virtual_joystick_layout);
-        magnitudeText = (TextView) findViewById(R.id.magnitude);
-        intensity = (ImageView) findViewById(R.id.intensity);
-        thumbDivet = (ImageView) findViewById(R.id.thumb_divet);
+        mainLayout = findViewById(R.id.virtual_joystick_layout);
+        magnitudeText = findViewById(R.id.magnitude);
+        intensity = findViewById(R.id.intensity);
+        thumbDivet = findViewById(R.id.thumb_divet);
         orientationWidget = new ImageView[24];
-        orientationWidget[0] = (ImageView) findViewById(R.id.widget_0_degrees);
-        orientationWidget[1] = (ImageView) findViewById(R.id.widget_15_degrees);
-        orientationWidget[2] = (ImageView) findViewById(R.id.widget_30_degrees);
-        orientationWidget[3] = (ImageView) findViewById(R.id.widget_45_degrees);
-        orientationWidget[4] = (ImageView) findViewById(R.id.widget_60_degrees);
-        orientationWidget[5] = (ImageView) findViewById(R.id.widget_75_degrees);
-        orientationWidget[6] = (ImageView) findViewById(R.id.widget_90_degrees);
-        orientationWidget[7] = (ImageView) findViewById(R.id.widget_105_degrees);
-        orientationWidget[8] = (ImageView) findViewById(R.id.widget_120_degrees);
-        orientationWidget[9] = (ImageView) findViewById(R.id.widget_135_degrees);
-        orientationWidget[10] = (ImageView) findViewById(R.id.widget_150_degrees);
-        orientationWidget[11] = (ImageView) findViewById(R.id.widget_165_degrees);
-        orientationWidget[12] = (ImageView) findViewById(R.id.widget_180_degrees);
-        orientationWidget[13] = (ImageView) findViewById(R.id.widget_195_degrees);
-        orientationWidget[14] = (ImageView) findViewById(R.id.widget_210_degrees);
-        orientationWidget[15] = (ImageView) findViewById(R.id.widget_225_degrees);
-        orientationWidget[16] = (ImageView) findViewById(R.id.widget_240_degrees);
-        orientationWidget[17] = (ImageView) findViewById(R.id.widget_255_degrees);
-        orientationWidget[18] = (ImageView) findViewById(R.id.widget_270_degrees);
-        orientationWidget[19] = (ImageView) findViewById(R.id.widget_285_degrees);
-        orientationWidget[20] = (ImageView) findViewById(R.id.widget_300_degrees);
-        orientationWidget[21] = (ImageView) findViewById(R.id.widget_315_degrees);
-        orientationWidget[22] = (ImageView) findViewById(R.id.widget_330_degrees);
-        orientationWidget[23] = (ImageView) findViewById(R.id.widget_345_degrees);
+        orientationWidget[0] = findViewById(R.id.widget_0_degrees);
+        orientationWidget[1] = findViewById(R.id.widget_15_degrees);
+        orientationWidget[2] = findViewById(R.id.widget_30_degrees);
+        orientationWidget[3] = findViewById(R.id.widget_45_degrees);
+        orientationWidget[4] = findViewById(R.id.widget_60_degrees);
+        orientationWidget[5] = findViewById(R.id.widget_75_degrees);
+        orientationWidget[6] = findViewById(R.id.widget_90_degrees);
+        orientationWidget[7] = findViewById(R.id.widget_105_degrees);
+        orientationWidget[8] = findViewById(R.id.widget_120_degrees);
+        orientationWidget[9] = findViewById(R.id.widget_135_degrees);
+        orientationWidget[10] = findViewById(R.id.widget_150_degrees);
+        orientationWidget[11] = findViewById(R.id.widget_165_degrees);
+        orientationWidget[12] = findViewById(R.id.widget_180_degrees);
+        orientationWidget[13] = findViewById(R.id.widget_195_degrees);
+        orientationWidget[14] = findViewById(R.id.widget_210_degrees);
+        orientationWidget[15] = findViewById(R.id.widget_225_degrees);
+        orientationWidget[16] = findViewById(R.id.widget_240_degrees);
+        orientationWidget[17] = findViewById(R.id.widget_255_degrees);
+        orientationWidget[18] = findViewById(R.id.widget_270_degrees);
+        orientationWidget[19] = findViewById(R.id.widget_285_degrees);
+        orientationWidget[20] = findViewById(R.id.widget_300_degrees);
+        orientationWidget[21] = findViewById(R.id.widget_315_degrees);
+        orientationWidget[22] = findViewById(R.id.widget_330_degrees);
+        orientationWidget[23] = findViewById(R.id.widget_345_degrees);
         // Initially hide all the widgets.
         for (ImageView tack : orientationWidget) {
             tack.setAlpha(0.0f);
@@ -574,12 +574,12 @@ public class VirtualJoystick extends RelativeLayout implements Animation.Animati
         // Initially the orientationWidgets should point to 0 degrees.
         contactTheta = 0;
         animateOrientationWidgets();
-        currentRotationRange = (ImageView) findViewById(R.id.top_angle_slice);
-        previousRotationRange = (ImageView) findViewById(R.id.mid_angle_slice);
+        currentRotationRange = findViewById(R.id.top_angle_slice);
+        previousRotationRange = findViewById(R.id.mid_angle_slice);
         // Hide the slices/arcs used during the turn-in-place mode.
         currentRotationRange.setAlpha(0.0f);
         previousRotationRange.setAlpha(0.0f);
-        lastVelocityDivet = (ImageView) findViewById(R.id.previous_velocity_divet);
+        lastVelocityDivet = findViewById(R.id.previous_velocity_divet);
         contactUpLocation = new Point(0, 0);
         holonomic = false;
         for (ImageView tack : orientationWidget) {
@@ -822,7 +822,7 @@ public class VirtualJoystick extends RelativeLayout implements Animation.Animati
     private void updateMagnitudeText() {
         // Don't updateConfig when the user is turning in place.
         if (!turnInPlaceMode) {
-            magnitudeText.setText(String.valueOf((int) (normalizedMagnitude * 100)) + "%");
+            magnitudeText.setText((int) (normalizedMagnitude * 100) + "%");
             magnitudeText.setTranslationX((float) (parentSize / 4 * Math.cos((90 + contactTheta)
                     * Math.PI / 180.0)));
             magnitudeText.setTranslationY((float) (parentSize / 4 * Math.sin((90 + contactTheta)
@@ -891,20 +891,13 @@ public class VirtualJoystick extends RelativeLayout implements Animation.Animati
      *         False otherwise.
      */
     private boolean floatCompare(float v1, float v2) {
-        if (Math.abs(v1 - v2) < FLOAT_EPSILON) {
-            return true;
-        } else {
-            return false;
-        }
+        return Math.abs(v1 - v2) < FLOAT_EPSILON;
     }
 
     private boolean inLastContactRange(float x, float y) {
-        if (Math.sqrt((x - contactUpLocation.x - joystickRadius)
+        return Math.sqrt((x - contactUpLocation.x - joystickRadius)
                 * (x - contactUpLocation.x - joystickRadius) + (y - contactUpLocation.y - joystickRadius)
-                * (y - contactUpLocation.y - joystickRadius)) < THUMB_DIVET_RADIUS) {
-            return true;
-        }
-        return false;
+                * (y - contactUpLocation.y - joystickRadius)) < THUMB_DIVET_RADIUS;
     }
 
     public void setTopicName(String topicName) {

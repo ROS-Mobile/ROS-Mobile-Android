@@ -56,8 +56,9 @@ class HMAC{
     bsize=md.getDigestLength();
   }
 
-  public int getBlockSize(){return bsize;};
-  public void init(byte[] key) throws Exception{
+  public int getBlockSize(){return bsize;}
+
+    public void init(byte[] key) throws Exception{
     md.reset();
     if(key.length>bsize){
       byte[] tmp=new byte[bsize];
@@ -94,7 +95,7 @@ class HMAC{
     update(tmp, 0, 4);
   }
 
-  public void update(byte foo[], int s, int l){
+  public void update(byte[] foo, int s, int l){
     md.update(foo, s, l);
   }
 

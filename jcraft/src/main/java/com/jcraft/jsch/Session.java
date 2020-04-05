@@ -1258,7 +1258,7 @@ key_type+" key fingerprint is "+key_fprint+".\n"+
           throw new JSchException("timeout in waiting for rekeying process.");
         }
         try{Thread.sleep(10);}
-        catch(InterruptedException e){};
+        catch(InterruptedException e){}
         continue;
       }
       synchronized(c){
@@ -1367,7 +1367,7 @@ key_type+" key fingerprint is "+key_fprint+".\n"+
         break;
       }
       try{Thread.sleep(10);}
-      catch(InterruptedException e){};
+      catch(InterruptedException e){}
     }
     _write(packet);
   }
@@ -1895,7 +1895,7 @@ break;
    * @see #setPortForwardingR(String bind_address, int rport, String host, int lport, SocketFactory sf)
    */
   public void setPortForwardingR(int rport, String host, int lport) throws JSchException{
-    setPortForwardingR(null, rport, host, lport, (SocketFactory)null);
+    setPortForwardingR(null, rport, host, lport, null);
   }
 
   /**
@@ -1914,7 +1914,7 @@ break;
    * @see #setPortForwardingR(String bind_address, int rport, String host, int lport, SocketFactory sf)
    */
   public void setPortForwardingR(String bind_address, int rport, String host, int lport) throws JSchException{
-    setPortForwardingR(bind_address, rport, host, lport, (SocketFactory)null);
+    setPortForwardingR(bind_address, rport, host, lport, null);
   }
 
   /**
@@ -2177,7 +2177,7 @@ break;
     catch(Exception e){
       grr.setThread(null);
       if(e instanceof Throwable)
-        throw new JSchException(e.toString(), (Throwable)e);
+        throw new JSchException(e.toString(), e);
       throw new JSchException(e.toString());
     }
 
@@ -2305,7 +2305,7 @@ break;
         config=new java.util.Hashtable();
       for(java.util.Enumeration e=newconf.keys() ; e.hasMoreElements() ;) {
         String key=(String)(e.nextElement());
-        config.put(key, (String)(newconf.get(key)));
+        config.put(key, newconf.get(key));
       }
     }
   }
@@ -2325,7 +2325,7 @@ break;
       foo=config.get(key);
       if(foo instanceof String) return (String)foo;
     }
-    foo=jsch.getConfig(key);
+    foo= JSch.getConfig(key);
     if(foo instanceof String) return (String)foo;
     return null;
   }
@@ -2349,7 +2349,7 @@ break;
     }
     catch(Exception e){
       if(e instanceof Throwable)
-        throw new JSchException(e.toString(), (Throwable)e);
+        throw new JSchException(e.toString(), e);
       throw new JSchException(e.toString());
     }
   }
@@ -2558,7 +2558,7 @@ break;
     String[] _sigs=Util.split(sigs, ",");
     for(int i=0; i<_sigs.length; i++){
       try{      
-        Class c=Class.forName((String)jsch.getConfig(_sigs[i]));
+        Class c=Class.forName(JSch.getConfig(_sigs[i]));
         final Signature sig=(Signature)(c.newInstance());
         sig.init();
       }

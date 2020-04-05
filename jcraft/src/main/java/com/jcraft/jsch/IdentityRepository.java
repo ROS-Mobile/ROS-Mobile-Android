@@ -32,15 +32,15 @@ package com.jcraft.jsch;
 import java.util.Vector;
 
 public interface IdentityRepository {
-  public static final int UNAVAILABLE=0;
-  public static final int NOTRUNNING=1;
-  public static final int RUNNING=2;
-  public String getName();
-  public int getStatus();
-  public Vector getIdentities();
-  public boolean add(byte[] identity);
-  public boolean remove(byte[] blob);
-  public void removeAll();
+  int UNAVAILABLE=0;
+  int NOTRUNNING=1;
+  int RUNNING=2;
+  String getName();
+  int getStatus();
+  Vector getIdentities();
+  boolean add(byte[] identity);
+  boolean remove(byte[] blob);
+  void removeAll();
 
   /**
    * JSch will accept ciphered keys, but some implementations of
@@ -49,7 +49,7 @@ public interface IdentityRepository {
    * been introduced to cache ciphered keys for them, and pass them
    * whenever they are de-ciphered.
    */
-  static class Wrapper implements IdentityRepository {
+  class Wrapper implements IdentityRepository {
     private IdentityRepository ir;
     private Vector cache = new Vector();
     private boolean keep_in_cache = false;

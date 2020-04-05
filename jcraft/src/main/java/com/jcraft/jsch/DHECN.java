@@ -85,7 +85,7 @@ public abstract class DHECN extends KeyExchange{
     }
     catch(Exception e){
       if(e instanceof Throwable)
-        throw new JSchException(e.toString(), (Throwable)e);
+        throw new JSchException(e.toString(), e);
       throw new JSchException(e.toString());
     }
 

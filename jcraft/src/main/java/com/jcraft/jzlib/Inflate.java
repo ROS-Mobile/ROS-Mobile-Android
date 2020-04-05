@@ -662,7 +662,8 @@ final class Inflate{
       this.need=0;
     }
     while(need_bytes>0){
-      if(z.avail_in==0){ throw new Return(r); }; r=f;
+      if(z.avail_in==0){ throw new Return(r); }
+        r=f;
       z.avail_in--; z.total_in++;
       this.need = this.need | 
 	((z.next_in[z.next_in_index++]&0xff)<<((n-need_bytes)*8));
@@ -689,7 +690,8 @@ final class Inflate{
     }
     int b=0; 
     do {
-      if(z.avail_in==0){ throw new Return(r); }; r=f;
+      if(z.avail_in==0){ throw new Return(r); }
+        r=f;
       z.avail_in--; z.total_in++;
       b = z.next_in[z.next_in_index];
       if(b!=0) tmp_string.write(z.next_in, z.next_in_index, 1);
@@ -705,7 +707,8 @@ final class Inflate{
     }
     int b=0; 
     while(this.need>0){
-      if(z.avail_in==0){ throw new Return(r); }; r=f;
+      if(z.avail_in==0){ throw new Return(r); }
+        r=f;
       z.avail_in--; z.total_in++;
       b = z.next_in[z.next_in_index];
       tmp_string.write(z.next_in, z.next_in_index, 1);

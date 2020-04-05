@@ -30,6 +30,7 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package com.jcraft.jsch;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 
 class IdentityFile implements Identity{
   private JSch jsch;
@@ -94,12 +95,7 @@ class IdentityFile implements Identity{
    */
   public String getAlgName(){
     byte[] name = kpair.getKeyTypeName();
-    try {
-      return new String(name, "UTF-8");
-    }
-    catch (UnsupportedEncodingException e){
-      return new String(name);
-    }
+      return new String(name, StandardCharsets.UTF_8);
   }
 
   /**

@@ -557,7 +557,7 @@ public class JSch{
     synchronized(config){
       for(java.util.Enumeration e=newconf.keys() ; e.hasMoreElements() ;) {
 	String key=(String)(e.nextElement());
-	config.put(key, (String)(newconf.get(key)));
+	config.put(key, newconf.get(key));
       }
     }
   }

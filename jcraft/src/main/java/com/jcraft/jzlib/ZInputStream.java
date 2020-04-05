@@ -98,7 +98,7 @@ public class ZInputStream extends FilterInputStream {
     if(n<len)
       len=(int)n;
     byte[] tmp=new byte[len];
-    return((long)read(tmp));
+    return read(tmp);
   }
 
   public int getFlushMode() {

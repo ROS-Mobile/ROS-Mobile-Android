@@ -63,7 +63,7 @@ public abstract class SignatureECDSAN implements com.jcraft.jsch.SignatureECDSA 
     AlgorithmParameters param = AlgorithmParameters.getInstance("EC");
     param.init(new ECGenParameterSpec(name));
     ECParameterSpec ecparam =
-      (ECParameterSpec)param.getParameterSpec(ECParameterSpec.class);
+            param.getParameterSpec(ECParameterSpec.class);
     ECPoint w = new ECPoint(new BigInteger(1, r), new BigInteger(1, s));
     PublicKey pubKey = 
       keyFactory.generatePublic(new ECPublicKeySpec(w, ecparam));
@@ -82,7 +82,7 @@ public abstract class SignatureECDSAN implements com.jcraft.jsch.SignatureECDSA 
     AlgorithmParameters param = AlgorithmParameters.getInstance("EC");
     param.init(new ECGenParameterSpec(name));
     ECParameterSpec ecparam =
-      (ECParameterSpec)param.getParameterSpec(ECParameterSpec.class);
+            param.getParameterSpec(ECParameterSpec.class);
     BigInteger _d = new BigInteger(1, d);
     PrivateKey prvKey = 
       keyFactory.generatePrivate(new ECPrivateKeySpec(_d, ecparam));

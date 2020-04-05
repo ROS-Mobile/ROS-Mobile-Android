@@ -329,7 +329,7 @@ class Util{
       return "???";
     }
   }
-  static boolean array_equals(byte[] foo, byte bar[]){
+  static boolean array_equals(byte[] foo, byte[] bar){
     int i=foo.length;
     if(i!=bar.length) return false;
     for(int j=0; j<i; j++){ if(foo[j]!=bar[j]) return false; }
@@ -346,7 +346,7 @@ class Util{
       catch(Exception e){
         String message=e.toString();
         if(e instanceof Throwable)
-          throw new JSchException(message, (Throwable)e);
+          throw new JSchException(message, e);
         throw new JSchException(message);
       }
     }

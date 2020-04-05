@@ -30,9 +30,9 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package com.jcraft.jsch;
 
 public interface SftpProgressMonitor{
-  public static final int PUT=0;
-  public static final int GET=1;
-  public static final long UNKNOWN_SIZE = -1L;
+  int PUT=0;
+  int GET=1;
+  long UNKNOWN_SIZE = -1L;
   void init(int op, String src, String dest, long max);
   boolean count(long count);
   void end();

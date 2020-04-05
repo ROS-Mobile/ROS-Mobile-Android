@@ -37,47 +37,47 @@ public interface Identity{
    * @return <tt>true</tt> if the decryption is succeeded
    * or this identity is not cyphered.
    */
-  public boolean setPassphrase(byte[] passphrase) throws JSchException;
+  boolean setPassphrase(byte[] passphrase) throws JSchException;
 
   /**
    * Returns the public-key blob.
    * @return the public-key blob
    */
-  public byte[] getPublicKeyBlob();
+  byte[] getPublicKeyBlob();
 
   /**
    * Signs on data with this identity, and returns the result.
    * @param data data to be signed
    * @return the signature
    */
-  public byte[] getSignature(byte[] data);
+  byte[] getSignature(byte[] data);
 
   /**
    * @deprecated The decryption should be done automatically in #setPassphase(byte[] passphrase)
    * @see #setPassphrase(byte[] passphrase)
    */
-  public boolean decrypt();
+  boolean decrypt();
 
   /**
    * Returns the name of the key algorithm.
    * @return "ssh-rsa" or "ssh-dss"
    */
-  public String getAlgName();
+  String getAlgName();
 
   /**
    * Returns the name of this identity. 
    * It will be useful to identify this object in the {@link IdentityRepository}.
    */
-  public String getName();
+  String getName();
 
   /**
    * Returns <tt>true</tt> if this identity is cyphered.
    * @return <tt>true</tt> if this identity is cyphered.
    */
-  public boolean isEncrypted();
+  boolean isEncrypted();
 
   /**
    * Disposes internally allocated data, like byte array for the private key.
    */
-  public void clear();
+  void clear();
 }

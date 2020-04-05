@@ -56,7 +56,7 @@ public class IO{
     setInputStream(in);
   }
 
-  public void put(Packet p) throws IOException, java.net.SocketException {
+  public void put(Packet p) throws IOException {
     out.write(p.buffer.buffer, 0, p.buffer.index);
     out.flush();
   }

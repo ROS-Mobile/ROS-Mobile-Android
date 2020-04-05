@@ -41,9 +41,9 @@ abstract class HMAC implements MAC {
 
   public int getBlockSize() {
     return bsize;
-  };
+  }
 
-  public void init(byte[] key) throws Exception {
+    public void init(byte[] key) throws Exception {
     if(key.length>bsize){
       byte[] tmp = new byte[bsize];
       System.arraycopy(key, 0, tmp, 0, bsize);	  
@@ -63,7 +63,7 @@ abstract class HMAC implements MAC {
     update(tmp, 0, 4);
   }
 
-  public void update(byte foo[], int s, int l){
+  public void update(byte[] foo, int s, int l){
     mac.update(foo, s, l);      
   }
 
