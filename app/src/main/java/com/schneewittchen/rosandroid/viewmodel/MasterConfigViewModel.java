@@ -24,10 +24,10 @@ import com.schneewittchen.rosandroid.model.repositories.ConfigRepositoryImpl;
  * TODO: Description
  *
  * @author Nico Studt
- * @version 1.1.2
+ * @version 1.1.3
  * @created on 10.01.20
- * @updated on 05.02.20
- * @modified by
+ * @updated on 06.04.20
+ * @modified by Nils Rottmann
  */
 public class MasterConfigViewModel extends AndroidViewModel {
 
@@ -53,17 +53,20 @@ public class MasterConfigViewModel extends AndroidViewModel {
 
 
     public void connectToMaster() {
+        rosRepo.setMasterAddress(currentMaster.getValue().ip, currentMaster.getValue().port);
         rosRepo.connectToMaster();
     }
 
     public void setMasterIp(String ipString) {
         System.out.println("Set Master IP: " + ipString);
         // TODO: Set master ip in current config
+        configRepository.setMaster(currentMaster.getValue(), ipString);
     }
 
     public void setMasterPort(String portString) {
         System.out.println("Set Master port: " + portString);
         // TODO: Set master port in current config
+        configRepository.setPort(currentMaster.getValue(), portString);
     }
 
     public void useIpWithAffixes(boolean useAffixes) {

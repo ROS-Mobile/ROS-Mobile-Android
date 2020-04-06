@@ -15,10 +15,10 @@ import java.util.List;
  * TODO: Description
  *
  * @author Nico Studt
- * @version 1.0.1
+ * @version 1.0.2
  * @created on 26.01.20
- * @updated on 31.01.20
- * @modified by
+ * @updated on 06.04.20
+ * @modified by Nils Rottmann
  */
 public interface ConfigRepository {
 
@@ -32,9 +32,11 @@ public interface ConfigRepository {
 
     void addConfig(ConfigEntity config);
 
-    void setMaster(MasterEntity master, long configId);
+    void setMaster(MasterEntity master, String configId);
 
-    void setConfig(ConfigEntity config, long configId);
+    void setPort(MasterEntity master, String port);
+
+    void setConfig(ConfigEntity config, String configId);
 
 
 

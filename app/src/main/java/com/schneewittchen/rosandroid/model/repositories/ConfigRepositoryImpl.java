@@ -23,10 +23,10 @@ import java.util.List;
  * TODO: Description
  *
  * @author Nico Studt
- * @version 1.0.5
+ * @version 1.0.6
  * @created on 26.01.20
- * @updated on 05.02.20
- * @modified by
+ * @updated on 06.04.20
+ * @modified by Nils Rottmann
  */
 public class ConfigRepositoryImpl implements ConfigRepository {
 
@@ -88,12 +88,25 @@ public class ConfigRepositoryImpl implements ConfigRepository {
     }
 
     @Override
-    public void setMaster(MasterEntity master, long configId) {
-
+    public void setMaster(MasterEntity master, String configId) {
+        master.ip = configId;
     }
 
     @Override
-    public void setConfig(ConfigEntity config, long configId) {
+    public void setPort(MasterEntity master, String port) {
+        try
+        {
+            int portInt = Integer.parseInt(port.trim());
+            master.port = portInt;
+        }
+        catch (NumberFormatException nfe)
+        {
+            System.out.println("NumberFormatException: " + nfe.getMessage());
+        }
+    }
+
+    @Override
+    public void setConfig(ConfigEntity config, String configId) {
 
     }
 

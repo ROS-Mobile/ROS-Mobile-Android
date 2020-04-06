@@ -65,7 +65,6 @@ public class VizViewModel extends AndroidViewModel {
         return this.currentWidgets;
     }
 
-
     public void register(BaseEntity widget) {
         // TODO: Create node
         rosRepo.registerNode(widget);
