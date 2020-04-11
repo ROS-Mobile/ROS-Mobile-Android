@@ -14,15 +14,16 @@ import com.schneewittchen.rosandroid.model.repositories.RosRepo;
 import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * TODO: Description
  *
  * @author Nico Studt
- * @version 1.0.1
+ * @version 1.0.2
  * @created on 07.04.20
  * @updated on 11.04.20
- * @modified by
+ * @modified by Nico Studt
  */
 public class RosDomain {
 
@@ -84,6 +85,20 @@ public class RosDomain {
     }
 
 
+    public void setMasterIp(String ipString) {
+        // TODO: set ip in current master object and update
+    }
+
+    public void setMasterPort(String portString) {
+        try {
+            int portInt = Integer.parseInt(portString.trim());
+            //master.port = portInt;
+            // TODO: set port in current master object and update
+        } catch (NumberFormatException nfe) {
+            Log.e(TAG, Objects.requireNonNull(nfe.getMessage()));
+        }
+    }
+
     public void connectToMaster() {
         rosRepo.connectToMaster();
     }
@@ -91,4 +106,5 @@ public class RosDomain {
     public LiveData<MasterEntity> getCurrentMaster() {
         return this.currentMaster;
     }
+
 }

@@ -162,8 +162,8 @@ public abstract class ConfigDatabase extends RoomDatabase {
             MasterEntity master = new MasterEntity();
 
             Random random = new Random();
-            master.ip = "123.456.789.01";
-            master.port = 99999;
+            master.ip = "192.168.1.1";
+            master.port = 11311;
             master.notificationTickerTitle = "Ticker name";
             master.notificationTitle = "Title name";
 

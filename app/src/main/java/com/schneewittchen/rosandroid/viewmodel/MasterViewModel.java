@@ -18,8 +18,8 @@ import com.schneewittchen.rosandroid.model.entities.MasterEntity;
  * @author Nico Studt
  * @version 1.1.3
  * @created on 10.01.20
- * @updated on 07.04.20
- * @modified by
+ * @updated on 11.04.20
+ * @modified by Nico Studt
  */
 public class MasterViewModel extends AndroidViewModel {
 
@@ -40,13 +40,11 @@ public class MasterViewModel extends AndroidViewModel {
 
 
     public void setMasterIp(String ipString) {
-        System.out.println("Set Master IP: " + ipString);
-        // TODO: Set master ip in current config
+        rosDomain.setMasterIp(ipString);
     }
 
     public void setMasterPort(String portString) {
-        System.out.println("Set Master port: " + portString);
-        // TODO: Set master port in current config
+        rosDomain.setMasterPort(portString);
     }
 
     public void useIpWithAffixes(boolean useAffixes) {

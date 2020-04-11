@@ -217,7 +217,7 @@ public class RosRepo {
     }
 
     public void updateWidgets(List<BaseEntity> widgets) {
-        
+
     }
 
     public void informWidgetDataChange(BaseData data) {
