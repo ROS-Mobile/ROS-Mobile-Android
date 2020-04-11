@@ -2,19 +2,15 @@ package com.schneewittchen.rosandroid.widgets.joystick;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.os.Handler;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
-import android.view.View;
 
 import androidx.annotation.Nullable;
 
 import com.schneewittchen.rosandroid.R;
-import com.schneewittchen.rosandroid.model.entities.WidgetEntity;
 import com.schneewittchen.rosandroid.utility.Utils;
 import com.schneewittchen.rosandroid.widgets.base.BaseView;
 
@@ -32,13 +28,6 @@ public class JoystickView extends BaseView {
 
     public static final String TAG = "JoystickView";
 
-    Handler mHandler;
-    Runnable mRunnable;
-
-    long updateTime = 100L;
-    long animationTime = 300L;
-    ValueAnimator animator;
-
     UpdateListener updateListener;
 
     Paint outerPaint;
@@ -48,8 +37,6 @@ public class JoystickView extends BaseView {
     float joystickRadius;
     float posX;
     float posY;
-    float lastPosX;
-    float lastPosY;
 
     public JoystickView(Context context) {
         super(context);
@@ -75,39 +62,16 @@ public class JoystickView extends BaseView {
         linePaint.setColor(getResources().getColor(R.color.colorPrimaryDark));
         linePaint.setStyle(Paint.Style.STROKE);
         linePaint.setStrokeWidth(Utils.dpToPx(getContext(), 2));
-
-        // Run timer
-        mHandler = new Handler();
-        mRunnable = new Runnable() {
-            @Override
-            public void run() {
-                updateListeners();
-                mHandler.postDelayed(this, updateTime);
-            }
-        };
     }
 
     // Move to polarCoordinates
     private void moveTo(float x, float y){
         posX = x;
         posY = y;
+        this.informDataChange(new JoystickData(posX, posY));
 
         // Redraw
         invalidate();
-    }
-
-
-    private void updateListeners(){
-        if(updateListener != null){
-            updateListener.onUpdate(posX, posY);
-        }
-
-        lastPosX = posX;
-        lastPosY = posY;
-    }
-
-    public void setUpdateListener(UpdateListener listener){
-        this.updateListener = listener;
     }
 
     @Override
@@ -149,24 +113,6 @@ public class JoystickView extends BaseView {
 
         // Stick
         canvas.drawCircle(px[0], px[1], joystickRadius, joystickPaint);
-    }
-
-
-    @Override
-    public void layout(int l, int t, int r, int b) {
-        super.layout(l, t, r, b);
-    }
-
-    @Override
-    protected void onAttachedToWindow() {
-        super.onAttachedToWindow();
-        mHandler.postDelayed(mRunnable, updateTime);
-    }
-
-    @Override
-    protected void onDetachedFromWindow() {
-        mHandler.removeCallbacks(mRunnable);
-        super.onDetachedFromWindow();
     }
 
 

@@ -1,60 +1,43 @@
 package com.schneewittchen.rosandroid.viewmodel;
 
-
 import android.app.Application;
 import android.os.Handler;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.Transformations;
 
-import com.schneewittchen.rosandroid.model.entities.ConfigEntity;
+import com.schneewittchen.rosandroid.domain.RosDomain;
 import com.schneewittchen.rosandroid.model.entities.MasterEntity;
-import com.schneewittchen.rosandroid.model.repositories.RosRepo;
-import com.schneewittchen.rosandroid.model.repositories.ConfigRepository;
-import com.schneewittchen.rosandroid.model.repositories.ConfigRepositoryImpl;
 
 
 /**
  * TODO: Description
  *
  * @author Nico Studt
- * @version 1.1.2
+ * @version 1.1.3
  * @created on 10.01.20
- * @updated on 05.02.20
+ * @updated on 07.04.20
  * @modified by
  */
-public class MasterConfigViewModel extends AndroidViewModel {
+public class MasterViewModel extends AndroidViewModel {
 
-    private static final String TAG = MasterConfigViewModel.class.getCanonicalName();
+    private static final String TAG = MasterViewModel.class.getSimpleName();
 
-    RosRepo rosRepo;
-    ConfigRepository configRepository;
+    private RosDomain rosDomain;
 
-    LiveData<MasterEntity> currentMaster;
-    MutableLiveData<String> deviceIpLiveData;
-    MutableLiveData<String> networkSSIDLiveData;
+    private MutableLiveData<String> deviceIpLiveData;
+    private MutableLiveData<String> networkSSIDLiveData;
 
 
-    public MasterConfigViewModel(@NonNull Application application) {
+    public MasterViewModel(@NonNull Application application) {
         super(application);
 
-        rosRepo = RosRepo.getInstance();
-        configRepository = ConfigRepositoryImpl.getInstance(application);
-
-        currentMaster = Transformations.switchMap(configRepository.getCurrentConfigId(),
-                configId -> configRepository.getMaster(configId));
+        rosDomain = RosDomain.getInstance(application);
     }
 
 
-    public void connectToMaster() {
-        rosRepo.connectToMaster();
-    }
 
     public void setMasterIp(String ipString) {
         System.out.println("Set Master IP: " + ipString);
@@ -68,6 +51,14 @@ public class MasterConfigViewModel extends AndroidViewModel {
 
     public void useIpWithAffixes(boolean useAffixes) {
 
+    }
+
+    public void connectToMaster() {
+        rosDomain.connectToMaster();
+    }
+
+    public LiveData<MasterEntity> getMaster() {
+        return rosDomain.getCurrentMaster();
     }
 
     public LiveData<String> getDeviceIp(){
@@ -93,7 +84,5 @@ public class MasterConfigViewModel extends AndroidViewModel {
         return networkSSIDLiveData;
     }
 
-    public LiveData<MasterEntity> getMaster() {
-        return this.currentMaster;
-    }
+
 }

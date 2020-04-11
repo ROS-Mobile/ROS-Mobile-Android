@@ -1,6 +1,6 @@
 package com.schneewittchen.rosandroid.widgets.joystick;
 
-import com.schneewittchen.rosandroid.widgets.base.WidgetData;
+import com.schneewittchen.rosandroid.widgets.base.BaseData;
 
 /**
  * TODO: Description
@@ -11,7 +11,14 @@ import com.schneewittchen.rosandroid.widgets.base.WidgetData;
  * @updated on 17.03.20
  * @modified by
  */
-public class JoystickData extends WidgetData {
+public class JoystickData extends BaseData {
+
+    public float x;
+    public float y;
 
 
+    public JoystickData(float x, float y) {
+        this.x = x;
+        this.y = y;
+    }
 }

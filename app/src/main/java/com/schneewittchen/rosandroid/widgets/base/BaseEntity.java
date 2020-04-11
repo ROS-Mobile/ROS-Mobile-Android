@@ -46,8 +46,11 @@ public abstract class BaseEntity extends WidgetEntity {
         if (o instanceof BaseEntity) {
             BaseEntity other = (BaseEntity) o;
 
-            return other.id == this.id && other.type == this.type && other.posX == this.posX
-                    && other.posY == this.posY && other.width == this.width
+            return other.id == this.id
+                    && other.type == this.type
+                    && other.posX == this.posX
+                    && other.posY == this.posY
+                    && other.width == this.width
                     && other.height == this.height;
         }
 

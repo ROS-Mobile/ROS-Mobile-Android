@@ -1,6 +1,6 @@
 package com.schneewittchen.rosandroid.widgets.base;
 
-public abstract class WidgetData {
+public abstract class BaseData {
 
     public long id;
 

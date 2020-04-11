@@ -1,7 +1,7 @@
 package com.schneewittchen.rosandroid.widgets.joystick;
 
 import com.schneewittchen.rosandroid.model.entities.WidgetEntity;
-import com.schneewittchen.rosandroid.widgets.base.WidgetData;
+import com.schneewittchen.rosandroid.widgets.base.BaseData;
 import com.schneewittchen.rosandroid.widgets.base.WidgetNode;
 
 import org.ros.node.ConnectedNode;
@@ -52,7 +52,7 @@ public class JoystickNode extends WidgetNode implements JoystickView.UpdateListe
     }
 
     @Override
-    public void onNewData(WidgetData data) {
+    public void onNewData(BaseData data) {
 
     }
 }

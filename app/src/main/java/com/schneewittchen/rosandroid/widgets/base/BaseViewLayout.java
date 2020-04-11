@@ -178,7 +178,7 @@ public abstract class BaseViewLayout extends FrameLayout implements Interactable
 
 
     @Override
-    public void informDataChange(WidgetData data) {
+    public void informDataChange(BaseData data) {
         if(dataListener != null) {
             data.setId(dataId);
             dataListener.onNewData(data);
@@ -186,7 +186,7 @@ public abstract class BaseViewLayout extends FrameLayout implements Interactable
     }
 
     @Override
-    public void setData(WidgetData data) {
+    public void setData(BaseData data) {
         // Default data set, but nothing to see here!
     }
 

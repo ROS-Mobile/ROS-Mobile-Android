@@ -12,9 +12,9 @@ package com.schneewittchen.rosandroid.widgets.base;
  */
 public interface Interactable {
 
-    void informDataChange(WidgetData data);
+    void informDataChange(BaseData data);
 
-    void setData(WidgetData data);
+    void setData(BaseData data);
 
     void setDataListener(DataListener listener);
 

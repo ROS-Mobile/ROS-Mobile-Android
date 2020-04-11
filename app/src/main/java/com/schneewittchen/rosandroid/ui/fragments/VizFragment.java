@@ -10,16 +10,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.DiffUtil;
-import androidx.recyclerview.widget.ListUpdateCallback;
 
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.ui.custum_views.WidgetGroup;
-import com.schneewittchen.rosandroid.ui.helper.WidgetDiffCallback;
 import com.schneewittchen.rosandroid.viewmodel.VizViewModel;
-import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
 import com.schneewittchen.rosandroid.widgets.base.DataListener;
-import com.schneewittchen.rosandroid.widgets.base.WidgetData;
+import com.schneewittchen.rosandroid.widgets.base.BaseData;
 
 
 /**
@@ -28,12 +24,12 @@ import com.schneewittchen.rosandroid.widgets.base.WidgetData;
  * @author Nico Studt
  * @version 1.0.2
  * @created on 10.01.20
- * @updated on 05.04.20
+ * @updated on 07.04.20
  * @modified by
  */
 public class VizFragment extends Fragment implements DataListener {
 
-    public static final String TAG = VizFragment.class.getCanonicalName();
+    public static final String TAG = VizFragment.class.getSimpleName();
 
     private VizViewModel mViewModel;
     private WidgetGroup widgetGroupview;
@@ -66,15 +62,12 @@ public class VizFragment extends Fragment implements DataListener {
         mViewModel = new ViewModelProvider(this).get(VizViewModel.class);
 
         mViewModel.getCurrentWidgets().observe(getViewLifecycleOwner(), widgetEntities -> {
-            // Set widgets on view
             widgetGroupview.setWidgets(widgetEntities);
-
         });
     }
 
-
     @Override
-    public void onNewData(WidgetData data) {
+    public void onNewData(BaseData data) {
         mViewModel.informWidgetDataChange(data);
     }
 }

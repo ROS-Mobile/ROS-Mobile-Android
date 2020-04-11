@@ -1,6 +1,6 @@
 package com.schneewittchen.rosandroid.widgets.counter;
 
-import com.schneewittchen.rosandroid.widgets.base.WidgetData;
+import com.schneewittchen.rosandroid.widgets.base.BaseData;
 
 /**
  * TODO: Description
@@ -11,7 +11,7 @@ import com.schneewittchen.rosandroid.widgets.base.WidgetData;
  * @updated on 15.03.20
  * @modified by
  */
-public class CounterData extends WidgetData {
+public class CounterData extends BaseData {
 
     float counter;
 }

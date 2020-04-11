@@ -11,7 +11,7 @@ import androidx.core.util.Preconditions;
 
 import com.schneewittchen.rosandroid.utility.Utils;
 import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
-import com.schneewittchen.rosandroid.widgets.base.WidgetData;
+import com.schneewittchen.rosandroid.widgets.base.BaseData;
 import com.schneewittchen.rosandroid.widgets.base.WidgetNode;
 
 import org.ros.address.InetAddressFactory;
@@ -29,6 +29,7 @@ import java.net.Socket;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * TODO: Description
@@ -215,7 +216,11 @@ public class RosRepo {
         nodesWaitList.clear();
     }
 
-    public void informWidgetDataChange(WidgetData data) {
+    public void updateWidgets(List<BaseEntity> widgets) {
+        
+    }
+
+    public void informWidgetDataChange(BaseData data) {
         WidgetNode node = widgetNodes.get(data.id);
 
         if(node == null) {
@@ -224,6 +229,8 @@ public class RosRepo {
 
         node.onNewData(data);
     }
+
+
 
 
     private final class NodeMainExecutorServiceConnection implements ServiceConnection {

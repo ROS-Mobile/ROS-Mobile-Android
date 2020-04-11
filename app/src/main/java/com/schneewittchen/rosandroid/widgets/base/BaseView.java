@@ -39,15 +39,15 @@ public class BaseView extends View implements Interactable {
 
 
     @Override
-    public void informDataChange(WidgetData data) {
+    public void informDataChange(BaseData data) {
         if(dataListener != null) {
-            data.setId(dataId);
+            data.setId(getDataId());
             dataListener.onNewData(data);
         }
     }
 
     @Override
-    public void setData(WidgetData data) {
+    public void setData(BaseData data) {
         // Default data set, but nothing to see here!
     }
 
@@ -81,9 +81,10 @@ public class BaseView extends View implements Interactable {
 
     public void setWidgetEntity(BaseEntity widgetEntity) {
         this.widgetEntity = widgetEntity;
+        this.setDataId(widgetEntity.id);
     }
     
     public boolean sameWidget(BaseEntity other) {
-        return this.widgetEntity.id == other.id;
+        return this.dataId == other.id;
     }
 }

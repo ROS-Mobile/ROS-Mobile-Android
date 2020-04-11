@@ -28,7 +28,7 @@
         android:clipToPadding="false"
         android:padding="8dp"
         tools:itemCount="15"
-        tools:listitem="@layout/widget_detail_item" />
+        tools:listitem="@layout/widget_detail_base" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/add_widget_button"

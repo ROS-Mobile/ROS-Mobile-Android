@@ -24,7 +24,7 @@ import java.util.List;
  * @updated on 05.02.20
  * @modified by
  */
-public class ConfigChooserViewModel extends AndroidViewModel {
+public class ConfigurationsViewModel extends AndroidViewModel {
 
     private ConfigRepository configRepository;
     private LiveData<List<ConfigEntity>> lastOpenedConfigs;
@@ -32,7 +32,7 @@ public class ConfigChooserViewModel extends AndroidViewModel {
     private MediatorLiveData<String> currentConfigTitle;
 
 
-    public ConfigChooserViewModel(@NonNull Application application) {
+    public ConfigurationsViewModel(@NonNull Application application) {
         super(application);
 
         configRepository = ConfigRepositoryImpl.getInstance(application);

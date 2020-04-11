@@ -23,7 +23,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.ui.helper.RecyclerItemTouchHelper;
 import com.schneewittchen.rosandroid.ui.helper.WidgetDetailListAdapter;
-import com.schneewittchen.rosandroid.viewmodel.WidgetDetailsViewModel;
+import com.schneewittchen.rosandroid.viewmodel.DetailsViewModel;
 import com.schneewittchen.rosandroid.widgets.base.BaseDetailViewHolder;
 import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
 import com.schneewittchen.rosandroid.widgets.base.DetailListener;
@@ -38,11 +38,11 @@ import com.schneewittchen.rosandroid.widgets.base.DetailListener;
  * @updated on 05.04.20
  * @modified by
  */
-public class WidgetDetailsFragment extends Fragment implements RecyclerItemTouchHelper.TouchListener, DetailListener {
+public class DetailsFragment extends Fragment implements RecyclerItemTouchHelper.TouchListener, DetailListener {
 
     static final String TAG = "WidgetDetailsFragment";
 
-    private WidgetDetailsViewModel mViewModel;
+    private DetailsViewModel mViewModel;
     private CoordinatorLayout coordinatorLayout;
     private TextView noWidgetTextView;
     private RecyclerView recyclerView;
@@ -50,8 +50,8 @@ public class WidgetDetailsFragment extends Fragment implements RecyclerItemTouch
     private WidgetDetailListAdapter mAdapter;
 
 
-    public static WidgetDetailsFragment newInstance() {
-        return new WidgetDetailsFragment();
+    public static DetailsFragment newInstance() {
+        return new DetailsFragment();
     }
 
 
@@ -59,7 +59,7 @@ public class WidgetDetailsFragment extends Fragment implements RecyclerItemTouch
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_widgets_details, container, false);
+        return inflater.inflate(R.layout.fragment_details, container, false);
     }
 
     @Override
@@ -76,7 +76,7 @@ public class WidgetDetailsFragment extends Fragment implements RecyclerItemTouch
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        mViewModel = new ViewModelProvider(this).get(WidgetDetailsViewModel.class);
+        mViewModel = new ViewModelProvider(this).get(DetailsViewModel.class);
 
         addWidgetButton.setOnClickListener((View v) -> showDialogWithWidgetNames());
 

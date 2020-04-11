@@ -6,9 +6,9 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.schneewittchen.rosandroid.ui.fragments.SshFragment;
-import com.schneewittchen.rosandroid.ui.fragments.WidgetDetailsFragment;
+import com.schneewittchen.rosandroid.ui.fragments.DetailsFragment;
 import com.schneewittchen.rosandroid.ui.fragments.VizFragment;
-import com.schneewittchen.rosandroid.ui.fragments.MasterConfigFragment;
+import com.schneewittchen.rosandroid.ui.fragments.MasterFragment;
 
 
 /**
@@ -35,11 +35,11 @@ public class ConfigTabsPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position){
             case 0:
-                return MasterConfigFragment.newInstance();
+                return MasterFragment.newInstance();
             case 1:
                 return VizFragment.newInstance();
             case 2:
-                return WidgetDetailsFragment.newInstance();
+                return DetailsFragment.newInstance();
             case 3:
                 return SshFragment.newInstance();
 

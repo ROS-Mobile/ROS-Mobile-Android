@@ -9,9 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.AsyncListDiffer;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListUpdateCallback;
 
@@ -23,7 +21,7 @@ import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
 import com.schneewittchen.rosandroid.widgets.base.BaseView;
 import com.schneewittchen.rosandroid.widgets.base.DataListener;
 import com.schneewittchen.rosandroid.widgets.base.Position;
-import com.schneewittchen.rosandroid.widgets.base.WidgetData;
+import com.schneewittchen.rosandroid.widgets.base.BaseData;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
@@ -41,7 +39,7 @@ import java.util.List;
  */
 public class WidgetGroup extends ViewGroup {
 
-    public static final String TAG = "WidgetGroup";
+    public static final String TAG = WidgetGroup.class.getSimpleName();
 
     Paint crossPaint;
     int tilesX;
@@ -137,7 +135,7 @@ public class WidgetGroup extends ViewGroup {
     }
 
 
-    public void informDataChange(WidgetData data) {
+    public void informDataChange(BaseData data) {
         if (dataListener != null) {
             dataListener.onNewData(data);
         }
@@ -146,6 +144,22 @@ public class WidgetGroup extends ViewGroup {
     public void setWidgets(List<BaseEntity> newWidgets) {
         WidgetDiffCallback diffCallback = new WidgetDiffCallback(newWidgets, this.widgetList);
         DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
+
+        for(WidgetEntity entity: this.widgetList) {
+            Log.i(TAG, "Old entity " + entity.id);
+            Log.i(TAG, "    x:" + entity.posX);
+            Log.i(TAG, "    y:" + entity.posY);
+            Log.i(TAG, "    w:" + entity.width);
+            Log.i(TAG, "    h:" + entity.height);
+        }
+
+        for(WidgetEntity entity: newWidgets) {
+            Log.i(TAG, "New entity " + entity.id);
+            Log.i(TAG, "    x:" + entity.posX);
+            Log.i(TAG, "    y:" + entity.posY);
+            Log.i(TAG, "    w:" + entity.width);
+            Log.i(TAG, "    h:" + entity.height);
+        }
 
         diffResult.dispatchUpdatesTo(new ListUpdateCallback() {
             @Override
@@ -242,7 +256,7 @@ public class WidgetGroup extends ViewGroup {
     class WidgetDataListener implements DataListener {
 
         @Override
-        public void onNewData(WidgetData data) {
+        public void onNewData(BaseData data) {
             informDataChange(data);
         }
     }

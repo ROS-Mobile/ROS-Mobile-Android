@@ -1,6 +1,5 @@
 package com.schneewittchen.rosandroid.ui.fragments;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.LayoutInflater;
@@ -15,11 +14,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.schneewittchen.rosandroid.R;
@@ -27,8 +23,7 @@ import com.schneewittchen.rosandroid.model.entities.ConfigEntity;
 import com.schneewittchen.rosandroid.ui.helper.ConfigListAdapter;
 import com.schneewittchen.rosandroid.ui.helper.CustomRVItemTouchListener;
 import com.schneewittchen.rosandroid.ui.helper.CustumLinearLayoutManager;
-import com.schneewittchen.rosandroid.ui.helper.RecyclerViewItemClickListener;
-import com.schneewittchen.rosandroid.viewmodel.ConfigChooserViewModel;
+import com.schneewittchen.rosandroid.viewmodel.ConfigurationsViewModel;
 
 
 /**
@@ -40,9 +35,9 @@ import com.schneewittchen.rosandroid.viewmodel.ConfigChooserViewModel;
  * @updated on 06.02.20
  * @modified by
  */
-public class ConfigChooserFragment extends Fragment {
+public class ConfigurationsFragment extends Fragment {
 
-    private ConfigChooserViewModel mViewModel;
+    private ConfigurationsViewModel mViewModel;
     private Button addConfigButton;
     private RecyclerView lastOpenedRV;
     private ConfigListAdapter lastOpenedAdapter;
@@ -57,7 +52,7 @@ public class ConfigChooserFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_configation_chooser, container, false);
+        return inflater.inflate(R.layout.fragment_configurations, container, false);
     }
 
     @Override
@@ -76,7 +71,7 @@ public class ConfigChooserFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        mViewModel = new ViewModelProvider(this).get(ConfigChooserViewModel.class);
+        mViewModel = new ViewModelProvider(this).get(ConfigurationsViewModel.class);
 
         this.setUpRecyclerViews();
 

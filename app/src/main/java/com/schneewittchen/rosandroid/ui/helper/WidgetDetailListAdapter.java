@@ -15,7 +15,6 @@ import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
 import com.schneewittchen.rosandroid.widgets.base.DetailListener;
 
 import java.lang.reflect.Constructor;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -49,7 +48,7 @@ public class WidgetDetailListAdapter extends RecyclerView.Adapter<BaseDetailView
             Constructor<? extends BaseDetailViewHolder> cons  = viewHolderClazz
                                                     .getConstructor(View.class, DetailListener.class);
             LayoutInflater inflator = LayoutInflater.from(parent.getContext());
-            View itemView = inflator.inflate(R.layout.widget_detail_item, parent, false);
+            View itemView = inflator.inflate(R.layout.widget_detail_base, parent, false);
 
             return cons.newInstance(itemView, detailListener);
 

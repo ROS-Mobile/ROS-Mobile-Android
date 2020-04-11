@@ -12,5 +12,5 @@ package com.schneewittchen.rosandroid.widgets.base;
  */
 public interface DataListener {
 
-    void onNewData(WidgetData data);
+    void onNewData(BaseData data);
 }

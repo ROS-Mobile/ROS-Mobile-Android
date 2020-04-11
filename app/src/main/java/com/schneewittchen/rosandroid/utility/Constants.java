@@ -1,7 +1,7 @@
 package com.schneewittchen.rosandroid.utility;
 
 /**
- * TODO: Description
+ * Constants of the project that are globally reachable
  *
  * @author Nico Studt
  * @version 1.0.0
@@ -11,5 +11,8 @@ package com.schneewittchen.rosandroid.utility;
  */
 public class Constants {
 
+    /**
+     * Name of the room database on disk
+     */
     public static final String dbName = "config_database";
 }
