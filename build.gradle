@@ -6,7 +6,7 @@ buildscript {
     apply from: "https://github.com/rosjava/rosjava_bootstrap/raw/kinetic/buildscript.gradle"
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.6.1'
+        classpath 'com.android.tools.build:gradle:3.6.2'
     }
 
     //apply from: "https://github.com/rosjava/android_core/raw/kinetic/buildscript.gradle"

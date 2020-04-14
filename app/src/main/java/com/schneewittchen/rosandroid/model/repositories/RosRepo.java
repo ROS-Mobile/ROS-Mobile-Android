@@ -9,10 +9,11 @@ import android.os.IBinder;
 
 import androidx.core.util.Preconditions;
 
+import com.schneewittchen.rosandroid.model.entities.MasterEntity;
 import com.schneewittchen.rosandroid.utility.Utils;
 import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
 import com.schneewittchen.rosandroid.widgets.base.BaseData;
-import com.schneewittchen.rosandroid.widgets.base.WidgetNode;
+import com.schneewittchen.rosandroid.widgets.base.BaseNode;
 
 import org.ros.address.InetAddressFactory;
 import org.ros.android.NodeMainExecutorService;
@@ -59,7 +60,7 @@ public class RosRepo {
     private NodeConfiguration nodeConfiguration;
     private Handler nodeHandler;
     private ArrayList<NodeMain> nodesWaitList;
-    private HashMap<Long, WidgetNode> widgetNodes;
+    private HashMap<Long, BaseNode> widgetNodes;
 
 
     public static RosRepo getInstance(){
@@ -86,12 +87,17 @@ public class RosRepo {
         nodeConfiguration = null;
     }
 
+
+    public void reregisterNode(BaseEntity widgetEntity) {
+
+    }
+
     public void registerNode(BaseEntity widgetEntity) {
-        Class<? extends WidgetNode> clazz = widgetEntity.getNodeType();
+        Class<? extends BaseNode> clazz = widgetEntity.getNodeType();
 
         try {
-            Constructor<? extends WidgetNode> cons  = clazz.getConstructor();
-            WidgetNode widgetNode = cons.newInstance();
+            Constructor<? extends BaseNode> cons  = clazz.getConstructor();
+            BaseNode widgetNode = cons.newInstance();
             registerNode(widgetNode);
 
         } catch (Exception e) {
@@ -99,7 +105,7 @@ public class RosRepo {
         }
     }
 
-    public void registerNode(NodeMain node){
+    private void registerNode(NodeMain node){
         if (nodeConfiguration != null) {
             nodeMainExecutorService.execute(node, nodeConfiguration);
 
@@ -220,8 +226,11 @@ public class RosRepo {
 
     }
 
+    public void updateMaster(MasterEntity master) {
+    }
+
     public void informWidgetDataChange(BaseData data) {
-        WidgetNode node = widgetNodes.get(data.id);
+        BaseNode node = widgetNodes.get(data.id);
 
         if(node == null) {
             return;

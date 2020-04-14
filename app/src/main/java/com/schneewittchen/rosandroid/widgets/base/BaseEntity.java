@@ -1,7 +1,5 @@
 package com.schneewittchen.rosandroid.widgets.base;
 
-import android.util.Log;
-
 import com.schneewittchen.rosandroid.model.entities.WidgetEntity;
 
 /**
@@ -30,7 +28,7 @@ public abstract class BaseEntity extends WidgetEntity {
 
     public abstract Class<? extends BaseDetailViewHolder> getDetailViewHolderType();
 
-    public abstract Class<? extends WidgetNode> getNodeType();
+    public abstract Class<? extends BaseNode> getNodeType();
 
     protected void setType(int type) {
         this.type = type;

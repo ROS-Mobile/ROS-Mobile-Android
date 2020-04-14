@@ -5,7 +5,7 @@ import com.schneewittchen.rosandroid.model.entities.WidgetEntity;
 import com.schneewittchen.rosandroid.widgets.base.BaseDetailViewHolder;
 import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
 import com.schneewittchen.rosandroid.widgets.base.BaseView;
-import com.schneewittchen.rosandroid.widgets.base.WidgetNode;
+import com.schneewittchen.rosandroid.widgets.base.BaseNode;
 
 /**
  * TODO: Description
@@ -59,7 +59,7 @@ public class WidgetGridMapEntity extends BaseEntity {
     }
 
     @Override
-    public Class<? extends WidgetNode> getNodeType() {
+    public Class<? extends BaseNode> getNodeType() {
         return null;
     }
 

@@ -16,12 +16,12 @@ import org.ros.node.NodeMain;
  * @updated on 13.03.20
  * @modified by
  */
-public abstract class WidgetNode implements NodeMain, DataListener{
+public abstract class BaseNode implements NodeMain, DataListener{
 
-    protected WidgetEntity widget;
+    protected BaseEntity widget;
 
 
-    public WidgetNode(WidgetEntity widget) {
+    public BaseNode(BaseEntity widget) {
         this.widget = widget;
     }
 

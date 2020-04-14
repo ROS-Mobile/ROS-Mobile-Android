@@ -31,7 +31,6 @@ android {
 }
 
 dependencies {
-    def room_version = "2.2.4"
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.1.0'
@@ -57,8 +56,8 @@ dependencies {
     implementation 'org.ros.android_core:android_core_components:0.4.0'
 
     // Room
-    implementation "androidx.room:room-runtime:$room_version"
-    annotationProcessor "androidx.room:room-compiler:$room_version"
+    implementation "androidx.room:room-runtime:2.2.5"
+    annotationProcessor "androidx.room:room-compiler:2.2.5"
 
     // Parsing
     implementation 'com.google.code.gson:gson:2.8.6'

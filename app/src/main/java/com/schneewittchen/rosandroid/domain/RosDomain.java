@@ -10,11 +10,11 @@ import androidx.lifecycle.Transformations;
 import com.schneewittchen.rosandroid.model.entities.MasterEntity;
 import com.schneewittchen.rosandroid.model.repositories.ConfigRepository;
 import com.schneewittchen.rosandroid.model.repositories.ConfigRepositoryImpl;
-import com.schneewittchen.rosandroid.model.repositories.RosRepo;
+import com.schneewittchen.rosandroid.model.repositories.RosRepository;
+import com.schneewittchen.rosandroid.widgets.base.BaseData;
 import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
 
 import java.util.List;
-import java.util.Objects;
 
 /**
  * TODO: Description
@@ -22,7 +22,7 @@ import java.util.Objects;
  * @author Nico Studt
  * @version 1.0.2
  * @created on 07.04.20
- * @updated on 11.04.20
+ * @updated on 12.04.20
  * @modified by Nico Studt
  */
 public class RosDomain {
@@ -34,14 +34,15 @@ public class RosDomain {
 
     // Repositories
     private ConfigRepository configRepository;
-    private RosRepo rosRepo;
+    private RosRepository rosRepo;
 
     // Data objects
     private LiveData<List<BaseEntity>> currentWidgets;
     private LiveData<MasterEntity> currentMaster;
-    
+
+
     private RosDomain(@NonNull Application application) {
-        this.rosRepo = RosRepo.getInstance();
+        this.rosRepo = RosRepository.getInstance();
         this.configRepository = ConfigRepositoryImpl.getInstance(application);
 
         // React on config change and get the new data
@@ -52,6 +53,7 @@ public class RosDomain {
                 configId -> configRepository.getMaster(configId));
 
         currentWidgets.observeForever(widgets -> rosRepo.updateWidgets(widgets));
+        currentMaster.observeForever(master -> rosRepo.updateMaster(master));
     }
 
 
@@ -63,6 +65,10 @@ public class RosDomain {
         return mInstance;
     }
 
+
+    public void informWidgetDataChange(BaseData data) {
+        rosRepo.informWidgetDataChange(data);
+    }
 
     public void createWidget(int widgetType) {
         configRepository.createWidget(widgetType);
@@ -85,22 +91,16 @@ public class RosDomain {
     }
 
 
-    public void setMasterIp(String ipString) {
-        // TODO: set ip in current master object and update
-    }
-
-    public void setMasterPort(String portString) {
-        try {
-            int portInt = Integer.parseInt(portString.trim());
-            //master.port = portInt;
-            // TODO: set port in current master object and update
-        } catch (NumberFormatException nfe) {
-            Log.e(TAG, Objects.requireNonNull(nfe.getMessage()));
-        }
+    public void updateMaster(MasterEntity master) {
+        configRepository.updateMaster(master);
     }
 
     public void connectToMaster() {
         rosRepo.connectToMaster();
+    }
+
+    public void disconnectFromMaster() {
+        rosRepo.disconnectFromMaster();
     }
 
     public LiveData<MasterEntity> getCurrentMaster() {

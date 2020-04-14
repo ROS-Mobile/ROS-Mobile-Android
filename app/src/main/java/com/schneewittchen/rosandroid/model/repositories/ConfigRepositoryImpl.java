@@ -88,22 +88,16 @@ public class ConfigRepositoryImpl implements ConfigRepository {
     }
 
     @Override
+    public void updateMaster(MasterEntity master) {
+        mConfigDatabase.updataMaster(master);
+    }
+
+
+    @Override
     public void setMaster(MasterEntity master, String configId) {
         master.ip = configId;
     }
 
-    @Override
-    public void setPort(MasterEntity master, String port) {
-        try
-        {
-            int portInt = Integer.parseInt(port.trim());
-            master.port = portInt;
-        }
-        catch (NumberFormatException nfe)
-        {
-            System.out.println("NumberFormatException: " + nfe.getMessage());
-        }
-    }
 
     @Override
     public void setConfig(ConfigEntity config, String configId) {

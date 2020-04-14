@@ -29,22 +29,28 @@ public class MasterViewModel extends AndroidViewModel {
 
     private MutableLiveData<String> deviceIpLiveData;
     private MutableLiveData<String> networkSSIDLiveData;
+    private LiveData<MasterEntity> currentMaster;
 
 
     public MasterViewModel(@NonNull Application application) {
         super(application);
 
         rosDomain = RosDomain.getInstance(application);
+        currentMaster = rosDomain.getCurrentMaster();
     }
-
 
 
     public void setMasterIp(String ipString) {
-        rosDomain.setMasterIp(ipString);
+        MasterEntity master = currentMaster.getValue();
+        master.ip = ipString;
+        rosDomain.updateMaster(master);
     }
 
     public void setMasterPort(String portString) {
-        rosDomain.setMasterPort(portString);
+        int port = Integer.parseInt(portString);
+        MasterEntity master = currentMaster.getValue();
+        master.port = port;
+        rosDomain.updateMaster(master);
     }
 
     public void useIpWithAffixes(boolean useAffixes) {
@@ -58,6 +64,7 @@ public class MasterViewModel extends AndroidViewModel {
     public LiveData<MasterEntity> getMaster() {
         return rosDomain.getCurrentMaster();
     }
+
 
     public LiveData<String> getDeviceIp(){
         if (deviceIpLiveData == null) {
@@ -81,6 +88,5 @@ public class MasterViewModel extends AndroidViewModel {
 
         return networkSSIDLiveData;
     }
-
 
 }

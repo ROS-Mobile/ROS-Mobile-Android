@@ -1,8 +1,8 @@
 package com.schneewittchen.rosandroid.widgets.joystick;
 
-import com.schneewittchen.rosandroid.model.entities.WidgetEntity;
 import com.schneewittchen.rosandroid.widgets.base.BaseData;
-import com.schneewittchen.rosandroid.widgets.base.WidgetNode;
+import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
+import com.schneewittchen.rosandroid.widgets.base.BaseNode;
 
 import org.ros.node.ConnectedNode;
 import org.ros.node.topic.Publisher;
@@ -19,13 +19,13 @@ import java.util.TimerTask;
  * @updated on 13.03.20
  * @modified by
  */
-public class JoystickNode extends WidgetNode implements JoystickView.UpdateListener{
+public class JoystickNode extends BaseNode implements JoystickView.UpdateListener{
 
     float lastX, lastY;
     private geometry_msgs.Twist currentTwistMessage;
 
 
-    public JoystickNode(WidgetEntity widget) {
+    public JoystickNode(BaseEntity widget) {
         super(widget);
     }
 
