@@ -6,14 +6,15 @@ import com.schneewittchen.rosandroid.widgets.base.BaseDetailViewHolder;
 import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
 import com.schneewittchen.rosandroid.widgets.base.BaseView;
 import com.schneewittchen.rosandroid.widgets.base.BaseNode;
+import com.schneewittchen.rosandroid.widgets.joystick.WidgetJoystickEntity;
 
 /**
  * TODO: Description
  *
  * @author Nico Studt
- * @version 1.0.2
+ * @version 1.0.3
  * @created on 31.01.20
- * @updated on 2.04.20
+ * @updated on 14.04.20
  * @modified by
  */
 public class WidgetGridMapEntity extends BaseEntity {
@@ -66,5 +67,13 @@ public class WidgetGridMapEntity extends BaseEntity {
     @Override
     public boolean equalContent(BaseEntity other) {
         return true;
+    }
+
+    @Override
+    public WidgetGridMapEntity copy() {
+        WidgetGridMapEntity newEnt = new WidgetGridMapEntity();
+        this.fillContend(newEnt);
+
+        return newEnt;
     }
 }

@@ -22,9 +22,9 @@ import java.util.List;
  * TODO: Description
  *
  * @author Nico Studt
- * @version 1.0.3
+ * @version 1.0.4
  * @created on 24.01.20
- * @updated on 02.04.20
+ * @updated on 14.04.20
  * @modified by
  */
 public class WidgetDetailListAdapter extends RecyclerView.Adapter<BaseDetailViewHolder> implements DetailListener{
@@ -69,7 +69,7 @@ public class WidgetDetailListAdapter extends RecyclerView.Adapter<BaseDetailView
         int detailContentLayout = entity.getWidgetDetailViewId();
         inflator.inflate(detailContentLayout, holder.detailContend, true);
 
-        holder.update(entity);
+        holder.update(entity.copy());
     }
 
     @Override

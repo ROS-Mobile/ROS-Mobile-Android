@@ -95,6 +95,10 @@ public class RosRepository {
      * @param master Master data
      */
     public void updateMaster(MasterEntity master) {
+        if(master == null) {
+            return;
+        }
+
         Log.i(TAG, "Update Master");
 
         String masterString = String.format("http://%s:%s/", master.ip, master.port);
@@ -139,7 +143,7 @@ public class RosRepository {
 
         this.currentWidgets.clear();
         this.currentWidgets.addAll(widgets);
-        Log.i(TAG, "New size: " + this.currentWidgets.size());
+
     }
 
 

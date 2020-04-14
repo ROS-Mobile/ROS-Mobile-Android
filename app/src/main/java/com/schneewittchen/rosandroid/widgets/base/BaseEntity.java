@@ -6,15 +6,16 @@ import com.schneewittchen.rosandroid.model.entities.WidgetEntity;
  * TODO: Description
  *
  * @author Nico Studt
- * @version 1.0.1
+ * @version 1.0.2
  * @created on 16.03.20
- * @updated on 2.04.20
+ * @updated on 14.04.20
  * @modified by
  */
 public abstract class BaseEntity extends WidgetEntity {
 
     public static String TAG = BaseEntity.class.getSimpleName();
 
+    public BaseEntity() {}
 
     public abstract String getName();
 
@@ -30,12 +31,26 @@ public abstract class BaseEntity extends WidgetEntity {
 
     public abstract Class<? extends BaseNode> getNodeType();
 
+
+    public abstract boolean equalContent(BaseEntity other);
+
+    public abstract BaseEntity copy();
+
     protected void setType(int type) {
         this.type = type;
     }
 
-    public abstract boolean equalContent(BaseEntity other);
-
+    protected void fillContend(BaseEntity other) {
+        other.posX = posX;
+        other.posY = posY;
+        other.width = width;
+        other.height = height;
+        other.id = id;
+        other.name = name;
+        other.type = type;
+        other.configId = configId;
+        other.creationTime = creationTime;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -54,4 +69,6 @@ public abstract class BaseEntity extends WidgetEntity {
 
         return false;
     }
+
+
 }

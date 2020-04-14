@@ -12,9 +12,9 @@ import com.schneewittchen.rosandroid.widgets.base.BaseNode;
  * TODO: Description
  *
  * @author Nico Studt
- * @version 1.1.0
+ * @version 1.1.1
  * @created on 31.01.20
- * @updated on 02.04.20
+ * @updated on 14.04.20
  * @modified by
  */
 public class WidgetJoystickEntity extends BaseEntity {
@@ -62,6 +62,14 @@ public class WidgetJoystickEntity extends BaseEntity {
     public boolean equalContent(BaseEntity other) {
         System.err.println("Check equal content");
         return true;
+    }
+
+    @Override
+    public WidgetJoystickEntity copy() {
+        WidgetJoystickEntity newEnt = new WidgetJoystickEntity();
+        this.fillContend(newEnt);
+
+        return newEnt;
     }
 
 }

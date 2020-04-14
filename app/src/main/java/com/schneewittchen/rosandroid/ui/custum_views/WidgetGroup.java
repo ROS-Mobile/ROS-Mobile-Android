@@ -145,22 +145,6 @@ public class WidgetGroup extends ViewGroup {
         WidgetDiffCallback diffCallback = new WidgetDiffCallback(newWidgets, this.widgetList);
         DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
 
-        for(WidgetEntity entity: this.widgetList) {
-            Log.i(TAG, "Old entity " + entity.id);
-            Log.i(TAG, "    x:" + entity.posX);
-            Log.i(TAG, "    y:" + entity.posY);
-            Log.i(TAG, "    w:" + entity.width);
-            Log.i(TAG, "    h:" + entity.height);
-        }
-
-        for(WidgetEntity entity: newWidgets) {
-            Log.i(TAG, "New entity " + entity.id);
-            Log.i(TAG, "    x:" + entity.posX);
-            Log.i(TAG, "    y:" + entity.posY);
-            Log.i(TAG, "    w:" + entity.width);
-            Log.i(TAG, "    h:" + entity.height);
-        }
-
         diffResult.dispatchUpdatesTo(new ListUpdateCallback() {
             @Override
             public void onInserted(int position, int count) {
