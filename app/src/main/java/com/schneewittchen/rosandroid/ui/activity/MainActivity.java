@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment;
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.ui.fragments.MainFragment;
 import com.schneewittchen.rosandroid.ui.helper.OnBackPressedListener;
-import com.schneewittchen.rosandroid.model.repositories.RosRepo;
 
 
 /**
@@ -18,7 +17,7 @@ import com.schneewittchen.rosandroid.model.repositories.RosRepo;
  * @author Nico Studt
  * @version 1.0.1
  * @created on 16.01.20
- * @updated on 31.01.20
+ * @updated on 15.04.20
  * @modified by
  */
 public class MainActivity extends AppCompatActivity {
@@ -37,21 +36,11 @@ public class MainActivity extends AppCompatActivity {
                     .replace(R.id.main_container, MainFragment.newInstance())
                     .commitNow();
         }
-
-        // Let ROS know about the application context
-        RosRepo.getInstance().setContext(this);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        //RosRepo.getInstance().destroyService();
     }
 
     @Override
     public void onBackPressed(){
-        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.main_container); // te
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
 
         if(fragment instanceof OnBackPressedListener) {
             OnBackPressedListener listener = (OnBackPressedListener)fragment;

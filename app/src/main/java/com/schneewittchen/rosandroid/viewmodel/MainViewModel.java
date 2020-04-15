@@ -22,7 +22,7 @@ import com.schneewittchen.rosandroid.model.repositories.ConfigRepositoryImpl;
  */
 public class MainViewModel extends AndroidViewModel {
 
-    private static final String TAG = MainViewModel.class.getCanonicalName();
+    private static final String TAG = MainViewModel.class.getSimpleName();
 
     ConfigRepository configRepo;
     MediatorLiveData<String> configTitle;

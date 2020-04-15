@@ -26,8 +26,7 @@
 
         </activity>
 
-
-        <service android:name="org.ros.android.NodeMainExecutorService" >
+        <service android:name=".ros.NodeMainExecutorService">
             <intent-filter>
                 <action android:name="org.ros.android.NodeMainExecutorService" />
             </intent-filter>

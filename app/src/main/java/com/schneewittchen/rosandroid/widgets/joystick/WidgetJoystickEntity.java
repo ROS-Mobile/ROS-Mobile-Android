@@ -1,6 +1,7 @@
 package com.schneewittchen.rosandroid.widgets.joystick;
 
 import com.schneewittchen.rosandroid.R;
+import com.schneewittchen.rosandroid.model.entities.SubPubNoteEntity;
 import com.schneewittchen.rosandroid.model.entities.WidgetEntity;
 import com.schneewittchen.rosandroid.widgets.base.BaseDetailViewHolder;
 import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
@@ -21,6 +22,9 @@ public class WidgetJoystickEntity extends BaseEntity {
 
     public WidgetJoystickEntity() {
         this.setType(WidgetEntity.JOYSTICK);
+        this.publisher = new SubPubNoteEntity();
+        this.publisher.topic = "cmd_vel";
+        this.publisher.messageType = geometry_msgs.Twist._TYPE;
     }
 
     @Override

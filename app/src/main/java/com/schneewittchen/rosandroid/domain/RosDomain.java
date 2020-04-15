@@ -20,9 +20,9 @@ import java.util.List;
  * TODO: Description
  *
  * @author Nico Studt
- * @version 1.0.2
+ * @version 1.0.3
  * @created on 07.04.20
- * @updated on 12.04.20
+ * @updated on 15.04.20
  * @modified by Nico Studt
  */
 public class RosDomain {
@@ -42,7 +42,7 @@ public class RosDomain {
 
 
     private RosDomain(@NonNull Application application) {
-        this.rosRepo = RosRepository.getInstance();
+        this.rosRepo = RosRepository.getInstance(application);
         this.configRepository = ConfigRepositoryImpl.getInstance(application);
 
         // React on config change and get the new data
@@ -53,7 +53,10 @@ public class RosDomain {
                 configId -> configRepository.getMaster(configId));
 
         currentWidgets.observeForever(widgets -> rosRepo.updateWidgets(widgets));
-        currentMaster.observeForever(master -> rosRepo.updateMaster(master));
+        currentMaster.observeForever(master -> {
+            Log.i(TAG, "Update master " + master);
+            rosRepo.updateMaster(master);
+        });
     }
 
 
