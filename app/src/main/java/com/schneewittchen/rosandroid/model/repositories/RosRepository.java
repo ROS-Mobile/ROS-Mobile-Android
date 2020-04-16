@@ -4,6 +4,8 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.AsyncTask;
+import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -14,6 +16,8 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListUpdateCallback;
 
 import com.schneewittchen.rosandroid.model.entities.MasterEntity;
+import com.schneewittchen.rosandroid.ros.ConnectionCheckTask;
+import com.schneewittchen.rosandroid.ros.ConnectionListener;
 import com.schneewittchen.rosandroid.ros.NodeMainExecutorService;
 import com.schneewittchen.rosandroid.ros.NodeMainExecutorServiceListener;
 import com.schneewittchen.rosandroid.ui.helper.WidgetDiffCallback;
@@ -43,8 +47,6 @@ import java.util.List;
  * @modified by
  */
 public class RosRepository {
-
-    public enum ConnectionType {DISCONNECTED, PENDING, CONNECTED, FAILED}
 
     private static final String TAG = RosRepository.class.getSimpleName();
     private static RosRepository instance;
@@ -90,22 +92,26 @@ public class RosRepository {
     public void connectToMaster() {
         Log.i(TAG, "Connect to Master");
 
-        rosConnected.setValue(ConnectionType.PENDING);
-        NodeMainExecutorServiceConnection serviceConnection = new NodeMainExecutorServiceConnection(getMasterURI());
-
-        Context context = contextReference.get();
-        if (context == null) {
-            Log.w(TAG, "Context reference is null");
+        ConnectionType connectionType = rosConnected.getValue();
+        if (connectionType == ConnectionType.CONNECTED || connectionType == ConnectionType.PENDING) {
             return;
         }
 
-        // Create service intent
-        Intent serviceIntent = new Intent(context, NodeMainExecutorService.class);
-        serviceIntent.setAction(NodeMainExecutorService.ACTION_START);
+        rosConnected.setValue(ConnectionType.PENDING);
 
-        // Start service and check state
-        context.startService(serviceIntent);
-        context.bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
+        // Check connection
+        new ConnectionCheckTask(new ConnectionListener() {
+
+            @Override
+            public void onSuccess() {
+                bindService();
+            }
+
+            @Override
+            public void onFailed() {
+                rosConnected.postValue(ConnectionType.FAILED);
+            }
+        }).execute(master);
     }
 
     /**
@@ -114,6 +120,8 @@ public class RosRepository {
     public void disconnectFromMaster() {
         Log.i(TAG, "Disconnect from Master");
         this.unregisterAllNodes();
+
+        nodeMainExecutorService.shutdown();
     }
 
 
@@ -192,6 +200,24 @@ public class RosRepository {
      */
     public LiveData<ConnectionType> getRosConnectionStatus() {
         return rosConnected;
+    }
+
+
+    private void bindService() {
+        Context context = contextReference.get();
+        if (context == null) {
+            return;
+        }
+
+        NodeMainExecutorServiceConnection serviceConnection = new NodeMainExecutorServiceConnection(getMasterURI());
+
+        // Create service intent
+        Intent serviceIntent = new Intent(context, NodeMainExecutorService.class);
+        serviceIntent.setAction(NodeMainExecutorService.ACTION_START);
+
+        // Start service and check state
+        context.startService(serviceIntent);
+        context.bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
     }
 
     /**
@@ -322,10 +348,11 @@ public class RosRepository {
             nodeMainExecutorService.setRosHostname(getDefaultHostAddress());
 
             serviceListener = nodeMainExecutorService ->
-                    rosConnected.setValue(ConnectionType.DISCONNECTED);
+                    rosConnected.postValue(ConnectionType.DISCONNECTED);
 
-            rosConnected.setValue(ConnectionType.CONNECTED);
             nodeMainExecutorService.addListener(serviceListener);
+            rosConnected.setValue(ConnectionType.CONNECTED);
+
             registerAllNodes();
         }
 

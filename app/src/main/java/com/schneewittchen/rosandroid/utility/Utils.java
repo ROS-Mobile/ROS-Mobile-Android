@@ -2,14 +2,22 @@ package com.schneewittchen.rosandroid.utility;
 
 
 import android.content.Context;
+import android.os.NetworkOnMainThreadException;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
+import java.io.IOException;
+import java.net.ConnectException;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.NetworkInterface;
+import java.net.Socket;
+import java.net.SocketTimeoutException;
+import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
@@ -164,5 +172,37 @@ public class Utils {
         } catch (Exception ignored) { } // for now eat exceptions
 
         return "";
+    }
+
+    /**
+     * Check if host is reachable.
+     * @param host The host to check for availability. Can either be a machine name, such as "google.com",
+     *             or a textual representation of its IP address, such as "8.8.8.8".
+     * @param port The port number.
+     * @param timeout The timeout in milliseconds.
+     * @return True if the host is reachable. False otherwise.
+     */
+    public static boolean isHostAvailable(final String host, final int port, final int timeout) {
+        try (final Socket socket = new Socket()) {
+            final InetAddress inetAddress = InetAddress.getByName(host);
+            final InetSocketAddress inetSocketAddress = new InetSocketAddress(inetAddress, port);
+
+            socket.connect(inetSocketAddress, timeout);
+            return true;
+
+        } catch (ConnectException e) {
+            Log.e("Connection", "Failed do to unavailable network.");
+
+        }catch (SocketTimeoutException e) {
+            Log.e("Connection", "Failed do to reach host in time.");
+
+        } catch (UnknownHostException e) {
+            Log.e("Connection", "Unknown host.");
+
+        } catch (IOException e) {
+            Log.e("Connection", "IO Exception.");
+        }
+
+        return false;
     }
 }

@@ -3,7 +3,7 @@ package com.schneewittchen.rosandroid.ui.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
-import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +18,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.databinding.FragmentMasterBinding;
+import com.schneewittchen.rosandroid.model.repositories.ConnectionType;
 import com.schneewittchen.rosandroid.viewmodel.MasterViewModel;
 
 
@@ -30,7 +31,7 @@ import com.schneewittchen.rosandroid.viewmodel.MasterViewModel;
  * @updated on 07.04.20
  * @modified by
  */
-public class MasterFragment extends Fragment {
+public class MasterFragment extends Fragment implements TextView.OnEditorActionListener {
 
     private static final String TAG = "MasterConfigFragment";
 
@@ -69,23 +70,21 @@ public class MasterFragment extends Fragment {
         // View model connection -------------------------------------------------------------------
 
         mViewModel.getMaster().observe(getViewLifecycleOwner(), master -> {
-            Log.i(TAG, "New Master: " + master);
-
             if (master == null) return;
-
-            Log.i(TAG, "New Master port: " + master.port);
 
             binding.NotificationTitleText.setText(master.notificationTitle);
             binding.TickerTitleChoiceText.setText(master.notificationTickerTitle);
             binding.masterIpEditText.setText(master.ip);
-            binding.masterPortEditText.setText(String.format("%d", master.port));
+            binding.masterPortEditText.setText(String.valueOf(master.port));
         });
 
         mViewModel.getCurrentNetworkSSID().observe(getViewLifecycleOwner(),
                 networkSSID -> binding.networkSSIDChoiceText.setText(networkSSID));
+
         mViewModel.getDeviceIp().observe(getViewLifecycleOwner(),
                 deviceIp -> binding.ipAddressChoiceText.setText(deviceIp));
 
+        mViewModel.getRosConnection().observe(getViewLifecycleOwner(), this::setRosConnection);
 
         // User input ------------------------------------------------------------------------------
 
@@ -93,55 +92,66 @@ public class MasterFragment extends Fragment {
             mViewModel.useIpWithAffixes(isChecked);
         });
 
-        TextView.OnEditorActionListener actionListener = (v, actionId, event) -> {
-            if (actionId == EditorInfo.IME_ACTION_DONE){
-                switch(v.getId()) {
-                    case R.id.master_ip_editText:
-                        Editable masterIp = binding.masterIpEditText.getText();
-
-                        if (masterIp != null) {
-                            mViewModel.setMasterIp(masterIp.toString());
-                        }
-
-                    case R.id.master_port_editText:
-                        Editable masterPort = binding.masterPortEditText.getText();
-
-                        if (masterPort != null) {
-                            mViewModel.setMasterPort(masterPort.toString());
-                        }
-                }
-
-                v.clearFocus();
-                hideSoftKeyboard();
-                return true;
-            }
-
-            return false;
-        };
-
-        binding.masterIpEditText.setOnEditorActionListener(actionListener);
-        binding.masterPortEditText.setOnEditorActionListener(actionListener);
-
-        binding.notificationTitleEditButton.setOnClickListener(v -> {
-            Log.i(TAG, "Ticker title pressed");
-            // TODO : Open choice dialog for notification title
-        });
-
-        binding.notificationTickerEditButton.setOnClickListener(v -> {
-            Log.i(TAG, "Ticker pressed");
-            // TODO : Open choice dialog for notification ticker title
-        });
-
-        binding.connectButton.setOnClickListener(v -> {
-            Log.i(TAG, "Connect pressed");
-            mViewModel.connectToMaster();
-        });
+        binding.connectButton.setOnClickListener(v -> mViewModel.connectToMaster());
+        binding.disconnectButton.setOnClickListener(v -> mViewModel.disconnectFromMaster());
+        binding.masterIpEditText.setOnEditorActionListener(this);
+        binding.masterPortEditText.setOnEditorActionListener(this);
     }
 
-    public void hideSoftKeyboard() {
+    private void setRosConnection(ConnectionType connectionType) {
+        int connectVisibility = View.GONE;
+        int disconnectVisibility = View.GONE;
+        int pendingVisibility = View.GONE;
+
+        if (connectionType == ConnectionType.DISCONNECTED
+                || connectionType == ConnectionType.FAILED) {
+            connectVisibility = View.VISIBLE;
+
+        } else if (connectionType == ConnectionType.CONNECTED) {
+            disconnectVisibility = View.VISIBLE;
+
+        } else if (connectionType == ConnectionType.PENDING) {
+            pendingVisibility = View.VISIBLE;
+        }
+
+        binding.connectButton.setVisibility(connectVisibility);
+        binding.disconnectButton.setVisibility(disconnectVisibility);
+        binding.pendingBar.setVisibility(pendingVisibility);
+    }
+
+    private void hideSoftKeyboard() {
         final InputMethodManager imm = (InputMethodManager) getActivity()
                 .getSystemService(Context.INPUT_METHOD_SERVICE);
+
         imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
     }
 
+    @Override
+    public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
+        int id = view.getId();
+
+        if (actionId == EditorInfo.IME_ACTION_DONE){
+            if (id == R.id.master_ip_editText) {
+                Editable masterIp = binding.masterIpEditText.getText();
+
+                if (masterIp != null) {
+                    mViewModel.setMasterIp(masterIp.toString());
+                }
+
+            } else if (id == R.id.master_port_editText) {
+                Editable masterPort = binding.masterPortEditText.getText();
+
+                if (masterPort != null) {
+                    mViewModel.setMasterPort(masterPort.toString());
+                }
+            }
+
+            view.clearFocus();
+            hideSoftKeyboard();
+
+            return true;
+        }
+
+        return false;
+    }
 }

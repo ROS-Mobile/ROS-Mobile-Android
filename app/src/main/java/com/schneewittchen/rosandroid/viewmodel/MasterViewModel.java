@@ -10,6 +10,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.schneewittchen.rosandroid.domain.RosDomain;
 import com.schneewittchen.rosandroid.model.entities.MasterEntity;
+import com.schneewittchen.rosandroid.model.repositories.ConnectionType;
 
 
 /**
@@ -61,10 +62,17 @@ public class MasterViewModel extends AndroidViewModel {
         rosDomain.connectToMaster();
     }
 
+    public void disconnectFromMaster() {
+        rosDomain.disconnectFromMaster();
+    }
+
     public LiveData<MasterEntity> getMaster() {
         return rosDomain.getCurrentMaster();
     }
 
+    public LiveData<ConnectionType> getRosConnection() {
+        return rosDomain.getRosConnection();
+    }
 
     public LiveData<String> getDeviceIp(){
         if (deviceIpLiveData == null) {
@@ -88,5 +96,6 @@ public class MasterViewModel extends AndroidViewModel {
 
         return networkSSIDLiveData;
     }
+
 
 }

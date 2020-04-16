@@ -10,6 +10,7 @@ import androidx.lifecycle.Transformations;
 import com.schneewittchen.rosandroid.model.entities.MasterEntity;
 import com.schneewittchen.rosandroid.model.repositories.ConfigRepository;
 import com.schneewittchen.rosandroid.model.repositories.ConfigRepositoryImpl;
+import com.schneewittchen.rosandroid.model.repositories.ConnectionType;
 import com.schneewittchen.rosandroid.model.repositories.RosRepository;
 import com.schneewittchen.rosandroid.widgets.base.BaseData;
 import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
@@ -110,4 +111,7 @@ public class RosDomain {
         return this.currentMaster;
     }
 
+    public LiveData<ConnectionType> getRosConnection() {
+        return rosRepo.getRosConnectionStatus();
+    }
 }
