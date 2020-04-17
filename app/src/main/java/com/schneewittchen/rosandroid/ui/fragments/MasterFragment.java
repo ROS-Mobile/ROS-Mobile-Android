@@ -47,11 +47,8 @@ public class MasterFragment extends Fragment implements TextView.OnEditorActionL
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-
         binding = FragmentMasterBinding.inflate(inflater, container, false);
-        View view = binding.getRoot();
-
-        return view;
+        return binding.getRoot();
     }
 
     @Override

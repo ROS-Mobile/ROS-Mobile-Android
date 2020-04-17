@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
+<selector
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <item android:state_enabled="true" >
+        <bitmap
+            android:src="@drawable/ic_refresh"
+            android:tint="@color/colorPrimary" />
+    </item>
+    <item android:drawable="@drawable/ic_send"/>
 </selector>

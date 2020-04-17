@@ -63,6 +63,18 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <ImageButton
+                android:id="@+id/update_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:background="?actionBarItemBackground"
+                android:src="@drawable/ic_refresh"
+                android:tint="@color/state_button_color"
+                app:layout_constraintBottom_toBottomOf="@+id/title"
+                app:layout_constraintEnd_toStartOf="@+id/open_button"
+                app:layout_constraintTop_toTopOf="@+id/title" />
+
             <ImageView
                 android:id="@+id/open_button"
                 android:layout_width="wrap_content"
@@ -70,22 +82,12 @@
                 android:layout_marginEnd="8dp"
                 android:background="?actionBarItemBackground"
                 android:clickable="true"
-                android:focusable="auto"
+                android:focusable="true"
                 android:tint="@color/colorAccent"
-                app:layout_constraintBottom_toTopOf="@+id/guideline2"
+                app:layout_constraintBottom_toBottomOf="@+id/title"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/title"
                 app:srcCompat="@drawable/ic_expand_less_white_24dp" />
-
-            <Button
-                android:id="@+id/update_button"
-                style="?attr/materialButtonOutlinedStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:text="Update"
-                app:layout_constraintEnd_toStartOf="@+id/open_button"
-                app:layout_constraintTop_toTopOf="parent" />
 
             <LinearLayout
                 android:id="@+id/detailContend"
@@ -93,6 +95,8 @@
                 android:layout_height="wrap_content"
                 android:divider="@drawable/empty_divider"
                 android:orientation="vertical"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
                 android:paddingBottom="16dp"
                 android:showDividers="middle"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -107,10 +111,10 @@
                         android:id="@+id/textView6"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
                         android:text="Viz location"
                         android:textAppearance="@style/TextAppearance.AppCompat.Small"
                         android:textColor="@color/colorAccent"
+                        android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -119,7 +123,6 @@
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
                         android:layout_marginTop="8dp"
                         android:layout_marginEnd="8dp"
                         android:hint="X"
@@ -192,7 +195,6 @@
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="16dp"
                         android:hint="Height"
                         app:boxBackgroundMode="outline"
                         app:layout_constraintBottom_toBottomOf="parent"

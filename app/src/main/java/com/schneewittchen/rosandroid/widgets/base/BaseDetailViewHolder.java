@@ -3,6 +3,7 @@ package com.schneewittchen.rosandroid.widgets.base;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -28,7 +29,7 @@ public class BaseDetailViewHolder<T extends BaseEntity> extends RecyclerView.Vie
     public LinearLayout detailContend;
     protected TextView title;
     protected ImageView openButton;
-    protected Button updateButton;
+    protected ImageButton updateButton;
     protected T entity;
     DetailListener updateListener;
     EditText xEdittext, yEdittext, widthEditText, heightEdittext;
@@ -71,6 +72,8 @@ public class BaseDetailViewHolder<T extends BaseEntity> extends RecyclerView.Vie
 
             updateListener.onDetailsChanged(entity);
         });
+
+        updateButton.setEnabled(true);
     }
 
     public void update(T entity) {

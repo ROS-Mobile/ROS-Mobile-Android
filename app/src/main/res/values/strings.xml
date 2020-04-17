@@ -28,6 +28,17 @@
     <string name="widget_joystick_name">Joystick</string>
     <string name="widget_joystick_desc">A virtual Joystick</string>
 
+    <string-array name="geometry_msg_twist_dir">
+        <item>Linear</item>
+        <item>Angular</item>
+    </string-array>
+
+    <string-array name="geometry_msg_twist_axis">
+        <item>X</item>
+        <item>Y</item>
+        <item>Z</item>
+    </string-array>
+
     <string name="widget_map_name">Map</string>
     <string name="widget_map_desc">Displays an occupancy grid on the ground plane from a nav_msgs::OccupancyGrid.</string>
 
