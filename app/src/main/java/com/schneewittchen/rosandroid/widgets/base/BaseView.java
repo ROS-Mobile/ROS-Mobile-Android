@@ -14,8 +14,8 @@ import androidx.annotation.Nullable;
  * @author Nico Studt
  * @version 1.0.0
  * @created on 15.03.20
- * @updated on 15.03.20
- * @modified by
+ * @updated on 21.04.20
+ * @modified by Nils Rottmann
  */
 public class BaseView extends View implements Interactable {
 
@@ -48,7 +48,7 @@ public class BaseView extends View implements Interactable {
 
     @Override
     public void setData(BaseData data) {
-        // Default data set, but nothing to see here!
+        // Default data set, but nothing to see here
     }
 
     @Override

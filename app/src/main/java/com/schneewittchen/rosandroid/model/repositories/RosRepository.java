@@ -25,6 +25,7 @@ import com.schneewittchen.rosandroid.utility.Utils;
 import com.schneewittchen.rosandroid.widgets.base.BaseData;
 import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
 import com.schneewittchen.rosandroid.widgets.base.BaseNode;
+import com.schneewittchen.rosandroid.widgets.base.DataListener;
 
 import org.ros.address.InetAddressFactory;
 import org.ros.node.NodeConfiguration;
@@ -43,10 +44,10 @@ import java.util.List;
  * @author Nico Studt
  * @version 1.1.2
  * @created on 16.01.20
- * @updated on 15.04.20
- * @modified by
+ * @updated on 21.04.20
+ * @modified by Nils Rottmann
  */
-public class RosRepository {
+public class RosRepository implements DataListener {
 
     private static final String TAG = RosRepository.class.getSimpleName();
     private static RosRepository instance;
@@ -57,6 +58,8 @@ public class RosRepository {
     private List<BaseEntity> currentWidgets;
     private HashMap<Long, BaseNode> currentNodes;
     private MutableLiveData<ConnectionType> rosConnected;
+
+    private MutableLiveData<BaseData> receivedData;
 
     private NodeMainExecutorService nodeMainExecutorService;
     private NodeConfiguration nodeConfiguration;
@@ -70,6 +73,7 @@ public class RosRepository {
         this.currentWidgets = new ArrayList<>();
         this.currentNodes = new HashMap<>();
         this.rosConnected = new MutableLiveData<>(ConnectionType.DISCONNECTED);
+        this.receivedData = new MutableLiveData<>();
     }
 
 
@@ -232,7 +236,7 @@ public class RosRepository {
         try {
             Constructor<? extends BaseNode> cons  = clazz.getConstructor(BaseEntity.class);
             BaseNode node = cons.newInstance(widget);
-
+            node.setListener(this);
             currentNodes.put(widget.id, node);
             registerNode(node);
 
@@ -326,6 +330,15 @@ public class RosRepository {
 
     private String getDefaultHostAddress() {
         return InetAddressFactory.newNonLoopback().getHostAddress();
+    }
+
+    public LiveData<BaseData> getData() {
+        return receivedData;
+    }
+
+    @Override
+    public void onNewData(BaseData newData) {
+        this.receivedData.postValue(newData);
     }
 
 

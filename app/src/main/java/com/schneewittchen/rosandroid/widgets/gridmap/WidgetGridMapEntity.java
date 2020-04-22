@@ -1,12 +1,12 @@
 package com.schneewittchen.rosandroid.widgets.gridmap;
 
 import com.schneewittchen.rosandroid.R;
+import com.schneewittchen.rosandroid.model.entities.SubPubNoteEntity;
 import com.schneewittchen.rosandroid.model.entities.WidgetEntity;
 import com.schneewittchen.rosandroid.widgets.base.BaseDetailViewHolder;
 import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
 import com.schneewittchen.rosandroid.widgets.base.BaseView;
 import com.schneewittchen.rosandroid.widgets.base.BaseNode;
-import com.schneewittchen.rosandroid.widgets.joystick.WidgetJoystickEntity;
 
 /**
  * TODO: Description
@@ -14,8 +14,8 @@ import com.schneewittchen.rosandroid.widgets.joystick.WidgetJoystickEntity;
  * @author Nico Studt
  * @version 1.0.3
  * @created on 31.01.20
- * @updated on 14.04.20
- * @modified by
+ * @updated on 21.04.20
+ * @modified by Nils Rottmann
  */
 public class WidgetGridMapEntity extends BaseEntity {
 
@@ -27,6 +27,9 @@ public class WidgetGridMapEntity extends BaseEntity {
 
     public WidgetGridMapEntity() {
         this.setType(WidgetEntity.MAP);
+        this.subscriber = new SubPubNoteEntity();
+        this.subscriber.topic = "map";
+        this.subscriber.messageType = nav_msgs.OccupancyGrid._TYPE;
     }
 
     @Override
@@ -56,12 +59,12 @@ public class WidgetGridMapEntity extends BaseEntity {
 
     @Override
     public Class<? extends BaseDetailViewHolder> getDetailViewHolderType() {
-        return GridDetailVH.class;
+        return GridMapDetailVH.class;
     }
 
     @Override
     public Class<? extends BaseNode> getNodeType() {
-        return null;
+        return GridMapNode.class;
     }
 
     @Override

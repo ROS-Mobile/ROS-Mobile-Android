@@ -17,10 +17,10 @@ import com.schneewittchen.rosandroid.widgets.base.DetailListener;
  * @updated on 13.02.20
  * @modified by
  */
-public class GridDetailVH extends BaseDetailViewHolder<WidgetGridMapEntity> {
+public class GridMapDetailVH extends BaseDetailViewHolder<WidgetGridMapEntity> {
 
 
-    public GridDetailVH(@NonNull View view, DetailListener updateListener) {
+    public GridMapDetailVH(@NonNull View view, DetailListener updateListener) {
         super(view, updateListener);
     }
 }

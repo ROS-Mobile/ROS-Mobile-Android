@@ -36,7 +36,6 @@ public class JoystickNode extends BaseNode {
         Publisher<geometry_msgs.Twist> publisher = connectedNode.newPublisher(widget.publisher.topic,
                                                                         widget.publisher.messageType);
         currentTwistMessage = publisher.newMessage();
-
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override

@@ -1,6 +1,7 @@
 package com.schneewittchen.rosandroid.widgets.gridmap;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.AttributeSet;
@@ -12,6 +13,7 @@ import androidx.annotation.Nullable;
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.model.entities.WidgetEntity;
 import com.schneewittchen.rosandroid.utility.Utils;
+import com.schneewittchen.rosandroid.widgets.base.BaseData;
 import com.schneewittchen.rosandroid.widgets.base.BaseView;
 import com.schneewittchen.rosandroid.widgets.joystick.JoystickView;
 
@@ -21,8 +23,8 @@ import com.schneewittchen.rosandroid.widgets.joystick.JoystickView;
  * @author Nico Studt
  * @version 1.0.0
  * @created on 18.10.19
- * @updated on 10.01.20
- * @modified by
+ * @updated on 20.04.20
+ * @modified by Nils Rottmann
  */
 public class GridMapView extends BaseView {
 
@@ -31,6 +33,7 @@ public class GridMapView extends BaseView {
     Paint paint;
     float cornerWidth;
 
+    GridMapData data;
 
     public GridMapView(Context context) {
         super(context);
@@ -57,7 +60,18 @@ public class GridMapView extends BaseView {
         Log.i(TAG, "On draw");
         float width = getWidth();
         float height = getHeight();
-        canvas.drawRoundRect(2, 2, width - 2, height - 2, cornerWidth, cornerWidth, paint);
+        if (data != null) {
+            canvas.drawBitmap(data.map, 0F, 0F, paint);
+        } else {
+            canvas.drawRoundRect(0F, 0F, width, height, cornerWidth, cornerWidth, paint);
+        }
+    }
+
+    @Override
+    public void setData(BaseData data) {
+        // TODO
+        System.out.println("GridMapView: SetData!");
+        this.data = (GridMapData) data;
     }
 
 }

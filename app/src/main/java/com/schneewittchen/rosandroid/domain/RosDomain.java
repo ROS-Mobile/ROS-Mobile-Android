@@ -25,6 +25,8 @@ import java.util.List;
  * @created on 07.04.20
  * @updated on 15.04.20
  * @modified by Nico Studt
+ * @updated on 21.04.20
+ * @modified by Nils Rottmann
  */
 public class RosDomain {
 
@@ -93,6 +95,8 @@ public class RosDomain {
     public LiveData<List<BaseEntity>> getCurrentWidgets() {
         return this.currentWidgets;
     }
+
+    public LiveData<BaseData> getData(){ return this.rosRepo.getData(); }
 
 
     public void updateMaster(MasterEntity master) {
