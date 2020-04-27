@@ -21,8 +21,8 @@ import java.util.List;
  * @author Nico Studt
  * @version 1.1.0
  * @created on 10.01.20
- * @updated on 07.04.20
- * @modified by
+ * @updated on 27.04.20
+ * @modified by Nils Rottmann
  */
 public class DetailsViewModel extends AndroidViewModel {
 
@@ -45,9 +45,10 @@ public class DetailsViewModel extends AndroidViewModel {
         // TODO: Make generic
         if (selectedText.toLowerCase().equals("joystick")) {
             rosDomain.createWidget(WidgetEntity.JOYSTICK);
-
         } else if (selectedText.toLowerCase().equals("map")) {
             rosDomain.createWidget(WidgetEntity.MAP);
+        } else if (selectedText.toLowerCase().equals("camera")) {
+            rosDomain.createWidget(WidgetEntity.CAMERA);
         }
     }
 

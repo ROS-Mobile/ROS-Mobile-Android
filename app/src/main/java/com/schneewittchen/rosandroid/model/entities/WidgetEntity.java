@@ -13,14 +13,15 @@ import androidx.room.PrimaryKey;
  * @author Nico Studt
  * @version 1.0.2
  * @created on 30.01.20
- * @updated on 16.02.20
- * @modified by
+ * @updated on 27.04.20
+ * @modified by Nils Rottmann
  */
 @Entity(tableName = "widget_table")
 public class WidgetEntity {
 
     public static final int JOYSTICK = 0;
     public static final int MAP = 1;
+    public static final int CAMERA = 2;
 
 
     @PrimaryKey(autoGenerate = true)

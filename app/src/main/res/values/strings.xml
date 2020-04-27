@@ -42,6 +42,9 @@
     <string name="widget_map_name">Map</string>
     <string name="widget_map_desc">Displays an occupancy grid on the ground plane from a nav_msgs::OccupancyGrid.</string>
 
+    <string name="widget_camera_name">Camera</string>
+    <string name="widget_camera_desc">Displays a camera msg from sensor_msgs::Image.</string>
+
     <!-- Default config -->
     <string name="default_config_name">New Config</string>
     <string name="default_master_ip">123.456.789.01</string>

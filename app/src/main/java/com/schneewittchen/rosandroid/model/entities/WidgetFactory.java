@@ -3,6 +3,7 @@ package com.schneewittchen.rosandroid.model.entities;
 import android.util.Log;
 
 import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
+import com.schneewittchen.rosandroid.widgets.camera.WidgetCameraEntity;
 import com.schneewittchen.rosandroid.widgets.gridmap.WidgetGridMapEntity;
 import com.schneewittchen.rosandroid.widgets.joystick.WidgetJoystickEntity;
 
@@ -15,7 +16,8 @@ import java.util.List;
  * @author Nico Studt
  * @version 1.0.2
  * @created on 03.02.20
- * @updated on 16.02.20
+ * @updated on 27.04.20
+ * @modified by Nils Rottmann
  */
 public class WidgetFactory {
 
@@ -44,6 +46,10 @@ public class WidgetFactory {
             case WidgetEntity.MAP:
                 // TODO: Set map variables
                 widget = new WidgetGridMapEntity();
+                break;
+
+            case WidgetEntity.CAMERA:
+                widget = new WidgetCameraEntity();
                 break;
 
             default:

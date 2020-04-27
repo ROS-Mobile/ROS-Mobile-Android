@@ -1,4 +1,4 @@
-package com.schneewittchen.rosandroid.widgets.gridmap;
+package com.schneewittchen.rosandroid.widgets.camera;
 
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.model.entities.SubPubNoteEntity;
@@ -11,29 +11,35 @@ import com.schneewittchen.rosandroid.widgets.base.BaseNode;
 /**
  * TODO: Description
  *
- * @author Nico Studt
- * @version 1.0.3
- * @created on 31.01.20
- * @updated on 21.04.20
- * @modified by Nils Rottmann
+ * @author Nils Rottmann
+ * @version 1.0.0
+ * @created on 27.04.20
+ * @updated on
+ * @modified by
  */
-public class WidgetGridMapEntity extends BaseEntity {
+public class WidgetCameraEntity extends BaseEntity {
 
-    public WidgetGridMapEntity() {
-        this.setType(WidgetEntity.MAP);
+    String topic;
+    int colorScheme;
+    boolean drawBehind;
+    boolean useTimeStamp;
+
+
+    public WidgetCameraEntity() {
+        this.setType(WidgetEntity.CAMERA);
         this.subscriber = new SubPubNoteEntity();
-        this.subscriber.topic = "map";
-        this.subscriber.messageType = nav_msgs.OccupancyGrid._TYPE;
+        this.subscriber.topic = "camera/image_raw";
+        this.subscriber.messageType = sensor_msgs.Image._TYPE;
     }
 
     @Override
     public String getName() {
-        return "Gridmap";
+        return "Camera";
     }
 
     @Override
     public int getEntityType() {
-        return WidgetEntity.MAP;
+        return WidgetEntity.CAMERA;
     }
 
     @Override
@@ -43,9 +49,10 @@ public class WidgetGridMapEntity extends BaseEntity {
 
     @Override
     public Class<? extends BaseView> getViewType() {
-        return GridMapView.class;
+        return CameraView.class;
     }
 
+    // TODO: Add own layout for image style?
     @Override
     public int getWidgetDetailViewId() {
         return R.layout.widget_detail_map;
@@ -53,12 +60,12 @@ public class WidgetGridMapEntity extends BaseEntity {
 
     @Override
     public Class<? extends BaseDetailViewHolder> getDetailViewHolderType() {
-        return GridMapDetailVH.class;
+        return CameraDetailVH.class;
     }
 
     @Override
     public Class<? extends BaseNode> getNodeType() {
-        return GridMapNode.class;
+        return CameraNode.class;
     }
 
     @Override
@@ -67,10 +74,11 @@ public class WidgetGridMapEntity extends BaseEntity {
     }
 
     @Override
-    public WidgetGridMapEntity copy() {
-        WidgetGridMapEntity newEnt = new WidgetGridMapEntity();
+    public WidgetCameraEntity copy() {
+        WidgetCameraEntity newEnt = new WidgetCameraEntity();
         this.fillContend(newEnt);
 
         return newEnt;
     }
 }
+

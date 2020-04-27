@@ -1,4 +1,4 @@
-package com.schneewittchen.rosandroid.widgets.gridmap;
+package com.schneewittchen.rosandroid.widgets.camera;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -14,30 +14,31 @@ import com.schneewittchen.rosandroid.utility.Utils;
 import com.schneewittchen.rosandroid.widgets.base.BaseData;
 import com.schneewittchen.rosandroid.widgets.base.BaseView;
 
+
 /**
  * TODO: Description
  *
- * @author Nico Studt
+ * @author Nils Rottmann
  * @version 1.0.0
- * @created on 18.10.19
- * @updated on 27.04.20
- * @modified by Nils Rottmann
+ * @created on 27.04.19
+ * @updated on
+ * @modified by
  */
-public class GridMapView extends BaseView {
+public class CameraView extends BaseView {
 
-    public static final String TAG = "GridmapView";
+    public static final String TAG = "CameraView";
 
     Paint paint;
     float cornerWidth;
 
-    GridMapData data;
+    CameraData data;
 
-    public GridMapView(Context context) {
+    public CameraView(Context context) {
         super(context);
         init();
     }
 
-    public GridMapView(Context context, @Nullable AttributeSet attrs) {
+    public CameraView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
         init();
@@ -71,8 +72,8 @@ public class GridMapView extends BaseView {
     @Override
     public void setData(BaseData data) {
         // TODO
-        System.out.println("GridMapView: SetData!");
-        this.data = (GridMapData) data;
+        System.out.println("CameraView: SetData!");
+        this.data = (CameraData) data;
         this.invalidate();
     }
 

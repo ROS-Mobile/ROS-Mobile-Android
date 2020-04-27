@@ -13,6 +13,7 @@ import com.schneewittchen.rosandroid.model.entities.ConfigEntity;
 import com.schneewittchen.rosandroid.model.entities.MasterEntity;
 import com.schneewittchen.rosandroid.model.entities.WidgetEntity;
 import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
+import com.schneewittchen.rosandroid.widgets.camera.WidgetCameraEntity;
 import com.schneewittchen.rosandroid.widgets.gridmap.WidgetGridMapEntity;
 import com.schneewittchen.rosandroid.widgets.joystick.WidgetJoystickEntity;
 
@@ -26,6 +27,8 @@ import java.util.List;
  * @version 1.0.6
  * @created on 26.01.20
  * @updated on 06.04.20
+ * @modified by Nils Rottmann
+ * @updated on 27.04.20
  * @modified by Nils Rottmann
  */
 public class ConfigRepositoryImpl implements ConfigRepository {
@@ -120,6 +123,10 @@ public class ConfigRepositoryImpl implements ConfigRepository {
 
             case WidgetEntity.MAP:
                 widget = new WidgetGridMapEntity();
+                break;
+
+            case WidgetEntity.CAMERA:
+                widget = new WidgetCameraEntity();
                 break;
 
             default:
