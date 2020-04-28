@@ -62,7 +62,7 @@ public abstract class BaseEntity extends WidgetEntity {
             BaseEntity other = (BaseEntity) o;
 
             return other.id == this.id
-                    && other.type == this.type
+                    && other.type.equals(this.type)
                     && other.posX == this.posX
                     && other.posY == this.posY
                     && other.width == this.width
