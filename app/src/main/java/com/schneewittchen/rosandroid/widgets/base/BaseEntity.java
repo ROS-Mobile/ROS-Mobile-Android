@@ -19,7 +19,9 @@ public abstract class BaseEntity extends WidgetEntity {
 
     public abstract String getName();
 
-    public abstract int getEntityType();
+    public String getEntityType() {
+        return this.type;
+    }
 
     public abstract int getWidgetVizViewId();
 
@@ -36,7 +38,7 @@ public abstract class BaseEntity extends WidgetEntity {
 
     public abstract BaseEntity copy();
 
-    protected void setType(int type) {
+    protected void setType(String type) {
         this.type = type;
     }
 

@@ -24,28 +24,7 @@
     <string name="password_hint">Password</string>
     <string name="terminal_hint">Terminal Input</string>
 
-    <!-- Widgets -->
-    <string name="widget_joystick_name">Joystick</string>
-    <string name="widget_joystick_desc">A virtual Joystick</string>
-
-    <string-array name="geometry_msg_twist_dir">
-        <item>Linear</item>
-        <item>Angular</item>
-    </string-array>
-
-    <string-array name="geometry_msg_twist_axis">
-        <item>X</item>
-        <item>Y</item>
-        <item>Z</item>
-    </string-array>
-
-    <string name="widget_map_name">Map</string>
-    <string name="widget_map_desc">Displays an occupancy grid on the ground plane from a nav_msgs::OccupancyGrid.</string>
-
-    <string name="widget_camera_name">Camera</string>
-    <string name="widget_camera_desc">Displays a camera msg from sensor_msgs::Image.</string>
-
-    <!-- Default config -->
+        <!-- Default config -->
     <string name="default_config_name">New Config</string>
     <string name="default_master_ip">123.456.789.01</string>
     <string name="default_master_ticker_title">Default ticker title</string>
@@ -62,4 +41,5 @@
     <string name="new_config_name">New config name</string>
     <string name="ok">OK</string>
     <string name="button_disconnect">Disconnect</string>
+
 </resources>

@@ -11,6 +11,7 @@ import com.schneewittchen.rosandroid.model.entities.WidgetEntity;
 import com.schneewittchen.rosandroid.model.entities.WidgetFactory;
 import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 /**
@@ -32,7 +33,19 @@ public abstract class WidgetDao implements BaseDao<WidgetEntity>{
         MediatorLiveData<List<BaseEntity>> widgetList = new MediatorLiveData<>();
 
         widgetList.addSource(getWidgetsFor(configId), widgetEntities -> {
-            widgetList.postValue(WidgetFactory.convert(widgetEntities));
+            try {
+                widgetList.postValue(WidgetFactory.convert(widgetEntities));
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
         });
 
         return widgetList;

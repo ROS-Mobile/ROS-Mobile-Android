@@ -19,11 +19,6 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "widget_table")
 public class WidgetEntity {
 
-    public static final int JOYSTICK = 0;
-    public static final int MAP = 1;
-    public static final int CAMERA = 2;
-
-
     @PrimaryKey(autoGenerate = true)
     public long id;
 
@@ -37,7 +32,7 @@ public class WidgetEntity {
 
     @ColumnInfo(name = "widget_type")
     @NonNull
-    public int type;
+    public String type;
 
     @ColumnInfo(name = "widget_name")
     @NonNull

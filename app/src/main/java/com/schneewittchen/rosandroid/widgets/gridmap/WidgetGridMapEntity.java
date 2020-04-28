@@ -20,7 +20,7 @@ import com.schneewittchen.rosandroid.widgets.base.BaseNode;
 public class WidgetGridMapEntity extends BaseEntity {
 
     public WidgetGridMapEntity() {
-        this.setType(WidgetEntity.MAP);
+        this.setType("GridMap");
         this.subscriber = new SubPubNoteEntity();
         this.subscriber.topic = "map";
         this.subscriber.messageType = nav_msgs.OccupancyGrid._TYPE;
@@ -29,11 +29,6 @@ public class WidgetGridMapEntity extends BaseEntity {
     @Override
     public String getName() {
         return "Gridmap";
-    }
-
-    @Override
-    public int getEntityType() {
-        return WidgetEntity.MAP;
     }
 
     @Override

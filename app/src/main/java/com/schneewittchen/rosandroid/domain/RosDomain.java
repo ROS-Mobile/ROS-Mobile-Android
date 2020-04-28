@@ -15,6 +15,7 @@ import com.schneewittchen.rosandroid.model.repositories.RosRepository;
 import com.schneewittchen.rosandroid.widgets.base.BaseData;
 import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 /**
@@ -76,7 +77,7 @@ public class RosDomain {
         rosRepo.informWidgetDataChange(data);
     }
 
-    public void createWidget(int widgetType) {
+    public void createWidget(String widgetType) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         configRepository.createWidget(widgetType);
     }
 

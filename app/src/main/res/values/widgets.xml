@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="widget_names">
+        <item>Joystick</item>
+        <item>GridMap</item>
+        <item>Camera</item>
+    </string-array>
+
+    <string-array name="widget_descr">
+        <item>A virtual Joystick</item>
+        <item>Displays an occupancy grid on the ground plane from a nav_msgs::OccupancyGrid</item>
+        <item>Displays a camera msg from sensor_msgs::Image</item>
+    </string-array>
+
+
+    <!-- Joystick -->
+    <string-array name="geometry_msg_twist_dir">
+        <item>Linear</item>
+        <item>Angular</item>
+    </string-array>
+
+    <string-array name="geometry_msg_twist_axis">
+        <item>X</item>
+        <item>Y</item>
+        <item>Z</item>
+    </string-array>
+
+</resources>

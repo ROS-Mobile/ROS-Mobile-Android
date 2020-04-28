@@ -9,9 +9,9 @@ import androidx.lifecycle.MediatorLiveData;
 
 import com.schneewittchen.rosandroid.domain.RosDomain;
 import com.schneewittchen.rosandroid.model.repositories.WidgetModel;
-import com.schneewittchen.rosandroid.model.entities.WidgetEntity;
 import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 
@@ -41,15 +41,8 @@ public class DetailsViewModel extends AndroidViewModel {
     }
 
 
-    public void createWidget(String selectedText) {
-        // TODO: Make generic
-        if (selectedText.toLowerCase().equals("joystick")) {
-            rosDomain.createWidget(WidgetEntity.JOYSTICK);
-        } else if (selectedText.toLowerCase().equals("map")) {
-            rosDomain.createWidget(WidgetEntity.MAP);
-        } else if (selectedText.toLowerCase().equals("camera")) {
-            rosDomain.createWidget(WidgetEntity.CAMERA);
-        }
+    public void createWidget(String selectedText) throws ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+        rosDomain.createWidget(selectedText);
     }
 
     public void updateWidget(BaseEntity widget) {
@@ -69,7 +62,7 @@ public class DetailsViewModel extends AndroidViewModel {
         return rosDomain.getCurrentWidgets();
     }
 
-    public int[] getAvailableWidgetNames() {
+    public int getAvailableWidgetNames() {
         return WidgetModel.getWidgetNames();
     }
 

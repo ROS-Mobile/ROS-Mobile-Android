@@ -1,12 +1,9 @@
 package com.schneewittchen.rosandroid.model.entities;
 
-import android.util.Log;
-
 import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
-import com.schneewittchen.rosandroid.widgets.camera.WidgetCameraEntity;
-import com.schneewittchen.rosandroid.widgets.gridmap.WidgetGridMapEntity;
-import com.schneewittchen.rosandroid.widgets.joystick.WidgetJoystickEntity;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,8 +20,7 @@ public class WidgetFactory {
 
     private static final String TAG = WidgetFactory.class.getCanonicalName();
 
-
-    public static List<BaseEntity> convert(List<WidgetEntity> widgetParentList) {
+    public static List<BaseEntity> convert(List<WidgetEntity> widgetParentList) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         List<BaseEntity> widgetList = new ArrayList<>();
 
         for (WidgetEntity widget: widgetParentList) {
@@ -34,27 +30,13 @@ public class WidgetFactory {
         return  widgetList;
     }
 
-    public static BaseEntity convert(WidgetEntity widgetParent) {
-        BaseEntity widget = null;
+    public static BaseEntity convert(WidgetEntity widgetParent) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
 
-        // TODO: Make generic
-        switch (widgetParent.type) {
-            case WidgetEntity.JOYSTICK:
-                widget = new WidgetJoystickEntity();
-                break;
-
-            case WidgetEntity.MAP:
-                // TODO: Set map variables
-                widget = new WidgetGridMapEntity();
-                break;
-
-            case WidgetEntity.CAMERA:
-                widget = new WidgetCameraEntity();
-                break;
-
-            default:
-                Log.i(TAG, "Cant convert from type: " + widgetParent.type);
-        }
+        String prefix = "com.schneewittchen.rosandroid.widgets.";
+        String className = prefix + widgetParent.type.toLowerCase() + ".Widget" + widgetParent.type + "Entity";
+        Class<?> clazz = Class.forName(className);
+        Constructor<?> ctor = clazz.getConstructor();
+        BaseEntity widget = (BaseEntity) ctor.newInstance();
 
         widget.id = widgetParent.id;
         widget.type = widgetParent.type;

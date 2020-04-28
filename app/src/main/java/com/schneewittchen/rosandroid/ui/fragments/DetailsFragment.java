@@ -28,6 +28,8 @@ import com.schneewittchen.rosandroid.widgets.base.BaseDetailViewHolder;
 import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
 import com.schneewittchen.rosandroid.widgets.base.DetailListener;
 
+import java.lang.reflect.InvocationTargetException;
+
 
 /**
  * TODO: Description
@@ -106,19 +108,25 @@ public class DetailsFragment extends Fragment implements RecyclerItemTouchHelper
             return;
         }
 
-        int[] mWidgetIds = mViewModel.getAvailableWidgetNames();
-
-        String[] widgetNames = new String[mWidgetIds.length];
-
-        for(int i = 0; i < mWidgetIds.length; i++){
-            widgetNames[i] = getResources().getString(mWidgetIds[i]);
-        }
+        String[] widgetNames = getResources().getStringArray(mViewModel.getAvailableWidgetNames());
 
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
         dialogBuilder.setTitle("Widgets");
         dialogBuilder.setItems(widgetNames, (dialog, item) -> {
             String selectedText = widgetNames[item];  //Selected item in listview
-            mViewModel.createWidget(selectedText);
+            try {
+                mViewModel.createWidget(selectedText);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            } catch (java.lang.InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            }
 
             Log.i(TAG, "Selected Text: " + selectedText);
         });

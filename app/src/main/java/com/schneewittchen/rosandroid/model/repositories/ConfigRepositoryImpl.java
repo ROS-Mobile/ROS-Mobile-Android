@@ -17,6 +17,8 @@ import com.schneewittchen.rosandroid.widgets.camera.WidgetCameraEntity;
 import com.schneewittchen.rosandroid.widgets.gridmap.WidgetGridMapEntity;
 import com.schneewittchen.rosandroid.widgets.joystick.WidgetJoystickEntity;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 
@@ -108,30 +110,16 @@ public class ConfigRepositoryImpl implements ConfigRepository {
     }
 
     @Override
-    public void createWidget(int widgetType) {
-        // TODO: Make generic
+    public void createWidget(String widgetType) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         if (mCurrentConfigId.getValue() == null) {
             return;
         }
 
-        BaseEntity widget;
-
-        switch (widgetType) {
-            case WidgetEntity.JOYSTICK:
-                widget = new WidgetJoystickEntity();
-                break;
-
-            case WidgetEntity.MAP:
-                widget = new WidgetGridMapEntity();
-                break;
-
-            case WidgetEntity.CAMERA:
-                widget = new WidgetCameraEntity();
-                break;
-
-            default:
-                return;
-        }
+        String prefix = "com.schneewittchen.rosandroid.widgets.";
+        String className = prefix + widgetType.toLowerCase() + ".Widget" + widgetType + "Entity";
+        Class<?> clazz = Class.forName(className);
+        Constructor<?> ctor = clazz.getConstructor();
+        BaseEntity widget = (BaseEntity) ctor.newInstance();
 
         widget.configId = mCurrentConfigId.getValue();
         widget.creationTime = System.nanoTime();

@@ -21,15 +21,10 @@ import com.schneewittchen.rosandroid.widgets.base.BaseNode;
 public class WidgetJoystickEntity extends BaseEntity {
 
     public WidgetJoystickEntity() {
-        this.setType(WidgetEntity.JOYSTICK);
+        this.setType("Joystick");
         this.publisher = new SubPubNoteEntity();
         this.publisher.topic = "cmd_vel";
         this.publisher.messageType = geometry_msgs.Twist._TYPE;
-    }
-
-    @Override
-    public int getEntityType() {
-        return WidgetEntity.JOYSTICK;
     }
 
     @Override
