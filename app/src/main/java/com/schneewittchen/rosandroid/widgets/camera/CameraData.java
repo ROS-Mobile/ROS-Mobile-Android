@@ -23,7 +23,7 @@ public class CameraData extends BaseData {
         int dataStart = data.length - (height*step);
         int pixelBytesNum = step/width;
 
-        // Generating the desired integer array
+        // Generating the desired integer array, TODO: Check encoding and bigEndian, right now we are using RGB8, but there are other ROS encoding types also
         int dataLength = height*width;
         int[] intArray = new int[dataLength];;
         for (int i=0; i < height; i++) {
@@ -38,14 +38,4 @@ public class CameraData extends BaseData {
         }
         map = Bitmap.createBitmap(intArray, width, height, Bitmap.Config.ARGB_8888);
     }
-
-    // TODO: generate own color class, this ios for RGB8 encoding
-    private int getColor(byte data) {
-        int A = 255;
-        int R = (data & 0b11100000) * 255/8;
-        int G = (data & 0b00011100) * 255/8;
-        int B = (data & 0b00000011) * 255/4;
-        return ((A & 0xff) << 24 | (B & 0xff) << 16 | (G & 0xff) << 8 | (R & 0xff));
-    }
-
 }

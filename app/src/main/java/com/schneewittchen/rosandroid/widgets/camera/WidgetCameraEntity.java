@@ -50,7 +50,7 @@ public class WidgetCameraEntity extends BaseEntity {
     // TODO: Add own layout for image style?
     @Override
     public int getWidgetDetailViewId() {
-        return R.layout.widget_detail_map;
+        return R.layout.widget_detail_camera;
     }
 
     @Override

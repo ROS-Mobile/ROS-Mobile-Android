@@ -56,16 +56,37 @@ public class CameraView extends BaseView {
     @Override
     public void onDraw(Canvas canvas) {
         Log.i(TAG, "On draw");
-        float left = 0F;
-        float right = 0F;
-        float width = getWidth();
-        float height = getHeight();
-        RectF rect = new RectF(left, right, width, height);
+        // Define Image Size based on the BitMap length and width
+        float leftViz = 0F;
+        float topViz = 0F;
+        float widthViz = getWidth();
+        float heightViz = getHeight();
+
+        float width = widthViz;
+        float height = heightViz;
+        float left = leftViz;
+        float top = topViz;
+
         if (data != null) {
+            float mapRatio = data.map.getHeight()/data.map.getWidth();
+            float vizRatio = heightViz/widthViz;
+
+            if (mapRatio > vizRatio) {
+                height = heightViz;
+                width = (vizRatio/mapRatio) * widthViz;
+                left = 0.5F * (widthViz - width);
+            } else if (vizRatio > mapRatio) {
+                width = widthViz;
+                height = (mapRatio/vizRatio) * heightViz;
+                top = 0.5F * (heightViz -height);
+            }
+
+            RectF rect = new RectF(left, top, left+width, top+height);
+
             canvas.drawBitmap(data.map, null, rect, paint);
-            canvas.drawRoundRect(left, right, width, height, cornerWidth, cornerWidth, paint);
+            canvas.drawRoundRect(leftViz, topViz, widthViz, heightViz, cornerWidth, cornerWidth, paint);
         } else {
-            canvas.drawRoundRect(left, right, width, height, cornerWidth, cornerWidth, paint);
+            canvas.drawRoundRect(leftViz, topViz, width, height, cornerWidth, cornerWidth, paint);
         }
     }
 
