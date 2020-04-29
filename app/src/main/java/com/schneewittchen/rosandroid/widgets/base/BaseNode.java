@@ -16,13 +16,18 @@ import org.ros.node.NodeMain;
  * @updated on 13.03.20
  * @modified by
  */
-public abstract class BaseNode implements NodeMain, DataListener{
+public abstract class BaseNode<T extends BaseEntity> implements NodeMain, DataListener{
 
-    protected BaseEntity widget;
+    protected T widget;
+    protected DataListener listener;
 
-
-    public BaseNode(BaseEntity widget) {
+    public BaseNode(T widget) {
         this.widget = widget;
+    }
+
+
+    public void setListener(DataListener listener) {
+        this.listener = listener;
     }
 
     @Override

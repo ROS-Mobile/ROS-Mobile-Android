@@ -87,7 +87,7 @@ public class MainFragment extends Fragment implements OnBackPressedListener {
 
         mViewModel = new ViewModelProvider(this).get(MainViewModel.class);
 
-        mViewModel.getConfigTitle().observe(getViewLifecycleOwner(), s -> setTitle(s));
+        mViewModel.getConfigTitle().observe(getViewLifecycleOwner(), this::setTitle);
     }
 
     private void setTitle(String newTitle) {

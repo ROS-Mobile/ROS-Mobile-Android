@@ -22,9 +22,18 @@ public class WidgetJoystickEntity extends BaseEntity {
 
     public WidgetJoystickEntity() {
         this.setType(WidgetEntity.JOYSTICK);
+
+        this.width = 4;
+        this.height = 4;
         this.publisher = new SubPubNoteEntity();
         this.publisher.topic = "cmd_vel";
         this.publisher.messageType = geometry_msgs.Twist._TYPE;
+        this.xAxisMapping = "Linear/X";
+        this.yAxisMapping = "Angular/Z";
+        this.xScaleLeft = -1;
+        this.xScaleRight = 1;
+        this.yScaleLeft = -1;
+        this.yScaleRight = 1;
     }
 
     @Override
@@ -63,9 +72,20 @@ public class WidgetJoystickEntity extends BaseEntity {
     }
 
     @Override
-    public boolean equalContent(BaseEntity other) {
-        System.err.println("Check equal content");
-        return true;
+    public boolean equalContent(BaseEntity widget) {
+        if (!(widget instanceof WidgetJoystickEntity))
+            return false;
+
+        WidgetJoystickEntity other = (WidgetJoystickEntity) widget;
+
+        return this.publisher.topic.equals(other.publisher.topic)
+                && this.publisher.messageType.equals(other.publisher.messageType)
+                && this.xAxisMapping.equals(other.xAxisMapping)
+                && this.yAxisMapping.equals(other.yAxisMapping)
+                && this.xScaleLeft == other.xScaleLeft
+                && this.xScaleRight == other.xScaleRight
+                && this.yScaleLeft == other.yScaleLeft
+                && this.yScaleRight == other.yScaleRight;
     }
 
     @Override

@@ -69,7 +69,8 @@ public class WidgetDetailListAdapter extends RecyclerView.Adapter<BaseDetailView
         int detailContentLayout = entity.getWidgetDetailViewId();
         inflator.inflate(detailContentLayout, holder.detailContend, true);
 
-        holder.update(entity.copy());
+        holder.init(holder.detailContend);
+        holder.baseBind(entity.copy());
     }
 
     @Override

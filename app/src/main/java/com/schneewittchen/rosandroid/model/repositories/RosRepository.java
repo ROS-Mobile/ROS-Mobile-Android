@@ -4,8 +4,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.os.AsyncTask;
-import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -25,6 +23,7 @@ import com.schneewittchen.rosandroid.utility.Utils;
 import com.schneewittchen.rosandroid.widgets.base.BaseData;
 import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
 import com.schneewittchen.rosandroid.widgets.base.BaseNode;
+import com.schneewittchen.rosandroid.widgets.base.DataListener;
 
 import org.ros.address.InetAddressFactory;
 import org.ros.node.NodeConfiguration;
@@ -46,7 +45,7 @@ import java.util.List;
  * @updated on 15.04.20
  * @modified by
  */
-public class RosRepository {
+public class RosRepository implements DataListener {
 
     private static final String TAG = RosRepository.class.getSimpleName();
     private static RosRepository instance;
@@ -57,7 +56,8 @@ public class RosRepository {
     private List<BaseEntity> currentWidgets;
     private HashMap<Long, BaseNode> currentNodes;
     private MutableLiveData<ConnectionType> rosConnected;
-
+    private MutableLiveData<BaseData> recievedData;
+    
     private NodeMainExecutorService nodeMainExecutorService;
     private NodeConfiguration nodeConfiguration;
 
@@ -203,6 +203,12 @@ public class RosRepository {
     }
 
 
+    @Override
+    public void onNewData(BaseData data) {
+
+    }
+
+
     private void bindService() {
         Context context = contextReference.get();
         if (context == null) {
@@ -232,7 +238,7 @@ public class RosRepository {
         try {
             Constructor<? extends BaseNode> cons  = clazz.getConstructor(BaseEntity.class);
             BaseNode node = cons.newInstance(widget);
-
+            node.setListener(this);
             currentNodes.put(widget.id, node);
             registerNode(node);
 
@@ -247,6 +253,7 @@ public class RosRepository {
      * @param widget Widget to update
      */
     private void updateNode(BaseEntity widget) {
+        Log.i(TAG, "Update Node: " + widget.name);
         BaseNode node = currentNodes.get(widget.id);
         this.reregisterNode(node);
     }
@@ -327,7 +334,6 @@ public class RosRepository {
     private String getDefaultHostAddress() {
         return InetAddressFactory.newNonLoopback().getHostAddress();
     }
-
 
     private final class NodeMainExecutorServiceConnection implements ServiceConnection {
 

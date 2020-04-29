@@ -212,7 +212,6 @@ public class WidgetGroup extends ViewGroup {
     private void removeViewFor(BaseEntity entity) {
         for(int i = 0; i < this.getChildCount(); i++) {
             BaseView view = (BaseView) this.getChildAt(i);
-
             if (view.sameWidget(entity)) {
                 this.removeView(view);
                 return;

@@ -1,11 +1,11 @@
 package com.schneewittchen.rosandroid.widgets.base;
 
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -23,7 +23,7 @@ import com.schneewittchen.rosandroid.R;
  * @updated on 2.04.20
  * @modified by
  */
-public class BaseDetailViewHolder<T extends BaseEntity> extends RecyclerView.ViewHolder {
+public abstract class BaseDetailViewHolder<T extends BaseEntity> extends RecyclerView.ViewHolder {
 
     public View viewBackground, viewForeground;
     public LinearLayout detailContend;
@@ -31,8 +31,8 @@ public class BaseDetailViewHolder<T extends BaseEntity> extends RecyclerView.Vie
     protected ImageView openButton;
     protected ImageButton updateButton;
     protected T entity;
-    DetailListener updateListener;
-    EditText xEdittext, yEdittext, widthEditText, heightEdittext;
+    protected DetailListener updateListener;
+    protected EditText xEdittext, yEdittext, widthEditText, heightEdittext;
 
 
     public BaseDetailViewHolder(@NonNull View view, DetailListener updateListener) {
@@ -70,19 +70,30 @@ public class BaseDetailViewHolder<T extends BaseEntity> extends RecyclerView.Vie
             entity.width = Integer.parseInt(widthEditText.getText().toString());
             entity.height = Integer.parseInt(heightEdittext.getText().toString());
 
+            updateEntity();
+
             updateListener.onDetailsChanged(entity);
         });
 
         updateButton.setEnabled(true);
+
     }
 
-    public void update(T entity) {
+    public void baseBind(T entity) {
         this.entity = entity;
-        this.title.setText(entity.getName());
 
+        title.setText(entity.getName());
         xEdittext.setText(String.valueOf(entity.posX));
         yEdittext.setText(String.valueOf(entity.posY));
         widthEditText.setText(String.valueOf(entity.width));
         heightEdittext.setText(String.valueOf(entity.height));
+
+        bind(entity);
     }
+
+    public abstract void init(View view);
+
+    public abstract void bind(T entity);
+
+    public abstract void updateEntity();
 }
