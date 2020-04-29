@@ -124,10 +124,6 @@ public class ConfigRepositoryImpl implements ConfigRepository {
         widget.configId = mCurrentConfigId.getValue();
         widget.creationTime = System.nanoTime();
         widget.name = widget.getName();
-        widget.posX = 0;
-        widget.posY = 0;
-        widget.width = 1;
-        widget.height = 1;
 
         mConfigDatabase.addWidget(widget);
         Log.i(TAG, "Widget added to database: " + widget);

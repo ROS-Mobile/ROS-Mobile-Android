@@ -44,10 +44,8 @@ public class WidgetDiffCallback extends DiffUtil.Callback{
     public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
         BaseEntity oldWidget = oldWidgets.get(oldItemPosition);
         BaseEntity newWidget = newWidgets.get(newItemPosition);
-        boolean itemsSame = oldWidget.id == newWidget.id;
 
-        Log.i(TAG, "Items same (" + oldItemPosition + " " + newItemPosition + "): " + itemsSame);
-        return itemsSame;
+        return oldWidget.id == newWidget.id;
     }
 
     @Override
@@ -57,8 +55,6 @@ public class WidgetDiffCallback extends DiffUtil.Callback{
 
         boolean objectEquals = oldWidget.equals(newWidget);
         boolean contentSame = oldWidget.equalContent(newWidget);
-
-        Log.i(TAG, "(" + oldItemPosition + " " + newItemPosition + "): Objects equals " + objectEquals + "  Content same " + contentSame);
 
         return  objectEquals && contentSame;
     }

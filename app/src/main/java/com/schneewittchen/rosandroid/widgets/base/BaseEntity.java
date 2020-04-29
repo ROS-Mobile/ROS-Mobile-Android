@@ -15,7 +15,12 @@ public abstract class BaseEntity extends WidgetEntity {
 
     public static String TAG = BaseEntity.class.getSimpleName();
 
-    public BaseEntity() {}
+    public BaseEntity() {
+        posX = 0;
+        posY = 0;
+        width = 1;
+        height = 1;
+    }
 
     public abstract String getName();
 

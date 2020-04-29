@@ -60,4 +60,23 @@ public class WidgetEntity {
     @Embedded(prefix = "pub_")
     public SubPubNoteEntity publisher;
 
+    // Joystick specifics
+
+    @ColumnInfo(name = "x_axis_mapping")
+    public String xAxisMapping;
+
+    @ColumnInfo(name = "y_axis_mapping")
+    public String yAxisMapping;
+
+    @ColumnInfo(name = "x_scale_left")
+    public float xScaleLeft;
+
+    @ColumnInfo(name = "x_scale_right")
+    public float xScaleRight;
+
+    @ColumnInfo(name = "y_scale_left")
+    public float yScaleLeft;
+
+    @ColumnInfo(name = "y_scale_right")
+    public float yScaleRight;
 }

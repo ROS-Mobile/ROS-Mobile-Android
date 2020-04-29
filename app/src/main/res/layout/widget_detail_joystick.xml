@@ -112,18 +112,18 @@
             app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
         <Spinner
-            android:id="@+id/spinner"
+            android:id="@+id/xDirSpinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="24dp"
             android:entries="@array/geometry_msg_twist_dir"
             android:foregroundTintMode="add"
             app:layout_constraintBottom_toBottomOf="@+id/textView11"
-            app:layout_constraintEnd_toStartOf="@+id/spinner2"
+            app:layout_constraintEnd_toStartOf="@+id/xAxisSpinner"
             app:layout_constraintTop_toTopOf="@+id/textView11" />
 
         <Spinner
-            android:id="@+id/spinner2"
+            android:id="@+id/xAxisSpinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:entries="@array/geometry_msg_twist_axis"
@@ -154,7 +154,7 @@
             app:layout_constraintTop_toTopOf="@+id/textView9" />
 
         <EditText
-            android:id="@+id/editText"
+            android:id="@+id/xScaleLeft"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:ems="3"
@@ -167,16 +167,16 @@
             app:layout_constraintTop_toBottomOf="@+id/xAxisScale" />
 
         <TextView
-            android:id="@+id/textView13"
+            android:id="@+id/xScaleMiddle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="0.0"
-            app:layout_constraintEnd_toStartOf="@+id/editText2"
-            app:layout_constraintStart_toEndOf="@+id/editText"
+            app:layout_constraintEnd_toStartOf="@+id/xScaleRight"
+            app:layout_constraintStart_toEndOf="@+id/xScaleLeft"
             app:layout_constraintTop_toBottomOf="@+id/xAxisScale" />
 
         <EditText
-            android:id="@+id/editText2"
+            android:id="@+id/xScaleRight"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:ems="3"
@@ -184,7 +184,7 @@
             android:text="1.0"
             android:textAlignment="center"
             android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="@+id/editText"
+            app:layout_constraintBottom_toBottomOf="@+id/xScaleLeft"
             app:layout_constraintEnd_toEndOf="@+id/xAxisScale"
             app:layout_constraintStart_toEndOf="@+id/xAxisScale"
             app:layout_constraintTop_toBottomOf="@+id/xAxisScale" />
@@ -199,7 +199,7 @@
             android:textColor="@color/colorAccent"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editText" />
+            app:layout_constraintTop_toBottomOf="@+id/xScaleLeft" />
 
         <TextView
             android:id="@+id/textView14"
@@ -213,25 +213,25 @@
             app:layout_constraintTop_toBottomOf="@+id/textView15" />
 
         <Spinner
-            android:id="@+id/spinner3"
+            android:id="@+id/yDirSpinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="24dp"
             android:layout_weight="1"
             android:entries="@array/geometry_msg_twist_dir"
             app:layout_constraintBottom_toBottomOf="@+id/textView14"
-            app:layout_constraintEnd_toStartOf="@+id/spinner4"
+            app:layout_constraintEnd_toStartOf="@+id/yAxisSpinner"
             app:layout_constraintTop_toTopOf="@+id/textView14" />
 
         <Spinner
-            android:id="@+id/spinner4"
+            android:id="@+id/yAxisSpinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:entries="@array/geometry_msg_twist_axis"
-            app:layout_constraintBottom_toBottomOf="@+id/spinner3"
+            app:layout_constraintBottom_toBottomOf="@+id/yDirSpinner"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/spinner3" />
+            app:layout_constraintTop_toTopOf="@+id/yDirSpinner" />
 
         <TextView
             android:id="@+id/textView12"
@@ -255,7 +255,7 @@
             app:layout_constraintTop_toTopOf="@+id/textView12" />
 
         <EditText
-            android:id="@+id/editText3"
+            android:id="@+id/yScaleLeft"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:ems="3"
@@ -268,16 +268,16 @@
             app:layout_constraintTop_toBottomOf="@+id/xAxisScale2" />
 
         <TextView
-            android:id="@+id/textView16"
+            android:id="@+id/yScaleMiddle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="0.0"
-            app:layout_constraintEnd_toStartOf="@+id/editText2"
-            app:layout_constraintStart_toEndOf="@+id/editText"
+            app:layout_constraintEnd_toStartOf="@+id/xScaleRight"
+            app:layout_constraintStart_toEndOf="@+id/xScaleLeft"
             app:layout_constraintTop_toBottomOf="@+id/xAxisScale2" />
 
         <EditText
-            android:id="@+id/editText4"
+            android:id="@+id/yScaleRight"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:ems="3"

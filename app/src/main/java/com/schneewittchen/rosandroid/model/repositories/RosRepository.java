@@ -205,6 +205,12 @@ public class RosRepository implements DataListener {
     }
 
 
+    @Override
+    public void onNewData(BaseData data) {
+
+    }
+
+
     private void bindService() {
         Context context = contextReference.get();
         if (context == null) {
@@ -249,6 +255,7 @@ public class RosRepository implements DataListener {
      * @param widget Widget to update
      */
     private void updateNode(BaseEntity widget) {
+        Log.i(TAG, "Update Node: " + widget.name);
         BaseNode node = currentNodes.get(widget.id);
         this.reregisterNode(node);
     }
