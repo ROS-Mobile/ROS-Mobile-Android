@@ -2,7 +2,6 @@ package com.schneewittchen.rosandroid.widgets.gridmap;
 
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.model.entities.SubPubNoteEntity;
-import com.schneewittchen.rosandroid.model.entities.WidgetEntity;
 import com.schneewittchen.rosandroid.widgets.base.BaseDetailViewHolder;
 import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
 import com.schneewittchen.rosandroid.widgets.base.BaseView;
@@ -43,7 +42,7 @@ public class WidgetGridMapEntity extends BaseEntity {
 
     @Override
     public int getWidgetDetailViewId() {
-        return R.layout.widget_detail_map;
+        return R.layout.widget_detail_gridmap;
     }
 
     @Override

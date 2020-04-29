@@ -37,7 +37,7 @@ public class GridMapData extends BaseData {
         int widthIdx = (int) (width / this.res);
         int heightIdx = (int) (height / this.res);
 
-        // Generating the desired integer array, TODO: Check if height, width are correctly set
+        // Generating the desired integer array
         int dataLength = widthIdx * heightIdx;
         int[] intArray = new int[dataLength];;
         for (int i=0; i < widthIdx; i++) {
@@ -52,7 +52,7 @@ public class GridMapData extends BaseData {
     private int getColor(byte data) {
         int A = 255; int R = 255; int G = 255; int B = 255;
         if (data == -1) {
-            A = 127; B = 0; G = 0;
+            A = 127; B = 100; G = 100; R = 100;
         } else {
             // Define gray scale map
             B = 255 - (255 * (data/100));
