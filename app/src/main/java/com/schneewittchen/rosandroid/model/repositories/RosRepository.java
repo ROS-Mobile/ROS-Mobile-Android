@@ -205,12 +205,6 @@ public class RosRepository implements DataListener {
     }
 
 
-    @Override
-    public void onNewData(BaseData data) {
-
-    }
-
-
     private void bindService() {
         Context context = contextReference.get();
         if (context == null) {

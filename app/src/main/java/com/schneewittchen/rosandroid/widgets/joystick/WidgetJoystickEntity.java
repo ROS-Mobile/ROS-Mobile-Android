@@ -21,7 +21,7 @@ import com.schneewittchen.rosandroid.widgets.base.BaseNode;
 public class WidgetJoystickEntity extends BaseEntity {
 
     public WidgetJoystickEntity() {
-        this.setType(WidgetEntity.JOYSTICK);
+        this.setType("Joystick");
 
         this.width = 4;
         this.height = 4;

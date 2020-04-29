@@ -23,4 +23,19 @@ public class CameraDetailVH extends BaseDetailViewHolder<WidgetCameraEntity> {
     public CameraDetailVH(@NonNull View view, DetailListener updateListener) {
         super(view, updateListener);
     }
+
+    @Override
+    public void init(View view) {
+
+    }
+
+    @Override
+    public void bind(WidgetCameraEntity entity) {
+
+    }
+
+    @Override
+    public void updateEntity() {
+
+    }
 }
