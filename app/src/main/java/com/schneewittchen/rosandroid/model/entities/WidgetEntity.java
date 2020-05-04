@@ -54,10 +54,7 @@ public class WidgetEntity {
     @NonNull
     public int height;
 
-    @Embedded(prefix = "sub_")
-    public SubPubNoteEntity subscriber;
-
-    @Embedded(prefix = "pub_")
-    public SubPubNoteEntity publisher;
+    @Embedded(prefix = "subPubEntity")
+    public SubPubNoteEntity subPubNoteEntity;
 
 }

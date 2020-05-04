@@ -20,9 +20,9 @@ public class WidgetGridMapEntity extends BaseEntity {
 
     public WidgetGridMapEntity() {
         this.setType("GridMap");
-        this.subscriber = new SubPubNoteEntity();
-        this.subscriber.topic = "map";
-        this.subscriber.messageType = nav_msgs.OccupancyGrid._TYPE;
+        this.subPubNoteEntity = new SubPubNoteEntity();
+        this.subPubNoteEntity.topic = "map";
+        this.subPubNoteEntity.messageType = nav_msgs.OccupancyGrid._TYPE;
     }
 
     @Override

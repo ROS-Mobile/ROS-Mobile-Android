@@ -27,9 +27,9 @@ public class WidgetCameraEntity extends BaseEntity {
 
     public WidgetCameraEntity() {
         this.setType("Camera");
-        this.subscriber = new SubPubNoteEntity();
-        this.subscriber.topic = "camera/image_raw";
-        this.subscriber.messageType = sensor_msgs.Image._TYPE;
+        this.subPubNoteEntity = new SubPubNoteEntity();
+        this.subPubNoteEntity.topic = "camera/image_raw";
+        this.subPubNoteEntity.messageType = sensor_msgs.Image._TYPE;
     }
 
     @Override

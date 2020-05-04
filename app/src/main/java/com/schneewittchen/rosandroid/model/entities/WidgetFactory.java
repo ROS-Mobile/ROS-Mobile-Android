@@ -47,8 +47,7 @@ public class WidgetFactory {
         widget.posY = widgetParent.posY;
         widget.width = widgetParent.width;
         widget.height = widgetParent.height;
-        widget.publisher = widgetParent.publisher;
-        widget.subscriber = widgetParent.subscriber;
+        widget.subPubNoteEntity = widgetParent.subPubNoteEntity;
 
         return widget;
     }

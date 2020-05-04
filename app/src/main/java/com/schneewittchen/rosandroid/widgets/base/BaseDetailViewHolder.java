@@ -32,7 +32,7 @@ public class BaseDetailViewHolder<T extends BaseEntity> extends RecyclerView.Vie
     protected ImageButton updateButton;
     protected T entity;
     DetailListener updateListener;
-    EditText xEdittext, yEdittext, widthEditText, heightEdittext;
+    EditText xEdittext, yEdittext, widthEditText, heightEdittext, topicName, messageType;
 
 
     public BaseDetailViewHolder(@NonNull View view, DetailListener updateListener) {
@@ -53,6 +53,8 @@ public class BaseDetailViewHolder<T extends BaseEntity> extends RecyclerView.Vie
         yEdittext = view.findViewById(R.id.y_edit_text);
         widthEditText = view.findViewById(R.id.width_edit_text);
         heightEdittext = view.findViewById(R.id.height_edit_text);
+        topicName = view.findViewById(R.id.topicNameText);
+        messageType = view.findViewById(R.id.messageTypeText);
 
         openButton.setOnClickListener(v -> {
             if (detailContend.getVisibility() == View.GONE) {
@@ -79,6 +81,9 @@ public class BaseDetailViewHolder<T extends BaseEntity> extends RecyclerView.Vie
     public void update(T entity) {
         this.entity = entity;
         this.title.setText(entity.getName());
+
+        topicName.setText(entity.subPubNoteEntity.topic);
+        messageType.setText(entity.subPubNoteEntity.messageType);
 
         xEdittext.setText(String.valueOf(entity.posX));
         yEdittext.setText(String.valueOf(entity.posY));
