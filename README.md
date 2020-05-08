@@ -41,10 +41,10 @@ The following Nodes are currently supported by ROSAndroid. For a comprehensive o
 ## Short Example Usage
 
 <p float="left" align="middle">
-  <img src="/images/ShortExample01.jpeg" width="200 hspace="50" />
-  <img src="/images/ShortExample02.jpeg" width="200 hspace="50" />
-  <img src="/images/ShortExample03.jpeg" width="200 hspace="50" />
-  <img src="/images/ShortExample04.jpeg" width="200 hspace="50" />
+  <img src="/images/ShortExample01.jpg" width="200 hspace="50" />
+  <img src="/images/ShortExample02.jpg" width="200 hspace="50" />
+  <img src="/images/ShortExample03.jpg" width="200 hspace="50" />
+  <img src="/images/ShortExample04.jpg" width="200 hspace="50" />
 </p>
 
 
