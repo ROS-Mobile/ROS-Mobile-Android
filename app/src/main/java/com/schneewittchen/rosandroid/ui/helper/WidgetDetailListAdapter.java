@@ -50,7 +50,7 @@ public class WidgetDetailListAdapter extends RecyclerView.Adapter<BaseDetailView
             LayoutInflater inflator = LayoutInflater.from(parent.getContext());
             View itemView = inflator.inflate(R.layout.widget_detail_base, parent, false);
 
-            return cons.newInstance(itemView, detailListener);
+            return cons.newInstance(itemView, this);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -67,7 +67,8 @@ public class WidgetDetailListAdapter extends RecyclerView.Adapter<BaseDetailView
         holder.detailContend.removeView(holder.detailContend.getChildAt(1));
 
         int detailContentLayout = entity.getWidgetDetailViewId();
-        inflator.inflate(detailContentLayout, holder.detailContend, true);
+        View inflatedView = inflator.inflate(detailContentLayout, null);
+        holder.detailContend.addView(inflatedView);
 
         holder.init(holder.detailContend);
         holder.baseBind(entity.copy());
@@ -98,9 +99,9 @@ public class WidgetDetailListAdapter extends RecyclerView.Adapter<BaseDetailView
 
 
     @Override
-    public void onDetailsChanged(BaseEntity widgetId) {
+    public void onDetailsChanged(BaseEntity widget) {
         if(detailListener != null) {
-            this.detailListener.onDetailsChanged(widgetId);
+            this.detailListener.onDetailsChanged(widget);
         }
     }
 

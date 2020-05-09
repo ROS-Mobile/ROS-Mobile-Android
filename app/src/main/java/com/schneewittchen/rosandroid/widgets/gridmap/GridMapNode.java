@@ -14,14 +14,10 @@ import org.ros.node.topic.Subscriber;
  * @author Nils Rottmann
  * @version 1.0.0
  * @created on 20.04.20
- * @updated on 20.04.20
- * @modified by
+ * @updated on 07.05.20
+ * @modified by Nico Studt
  */
 public class GridMapNode extends BaseNode {
-
-    public GridMapNode(BaseEntity widget) {
-        super(widget);
-    }
 
 
     @Override
@@ -29,19 +25,17 @@ public class GridMapNode extends BaseNode {
         Subscriber<nav_msgs.OccupancyGrid> subscriber = connectedNode.newSubscriber(
                 widget.subscriber.topic, widget.subscriber.messageType
         );
-        subscriber.addMessageListener(new MessageListener<nav_msgs.OccupancyGrid>() {
-            @Override
-            public void onNewMessage(nav_msgs.OccupancyGrid occupancyGrid) {
-                int width = occupancyGrid.getInfo().getWidth();
-                int height = occupancyGrid.getInfo().getHeight();
-                byte[] array = occupancyGrid.getData().array();
-                float res = occupancyGrid.getInfo().getResolution();
-                float x0 = (float) occupancyGrid.getInfo().getOrigin().getPosition().getX();
-                float y0 = (float) occupancyGrid.getInfo().getOrigin().getPosition().getY();
-                GridMapData data = new GridMapData(width, height, array, res, x0, y0);
-                data.setId(widget.id);
-                listener.onNewData(data);
-            }
+
+        subscriber.addMessageListener(occupancyGrid -> {
+            int width = occupancyGrid.getInfo().getWidth();
+            int height = occupancyGrid.getInfo().getHeight();
+            byte[] array = occupancyGrid.getData().array();
+            float res = occupancyGrid.getInfo().getResolution();
+            float x0 = (float) occupancyGrid.getInfo().getOrigin().getPosition().getX();
+            float y0 = (float) occupancyGrid.getInfo().getOrigin().getPosition().getY();
+            GridMapData data = new GridMapData(width, height, array, res, x0, y0);
+            data.setId(widget.id);
+            listener.onNewData(data);
         });
     }
 

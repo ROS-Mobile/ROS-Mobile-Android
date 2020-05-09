@@ -1,9 +1,6 @@
 package com.schneewittchen.rosandroid.widgets.joystick;
 
-import android.view.View;
-
 import com.schneewittchen.rosandroid.widgets.base.BaseData;
-import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
 import com.schneewittchen.rosandroid.widgets.base.BaseNode;
 
 import org.ros.node.ConnectedNode;
@@ -11,7 +8,6 @@ import org.ros.node.topic.Publisher;
 
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.Vector;
 
 import geometry_msgs.Vector3;
 
@@ -22,18 +18,13 @@ import geometry_msgs.Vector3;
  * @author Nico Studt
  * @version 1.0.1
  * @created on 13.03.20
- * @updated on 15.04.20
+ * @updated on 07.05.20
  * @modified by
  */
 public class JoystickNode extends BaseNode<WidgetJoystickEntity> {
 
     private float lastX, lastY;
-    Publisher<geometry_msgs.Twist> publisher;
-
-
-    public JoystickNode(BaseEntity widget) {
-        super((WidgetJoystickEntity) widget);
-    }
+    private Publisher<geometry_msgs.Twist> publisher;
 
 
     @Override
@@ -46,7 +37,7 @@ public class JoystickNode extends BaseNode<WidgetJoystickEntity> {
             public void run() {
                 publish();
             }
-        }, 100, 500);
+        }, 100, 200);
     }
 
     private void publish() {

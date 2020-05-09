@@ -232,8 +232,9 @@ public class RosRepository implements DataListener {
         Class<? extends BaseNode> clazz = widget.getNodeType();
 
         try {
-            Constructor<? extends BaseNode> cons  = clazz.getConstructor(BaseEntity.class);
-            BaseNode node = cons.newInstance(widget);
+            Constructor<? extends BaseNode> cons  = clazz.getConstructor();
+            BaseNode node = cons.newInstance();
+            node.setWidget(widget);
             node.setListener(this);
             currentNodes.put(widget.id, node);
             registerNode(node);
@@ -251,6 +252,9 @@ public class RosRepository implements DataListener {
     private void updateNode(BaseEntity widget) {
         Log.i(TAG, "Update Node: " + widget.name);
         BaseNode node = currentNodes.get(widget.id);
+        assert node != null;
+
+        node.setWidget(widget);
         this.reregisterNode(node);
     }
 

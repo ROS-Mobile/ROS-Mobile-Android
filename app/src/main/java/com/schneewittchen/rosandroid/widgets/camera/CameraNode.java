@@ -16,14 +16,10 @@ import sensor_msgs.Image;
  * @author Nils Rottmann
  * @version 1.0.0
  * @created on 27.04.20
- * @updated on
- * @modified by
+ * @updated on 07.05.20
+ * @modified by Nico Studt
  */
 public class CameraNode extends BaseNode {
-
-    public CameraNode(BaseEntity widget) {
-        super(widget);
-    }
 
 
     @Override
@@ -31,20 +27,18 @@ public class CameraNode extends BaseNode {
         Subscriber<Image> subscriber = connectedNode.newSubscriber(
                 widget.subscriber.topic, widget.subscriber.messageType
         );
-        subscriber.addMessageListener(new MessageListener<Image>() {
-            @Override
-            public void onNewMessage(sensor_msgs.Image image) {
-                int height = image.getHeight();
-                int width = image.getWidth();
-                String encoding = image.getEncoding();
-                byte bigEndian = image.getIsBigendian();
-                int step = image.getStep();
-                byte[] dataArray = image.getData().array();
 
-                CameraData data = new CameraData(height, width, encoding, bigEndian, step, dataArray);
-                data.setId(widget.id);
-                listener.onNewData(data);
-            }
+        subscriber.addMessageListener(image -> {
+            int height = image.getHeight();
+            int width = image.getWidth();
+            String encoding = image.getEncoding();
+            byte bigEndian = image.getIsBigendian();
+            int step = image.getStep();
+            byte[] dataArray = image.getData().array();
+
+            CameraData data = new CameraData(height, width, encoding, bigEndian, step, dataArray);
+            data.setId(widget.id);
+            listener.onNewData(data);
         });
     }
 
