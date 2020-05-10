@@ -1,6 +1,6 @@
-# ROSAndroid
+# ROS-Mobile
 
-ROSAndroid is an [Android](https://www.android.com/) application designed for dynamic control and visualization of mobile robotic system operated by the Robot Operating System ([ROS](http://wiki.ros.org/)). The application uses ROS nodes initializing publisher and subscriber with standard ROS messages. The overall code architecture pattern is Model View ViewModel ([MVVM]([https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93viewmodel](https://en.wikipedia.org/wiki/Model–view–viewmodel))), which stabilizes the application and makes it highly customizable. 
+ROS-Mobile is an [Android](https://www.android.com/) application designed for dynamic control and visualization of mobile robotic system operated by the Robot Operating System ([ROS](http://wiki.ros.org/)). The application uses ROS nodes initializing publisher and subscriber with standard ROS messages. The overall code architecture pattern is Model View ViewModel ([MVVM]([https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93viewmodel](https://en.wikipedia.org/wiki/Model–view–viewmodel))), which stabilizes the application and makes it highly customizable. 
 
 - Current stable Version: 1.0
 
@@ -11,7 +11,7 @@ ROSAndroid is an [Android](https://www.android.com/) application designed for dy
 
 ## Installing Instructions
 
-There are three different ways for installing ROSAndroid onto your mobile device: Built from source, install current apk, download from Google Playstore. We highly recommend to use the download function from the Google Playstore.
+There are three different ways for installing ROS-Mobile onto your mobile device: Built from source, install current apk, download from Google Playstore. We highly recommend to use the download function from the Google Playstore.
 
 ##### Built from Source:
 
@@ -21,17 +21,17 @@ There are three different ways for installing ROSAndroid onto your mobile device
 
 ##### Install current APK:
 
-- Download the current ROSAndroid version as apk file and store it in an easy-to-find location onto your mobile device
+- Download the current ROS-Mobile version as apk file and store it in an easy-to-find location onto your mobile device
 - Allow third-party apps on your device. Therefore go to **Menu > Settings > Security** and check **Unknown Sources** 
 - Go now to the apk file, tap it, then hit install
 
 ##### Download from Google Playstore:
 
-- Simply go to the Google Playstore Website of the ROSAndroid app and download it. It will be installed automatically
+- Simply go to the Google Playstore Website of the ROS-Mobile app and download it. It will be installed automatically
 
 ## Currently available ROS Nodes
 
-The following Nodes are currently supported by ROSAndroid. For a comprehensive overview over the functionality of each node have a look into [Nodes Description]() in the wiki. Additional Nodes will be available in upcoming Versions or can be easily added independently. See the [How to add your own Nodes]() section in the wiki. 
+The following Nodes are currently supported by ROS-Mobile. For a comprehensive overview over the functionality of each node have a look into [Nodes Description]() in the wiki. Additional Nodes will be available in upcoming Versions or can be easily added independently. See the [How to add your own Nodes]() section in the wiki. 
 
 - Joystick (geometry_msgs/Twist)
 - GridMap (nav_msgs/OccupancyGrid)
