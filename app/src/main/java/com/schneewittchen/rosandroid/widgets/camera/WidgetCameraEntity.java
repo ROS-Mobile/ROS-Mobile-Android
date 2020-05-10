@@ -38,11 +38,6 @@ public class WidgetCameraEntity extends BaseEntity {
     }
 
     @Override
-    public int getWidgetVizViewId() {
-        return 0;
-    }
-
-    @Override
     public Class<? extends BaseView> getViewType() {
         return CameraView.class;
     }

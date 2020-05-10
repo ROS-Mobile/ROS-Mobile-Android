@@ -20,8 +20,8 @@ import java.util.List;
  * @author Nico Studt
  * @version 1.0.1
  * @created on 31.01.20
- * @updated on 05.02.20
- * @modified by
+ * @updated on 09.05.20
+ * @modified by Nico Studt
  */
 @Dao
 public abstract class WidgetDao implements BaseDao<WidgetEntity>{
@@ -33,19 +33,7 @@ public abstract class WidgetDao implements BaseDao<WidgetEntity>{
         MediatorLiveData<List<BaseEntity>> widgetList = new MediatorLiveData<>();
 
         widgetList.addSource(getWidgetsFor(configId), widgetEntities -> {
-            try {
-                widgetList.postValue(WidgetFactory.convert(widgetEntities));
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
-            } catch (InstantiationException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
+           widgetList.postValue(WidgetFactory.convert(widgetEntities));
         });
 
         return widgetList;

@@ -5,7 +5,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,8 +19,8 @@ import com.schneewittchen.rosandroid.R;
  * @author Nico Studt
  * @version 1.0.1
  * @created on 13.02.20
- * @updated on 2.04.20
- * @modified by
+ * @updated on 10.05.20
+ * @modified by Nico Studt
  */
 public abstract class BaseDetailViewHolder<T extends BaseEntity> extends RecyclerView.ViewHolder {
 
@@ -30,9 +29,9 @@ public abstract class BaseDetailViewHolder<T extends BaseEntity> extends Recycle
     protected TextView title;
     protected ImageView openButton;
     protected ImageButton updateButton;
-    protected T entity;
     protected DetailListener updateListener;
     protected EditText xEdittext, yEdittext, widthEditText, heightEdittext;
+    protected T entity;
 
 
     public BaseDetailViewHolder(@NonNull View view, DetailListener updateListener) {
@@ -65,18 +64,17 @@ public abstract class BaseDetailViewHolder<T extends BaseEntity> extends Recycle
         });
 
         updateButton.setOnClickListener(v -> {
-            entity.posX = Integer.parseInt(xEdittext.getText().toString());
-            entity.posY = Integer.parseInt(yEdittext.getText().toString());
-            entity.width = Integer.parseInt(widthEditText.getText().toString());
-            entity.height = Integer.parseInt(heightEdittext.getText().toString());
-
-            updateEntity();
-
-            updateListener.onDetailsChanged(entity);
+            update();
         });
 
         updateButton.setEnabled(true);
+    }
 
+    private void update() {
+        baseUpdateEntity();
+        updateEntity();
+
+        updateListener.onDetailsChanged(entity);
     }
 
     public void baseBind(T entity) {
@@ -89,6 +87,14 @@ public abstract class BaseDetailViewHolder<T extends BaseEntity> extends Recycle
         heightEdittext.setText(String.valueOf(entity.height));
 
         bind(entity);
+    }
+
+    private void baseUpdateEntity() {
+        entity.posX = Integer.parseInt(xEdittext.getText().toString());
+        entity.posY = Integer.parseInt(yEdittext.getText().toString());
+        entity.width = Integer.parseInt(widthEditText.getText().toString());
+        entity.height = Integer.parseInt(heightEdittext.getText().toString());
+
     }
 
     public abstract void init(View view);

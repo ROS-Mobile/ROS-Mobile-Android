@@ -1,5 +1,7 @@
 package com.schneewittchen.rosandroid.model.entities;
 
+import android.util.Log;
+
 import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
 
 import java.lang.reflect.Constructor;
@@ -7,49 +9,63 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
- * TODO: Description
+ * Converter for widget entities.
  *
  * @author Nico Studt
  * @version 1.0.2
  * @created on 03.02.20
- * @updated on 27.04.20
- * @modified by Nils Rottmann
+ * @updated on 10.05.20
+ * @modified by Nico Studt
  */
 public class WidgetFactory {
 
     private static final String TAG = WidgetFactory.class.getCanonicalName();
+    private static final String WIDGET_PATH = "com.schneewittchen.rosandroid.widgets.";
 
-    public static List<BaseEntity> convert(List<WidgetEntity> widgetParentList) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+
+    /**
+     * Convert every widget item to its assigned Base Entity.
+     * The data also gets copied.
+     *
+     * @param widgetParentList List of widget entities
+     * @return List of converted widgets to base entities
+     */
+    public static List<BaseEntity> convert(List<WidgetEntity> widgetParentList){
         List<BaseEntity> widgetList = new ArrayList<>();
 
         for (WidgetEntity widget: widgetParentList) {
-            widgetList.add(convert(widget));
+            try {
+                BaseEntity entity = convert(widget);
+                entity.insert(widget);
+                widgetList.add(entity);
+
+            } catch (Exception e) {
+                Log.e(TAG, "Cant convert widget. Error: " + e.getCause());
+            }
         }
 
         return  widgetList;
     }
 
-    public static BaseEntity convert(WidgetEntity widgetParent) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+    /**
+     * Convert a widget entity (data class) to its assignet base entity based on its type.
+     *
+     * @param widgetParent Widget entity
+     * @return Converted base entity
+     */
+    private static BaseEntity convert(WidgetEntity widgetParent)
+            throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException,
+                    InvocationTargetException, InstantiationException {
 
-        String prefix = "com.schneewittchen.rosandroid.widgets.";
-        String className = prefix + widgetParent.type.toLowerCase() + ".Widget" + widgetParent.type + "Entity";
-        Class<?> clazz = Class.forName(className);
-        Constructor<?> ctor = clazz.getConstructor();
-        BaseEntity widget = (BaseEntity) ctor.newInstance();
+        // Get class and copy widget parent to widget
+        String className = WIDGET_PATH + widgetParent.type.toLowerCase()
+                        + ".Widget" + widgetParent.type + "Entity";
+        Class<?> subclass = Class.forName(className);
+        Constructor<?> constructor = subclass.getConstructor();
 
-        widget.id = widgetParent.id;
-        widget.type = widgetParent.type;
-        widget.name = widgetParent.name;
-        widget.configId = widgetParent.configId;
-        widget.creationTime = widgetParent.creationTime;
-        widget.posX = widgetParent.posX;
-        widget.posY = widgetParent.posY;
-        widget.width = widgetParent.width;
-        widget.height = widgetParent.height;
-        widget.publisher = widgetParent.publisher;
-        widget.subscriber = widgetParent.subscriber;
-
-        return widget;
+        return (BaseEntity) constructor.newInstance();
     }
+
 }

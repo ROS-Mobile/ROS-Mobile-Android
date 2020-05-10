@@ -2,6 +2,7 @@ package com.schneewittchen.rosandroid.widgets.joystick;
 
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.model.entities.SubPubNoteEntity;
+import com.schneewittchen.rosandroid.model.entities.WidgetEntity;
 import com.schneewittchen.rosandroid.widgets.base.BaseDetailViewHolder;
 import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
 import com.schneewittchen.rosandroid.widgets.base.BaseView;
@@ -14,8 +15,8 @@ import com.schneewittchen.rosandroid.widgets.base.BaseNode;
  * @author Nico Studt
  * @version 1.1.1
  * @created on 31.01.20
- * @updated on 14.04.20
- * @modified by
+ * @updated on 10.05.20
+ * @modified by Nico Studt
  */
 public class WidgetJoystickEntity extends BaseEntity {
 
@@ -41,11 +42,6 @@ public class WidgetJoystickEntity extends BaseEntity {
     }
 
     @Override
-    public int getWidgetVizViewId() {
-        return R.layout.widget_detail_joystick;
-    }
-
-    @Override
     public Class<? extends BaseView> getViewType() {
         return JoystickView.class;
     }
@@ -65,6 +61,30 @@ public class WidgetJoystickEntity extends BaseEntity {
         return JoystickNode.class;
     }
 
+
+
+    @Override
+    public void insert(WidgetEntity entity) {
+        super.insert(entity);
+
+        this.publisher.topic = entity.publisher.topic;
+        this.publisher.messageType = entity.publisher.messageType;
+        this.xAxisMapping = entity.xAxisMapping;
+        this.yAxisMapping = entity.yAxisMapping;
+        this.xScaleLeft = entity.xScaleLeft;
+        this.xScaleRight = entity.xScaleRight;
+        this.yScaleLeft = entity.yScaleLeft;
+        this.yScaleRight = entity.yScaleRight;
+    }
+
+    @Override
+    public WidgetJoystickEntity copy() {
+        WidgetJoystickEntity newEnt = new WidgetJoystickEntity();
+        newEnt.insert(this);
+
+        return newEnt;
+    }
+
     @Override
     public boolean equalContent(BaseEntity widget) {
         if (!(widget instanceof WidgetJoystickEntity))
@@ -72,31 +92,13 @@ public class WidgetJoystickEntity extends BaseEntity {
 
         WidgetJoystickEntity other = (WidgetJoystickEntity) widget;
 
-        return this.publisher.topic.equals(other.publisher.topic)
-                && this.publisher.messageType.equals(other.publisher.messageType)
+        return this.publisher.equals(other.publisher)
                 && this.xAxisMapping.equals(other.xAxisMapping)
                 && this.yAxisMapping.equals(other.yAxisMapping)
                 && this.xScaleLeft == other.xScaleLeft
                 && this.xScaleRight == other.xScaleRight
                 && this.yScaleLeft == other.yScaleLeft
                 && this.yScaleRight == other.yScaleRight;
-    }
-
-    @Override
-    public WidgetJoystickEntity copy() {
-        WidgetJoystickEntity newEnt = new WidgetJoystickEntity();
-        this.fillContend(newEnt);
-
-        newEnt.publisher.topic = publisher.topic;
-        newEnt.publisher.messageType = publisher.messageType;
-        newEnt.xAxisMapping = xAxisMapping;
-        newEnt.yAxisMapping = yAxisMapping;
-        newEnt.xScaleLeft = xScaleLeft;
-        newEnt.xScaleRight = xScaleRight;
-        newEnt.yScaleLeft = yScaleLeft;
-        newEnt.yScaleRight = yScaleRight;
-
-        return newEnt;
     }
 
 }

@@ -1,5 +1,6 @@
 package com.schneewittchen.rosandroid.widgets.base;
 
+import com.schneewittchen.rosandroid.model.entities.SubPubNoteEntity;
 import com.schneewittchen.rosandroid.model.entities.WidgetEntity;
 
 /**
@@ -15,6 +16,7 @@ public abstract class BaseEntity extends WidgetEntity {
 
     public static String TAG = BaseEntity.class.getSimpleName();
 
+
     public BaseEntity() {
         posX = 0;
         posY = 0;
@@ -22,13 +24,8 @@ public abstract class BaseEntity extends WidgetEntity {
         height = 1;
     }
 
+
     public abstract String getName();
-
-    public String getEntityType() {
-        return this.type;
-    }
-
-    public abstract int getWidgetVizViewId();
 
     public abstract Class<? extends BaseView> getViewType();
 
@@ -38,13 +35,26 @@ public abstract class BaseEntity extends WidgetEntity {
 
     public abstract Class<? extends BaseNode> getNodeType();
 
-
     public abstract boolean equalContent(BaseEntity other);
 
     public abstract BaseEntity copy();
 
     protected void setType(String type) {
         this.type = type;
+    }
+
+    public void insert(WidgetEntity entity) {
+        this.id = entity.id;
+        this.type = entity.type;
+        this.name = entity.name;
+        this.configId = entity.configId;
+        this.creationTime = entity.creationTime;
+        this.posX = entity.posX;
+        this.posY = entity.posY;
+        this.width = entity.width;
+        this.height = entity.height;
+        //this.publisher = new SubPubNoteEntity(entity.publisher);
+        //this.subscriber = new SubPubNoteEntity(entity.subscriber);
     }
 
     protected void fillContend(BaseEntity other) {
@@ -76,6 +86,5 @@ public abstract class BaseEntity extends WidgetEntity {
 
         return false;
     }
-
 
 }

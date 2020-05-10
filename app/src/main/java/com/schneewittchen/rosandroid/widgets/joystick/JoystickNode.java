@@ -78,7 +78,5 @@ public class JoystickNode extends BaseNode<WidgetJoystickEntity> {
         JoystickData joystickData = (JoystickData) data;
         lastX = joystickData.x;
         lastY = joystickData.y;
-
-        System.err.println(lastX + " "  + lastY);
     }
 }

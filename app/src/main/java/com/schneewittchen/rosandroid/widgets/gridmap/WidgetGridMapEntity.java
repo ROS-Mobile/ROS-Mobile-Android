@@ -31,11 +31,6 @@ public class WidgetGridMapEntity extends BaseEntity {
     }
 
     @Override
-    public int getWidgetVizViewId() {
-        return 0;
-    }
-
-    @Override
     public Class<? extends BaseView> getViewType() {
         return GridMapView.class;
     }
