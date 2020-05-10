@@ -23,7 +23,7 @@ public class GridMapNode extends BaseNode {
     @Override
     public void onStart(ConnectedNode connectedNode) {
         Subscriber<nav_msgs.OccupancyGrid> subscriber = connectedNode.newSubscriber(
-                widget.subscriber.topic, widget.subscriber.messageType
+                widget.subPubNoteEntity.topic, widget.subPubNoteEntity.messageType
         );
 
         subscriber.addMessageListener(occupancyGrid -> {

@@ -25,7 +25,7 @@ public class CameraNode extends BaseNode {
     @Override
     public void onStart(ConnectedNode connectedNode) {
         Subscriber<Image> subscriber = connectedNode.newSubscriber(
-                widget.subscriber.topic, widget.subscriber.messageType
+                widget.subPubNoteEntity.topic, widget.subPubNoteEntity.messageType
         );
 
         subscriber.addMessageListener(image -> {

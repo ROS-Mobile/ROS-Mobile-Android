@@ -1,46 +1,66 @@
-package com.schneewittchen.rosandroid.widgets.gridmap;
+package com.schneewittchen.rosandroid.widgets.gps;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.RectF;
+import android.preference.PreferenceManager;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
 import com.schneewittchen.rosandroid.R;
-import com.schneewittchen.rosandroid.ui.helper.RecyclerItemTouchHelper;
 import com.schneewittchen.rosandroid.utility.Utils;
 import com.schneewittchen.rosandroid.widgets.base.BaseData;
 import com.schneewittchen.rosandroid.widgets.base.BaseView;
 
+import org.osmdroid.api.IMapController;
+import org.osmdroid.config.Configuration;
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
+import org.osmdroid.util.GeoPoint;
+import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.ItemizedIconOverlay;
+import org.osmdroid.views.overlay.ItemizedOverlay;
+import org.osmdroid.views.overlay.OverlayItem;
+
+import java.util.ArrayList;
+
+
 /**
  * TODO: Description
  *
- * @author Nico Studt
+ * @author Nils Rottmann
  * @version 1.0.0
- * @created on 18.10.19
- * @updated on 27.04.20
- * @modified by Nils Rottmann
+ * @created on 05.05.20
+ * @updated on 05.05.20
+ * @modified by
  */
-public class GridMapView extends BaseView {
 
-    public static final String TAG = "GridmapView";
+public class GpsView extends BaseView {
+    public static final String TAG = "GpsView";
+
+    // Open Street Map (OSM)
+    private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
+    private MapView map = null;
+    private GeoPoint locationGeoPoint = new GeoPoint(53.872018, 10.704724);
+    IMapController mapController = null;
 
     // Rectangle Surrounding
     Paint paint;
     float cornerWidth;
 
     // Grid Map Information
-    GridMapData data;
+    GpsData data;
 
     // Zoom Parameters
-    private static float MIN_ZOOM = 1f;         // min. and max. zoom
-    private static float MAX_ZOOM = 10f;
-    private float scaleFactor = 1.f;
+    private static float MIN_ZOOM = 1;         // min. and max. zoom
+    private static float MAX_ZOOM = 18;
+    private float scaleFactor = 1;
     private ScaleGestureDetector detector;
 
     private static int NONE = 0;                // mode
@@ -57,28 +77,50 @@ public class GridMapView extends BaseView {
     private float previousTranslateX = 0f;      // Past amount of translation
     private float previousTranslateY = 0f;
 
-    public GridMapView(Context context) {
+    public GpsView(Context context) {
         super(context);
         init();
     }
 
-    public GridMapView(Context context, @Nullable AttributeSet attrs) {
+    public GpsView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
     private void init() {
-        this.cornerWidth = Utils.dpToPx(getContext(), 8);
+        this.cornerWidth = Utils.dpToPx(this.getContext(), 8);
         paint = new Paint();
         paint.setColor(getResources().getColor(R.color.whiteHigh));
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(10);
 
-        detector = new ScaleGestureDetector(getContext(), new ScaleListener());
+        // OSM (initialize the map)
+        Context ctx = this.getContext();
+        Configuration.getInstance().load(ctx, PreferenceManager.getDefaultSharedPreferences(ctx));
+        map = new MapView(this.getContext(), null, null);
+        map.setTileSource(TileSourceFactory.MAPNIK);
+
+        requestPermissionsIfNecessary(new String[] {
+                // if you need to show the current location, uncomment the line below
+                // Manifest.permission.ACCESS_FINE_LOCATION,
+                // WRITE_EXTERNAL_STORAGE is required in order to show the map
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+        });
+
+        map.setBuiltInZoomControls(true);
+        map.setMultiTouchControls(true);
+
+        // Map controller
+        mapController = map.getController();
+
+        // Touch
+        detector = new ScaleGestureDetector(getContext(), new GpsView.ScaleListener());
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+
+        // return map.onTouchEvent(event);
 
         boolean dragged = false;
 
@@ -101,7 +143,7 @@ public class GridMapView extends BaseView {
                 //We cannot use startX and startY directly because we have adjusted their values using the previous translation values.
                 //This is why we need to add those values to startX and startY so that we can get the actual coordinates of the finger.
                 double distance = Math.sqrt(Math.pow(event.getX() - (startX + previousTranslateX), 2) +
-                                            Math.pow(event.getY() - (startY + previousTranslateY), 2)
+                        Math.pow(event.getY() - (startY + previousTranslateY), 2)
                 );
 
                 if(distance > 0) {
@@ -149,8 +191,6 @@ public class GridMapView extends BaseView {
         return true;
     }
 
-
-
     @Override
     public void onDraw(Canvas canvas) {
         Log.i(TAG, "On Draw");
@@ -163,31 +203,22 @@ public class GridMapView extends BaseView {
         float width = getWidth();
         float height = getHeight();
 
-        // Scale the X and Y cordinates
-        canvas.scale(scaleFactor, scaleFactor);
-        // Take care of the bounds
-        if((translateX * -1) < 0) {
-            translateX = 0;
-        } else if((translateX * -1) > (scaleFactor - 1) * width) {
-            translateX = (1 - scaleFactor) * width;
-        }
-        if(translateY * -1 < 0) {
-            translateY = 0;
-        } else if((translateY * -1) > (scaleFactor - 1) * height) {
-            translateY = (1 - scaleFactor) * height;
-        }
-        // Divide by scale factor to avoid panning
-        canvas.translate(translateX / scaleFactor, translateY / scaleFactor);
+        // Set overlay item
+        OverlayItem overlayItem = new OverlayItem("Position", "Robot", locationGeoPoint);
+        ArrayList<OverlayItem> overlayItemArrayList = new ArrayList<OverlayItem>();
+        overlayItemArrayList.add(overlayItem);
+        ItemizedOverlay<OverlayItem> locationOverlay = new ItemizedIconOverlay<OverlayItem>(this.getContext(), overlayItemArrayList, null);
 
-        // Do the canvas drawing
-        RectF rect = new RectF(left, right, width, height);
-        if (data != null) {
-            canvas.drawBitmap(data.map, 0, 0, null);
-            // canvas.drawBitmap(data.map, null, rect, paint);
-            // canvas.drawRoundRect(left, right, width, height, cornerWidth, cornerWidth, paint);
-        } else {
-            canvas.drawRoundRect(left, right, width, height, cornerWidth, cornerWidth, paint);
-        }
+        // Move the map to specific location
+        mapController.setCenter(locationGeoPoint);
+        mapController.setZoom(scaleFactor);
+        map.requestLayout();
+
+        // Draw the OMS
+        map.layout((int) left, (int) right, (int) width, (int) height);
+        map.getOverlays().add(locationOverlay);
+        map.draw(canvas);
+
         // Apply the changes
         canvas.restore();
         // Put a rectangle around
@@ -196,9 +227,22 @@ public class GridMapView extends BaseView {
 
     @Override
     public void setData(BaseData data) {
-        System.out.println("GridMapView: SetData!");
-        this.data = (GridMapData) data;
+        System.out.println("GpsView: SetData!");
+        this.data = (GpsData) data;
+        locationGeoPoint.setLatitude(this.data.lat);
+        locationGeoPoint.setLongitude(this.data.lon);
         this.invalidate();
+    }
+
+    private void requestPermissionsIfNecessary(String[] permissions) {
+        ArrayList<String> permissionsToRequest = new ArrayList<>();
+        for (String permission : permissions) {
+            if (ContextCompat.checkSelfPermission(this.getContext(), permission)
+                    != PackageManager.PERMISSION_GRANTED) {
+                // Permission is not granted
+                permissionsToRequest.add(permission);
+            }
+        }
     }
 
     private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
@@ -209,5 +253,4 @@ public class GridMapView extends BaseView {
             return true;
         }
     }
-
 }

@@ -5,6 +5,7 @@
         <item>Joystick</item>
         <item>GridMap</item>
         <item>Camera</item>
+        <item>Gps</item>
     </string-array>
 
     <string-array name="widget_descr">
