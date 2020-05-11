@@ -50,6 +50,17 @@ The following Nodes are currently supported by ROS-Mobile. For a comprehensive o
 
 Manually map an apartment environment using a differential drive robot. Therefore, we connected the application with the ROS master running the differential drive robot over wireless LAN by inserting the correct IP address in the *MASTER* configuration tab, first figure. Adding ROS nodes in the *DETAILS* tab, second figure and third figure, enables the control of the differential drive robot via a joystick method sending *geometry\_msgs/Twist* to a *cmd\_vel* topic and the visualization of the generated occupancy grid map by subscribing to the *map* topic via a gridmap method. In the *VIZ* tab, most right figure, the recorded occupancy grid map is displayed as well as the joystick. The joystick can be used via touch for sending control inputs over the *cmd\_vel* topic to the differential drive robot. For a more detailed examples, we refer to our [wiki]().
 
+## License
+
+The MIT License (MIT)
+Copyright (c) 2020 Nils Rottmann, Nico Studt
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
+
 ## Contributor / Maintainer
 
 [Nico Studt](), [Nils Rottmann](https://nrottmann.github.io/)
