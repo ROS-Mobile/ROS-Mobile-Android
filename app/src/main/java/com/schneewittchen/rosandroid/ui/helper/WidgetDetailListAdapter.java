@@ -25,7 +25,7 @@ import java.util.List;
  * @version 1.0.4
  * @created on 24.01.20
  * @updated on 14.04.20
- * @modified by
+ * @modified by Nico Studt
  */
 public class WidgetDetailListAdapter extends RecyclerView.Adapter<BaseDetailViewHolder> implements DetailListener{
 

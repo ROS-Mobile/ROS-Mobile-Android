@@ -53,8 +53,6 @@ public abstract class BaseEntity extends WidgetEntity {
         this.posY = entity.posY;
         this.width = entity.width;
         this.height = entity.height;
-        //this.publisher = new SubPubNoteEntity(entity.publisher);
-        //this.subscriber = new SubPubNoteEntity(entity.subscriber);
     }
 
     protected void fillContend(BaseEntity other) {
@@ -77,6 +75,7 @@ public abstract class BaseEntity extends WidgetEntity {
             BaseEntity other = (BaseEntity) o;
 
             return other.id == this.id
+                    && other.configId == this.configId
                     && other.type.equals(this.type)
                     && other.posX == this.posX
                     && other.posY == this.posY

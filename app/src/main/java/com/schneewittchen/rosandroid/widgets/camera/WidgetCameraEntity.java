@@ -7,6 +7,7 @@ import com.schneewittchen.rosandroid.widgets.base.BaseDetailViewHolder;
 import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
 import com.schneewittchen.rosandroid.widgets.base.BaseView;
 import com.schneewittchen.rosandroid.widgets.base.BaseNode;
+import com.schneewittchen.rosandroid.widgets.joystick.WidgetJoystickEntity;
 
 /**
  * TODO: Description
@@ -27,10 +28,14 @@ public class WidgetCameraEntity extends BaseEntity {
 
     public WidgetCameraEntity() {
         this.setType("Camera");
+
+        this.width = 4;
+        this.height = 3;
         this.subPubNoteEntity = new SubPubNoteEntity();
         this.subPubNoteEntity.topic = "camera/image_raw";
         this.subPubNoteEntity.messageType = sensor_msgs.Image._TYPE;
     }
+
 
     @Override
     public String getName() {
@@ -58,17 +63,31 @@ public class WidgetCameraEntity extends BaseEntity {
         return CameraNode.class;
     }
 
+
     @Override
-    public boolean equalContent(BaseEntity other) {
-        return true;
+    public void insert(WidgetEntity entity) {
+        super.insert(entity);
+
+        this.subPubNoteEntity.topic = entity.subPubNoteEntity.topic;
+        this.subPubNoteEntity.messageType = entity.subPubNoteEntity.messageType;
     }
 
     @Override
     public WidgetCameraEntity copy() {
         WidgetCameraEntity newEnt = new WidgetCameraEntity();
-        this.fillContend(newEnt);
+        newEnt.insert(this);
 
         return newEnt;
+    }
+
+    @Override
+    public boolean equalContent(BaseEntity widget) {
+        if (!(widget instanceof WidgetCameraEntity))
+            return false;
+
+        WidgetCameraEntity other = (WidgetCameraEntity) widget;
+
+        return this.subPubNoteEntity.equals(other.subPubNoteEntity);
     }
 }
 

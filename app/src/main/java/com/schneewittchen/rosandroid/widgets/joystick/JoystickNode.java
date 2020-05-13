@@ -29,7 +29,8 @@ public class JoystickNode extends BaseNode<WidgetJoystickEntity> {
 
     @Override
     public void onStart(ConnectedNode connectedNode) {
-        publisher = connectedNode.newPublisher(widget.publisher.topic, widget.publisher.messageType);
+        publisher = connectedNode.newPublisher(widget.subPubNoteEntity.topic,
+                                                widget.subPubNoteEntity.messageType);
 
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {

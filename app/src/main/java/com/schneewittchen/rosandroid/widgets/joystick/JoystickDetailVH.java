@@ -82,7 +82,7 @@ public class JoystickDetailVH extends BaseDetailViewHolder<WidgetJoystickEntity>
 
     @Override
     public void bind(WidgetJoystickEntity entity) {
-        topicNameText.setText(entity.publisher.topic);
+        topicNameText.setText(entity.subPubNoteEntity.topic);
 
         String[] xAxisMapping = entity.xAxisMapping.split("/");
 
@@ -101,8 +101,8 @@ public class JoystickDetailVH extends BaseDetailViewHolder<WidgetJoystickEntity>
 
     @Override
     public void updateEntity() {
-        entity.publisher.messageType = geometry_msgs.Twist._TYPE;
-        entity.publisher.topic = topicNameText.getText().toString();
+        entity.subPubNoteEntity.messageType = geometry_msgs.Twist._TYPE;
+        entity.subPubNoteEntity.topic = topicNameText.getText().toString();
         entity.xAxisMapping = xDirSpinner.getSelectedItem() + "/" + xAxisSpinner.getSelectedItem();
         entity.yAxisMapping = yDirSpinner.getSelectedItem() + "/" + yAxisSpinner.getSelectedItem();
         entity.xScaleLeft = Float.parseFloat(xScaleLeft.getText().toString());

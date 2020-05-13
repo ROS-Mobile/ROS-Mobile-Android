@@ -1,5 +1,7 @@
 package com.schneewittchen.rosandroid.widgets.camera;
 
+import android.util.Log;
+
 import com.schneewittchen.rosandroid.widgets.base.BaseData;
 import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
 import com.schneewittchen.rosandroid.widgets.base.BaseNode;
@@ -16,16 +18,19 @@ import sensor_msgs.Image;
  * @author Nils Rottmann
  * @version 1.0.0
  * @created on 27.04.20
- * @updated on 07.05.20
+ * @updated on 13.05.20
  * @modified by Nico Studt
  */
 public class CameraNode extends BaseNode {
+
+    private static final String TAG = CameraNode.class.getSimpleName();
 
 
     @Override
     public void onStart(ConnectedNode connectedNode) {
         Subscriber<Image> subscriber = connectedNode.newSubscriber(
-                widget.subPubNoteEntity.topic, widget.subPubNoteEntity.messageType
+                widget.subPubNoteEntity.topic,
+                widget.subPubNoteEntity.messageType
         );
 
         subscriber.addMessageListener(image -> {

@@ -23,8 +23,8 @@ import com.schneewittchen.rosandroid.widgets.base.BaseView;
  * @author Nico Studt
  * @version 1.0.0
  * @created on 18.10.19
- * @updated on 27.04.20
- * @modified by Nils Rottmann
+ * @updated on 13.05.20
+ * @modified by Nico Studt
  */
 public class GridMapView extends BaseView {
 
@@ -56,6 +56,8 @@ public class GridMapView extends BaseView {
 
     private float previousTranslateX = 0f;      // Past amount of translation
     private float previousTranslateY = 0f;
+    private RectF drawRect;
+
 
     public GridMapView(Context context) {
         super(context);
@@ -73,6 +75,8 @@ public class GridMapView extends BaseView {
         paint.setColor(getResources().getColor(R.color.whiteHigh));
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(10);
+
+        drawRect = new RectF(0, 0, 0, 0);
 
         detector = new ScaleGestureDetector(getContext(), new ScaleListener());
     }
@@ -159,7 +163,7 @@ public class GridMapView extends BaseView {
 
         // Get vizualization size
         float left = 0F;
-        float right = 0F;
+        float top = 0F;
         float width = getWidth();
         float height = getHeight();
 
@@ -180,28 +184,31 @@ public class GridMapView extends BaseView {
         canvas.translate(translateX / scaleFactor, translateY / scaleFactor);
 
         // Do the canvas drawing
-        RectF rect = new RectF(left, right, width, height);
+        drawRect.set(left, top, width, height);
+
         if (data != null) {
             canvas.drawBitmap(data.map, 0, 0, null);
             // canvas.drawBitmap(data.map, null, rect, paint);
             // canvas.drawRoundRect(left, right, width, height, cornerWidth, cornerWidth, paint);
         } else {
-            canvas.drawRoundRect(left, right, width, height, cornerWidth, cornerWidth, paint);
+            canvas.drawRoundRect(drawRect, cornerWidth, cornerWidth, paint);
         }
+
         // Apply the changes
         canvas.restore();
         // Put a rectangle around
-        canvas.drawRoundRect(left, right, width, height, cornerWidth, cornerWidth, paint);
+        canvas.drawRoundRect(drawRect, cornerWidth, cornerWidth, paint);
     }
 
     @Override
     public void setData(BaseData data) {
-        System.out.println("GridMapView: SetData!");
         this.data = (GridMapData) data;
         this.invalidate();
     }
 
+
     private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
+
         @Override
         public boolean onScale(ScaleGestureDetector detector) {
             scaleFactor *= detector.getScaleFactor();

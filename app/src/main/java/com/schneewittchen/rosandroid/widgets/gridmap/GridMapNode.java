@@ -8,6 +8,8 @@ import org.ros.message.MessageListener;
 import org.ros.node.ConnectedNode;
 import org.ros.node.topic.Subscriber;
 
+import nav_msgs.MapMetaData;
+
 /**
  * TODO: Description
  *
@@ -23,16 +25,19 @@ public class GridMapNode extends BaseNode {
     @Override
     public void onStart(ConnectedNode connectedNode) {
         Subscriber<nav_msgs.OccupancyGrid> subscriber = connectedNode.newSubscriber(
-                widget.subPubNoteEntity.topic, widget.subPubNoteEntity.messageType
+                widget.subPubNoteEntity.topic,
+                widget.subPubNoteEntity.messageType
         );
 
         subscriber.addMessageListener(occupancyGrid -> {
-            int width = occupancyGrid.getInfo().getWidth();
-            int height = occupancyGrid.getInfo().getHeight();
+            MapMetaData info = occupancyGrid.getInfo();
+            int width = info.getWidth();
+            int height = info.getHeight();
             byte[] array = occupancyGrid.getData().array();
-            float res = occupancyGrid.getInfo().getResolution();
-            float x0 = (float) occupancyGrid.getInfo().getOrigin().getPosition().getX();
-            float y0 = (float) occupancyGrid.getInfo().getOrigin().getPosition().getY();
+            float res = info.getResolution();
+            float x0 = (float) info.getOrigin().getPosition().getX();
+            float y0 = (float) info.getOrigin().getPosition().getY();
+
             GridMapData data = new GridMapData(width, height, array, res, x0, y0);
             data.setId(widget.id);
             listener.onNewData(data);

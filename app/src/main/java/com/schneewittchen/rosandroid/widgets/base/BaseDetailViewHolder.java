@@ -52,8 +52,6 @@ public abstract class BaseDetailViewHolder<T extends BaseEntity> extends Recycle
         yEdittext = view.findViewById(R.id.y_edit_text);
         widthEditText = view.findViewById(R.id.width_edit_text);
         heightEdittext = view.findViewById(R.id.height_edit_text);
-        topicName = view.findViewById(R.id.topicNameText);
-        messageType = view.findViewById(R.id.messageTypeText);
 
         openButton.setOnClickListener(v -> {
             if (detailContend.getVisibility() == View.GONE) {
@@ -96,7 +94,6 @@ public abstract class BaseDetailViewHolder<T extends BaseEntity> extends Recycle
         entity.posY = Integer.parseInt(yEdittext.getText().toString());
         entity.width = Integer.parseInt(widthEditText.getText().toString());
         entity.height = Integer.parseInt(heightEdittext.getText().toString());
-
     }
 
     public abstract void init(View view);

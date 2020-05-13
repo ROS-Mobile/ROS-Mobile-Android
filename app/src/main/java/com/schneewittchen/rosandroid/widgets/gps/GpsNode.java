@@ -20,27 +20,23 @@ import sensor_msgs.NavSatFix;
  * @modified by
  */
 
-public class GpsNode extends BaseNode {
-
-    public GpsNode(BaseEntity widget) {
-        super(widget);
-    }
+public class GpsNode extends BaseNode<WidgetGpsEntity> {
 
 
     @Override
     public void onStart(ConnectedNode connectedNode) {
         Subscriber<NavSatFix> subscriber = connectedNode.newSubscriber(
-                widget.subPubNoteEntity.topic, widget.subPubNoteEntity.messageType
+                widget.subPubNoteEntity.topic,
+                widget.subPubNoteEntity.messageType
         );
-        subscriber.addMessageListener(new MessageListener<NavSatFix>() {
-            @Override
-            public void onNewMessage(sensor_msgs.NavSatFix navSatFix) {
-                double lat = navSatFix.getLatitude();
-                double lon = navSatFix.getLongitude();
-                GpsData data = new GpsData(lat, lon);
-                data.setId(widget.id);
-                listener.onNewData(data);
-            }
+
+        subscriber.addMessageListener(navSatFix -> {
+            double lat = navSatFix.getLatitude();
+            double lon = navSatFix.getLongitude();
+
+            GpsData data = new GpsData(lat, lon);
+            data.setId(widget.id);
+            listener.onNewData(data);
         });
     }
 

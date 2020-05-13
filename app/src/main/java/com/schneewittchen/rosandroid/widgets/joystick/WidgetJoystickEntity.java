@@ -2,6 +2,7 @@ package com.schneewittchen.rosandroid.widgets.joystick;
 
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.model.entities.SubPubNoteEntity;
+import com.schneewittchen.rosandroid.model.entities.WidgetEntity;
 import com.schneewittchen.rosandroid.widgets.base.BaseDetailViewHolder;
 import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
 import com.schneewittchen.rosandroid.widgets.base.BaseView;
@@ -24,9 +25,9 @@ public class WidgetJoystickEntity extends BaseEntity {
 
         this.width = 4;
         this.height = 4;
-        this.publisher = new SubPubNoteEntity();
-        this.publisher.topic = "cmd_vel";
-        this.publisher.messageType = geometry_msgs.Twist._TYPE;
+        this.subPubNoteEntity = new SubPubNoteEntity();
+        this.subPubNoteEntity.topic = "cmd_vel";
+        this.subPubNoteEntity.messageType = geometry_msgs.Twist._TYPE;
         this.xAxisMapping = "Linear/X";
         this.yAxisMapping = "Angular/Z";
         this.xScaleLeft = -1;
@@ -66,8 +67,8 @@ public class WidgetJoystickEntity extends BaseEntity {
     public void insert(WidgetEntity entity) {
         super.insert(entity);
 
-        this.publisher.topic = entity.publisher.topic;
-        this.publisher.messageType = entity.publisher.messageType;
+        this.subPubNoteEntity.topic = entity.subPubNoteEntity.topic;
+        this.subPubNoteEntity.messageType = entity.subPubNoteEntity.messageType;
         this.xAxisMapping = entity.xAxisMapping;
         this.yAxisMapping = entity.yAxisMapping;
         this.xScaleLeft = entity.xScaleLeft;
@@ -91,7 +92,7 @@ public class WidgetJoystickEntity extends BaseEntity {
 
         WidgetJoystickEntity other = (WidgetJoystickEntity) widget;
 
-        return this.publisher.equals(other.publisher)
+        return this.subPubNoteEntity.equals(other.subPubNoteEntity)
                 && this.xAxisMapping.equals(other.xAxisMapping)
                 && this.yAxisMapping.equals(other.yAxisMapping)
                 && this.xScaleLeft == other.xScaleLeft
