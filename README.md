@@ -31,7 +31,7 @@ There are three different ways for installing ROS-Mobile onto your mobile device
 
 ## Currently available ROS Nodes
 
-The following Nodes are currently supported by ROS-Mobile. For a comprehensive overview over the functionality of each node have a look into [Nodes Description]() in the wiki. Additional Nodes will be available in upcoming Versions or can be easily added independently. See the [How to add your own Nodes]() section in the wiki. 
+The following Nodes are currently supported by ROS-Mobile. For a comprehensive overview over the functionality of each node have a look into [Nodes Description](https://github.com/ROS-Mobile/ROS-Mobile-Android/wiki/ROS-Nodes) in the wiki. Additional Nodes will be available in upcoming Versions or can be easily added independently. See the [How to add your own Nodes](https://github.com/ROS-Mobile/ROS-Mobile-Android/wiki/How-to-contribute%3F#add-your-own-nodes) section in the wiki. 
 
 - Joystick (geometry_msgs/Twist)
 - GridMap (nav_msgs/OccupancyGrid)
@@ -48,7 +48,7 @@ The following Nodes are currently supported by ROS-Mobile. For a comprehensive o
 </p>
 
 
-Manually map an apartment environment using a differential drive robot. Therefore, we connected the application with the ROS master running the differential drive robot over wireless LAN by inserting the correct IP address in the *MASTER* configuration tab, first figure. Adding ROS nodes in the *DETAILS* tab, second figure and third figure, enables the control of the differential drive robot via a joystick method sending *geometry\_msgs/Twist* to a *cmd\_vel* topic and the visualization of the generated occupancy grid map by subscribing to the *map* topic via a gridmap method. In the *VIZ* tab, most right figure, the recorded occupancy grid map is displayed as well as the joystick. The joystick can be used via touch for sending control inputs over the *cmd\_vel* topic to the differential drive robot. For a more detailed examples, we refer to our [wiki]().
+Manually map an apartment environment using a differential drive robot. Therefore, we connected the application with the ROS master running the differential drive robot over wireless LAN by inserting the correct IP address in the *MASTER* configuration tab, first figure. Adding ROS nodes in the *DETAILS* tab, second figure and third figure, enables the control of the differential drive robot via a joystick method sending *geometry\_msgs/Twist* to a *cmd\_vel* topic and the visualization of the generated occupancy grid map by subscribing to the *map* topic via a gridmap method. In the *VIZ* tab, most right figure, the recorded occupancy grid map is displayed as well as the joystick. The joystick can be used via touch for sending control inputs over the *cmd\_vel* topic to the differential drive robot. For a more detailed examples, we refer to our [wiki](https://github.com/ROS-Mobile/ROS-Mobile-Android/wiki/Example-Applications).
 
 ## License
 
