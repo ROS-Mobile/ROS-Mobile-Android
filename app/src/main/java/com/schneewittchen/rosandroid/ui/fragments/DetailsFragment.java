@@ -99,6 +99,13 @@ public class DetailsFragment extends Fragment implements RecyclerItemTouchHelper
             mAdapter.setWidgets(newWidgets);
         });
 
+        mAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                recyclerView.smoothScrollToPosition(0);
+            }
+        });
+
         mViewModel.widgetsEmpty().observe(getViewLifecycleOwner(), empty ->
                 noWidgetTextView.setVisibility(empty? View.VISIBLE : View.GONE));
     }

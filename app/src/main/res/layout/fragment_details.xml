@@ -26,7 +26,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
-        android:padding="8dp"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="74dp"
         tools:itemCount="15"
         tools:listitem="@layout/widget_detail_base" />
 
