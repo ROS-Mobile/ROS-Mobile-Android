@@ -15,6 +15,7 @@ import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
 import com.schneewittchen.rosandroid.widgets.base.DetailListener;
 
 import java.lang.reflect.Constructor;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -31,20 +32,20 @@ public class WidgetDetailListAdapter extends RecyclerView.Adapter<BaseDetailView
 
     private DetailListener detailListener;
     private AsyncListDiffer<BaseEntity> mDiffer;
+    private ArrayList<Class<? extends BaseDetailViewHolder>> types;
 
 
     public WidgetDetailListAdapter() {
         mDiffer = new AsyncListDiffer<>(this, diffCallback);
+        types = new ArrayList<>();
     }
 
 
     @NonNull
     @Override
-    public BaseDetailViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int position) {
-        BaseEntity entity = this.getItem(position);
-        Class<? extends BaseDetailViewHolder> viewHolderClazz = entity.getDetailViewHolderType();
-        
+    public BaseDetailViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int itemType) {
         try {
+            Class<? extends BaseDetailViewHolder> viewHolderClazz = types.get(itemType);
             Constructor<? extends BaseDetailViewHolder> cons  = viewHolderClazz
                                                     .getConstructor(View.class, DetailListener.class);
             LayoutInflater inflator = LayoutInflater.from(parent.getContext());
@@ -54,15 +55,16 @@ public class WidgetDetailListAdapter extends RecyclerView.Adapter<BaseDetailView
 
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
-
-        return null;
     }
+
 
     @Override
     public void onBindViewHolder(@NonNull BaseDetailViewHolder holder, int position) {
         BaseEntity entity = this.getItem(position);
 
+        // TODO Inflate child layout in @onCreateViewHolder
         LayoutInflater inflator = LayoutInflater.from(holder.itemView.getContext());
         holder.detailContend.removeView(holder.detailContend.getChildAt(1));
 
@@ -76,7 +78,16 @@ public class WidgetDetailListAdapter extends RecyclerView.Adapter<BaseDetailView
 
     @Override
     public int getItemViewType(int position) {
-        return position;
+        BaseEntity entity = this.getItem(position);
+        Class clazz = entity.getDetailViewHolderType();
+
+        if (types.contains(clazz)) {
+            return types.indexOf(clazz);
+
+        } else {
+            types.add(clazz);
+            return types.size() -1;
+        }
     }
 
     @Override

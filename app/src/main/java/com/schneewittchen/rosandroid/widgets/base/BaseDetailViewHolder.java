@@ -22,7 +22,7 @@ import com.schneewittchen.rosandroid.R;
  * @updated on 10.05.20
  * @modified by Nico Studt
  */
-public abstract class BaseDetailViewHolder<T extends BaseEntity> extends RecyclerView.ViewHolder {
+public class BaseDetailViewHolder<T extends BaseEntity> extends RecyclerView.ViewHolder {
 
     public View viewBackground, viewForeground;
     public LinearLayout detailContend;
@@ -96,9 +96,9 @@ public abstract class BaseDetailViewHolder<T extends BaseEntity> extends Recycle
         entity.height = Integer.parseInt(heightEdittext.getText().toString());
     }
 
-    public abstract void init(View view);
+    public void init(View view) {};
 
-    public abstract void bind(T entity);
+    protected void bind(T entity) {};
 
-    public abstract void updateEntity();
+    protected void updateEntity() {};
 }
