@@ -42,8 +42,8 @@ import java.util.List;
  * @author Nico Studt
  * @version 1.1.2
  * @created on 16.01.20
- * @updated on 21.04.20
- * @modified by Nils Rottmann
+ * @updated on 15.05.20
+ * @modified by Nico Studt
  */
 public class RosRepository implements DataListener {
 

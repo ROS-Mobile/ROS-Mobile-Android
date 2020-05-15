@@ -37,6 +37,7 @@ public class ScaleView extends View {
     private float firstQuarterHeight;
     private float thirdQuarterHeight;
 
+
     public ScaleView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 

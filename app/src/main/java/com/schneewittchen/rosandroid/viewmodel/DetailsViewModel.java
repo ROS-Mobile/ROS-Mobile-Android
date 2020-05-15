@@ -21,8 +21,8 @@ import java.util.List;
  * @author Nico Studt
  * @version 1.1.0
  * @created on 10.01.20
- * @updated on 27.04.20
- * @modified by Nils Rottmann
+ * @updated on 15.05.20
+ * @modified by Nico Studt
  */
 public class DetailsViewModel extends AndroidViewModel {
 
@@ -41,7 +41,7 @@ public class DetailsViewModel extends AndroidViewModel {
     }
 
 
-    public void createWidget(String selectedText) throws ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+    public void createWidget(String selectedText) {
         rosDomain.createWidget(selectedText);
     }
 

@@ -27,8 +27,8 @@ import java.util.Random;
  * @author Nico Studt
  * @version 1.0.2
  * @created on 31.01.20
- * @updated on 21.04.20
- * @modified by Nils Rottmann
+ * @updated on 15.05.20
+ * @modified by Nico Studt
  */
 @Database(entities =
         {ConfigEntity.class, MasterEntity.class, WidgetEntity.class},
@@ -125,10 +125,19 @@ public abstract class ConfigDatabase extends RoomDatabase {
             new RoomDatabase.Callback(){
 
                 @Override
+                public void onCreate(@NonNull SupportSQLiteDatabase db) {
+                    super.onCreate(db);
+                    new PopulateDbAsync(instance).execute();
+                }
+
+                /*
+                @Override
                 public void onOpen (@NonNull SupportSQLiteDatabase db){
                     super.onOpen(db);
                     new PopulateDbAsync(instance).execute();
                 }
+                */
+
             };
 
     /**
@@ -171,7 +180,7 @@ public abstract class ConfigDatabase extends RoomDatabase {
 
             newConfig.creationTime = System.nanoTime();
             newConfig.lastUsed = System.nanoTime();
-            newConfig.name = "New Config";
+            newConfig.name = "Untitled Config 1";
             newConfig.isFavourite = false;
             newConfig.master = master;
 
