@@ -56,7 +56,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionDone"
-                    android:inputType="numberDecimal"
+                    android:inputType="number|numberDecimal|phone"
                     android:singleLine="true"
                     android:text="http://168.0.0.1.21112" />
 

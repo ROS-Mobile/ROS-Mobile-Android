@@ -13,9 +13,12 @@ import com.schneewittchen.rosandroid.model.entities.ConfigEntity;
 import com.schneewittchen.rosandroid.model.entities.MasterEntity;
 import com.schneewittchen.rosandroid.model.entities.WidgetEntity;
 import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
+import com.schneewittchen.rosandroid.widgets.camera.WidgetCameraEntity;
 import com.schneewittchen.rosandroid.widgets.gridmap.WidgetGridMapEntity;
 import com.schneewittchen.rosandroid.widgets.joystick.WidgetJoystickEntity;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 
@@ -26,6 +29,8 @@ import java.util.List;
  * @version 1.0.6
  * @created on 26.01.20
  * @updated on 06.04.20
+ * @modified by Nils Rottmann
+ * @updated on 27.04.20
  * @modified by Nils Rottmann
  */
 public class ConfigRepositoryImpl implements ConfigRepository {
@@ -105,34 +110,20 @@ public class ConfigRepositoryImpl implements ConfigRepository {
     }
 
     @Override
-    public void createWidget(int widgetType) {
-        // TODO: Make generic
+    public void createWidget(String widgetType) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         if (mCurrentConfigId.getValue() == null) {
             return;
         }
 
-        BaseEntity widget;
-
-        switch (widgetType) {
-            case WidgetEntity.JOYSTICK:
-                widget = new WidgetJoystickEntity();
-                break;
-
-            case WidgetEntity.MAP:
-                widget = new WidgetGridMapEntity();
-                break;
-
-            default:
-                return;
-        }
+        String prefix = "com.schneewittchen.rosandroid.widgets.";
+        String className = prefix + widgetType.toLowerCase() + ".Widget" + widgetType + "Entity";
+        Class<?> clazz = Class.forName(className);
+        Constructor<?> ctor = clazz.getConstructor();
+        BaseEntity widget = (BaseEntity) ctor.newInstance();
 
         widget.configId = mCurrentConfigId.getValue();
         widget.creationTime = System.nanoTime();
         widget.name = widget.getName();
-        widget.posX = 0;
-        widget.posY = 0;
-        widget.width = 1;
-        widget.height = 1;
 
         mConfigDatabase.addWidget(widget);
         Log.i(TAG, "Widget added to database: " + widget);

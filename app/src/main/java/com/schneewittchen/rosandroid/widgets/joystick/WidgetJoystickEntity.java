@@ -15,31 +15,30 @@ import com.schneewittchen.rosandroid.widgets.base.BaseNode;
  * @author Nico Studt
  * @version 1.1.1
  * @created on 31.01.20
- * @updated on 14.04.20
- * @modified by
+ * @updated on 10.05.20
+ * @modified by Nico Studt
  */
 public class WidgetJoystickEntity extends BaseEntity {
 
     public WidgetJoystickEntity() {
-        this.setType(WidgetEntity.JOYSTICK);
-        this.publisher = new SubPubNoteEntity();
-        this.publisher.topic = "cmd_vel";
-        this.publisher.messageType = geometry_msgs.Twist._TYPE;
-    }
+        this.setType("Joystick");
 
-    @Override
-    public int getEntityType() {
-        return WidgetEntity.JOYSTICK;
+        this.width = 4;
+        this.height = 4;
+        this.subPubNoteEntity = new SubPubNoteEntity();
+        this.subPubNoteEntity.topic = "cmd_vel";
+        this.subPubNoteEntity.messageType = geometry_msgs.Twist._TYPE;
+        this.xAxisMapping = "Linear/X";
+        this.yAxisMapping = "Angular/Z";
+        this.xScaleLeft = -1;
+        this.xScaleRight = 1;
+        this.yScaleLeft = -1;
+        this.yScaleRight = 1;
     }
 
     @Override
     public String getName() {
         return "Joystick";
-    }
-
-    @Override
-    public int getWidgetVizViewId() {
-        return R.layout.widget_detail_joystick;
     }
 
     @Override
@@ -62,18 +61,44 @@ public class WidgetJoystickEntity extends BaseEntity {
         return JoystickNode.class;
     }
 
+
+
     @Override
-    public boolean equalContent(BaseEntity other) {
-        System.err.println("Check equal content");
-        return true;
+    public void insert(WidgetEntity entity) {
+        super.insert(entity);
+
+        this.subPubNoteEntity.topic = entity.subPubNoteEntity.topic;
+        this.subPubNoteEntity.messageType = entity.subPubNoteEntity.messageType;
+        this.xAxisMapping = entity.xAxisMapping;
+        this.yAxisMapping = entity.yAxisMapping;
+        this.xScaleLeft = entity.xScaleLeft;
+        this.xScaleRight = entity.xScaleRight;
+        this.yScaleLeft = entity.yScaleLeft;
+        this.yScaleRight = entity.yScaleRight;
     }
 
     @Override
     public WidgetJoystickEntity copy() {
         WidgetJoystickEntity newEnt = new WidgetJoystickEntity();
-        this.fillContend(newEnt);
+        newEnt.insert(this);
 
         return newEnt;
+    }
+
+    @Override
+    public boolean equalContent(BaseEntity widget) {
+        if (!(widget instanceof WidgetJoystickEntity))
+            return false;
+
+        WidgetJoystickEntity other = (WidgetJoystickEntity) widget;
+
+        return this.subPubNoteEntity.equals(other.subPubNoteEntity)
+                && this.xAxisMapping.equals(other.xAxisMapping)
+                && this.yAxisMapping.equals(other.yAxisMapping)
+                && this.xScaleLeft == other.xScaleLeft
+                && this.xScaleRight == other.xScaleRight
+                && this.yScaleLeft == other.yScaleLeft
+                && this.yScaleRight == other.yScaleRight;
     }
 
 }

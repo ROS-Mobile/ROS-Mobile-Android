@@ -28,6 +28,8 @@ import com.schneewittchen.rosandroid.widgets.base.BaseDetailViewHolder;
 import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
 import com.schneewittchen.rosandroid.widgets.base.DetailListener;
 
+import java.lang.reflect.InvocationTargetException;
+
 
 /**
  * TODO: Description
@@ -36,7 +38,7 @@ import com.schneewittchen.rosandroid.widgets.base.DetailListener;
  * @version 1.2.5
  * @created on 10.01.20
  * @updated on 05.04.20
- * @modified by
+ * @modified by Nico Studt
  */
 public class DetailsFragment extends Fragment implements RecyclerItemTouchHelper.TouchListener, DetailListener {
 
@@ -97,6 +99,13 @@ public class DetailsFragment extends Fragment implements RecyclerItemTouchHelper
             mAdapter.setWidgets(newWidgets);
         });
 
+        mAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                recyclerView.smoothScrollToPosition(0);
+            }
+        });
+
         mViewModel.widgetsEmpty().observe(getViewLifecycleOwner(), empty ->
                 noWidgetTextView.setVisibility(empty? View.VISIBLE : View.GONE));
     }
@@ -106,19 +115,20 @@ public class DetailsFragment extends Fragment implements RecyclerItemTouchHelper
             return;
         }
 
-        int[] mWidgetIds = mViewModel.getAvailableWidgetNames();
-
-        String[] widgetNames = new String[mWidgetIds.length];
-
-        for(int i = 0; i < mWidgetIds.length; i++){
-            widgetNames[i] = getResources().getString(mWidgetIds[i]);
-        }
+        String[] widgetNames = getResources().getStringArray(mViewModel.getAvailableWidgetNames());
 
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
         dialogBuilder.setTitle("Widgets");
         dialogBuilder.setItems(widgetNames, (dialog, item) -> {
             String selectedText = widgetNames[item];  //Selected item in listview
-            mViewModel.createWidget(selectedText);
+            
+            try {
+                mViewModel.createWidget(selectedText);
+
+            } catch (ClassNotFoundException | NoSuchMethodException | java.lang.InstantiationException
+                    | IllegalAccessException | InvocationTargetException e) {
+                e.printStackTrace();
+            }
 
             Log.i(TAG, "Selected Text: " + selectedText);
         });

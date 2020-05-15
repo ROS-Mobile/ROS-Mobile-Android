@@ -1,7 +1,6 @@
 package com.schneewittchen.rosandroid.widgets.base;
 
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -20,8 +19,8 @@ import com.schneewittchen.rosandroid.R;
  * @author Nico Studt
  * @version 1.0.1
  * @created on 13.02.20
- * @updated on 2.04.20
- * @modified by
+ * @updated on 10.05.20
+ * @modified by Nico Studt
  */
 public class BaseDetailViewHolder<T extends BaseEntity> extends RecyclerView.ViewHolder {
 
@@ -30,9 +29,9 @@ public class BaseDetailViewHolder<T extends BaseEntity> extends RecyclerView.Vie
     protected TextView title;
     protected ImageView openButton;
     protected ImageButton updateButton;
+    protected DetailListener updateListener;
+    protected EditText xEdittext, yEdittext, widthEditText, heightEdittext;
     protected T entity;
-    DetailListener updateListener;
-    EditText xEdittext, yEdittext, widthEditText, heightEdittext;
 
 
     public BaseDetailViewHolder(@NonNull View view, DetailListener updateListener) {
@@ -65,24 +64,41 @@ public class BaseDetailViewHolder<T extends BaseEntity> extends RecyclerView.Vie
         });
 
         updateButton.setOnClickListener(v -> {
-            entity.posX = Integer.parseInt(xEdittext.getText().toString());
-            entity.posY = Integer.parseInt(yEdittext.getText().toString());
-            entity.width = Integer.parseInt(widthEditText.getText().toString());
-            entity.height = Integer.parseInt(heightEdittext.getText().toString());
-
-            updateListener.onDetailsChanged(entity);
+            update();
         });
 
         updateButton.setEnabled(true);
     }
 
-    public void update(T entity) {
-        this.entity = entity;
-        this.title.setText(entity.getName());
+    private void update() {
+        baseUpdateEntity();
+        updateEntity();
 
+        updateListener.onDetailsChanged(entity);
+    }
+
+    public void baseBind(T entity) {
+        this.entity = entity;
+
+        title.setText(entity.getName());
         xEdittext.setText(String.valueOf(entity.posX));
         yEdittext.setText(String.valueOf(entity.posY));
         widthEditText.setText(String.valueOf(entity.width));
         heightEdittext.setText(String.valueOf(entity.height));
+
+        bind(entity);
     }
+
+    private void baseUpdateEntity() {
+        entity.posX = Integer.parseInt(xEdittext.getText().toString());
+        entity.posY = Integer.parseInt(yEdittext.getText().toString());
+        entity.width = Integer.parseInt(widthEditText.getText().toString());
+        entity.height = Integer.parseInt(heightEdittext.getText().toString());
+    }
+
+    public void init(View view) {};
+
+    protected void bind(T entity) {};
+
+    protected void updateEntity() {};
 }

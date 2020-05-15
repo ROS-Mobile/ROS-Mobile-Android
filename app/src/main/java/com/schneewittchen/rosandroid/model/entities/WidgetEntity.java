@@ -13,15 +13,11 @@ import androidx.room.PrimaryKey;
  * @author Nico Studt
  * @version 1.0.2
  * @created on 30.01.20
- * @updated on 16.02.20
- * @modified by
+ * @updated on 27.04.20
+ * @modified by Nils Rottmann
  */
 @Entity(tableName = "widget_table")
 public class WidgetEntity {
-
-    public static final int JOYSTICK = 0;
-    public static final int MAP = 1;
-
 
     @PrimaryKey(autoGenerate = true)
     public long id;
@@ -36,7 +32,7 @@ public class WidgetEntity {
 
     @ColumnInfo(name = "widget_type")
     @NonNull
-    public int type;
+    public String type;
 
     @ColumnInfo(name = "widget_name")
     @NonNull
@@ -58,10 +54,26 @@ public class WidgetEntity {
     @NonNull
     public int height;
 
-    @Embedded(prefix = "sub_")
-    public SubPubNoteEntity subscriber;
+    @Embedded(prefix = "subPubEntity")
+    public SubPubNoteEntity subPubNoteEntity;
 
-    @Embedded(prefix = "pub_")
-    public SubPubNoteEntity publisher;
+    // Joystick specifics
 
+    @ColumnInfo(name = "x_axis_mapping")
+    public String xAxisMapping;
+
+    @ColumnInfo(name = "y_axis_mapping")
+    public String yAxisMapping;
+
+    @ColumnInfo(name = "x_scale_left")
+    public float xScaleLeft;
+
+    @ColumnInfo(name = "x_scale_right")
+    public float xScaleRight;
+
+    @ColumnInfo(name = "y_scale_left")
+    public float yScaleLeft;
+
+    @ColumnInfo(name = "y_scale_right")
+    public float yScaleRight;
 }

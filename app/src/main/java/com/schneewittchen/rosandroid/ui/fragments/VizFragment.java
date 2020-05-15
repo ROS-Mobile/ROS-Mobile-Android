@@ -24,8 +24,8 @@ import com.schneewittchen.rosandroid.widgets.base.BaseData;
  * @author Nico Studt
  * @version 1.0.2
  * @created on 10.01.20
- * @updated on 07.04.20
- * @modified by
+ * @updated on 21.04.20
+ * @modified by Nils Rottmann
  */
 public class VizFragment extends Fragment implements DataListener {
 
@@ -63,6 +63,10 @@ public class VizFragment extends Fragment implements DataListener {
 
         mViewModel.getCurrentWidgets().observe(getViewLifecycleOwner(), widgetEntities -> {
             widgetGroupview.setWidgets(widgetEntities);
+        });
+
+        mViewModel.getData().observe(getViewLifecycleOwner(), data -> {
+            widgetGroupview.setData(data);
         });
     }
 

@@ -34,8 +34,8 @@ import java.util.List;
  * @author Nico Studt
  * @version 1.1.1
  * @created on 18.10.19
- * @updated on 05.04.20
- * @modified by
+ * @updated on 22.04.20
+ * @modified by Nils Rottmann
  */
 public class WidgetGroup extends ViewGroup {
 
@@ -212,7 +212,6 @@ public class WidgetGroup extends ViewGroup {
     private void removeViewFor(BaseEntity entity) {
         for(int i = 0; i < this.getChildCount(); i++) {
             BaseView view = (BaseView) this.getChildAt(i);
-
             if (view.sameWidget(entity)) {
                 this.removeView(view);
                 return;
@@ -234,6 +233,16 @@ public class WidgetGroup extends ViewGroup {
 
     public void removeDataListener() {
         this.dataListener = null;
+    }
+
+    public void setData(BaseData data) {
+        for(int i = 0; i < this.getChildCount(); i++) {
+            BaseView view = (BaseView) this.getChildAt(i);
+
+            if (view.getDataId() == data.getId()) {
+                view.setData(data);
+            }
+        }
     }
 
 

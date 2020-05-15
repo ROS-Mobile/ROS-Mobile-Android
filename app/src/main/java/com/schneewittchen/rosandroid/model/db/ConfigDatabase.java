@@ -27,8 +27,8 @@ import java.util.Random;
  * @author Nico Studt
  * @version 1.0.2
  * @created on 31.01.20
- * @updated on 05.02.20
- * @modified by
+ * @updated on 21.04.20
+ * @modified by Nils Rottmann
  */
 @Database(entities =
         {ConfigEntity.class, MasterEntity.class, WidgetEntity.class},
@@ -161,7 +161,6 @@ public abstract class ConfigDatabase extends RoomDatabase {
             // Create master data
             MasterEntity master = new MasterEntity();
 
-            Random random = new Random();
             master.ip = "192.168.178.117";
             master.port = 11311;
             master.notificationTickerTitle = "Ticker name";
