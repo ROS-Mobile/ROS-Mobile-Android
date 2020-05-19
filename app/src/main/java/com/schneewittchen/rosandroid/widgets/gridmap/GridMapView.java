@@ -1,9 +1,12 @@
 package com.schneewittchen.rosandroid.widgets.gridmap;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.icu.text.SymbolTable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -37,10 +40,13 @@ public class GridMapView extends BaseView {
     // Grid Map Information
     GridMapData data;
 
-    // Zoom Parameters
+    // Zoom Parameters, TODO: Add the parameters to details?
     private static float MIN_ZOOM = 1f;         // min. and max. zoom
-    private static float MAX_ZOOM = 10f;
+    private static float MAX_ZOOM = 20f;
     private float scaleFactor = 1.f;
+    private int posX = 0;
+    private int posY = 0;
+    private float dragSensitivity = 0.1f;
     private ScaleGestureDetector detector;
 
     private static int NONE = 0;                // mode
@@ -54,8 +60,6 @@ public class GridMapView extends BaseView {
     private float translateX = 0f;              // Amount of translation
     private float translateY = 0f;
 
-    private float previousTranslateX = 0f;      // Past amount of translation
-    private float previousTranslateY = 0f;
     private RectF drawRect;
 
 
@@ -75,9 +79,9 @@ public class GridMapView extends BaseView {
         paint.setColor(getResources().getColor(R.color.whiteHigh));
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(10);
-
+        // Initialize the rectangular for drawing
         drawRect = new RectF(0, 0, 0, 0);
-
+        // Initialize thee gesture detector for zooming in and out
         detector = new ScaleGestureDetector(getContext(), new ScaleListener());
     }
 
@@ -87,33 +91,24 @@ public class GridMapView extends BaseView {
         boolean dragged = false;
 
         switch (event.getAction() & MotionEvent.ACTION_MASK) {
-
+            // Activated if the user first touches the screen
             case MotionEvent.ACTION_DOWN:
                 mode = DRAG;
-
-                //We assign the current X and Y coordinate of the finger to startX and startY minus the previously translated
-                //amount for each coordinates This works even when we are translating the first time because the initial
-                //values for these two variables is zero.
-                startX = event.getX() - previousTranslateX;
-                startY = event.getY() - previousTranslateY;
+                startX = event.getX();
+                startY = event.getY();
                 break;
-
+            // If finger moved
             case MotionEvent.ACTION_MOVE:
                 translateX = event.getX() - startX;
                 translateY = event.getY() - startY;
-
-                //We cannot use startX and startY directly because we have adjusted their values using the previous translation values.
-                //This is why we need to add those values to startX and startY so that we can get the actual coordinates of the finger.
-                double distance = Math.sqrt(Math.pow(event.getX() - (startX + previousTranslateX), 2) +
-                                            Math.pow(event.getY() - (startY + previousTranslateY), 2)
+                double distance = Math.sqrt(Math.pow(event.getX() - startX, 2) +
+                                            Math.pow(event.getY() - startY, 2)
                 );
-
                 if(distance > 0) {
                     dragged = true;
                 }
-
                 break;
-
+            // Zooming
             case MotionEvent.ACTION_POINTER_DOWN:
                 mode = ZOOM;
                 break;
@@ -121,31 +116,11 @@ public class GridMapView extends BaseView {
             case MotionEvent.ACTION_UP:
                 mode = NONE;
                 dragged = false;
-
-                //All fingers went up, so let's save the value of translateX and translateY into previousTranslateX and
-                //previousTranslate
-                previousTranslateX = translateX;
-                previousTranslateY = translateY;
-                break;
-
-            case MotionEvent.ACTION_POINTER_UP:
-                mode = DRAG;
-
-                //This is not strictly necessary; we save the value of translateX and translateY into previousTranslateX
-                //and previousTranslateY when the second finger goes up
-                previousTranslateX = translateX;
-                previousTranslateY = translateY;
                 break;
         }
-
+        // Activate the gesture detector (for zoom)
         detector.onTouchEvent(event);
-
-        //We redraw the canvas only in the following cases:
-        //
-        // o The mode is ZOOM
-        //        OR
-        // o The mode is DRAG and the scale factor is not equal to 1 (meaning we have zoomed) and dragged is
-        //   set to true (meaning the finger has actually moved)
+        // We draw the canvas if required
         if ((mode == DRAG && scaleFactor != 1f && dragged) || mode == ZOOM) {
             this.invalidate();
         }
@@ -153,47 +128,46 @@ public class GridMapView extends BaseView {
         return true;
     }
 
-
-
     @Override
     public void onDraw(Canvas canvas) {
         Log.i(TAG, "On Draw");
         super.onDraw(canvas);
         canvas.save();
-
         // Get vizualization size
         float left = 0F;
         float top = 0F;
         float width = getWidth();
         float height = getHeight();
-
-        // Scale the X and Y cordinates
-        canvas.scale(scaleFactor, scaleFactor);
-        // Take care of the bounds
-        if((translateX * -1) < 0) {
-            translateX = 0;
-        } else if((translateX * -1) > (scaleFactor - 1) * width) {
-            translateX = (1 - scaleFactor) * width;
-        }
-        if(translateY * -1 < 0) {
-            translateY = 0;
-        } else if((translateY * -1) > (scaleFactor - 1) * height) {
-            translateY = (1 - scaleFactor) * height;
-        }
-        // Divide by scale factor to avoid panning
-        canvas.translate(translateX / scaleFactor, translateY / scaleFactor);
-
         // Do the canvas drawing
         drawRect.set(left, top, width, height);
-
+        int scaledWidth;
+        int scaledHeight;
         if (data != null) {
-            canvas.drawBitmap(data.map, 0, 0, null);
-            // canvas.drawBitmap(data.map, null, rect, paint);
-            // canvas.drawRoundRect(left, right, width, height, cornerWidth, cornerWidth, paint);
+            // Zoom
+            scaledWidth = (int) (data.map.getWidth()/scaleFactor);
+            scaledHeight = (int) (data.map.getHeight()/scaleFactor);
+            // Translate
+            posX = posX - (int) ((translateX / scaleFactor) * dragSensitivity);
+            posY = posY - (int) ((translateY / scaleFactor) * dragSensitivity);
+            if (posX + scaledWidth > data.map.getWidth()) {
+                posX = data.map.getWidth() - scaledWidth;
+            } else if (posX < 0) {
+                posX = 0;
+            }
+            if (posY + scaledHeight > data.map.getHeight()) {
+                posY = data.map.getHeight() - scaledHeight;
+            } else if (posY < 0) {
+                posY = 0;
+            }
+            // Get the Submap from the Bitmap
+            Bitmap subMap = Bitmap.createBitmap(data.map, posX, posY,
+                                                scaledWidth, scaledHeight);
+            // Scale the Submap to the Viz size for optimal displaying
+            Bitmap scaledBitmap = Bitmap.createScaledBitmap(subMap, (int) width, (int) height, true);
+            canvas.drawBitmap(scaledBitmap, 0, 0, null);
         } else {
             canvas.drawRoundRect(drawRect, cornerWidth, cornerWidth, paint);
         }
-
         // Apply the changes
         canvas.restore();
         // Put a rectangle around
@@ -206,9 +180,7 @@ public class GridMapView extends BaseView {
         this.invalidate();
     }
 
-
     private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
-
         @Override
         public boolean onScale(ScaleGestureDetector detector) {
             scaleFactor *= detector.getScaleFactor();

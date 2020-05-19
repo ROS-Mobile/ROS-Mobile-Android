@@ -30,15 +30,7 @@ public class GridMapNode extends BaseNode {
         );
 
         subscriber.addMessageListener(occupancyGrid -> {
-            MapMetaData info = occupancyGrid.getInfo();
-            int width = info.getWidth();
-            int height = info.getHeight();
-            byte[] array = occupancyGrid.getData().array();
-            float res = info.getResolution();
-            float x0 = (float) info.getOrigin().getPosition().getX();
-            float y0 = (float) info.getOrigin().getPosition().getY();
-
-            GridMapData data = new GridMapData(width, height, array, res, x0, y0);
+            GridMapData data = new GridMapData(occupancyGrid);
             data.setId(widget.id);
             listener.onNewData(data);
         });
