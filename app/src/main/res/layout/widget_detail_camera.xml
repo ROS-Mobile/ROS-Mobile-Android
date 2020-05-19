@@ -63,10 +63,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/input_layout">
 
-        <com.google.android.material.textfield.TextInputEditText
+        <Spinner
             android:id="@+id/topicTypeText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:entries="@array/camera_msg_types"
+            android:foregroundTintMode="add"
             android:enabled="false"
             android:imeOptions="actionDone"
             android:inputType="numberDecimal"

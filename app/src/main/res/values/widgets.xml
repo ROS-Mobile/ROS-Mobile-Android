@@ -27,4 +27,10 @@
         <item>Z</item>
     </string-array>
 
+    <!-- Camera -->
+    <string-array name="camera_msg_types">
+        <item>sensor_msgs/Image</item>
+        <item>sensor_msgs/CompressedImage</item>
+    </string-array>
+
 </resources>
