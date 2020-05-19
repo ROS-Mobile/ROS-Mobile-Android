@@ -132,7 +132,6 @@ public class GridMapView extends BaseView {
     public void onDraw(Canvas canvas) {
         Log.i(TAG, "On Draw");
         super.onDraw(canvas);
-        canvas.save();
         // Get vizualization size
         float left = 0F;
         float top = 0F;
@@ -165,11 +164,7 @@ public class GridMapView extends BaseView {
             // Scale the Submap to the Viz size for optimal displaying
             Bitmap scaledBitmap = Bitmap.createScaledBitmap(subMap, (int) width, (int) height, true);
             canvas.drawBitmap(scaledBitmap, 0, 0, null);
-        } else {
-            canvas.drawRoundRect(drawRect, cornerWidth, cornerWidth, paint);
         }
-        // Apply the changes
-        canvas.restore();
         // Put a rectangle around
         canvas.drawRoundRect(drawRect, cornerWidth, cornerWidth, paint);
     }
