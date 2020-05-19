@@ -38,7 +38,7 @@ public class GridMapData extends BaseData {
         for (int i=0; i<dataLength; i++) {
             data[i] = dataAll[dataOffset + i];
         }
-        // Get the pixel color
+        // Get the pixel color, TODO: Maybe different grayscales depending on thee occupancy value
         int[] pixels = new int[dataLength];
         for (int i = 0; i < dataLength; i++) {
             // Pixels are ARGB packed ints.

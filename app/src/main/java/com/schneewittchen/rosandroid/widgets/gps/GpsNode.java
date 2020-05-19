@@ -31,10 +31,7 @@ public class GpsNode extends BaseNode<WidgetGpsEntity> {
         );
 
         subscriber.addMessageListener(navSatFix -> {
-            double lat = navSatFix.getLatitude();
-            double lon = navSatFix.getLongitude();
-
-            GpsData data = new GpsData(lat, lon);
+            GpsData data = new GpsData(navSatFix);
             data.setId(widget.id);
             listener.onNewData(data);
         });
