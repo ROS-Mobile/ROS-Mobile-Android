@@ -158,12 +158,16 @@ public class RosRepository implements DataListener {
         diffResult.dispatchUpdatesTo(new ListUpdateCallback() {
             @Override
             public void onInserted(int position, int count) {
-                addNode(widgets.get(position));
+                for (int i=position; i<position+count; i++) {
+                    addNode(widgets.get(i));
+                }
             }
 
             @Override
             public void onRemoved(int position, int count) {
-                removeNode(currentWidgets.get(position));
+                for (int i=position; i<position+count; i++) {
+                    removeNode(currentWidgets.get(i));
+                }
             }
 
             @Override
