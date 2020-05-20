@@ -2,9 +2,9 @@ package com.schneewittchen.rosandroid.widgets.camera;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.util.Log;
 
-import com.jcraft.jsch.Channel;
 import com.schneewittchen.rosandroid.widgets.base.BaseData;
 
 import org.jboss.netty.buffer.ChannelBuffer;
@@ -112,7 +112,9 @@ public class CameraData extends BaseData {
                         }
                     }
                 }
-                this.map = Bitmap.createBitmap(intArray, width, height, Bitmap.Config.RGBA_F16);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    this.map = Bitmap.createBitmap(intArray, width, height, Bitmap.Config.RGBA_F16);
+                }
                 break;
             case "rgba16":
                 if(image.getIsBigendian() == 0) {
@@ -144,7 +146,9 @@ public class CameraData extends BaseData {
                         }
                     }
                 }
-                this.map = Bitmap.createBitmap(intArray, width, height, Bitmap.Config.RGBA_F16);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    this.map = Bitmap.createBitmap(intArray, width, height, Bitmap.Config.RGBA_F16);
+                }
                 break;
             case "bgr8":
                 for (int i = 0; i < height; i++) {
@@ -208,7 +212,9 @@ public class CameraData extends BaseData {
                         }
                     }
                 }
-                this.map = Bitmap.createBitmap(intArray, width, height, Bitmap.Config.RGBA_F16);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    this.map = Bitmap.createBitmap(intArray, width, height, Bitmap.Config.RGBA_F16);
+                }
                 break;
             case "bgra16":
                 if(image.getIsBigendian() == 0) {
@@ -240,7 +246,9 @@ public class CameraData extends BaseData {
                         }
                     }
                 }
-                this.map = Bitmap.createBitmap(intArray, width, height, Bitmap.Config.RGBA_F16);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    this.map = Bitmap.createBitmap(intArray, width, height, Bitmap.Config.RGBA_F16);
+                }
                 break;
             case "mono8":
                 for (int i = 0; i < height; i++) {
@@ -282,7 +290,9 @@ public class CameraData extends BaseData {
                         }
                     }
                 }
-                this.map = Bitmap.createBitmap(intArray, width, height, Bitmap.Config.RGBA_F16);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    this.map = Bitmap.createBitmap(intArray, width, height, Bitmap.Config.RGBA_F16);
+                }
                 break;
             default:
                 Log.i(TAG, "No compatible encoding!");
