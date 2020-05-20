@@ -26,8 +26,8 @@ import java.util.List;
  * @created on 07.04.20
  * @updated on 15.04.20
  * @modified by Nico Studt
- * @updated on 21.04.20
- * @modified by Nils Rottmann
+ * @updated on 15.05.20
+ * @modified by Nico Studt
  */
 public class RosDomain {
 
@@ -57,10 +57,7 @@ public class RosDomain {
                 configId -> configRepository.getMaster(configId));
 
         currentWidgets.observeForever(widgets -> rosRepo.updateWidgets(widgets));
-        currentMaster.observeForever(master -> {
-            Log.i(TAG, "Update master " + master);
-            rosRepo.updateMaster(master);
-        });
+        currentMaster.observeForever(master -> rosRepo.updateMaster(master));
     }
 
 
@@ -77,7 +74,7 @@ public class RosDomain {
         rosRepo.informWidgetDataChange(data);
     }
 
-    public void createWidget(String widgetType) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+    public void createWidget(String widgetType) {
         configRepository.createWidget(widgetType);
     }
 

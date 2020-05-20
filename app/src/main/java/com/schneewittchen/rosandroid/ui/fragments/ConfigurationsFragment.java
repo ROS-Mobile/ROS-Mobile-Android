@@ -88,10 +88,16 @@ public class ConfigurationsFragment extends Fragment {
             }
         });
 
-        mViewModel.getLastOpenedConfigs().observe(getViewLifecycleOwner(), configs -> {
-            lastOpenedAdapter.setConfigs(configs);
-            favouriteAdapter.setConfigs(configs);
+        mViewModel.getLastOpenedConfigNames().observe(getViewLifecycleOwner(), configNames -> {
+            lastOpenedAdapter.setConfigs(configNames);
         });
+
+        /*
+        mViewModel.getLastOpenedConfigs().observe(getViewLifecycleOwner(), configNames -> {
+            lastOpenedAdapter.setConfigs(configNames);
+            favouriteAdapter.setConfigs(configNames);
+        });
+        */
 
         mViewModel.getConfigTitle().observe(getViewLifecycleOwner(), s ->
                 currentConfigTextview.setText(s));
@@ -117,12 +123,15 @@ public class ConfigurationsFragment extends Fragment {
     }
 
     private void openConfig(RecyclerView parent,int position) {
-        ConfigEntity config = lastOpenedAdapter.configList.get(position);
+        String configName = lastOpenedAdapter.configNameList.get(position);
 
-        mViewModel.chooseConfig(config.id);
+        mViewModel.chooseConfig(configName);
     }
 
     private void showConfigRenameDialog() {
+        if (this.getContext() == null)
+            return;
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this.getContext());
         builder.setTitle(R.string.new_config_name);
 
@@ -133,8 +142,11 @@ public class ConfigurationsFragment extends Fragment {
         builder.setView(input);
 
         // Set up the buttons
-        builder.setPositiveButton(R.string.ok, (dialog, which) ->
-                System.out.println(input.getText().toString()));
+        builder.setPositiveButton(R.string.ok, (dialog, which) -> {
+            String newName = input.getText().toString();
+            mViewModel.renameConfig(newName);
+        });
+
         builder.setNegativeButton(R.string.cancel, (dialog, which) -> dialog.cancel());
 
         builder.show();

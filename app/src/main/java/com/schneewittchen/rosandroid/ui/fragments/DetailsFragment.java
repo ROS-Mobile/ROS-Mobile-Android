@@ -37,7 +37,7 @@ import java.lang.reflect.InvocationTargetException;
  * @author Nico Studt
  * @version 1.2.5
  * @created on 10.01.20
- * @updated on 05.04.20
+ * @updated on 15.05.20
  * @modified by Nico Studt
  */
 public class DetailsFragment extends Fragment implements RecyclerItemTouchHelper.TouchListener, DetailListener {
@@ -121,14 +121,7 @@ public class DetailsFragment extends Fragment implements RecyclerItemTouchHelper
         dialogBuilder.setTitle("Widgets");
         dialogBuilder.setItems(widgetNames, (dialog, item) -> {
             String selectedText = widgetNames[item];  //Selected item in listview
-            
-            try {
-                mViewModel.createWidget(selectedText);
-
-            } catch (ClassNotFoundException | NoSuchMethodException | java.lang.InstantiationException
-                    | IllegalAccessException | InvocationTargetException e) {
-                e.printStackTrace();
-            }
+            mViewModel.createWidget(selectedText);
 
             Log.i(TAG, "Selected Text: " + selectedText);
         });

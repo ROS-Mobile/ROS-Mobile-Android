@@ -28,11 +28,11 @@ import java.util.List;
  */
 public class ConfigListAdapter extends RecyclerView.Adapter<ConfigListAdapter.MyViewHolder> {
 
-    public List<ConfigEntity> configList;
+    public List<String> configNameList;
 
 
     public ConfigListAdapter() {
-        configList = new ArrayList<>();
+        configNameList = new ArrayList<>();
     }
 
 
@@ -46,17 +46,16 @@ public class ConfigListAdapter extends RecyclerView.Adapter<ConfigListAdapter.My
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
-        final ConfigEntity config = configList.get(position);
-
-        holder.name.setText(config.name);
+        String name = configNameList.get(position);
+        holder.name.setText(name);
     }
 
     @Override
     public int getItemCount() {
-        return configList.size();
+        return configNameList.size();
     }
 
-    public void setConfigs(List<ConfigEntity> newConfigs){
+    public void setConfigs(List<String> newConfigs){
         // TODO: Implement Diff callback with configs
         /*
         WidgetDiffCallback diffCallback = new WidgetDiffCallback(this.widgetList, newWidgets);
@@ -64,8 +63,8 @@ public class ConfigListAdapter extends RecyclerView.Adapter<ConfigListAdapter.My
         diffResult.dispatchUpdatesTo(this);
         */
 
-        this.configList.clear();
-        this.configList.addAll(newConfigs);
+        this.configNameList.clear();
+        this.configNameList.addAll(newConfigs);
         notifyDataSetChanged();
     }
 

@@ -32,6 +32,8 @@ public interface ConfigRepository {
 
     void addConfig(ConfigEntity config);
 
+    void updateConfig(ConfigEntity config);
+
     void setConfig(ConfigEntity config, String configId);
 
 
@@ -54,7 +56,8 @@ public interface ConfigRepository {
     LiveData<MasterEntity> getMaster(long configId);
 
 
-    void createWidget(String widgetType) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException;
+
+    void createWidget(String widgetType);
 
     void deleteWidget(BaseEntity widget);
 

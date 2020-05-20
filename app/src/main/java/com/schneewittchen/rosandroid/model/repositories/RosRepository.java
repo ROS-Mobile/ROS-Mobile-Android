@@ -42,8 +42,8 @@ import java.util.List;
  * @author Nico Studt
  * @version 1.1.2
  * @created on 16.01.20
- * @updated on 21.04.20
- * @modified by Nils Rottmann
+ * @updated on 15.05.20
+ * @modified by Nico Studt
  */
 public class RosRepository implements DataListener {
 
@@ -158,12 +158,16 @@ public class RosRepository implements DataListener {
         diffResult.dispatchUpdatesTo(new ListUpdateCallback() {
             @Override
             public void onInserted(int position, int count) {
-                addNode(widgets.get(position));
+                for (int i=position; i<position+count; i++) {
+                    addNode(widgets.get(i));
+                }
             }
 
             @Override
             public void onRemoved(int position, int count) {
-                removeNode(currentWidgets.get(position));
+                for (int i=position; i<position+count; i++) {
+                    removeNode(currentWidgets.get(i));
+                }
             }
 
             @Override

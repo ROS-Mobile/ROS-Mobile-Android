@@ -148,12 +148,16 @@ public class WidgetGroup extends ViewGroup {
         diffResult.dispatchUpdatesTo(new ListUpdateCallback() {
             @Override
             public void onInserted(int position, int count) {
-                addViewFor(newWidgets.get(position));
+                for (int i=position; i<position+count; i++) {
+                    addViewFor(newWidgets.get(i));
+                }
             }
 
             @Override
             public void onRemoved(int position, int count) {
-                removeViewFor(widgetList.get(position));
+                for (int i=position; i<position+count; i++) {
+                    removeViewFor(widgetList.get(i));
+                }
             }
 
             @Override

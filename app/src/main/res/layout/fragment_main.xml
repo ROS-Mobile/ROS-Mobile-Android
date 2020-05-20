@@ -39,9 +39,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/black16dp"
+                    app:tabGravity="center"
                     app:tabIndicatorColor="#81D4FA"
                     app:tabIndicatorGravity="bottom"
-                    app:tabMode="scrollable"
+                    app:tabMode="auto"
                     app:tabPaddingEnd="0dp"
                     app:tabPaddingStart="0dp">
 
