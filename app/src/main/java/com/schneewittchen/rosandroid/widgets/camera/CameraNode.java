@@ -1,5 +1,6 @@
 package com.schneewittchen.rosandroid.widgets.camera;
 
+import android.nfc.Tag;
 import android.util.Log;
 
 import com.schneewittchen.rosandroid.widgets.base.BaseData;
@@ -10,6 +11,7 @@ import org.ros.message.MessageListener;
 import org.ros.node.ConnectedNode;
 import org.ros.node.topic.Subscriber;
 
+import sensor_msgs.CompressedImage;
 import sensor_msgs.Image;
 
 /**
@@ -24,27 +26,33 @@ import sensor_msgs.Image;
 public class CameraNode extends BaseNode {
 
     private static final String TAG = CameraNode.class.getSimpleName();
-
+    private boolean compressed = true;
 
     @Override
     public void onStart(ConnectedNode connectedNode) {
-        Subscriber<Image> subscriber = connectedNode.newSubscriber(
-                widget.subPubNoteEntity.topic,
-                widget.subPubNoteEntity.messageType
-        );
-
-        subscriber.addMessageListener(image -> {
-            int height = image.getHeight();
-            int width = image.getWidth();
-            String encoding = image.getEncoding();
-            byte bigEndian = image.getIsBigendian();
-            int step = image.getStep();
-            byte[] dataArray = image.getData().array();
-
-            CameraData data = new CameraData(height, width, encoding, bigEndian, step, dataArray);
-            data.setId(widget.id);
-            listener.onNewData(data);
-        });
+        if (widget.subPubNoteEntity.messageType.equals("sensor_msgs/CompressedImage")) {
+            Subscriber<CompressedImage> subscriber = connectedNode.newSubscriber(
+                    widget.subPubNoteEntity.topic,
+                    widget.subPubNoteEntity.messageType
+            );
+            subscriber.addMessageListener(image -> {
+                CameraData data = new CameraData(image);
+                data.setId(widget.id);
+                listener.onNewData(data);
+            });
+        } else if (widget.subPubNoteEntity.messageType.equals("sensor_msgs/Image")) {
+            Subscriber<Image> subscriber = connectedNode.newSubscriber(
+                    widget.subPubNoteEntity.topic,
+                    widget.subPubNoteEntity.messageType
+            );
+            subscriber.addMessageListener(image -> {
+                CameraData data = new CameraData(image);
+                data.setId(widget.id);
+                listener.onNewData(data);
+            });
+        } else {
+            Log.i(TAG, "No valid msg!");
+        }
     }
 
     @Override

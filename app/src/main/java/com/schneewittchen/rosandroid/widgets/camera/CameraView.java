@@ -52,7 +52,6 @@ public class CameraView extends BaseView {
         paint.setStrokeWidth(10);
     }
 
-
     @Override
     public void onDraw(Canvas canvas) {
         Log.i(TAG, "On draw");
@@ -70,7 +69,6 @@ public class CameraView extends BaseView {
         if (data != null) {
             float mapRatio = data.map.getHeight()/data.map.getWidth();
             float vizRatio = heightViz/widthViz;
-
             if (mapRatio > vizRatio) {
                 height = heightViz;
                 width = (vizRatio/mapRatio) * widthViz;
@@ -80,9 +78,7 @@ public class CameraView extends BaseView {
                 height = (mapRatio/vizRatio) * heightViz;
                 top = 0.5F * (heightViz -height);
             }
-
             RectF rect = new RectF(left, top, left+width, top+height);
-
             canvas.drawBitmap(data.map, null, rect, paint);
             canvas.drawRoundRect(leftViz, topViz, widthViz, heightViz, cornerWidth, cornerWidth, paint);
         } else {

@@ -2,6 +2,7 @@ package com.schneewittchen.rosandroid.widgets.camera;
 
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 
@@ -22,8 +23,7 @@ import com.schneewittchen.rosandroid.widgets.base.DetailListener;
 public class CameraDetailVH extends BaseDetailViewHolder<WidgetCameraEntity> {
 
     EditText topicNameText;
-    EditText topicTypeText;
-
+    Spinner topicTypeText;
 
     public CameraDetailVH(@NonNull View view, DetailListener updateListener) {
         super(view, updateListener);
@@ -39,12 +39,12 @@ public class CameraDetailVH extends BaseDetailViewHolder<WidgetCameraEntity> {
     @Override
     public void bind(WidgetCameraEntity entity) {
         topicNameText.setText(entity.subPubNoteEntity.topic);
-        topicTypeText.setText(entity.subPubNoteEntity.messageType);
+        this.entity.subPubNoteEntity.messageType =  topicTypeText.getSelectedItem().toString();
     }
 
     @Override
     public void updateEntity() {
-        entity.subPubNoteEntity.messageType = topicTypeText.getText().toString();
+        entity.subPubNoteEntity.messageType = topicTypeText.getSelectedItem().toString();
         entity.subPubNoteEntity.topic = topicNameText.getText().toString();
     }
 }

@@ -41,6 +41,7 @@ import java.util.ArrayList;
  * @modified by
  */
 
+// TODO: Add maybe a button for getting back to gps position
 public class GpsView extends BaseView {
     public static final String TAG = "GpsView";
 
@@ -48,6 +49,7 @@ public class GpsView extends BaseView {
     private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
     private MapView map = null;
     private GeoPoint locationGeoPoint = new GeoPoint(53.872018, 10.704724);
+    private GeoPoint centerGeoPoint = new GeoPoint(53.872018, 10.704724);
     IMapController mapController = null;
 
     // Rectangle Surrounding
@@ -57,10 +59,12 @@ public class GpsView extends BaseView {
     // Grid Map Information
     GpsData data;
 
-    // Zoom Parameters
-    private static float MIN_ZOOM = 1;         // min. and max. zoom
-    private static float MAX_ZOOM = 18;
-    private float scaleFactor = 1;
+    // Zoom Parameters, TODO: Add this into details
+    private double minZoom = 1;         // min. and max. zoom
+    private double maxZoom = 18;
+    private float zoomScale = 1;
+    private float scaleFactor = 18;
+    private double dragSensitivity = 0.05;
     private ScaleGestureDetector detector;
 
     private static int NONE = 0;                // mode
@@ -73,9 +77,8 @@ public class GpsView extends BaseView {
 
     private float translateX = 0f;              // Amount of translation
     private float translateY = 0f;
-
-    private float previousTranslateX = 0f;      // Past amount of translation
-    private float previousTranslateY = 0f;
+    private double moveLat = 0;
+    private double moveLon = 0;
 
     public GpsView(Context context) {
         super(context);
@@ -93,101 +96,61 @@ public class GpsView extends BaseView {
         paint.setColor(getResources().getColor(R.color.whiteHigh));
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(10);
-
         // OSM (initialize the map)
         Context ctx = this.getContext();
         Configuration.getInstance().load(ctx, PreferenceManager.getDefaultSharedPreferences(ctx));
         map = new MapView(this.getContext(), null, null);
         map.setTileSource(TileSourceFactory.MAPNIK);
-
         requestPermissionsIfNecessary(new String[] {
-                // if you need to show the current location, uncomment the line below
-                // Manifest.permission.ACCESS_FINE_LOCATION,
                 // WRITE_EXTERNAL_STORAGE is required in order to show the map
                 Manifest.permission.WRITE_EXTERNAL_STORAGE
         });
-
         map.setBuiltInZoomControls(true);
         map.setMultiTouchControls(true);
-
+        minZoom = map.getMinZoomLevel();
+        maxZoom = map.getMaxZoomLevel();
         // Map controller
         mapController = map.getController();
-
         // Touch
         detector = new ScaleGestureDetector(getContext(), new GpsView.ScaleListener());
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-
-        // return map.onTouchEvent(event);
-
         boolean dragged = false;
-
         switch (event.getAction() & MotionEvent.ACTION_MASK) {
-
             case MotionEvent.ACTION_DOWN:
                 mode = DRAG;
-
-                //We assign the current X and Y coordinate of the finger to startX and startY minus the previously translated
-                //amount for each coordinates This works even when we are translating the first time because the initial
-                //values for these two variables is zero.
-                startX = event.getX() - previousTranslateX;
-                startY = event.getY() - previousTranslateY;
+                startX = event.getX();
+                startY = event.getY();
                 break;
-
             case MotionEvent.ACTION_MOVE:
                 translateX = event.getX() - startX;
                 translateY = event.getY() - startY;
-
-                //We cannot use startX and startY directly because we have adjusted their values using the previous translation values.
-                //This is why we need to add those values to startX and startY so that we can get the actual coordinates of the finger.
-                double distance = Math.sqrt(Math.pow(event.getX() - (startX + previousTranslateX), 2) +
-                        Math.pow(event.getY() - (startY + previousTranslateY), 2)
+                double distance = Math.sqrt(Math.pow(event.getX() - startX, 2) +
+                        Math.pow(event.getY() - startY, 2)
                 );
-
                 if(distance > 0) {
                     dragged = true;
                 }
-
                 break;
-
             case MotionEvent.ACTION_POINTER_DOWN:
                 mode = ZOOM;
                 break;
-
             case MotionEvent.ACTION_UP:
                 mode = NONE;
                 dragged = false;
-
-                //All fingers went up, so let's save the value of translateX and translateY into previousTranslateX and
-                //previousTranslate
-                previousTranslateX = translateX;
-                previousTranslateY = translateY;
                 break;
-
             case MotionEvent.ACTION_POINTER_UP:
                 mode = DRAG;
-
-                //This is not strictly necessary; we save the value of translateX and translateY into previousTranslateX
-                //and previousTranslateY when the second finger goes up
-                previousTranslateX = translateX;
-                previousTranslateY = translateY;
                 break;
         }
-
+        // Activate Zoom
         detector.onTouchEvent(event);
-
-        //We redraw the canvas only in the following cases:
-        //
-        // o The mode is ZOOM
-        //        OR
-        // o The mode is DRAG and the scale factor is not equal to 1 (meaning we have zoomed) and dragged is
-        //   set to true (meaning the finger has actually moved)
+        // Redraw the canvas
         if ((mode == DRAG && scaleFactor != 1f && dragged) || mode == ZOOM) {
             this.invalidate();
         }
-
         return true;
     }
 
@@ -210,7 +173,12 @@ public class GpsView extends BaseView {
         ItemizedOverlay<OverlayItem> locationOverlay = new ItemizedIconOverlay<OverlayItem>(this.getContext(), overlayItemArrayList, null);
 
         // Move the map to specific location
-        mapController.setCenter(locationGeoPoint);
+        zoomScale = (float) Math.pow(2, scaleFactor);
+        moveLat = moveLat + (translateY/zoomScale) * dragSensitivity;
+        moveLon = moveLon - (translateX/zoomScale) * dragSensitivity;
+        centerGeoPoint.setLatitude(locationGeoPoint.getLatitude() + moveLat);
+        centerGeoPoint.setLongitude(locationGeoPoint.getLongitude() + moveLon);
+        mapController.setCenter(centerGeoPoint);
         mapController.setZoom(scaleFactor);
         map.requestLayout();
 
@@ -227,10 +195,9 @@ public class GpsView extends BaseView {
 
     @Override
     public void setData(BaseData data) {
-        System.out.println("GpsView: SetData!");
         this.data = (GpsData) data;
-        locationGeoPoint.setLatitude(this.data.lat);
-        locationGeoPoint.setLongitude(this.data.lon);
+        locationGeoPoint.setLatitude(this.data.getLat());
+        locationGeoPoint.setLongitude(this.data.getLon());
         this.invalidate();
     }
 
@@ -249,7 +216,7 @@ public class GpsView extends BaseView {
         @Override
         public boolean onScale(ScaleGestureDetector detector) {
             scaleFactor *= detector.getScaleFactor();
-            scaleFactor = Math.max(MIN_ZOOM, Math.min(scaleFactor, MAX_ZOOM));
+            scaleFactor = Math.max((float) minZoom, Math.min(scaleFactor, (float) maxZoom));
             return true;
         }
     }

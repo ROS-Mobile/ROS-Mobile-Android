@@ -1,63 +1,61 @@
 package com.schneewittchen.rosandroid.widgets.gridmap;
 
 import android.graphics.Bitmap;
+import android.graphics.Matrix;
+
 import com.schneewittchen.rosandroid.widgets.base.BaseData;
+
+import org.jboss.netty.buffer.ChannelBuffer;
+
+import nav_msgs.OccupancyGrid;
 
 
 public class GridMapData extends BaseData {
 
+    // Color of occupied cells in the map, it A = 255, R = G = B = 255
+    private static final int COLOR_FREE = 0xdfffffff;
+    // Color of free cells in the map, it is A = 255, R = G = B = 0
+    private static final int COLOR_OCCUPIED = 0xff000000;
+    // Color of unknown cells in the map, it is A = 127, R = G = B = 100
+    private static final int COLOR_UNKNOWN = 0x7F646464;
+
+    private OccupancyGrid occupancyGrid;
+
     public Bitmap map;
 
-    public float res;
-    public float x0;
-    public float y0;
-
-    public int dataWidth;
-    public int dataHeight;
-
-    public GridMapData(int width, int height, byte[] data, float res, float x0, float y0) {
-        this.res = res;
-        this.x0 = x0;
-        this.y0 = y0;
-
-        this.dataWidth = width;
-        this.dataHeight = height;
-
-        int dataLength = width*height;
-        int dataStart = data.length - dataLength;
-
-        // TODO: Define size in the Details
-        this.map = getBitMap(-10,-10,20,20,data,dataStart);
+    public GridMapData(OccupancyGrid occupancyGrid) {
+        this.occupancyGrid = occupancyGrid;
+        this.map = getBitMap();
     }
 
-    private Bitmap getBitMap(float x0, float y0, float width, float height, byte[] data, int dataStart) {
-        // Start with defining the integer starting point and integer width and height
-        int x0Idx = (int) ((x0 - this.x0) / this.res);
-        int y0Idx = (int) ((y0 - this.y0) / this.res);
-        int widthIdx = (int) (width / this.res);
-        int heightIdx = (int) (height / this.res);
-
-        // Generating the desired integer array
-        int dataLength = widthIdx * heightIdx;
-        int[] intArray = new int[dataLength];;
-        for (int i=0; i < widthIdx; i++) {
-            for (int j=0;  j < heightIdx; j++) {
-                intArray[i*heightIdx + j] = getColor(data[dataStart + ((i+x0Idx)*this.dataHeight + (j+y0Idx))]);
+    private Bitmap getBitMap() {
+        // Get the data from the occupancy grid message
+        ChannelBuffer buffer = occupancyGrid.getData();
+        byte[] dataAll = buffer.array();
+        int dataOffset = buffer.arrayOffset();
+        int dataLength = buffer.readableBytes();
+        byte[] data = new byte[dataLength];
+        for (int i=0; i<dataLength; i++) {
+            data[i] = dataAll[dataOffset + i];
+        }
+        // Get the pixel color, TODO: Maybe different grayscales depending on thee occupancy value
+        int[] pixels = new int[dataLength];
+        for (int i = 0; i < dataLength; i++) {
+            // Pixels are ARGB packed ints.
+            if (data[i] == -1) {
+                pixels[i] = COLOR_UNKNOWN;
+            } else if (data[i] < 50) {
+                pixels[i] = COLOR_FREE;
+            } else {
+                pixels[i] = COLOR_OCCUPIED;
             }
         }
-        return Bitmap.createBitmap(intArray, widthIdx, heightIdx, Bitmap.Config.ARGB_8888);
-    }
-
-    // TODO: generate own color class
-    private int getColor(byte data) {
-        int A = 255; int R = 255; int G = 255; int B = 255;
-        if (data == -1) {
-            A = 127; B = 100; G = 100; R = 100;
-        } else {
-            // Define gray scale map
-            B = 255 - (255 * (data/100));
-            G = B; R = B;
-        }
-        return ((A & 0xff) << 24 | (R & 0xff) << 16 | (G & 0xff) << 8 | (B & 0xff));
+        // Generate Bitmap
+        Bitmap mapFlipped = Bitmap.createBitmap(pixels, occupancyGrid.getInfo().getWidth(),
+                            occupancyGrid.getInfo().getHeight(), Bitmap.Config.ARGB_8888);
+        // Flip Bitmap
+        Matrix matrix = new Matrix();
+        matrix.preScale(1.0f, -1.0f);
+        return Bitmap.createBitmap(mapFlipped, 0, 0, mapFlipped.getWidth(), mapFlipped.getHeight(), matrix, true);
     }
 }

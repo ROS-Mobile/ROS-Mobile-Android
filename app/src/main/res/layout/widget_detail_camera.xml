@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="wrap_content">
 
     <View
         android:id="@+id/divider"
@@ -64,15 +63,25 @@
         app:layout_constraintTop_toBottomOf="@id/input_layout">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/topicTypeText"
+            android:id="@+id/dummyText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:enabled="false"
             android:imeOptions="actionDone"
-            android:inputType="numberDecimal"
+            android:inputType="text"
             android:singleLine="true"
-            android:text="geometry_msgs/Twist" />
+            android:text=" " />
 
     </com.google.android.material.textfield.TextInputLayout>
+
+    <Spinner
+        android:id="@+id/topicTypeText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:enabled="false"
+        android:entries="@array/camera_msg_types"
+        android:foregroundTintMode="add"
+        android:imeOptions="actionDone"
+        app:layout_constraintBottom_toBottomOf="@+id/input_layout2"
+        app:layout_constraintTop_toTopOf="@+id/input_layout2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
