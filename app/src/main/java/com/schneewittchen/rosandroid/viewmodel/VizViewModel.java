@@ -19,8 +19,8 @@ import java.util.List;
  * @author Nico Studt
  * @version 1.0.2
  * @created on 10.01.20
- * @updated on 11.04.20
- * @modified by
+ * @updated on 21.04.20
+ * @modified by Nils Rottmann
  */
 public class VizViewModel extends AndroidViewModel {
 
@@ -39,6 +39,8 @@ public class VizViewModel extends AndroidViewModel {
     public LiveData<List<BaseEntity>> getCurrentWidgets() {
         return rosDomain.getCurrentWidgets();
     }
+
+    public LiveData<BaseData> getData() {return this.rosDomain.getData();}
 
 
     public void informWidgetDataChange(BaseData data) {

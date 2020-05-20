@@ -11,11 +11,9 @@ import androidx.lifecycle.Transformations;
 import com.schneewittchen.rosandroid.model.db.ConfigDatabase;
 import com.schneewittchen.rosandroid.model.entities.ConfigEntity;
 import com.schneewittchen.rosandroid.model.entities.MasterEntity;
-import com.schneewittchen.rosandroid.model.entities.WidgetEntity;
 import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
-import com.schneewittchen.rosandroid.widgets.gridmap.WidgetGridMapEntity;
-import com.schneewittchen.rosandroid.widgets.joystick.WidgetJoystickEntity;
 
+import java.lang.reflect.Constructor;
 import java.util.List;
 
 
@@ -25,12 +23,12 @@ import java.util.List;
  * @author Nico Studt
  * @version 1.0.6
  * @created on 26.01.20
- * @updated on 06.04.20
- * @modified by Nils Rottmann
+ * @updated on 20.05.20
+ * @modified by Nico Studt
  */
 public class ConfigRepositoryImpl implements ConfigRepository {
 
-    private static final String TAG = ConfigRepositoryImpl.class.getCanonicalName();
+    private static final String TAG = ConfigRepositoryImpl.class.getSimpleName();
     private static ConfigRepositoryImpl mInstance;
 
     private ConfigDatabase mConfigDatabase;
@@ -44,6 +42,8 @@ public class ConfigRepositoryImpl implements ConfigRepository {
 
         mCurrentConfigId = new MediatorLiveData<>();
         mCurrentConfigId.addSource(mConfigDatabase.getLatestConfig(), config -> {
+            Log.i(TAG, "New Config: " + config);
+
             if(config != null)
                 mCurrentConfigId.postValue(config.id);
         });
@@ -58,6 +58,8 @@ public class ConfigRepositoryImpl implements ConfigRepository {
         return mInstance;
     }
 
+
+    // CONFIGS -------------------------------------------------------------------------------------
 
     @Override
     public void chooseConfig(long configId) {
@@ -75,12 +77,11 @@ public class ConfigRepositoryImpl implements ConfigRepository {
     public void createConfig() {
         ConfigEntity config = mConfigModel.getNewConfig();
         mConfigDatabase.addConfig(config);
-        // TODO: switch config return value id from config at insert
     }
 
     @Override
     public void removeConfig(long configId) {
-
+        mConfigDatabase.deleteConfig(configId);
     }
 
     @Override
@@ -88,71 +89,13 @@ public class ConfigRepositoryImpl implements ConfigRepository {
     }
 
     @Override
-    public void updateMaster(MasterEntity master) {
-        mConfigDatabase.updataMaster(master);
-    }
-
-
-    @Override
-    public void setMaster(MasterEntity master, String configId) {
-        master.ip = configId;
-    }
-
-
-    @Override
     public void setConfig(ConfigEntity config, String configId) {
 
     }
 
     @Override
-    public void createWidget(int widgetType) {
-        // TODO: Make generic
-        if (mCurrentConfigId.getValue() == null) {
-            return;
-        }
-
-        BaseEntity widget;
-
-        switch (widgetType) {
-            case WidgetEntity.JOYSTICK:
-                widget = new WidgetJoystickEntity();
-                break;
-
-            case WidgetEntity.MAP:
-                widget = new WidgetGridMapEntity();
-                break;
-
-            default:
-                return;
-        }
-
-        widget.configId = mCurrentConfigId.getValue();
-        widget.creationTime = System.nanoTime();
-        widget.name = widget.getName();
-        widget.posX = 0;
-        widget.posY = 0;
-        widget.width = 1;
-        widget.height = 1;
-
-        mConfigDatabase.addWidget(widget);
-        Log.i(TAG, "Widget added to database: " + widget);
-    }
-
-    @Override
-    public void deleteWidget(BaseEntity widget) {
-        mConfigDatabase.deleteWidget(widget);
-
-        Log.i(TAG, "Widget deleted");
-    }
-
-    @Override
-    public void addWidget(BaseEntity widget) {
-        mConfigDatabase.addWidget(widget);
-    }
-
-    @Override
-    public void updateWidget(BaseEntity widget) {
-        mConfigDatabase.updataWidget(widget);
+    public void updateConfig(ConfigEntity config) {
+        mConfigDatabase.updateConfig(config);
     }
 
     @Override
@@ -168,7 +111,7 @@ public class ConfigRepositoryImpl implements ConfigRepository {
     @Override
     public LiveData<ConfigEntity> getCurrentConfig() {
         return Transformations.switchMap(mCurrentConfigId, id ->
-            mConfigDatabase.getConfig(id));
+                mConfigDatabase.getConfig(id));
     }
 
     @Override
@@ -181,13 +124,73 @@ public class ConfigRepositoryImpl implements ConfigRepository {
         return mConfigDatabase.getAllConfigs();
     }
 
+
+    // WIDGETS -------------------------------------------------------------------------------------
+
     @Override
-    public LiveData<MasterEntity> getMaster(long configId) {
-        return mConfigDatabase.getMaster(configId);
+    public void createWidget(String widgetType) {
+        if (mCurrentConfigId.getValue() == null) {
+            return;
+        }
+
+        String prefix = "com.schneewittchen.rosandroid.widgets.";
+        String className = prefix + widgetType.toLowerCase() + ".Widget" + widgetType + "Entity";
+
+        try {
+            Class<?> subclass = Class.forName(className);
+            Constructor<?> ctor = subclass.getConstructor();
+            BaseEntity widget = (BaseEntity) ctor.newInstance();
+
+            widget.configId = mCurrentConfigId.getValue();
+            widget.creationTime = System.nanoTime();
+            widget.name = widget.getName();
+
+            mConfigDatabase.addWidget(widget);
+            Log.i(TAG, "Widget added to database: " + widget);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    public void addWidget(BaseEntity widget) {
+        mConfigDatabase.addWidget(widget);
+    }
+
+    @Override
+    public void updateWidget(BaseEntity widget) {
+        mConfigDatabase.updataWidget(widget);
+    }
+
+    @Override
+    public void deleteWidget(BaseEntity widget) {
+        mConfigDatabase.deleteWidget(widget);
+
+        Log.i(TAG, "Widget deleted");
     }
 
     @Override
     public LiveData<List<BaseEntity>> getWidgets(long id) {
         return mConfigDatabase.getWidgets(id);
+    }
+
+
+    // MASTERS -------------------------------------------------------------------------------------
+
+    @Override
+    public void setMaster(MasterEntity master, String configId) {
+        master.ip = configId;
+    }
+
+    @Override
+    public void updateMaster(MasterEntity master) {
+        mConfigDatabase.updataMaster(master);
+    }
+
+    @Override
+    public LiveData<MasterEntity> getMaster(long configId) {
+        return mConfigDatabase.getMaster(configId);
     }
 }

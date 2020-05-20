@@ -8,6 +8,7 @@ import com.schneewittchen.rosandroid.model.entities.ConfigEntity;
 import com.schneewittchen.rosandroid.model.entities.MasterEntity;
 import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 /**
@@ -31,6 +32,8 @@ public interface ConfigRepository {
 
     void addConfig(ConfigEntity config);
 
+    void updateConfig(ConfigEntity config);
+
     void setConfig(ConfigEntity config, String configId);
 
 
@@ -53,7 +56,8 @@ public interface ConfigRepository {
     LiveData<MasterEntity> getMaster(long configId);
 
 
-    void createWidget(int widgetType);
+
+    void createWidget(String widgetType);
 
     void deleteWidget(BaseEntity widget);
 

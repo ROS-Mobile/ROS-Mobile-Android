@@ -27,8 +27,8 @@ import java.util.Random;
  * @author Nico Studt
  * @version 1.0.2
  * @created on 31.01.20
- * @updated on 05.02.20
- * @modified by
+ * @updated on 15.05.20
+ * @modified by Nico Studt
  */
 @Database(entities =
         {ConfigEntity.class, MasterEntity.class, WidgetEntity.class},
@@ -64,7 +64,7 @@ public abstract class ConfigDatabase extends RoomDatabase {
     // Config methods ------------------------------------------------------------------------------
 
     public void addConfig(ConfigEntity config) {
-        new LambdaTask(() -> configDao().insert(config)).execute();
+        new LambdaTask(() -> configDao().insertComplete(config)).execute();
     }
 
     public void updateConfig(ConfigEntity config) {
@@ -73,6 +73,10 @@ public abstract class ConfigDatabase extends RoomDatabase {
 
     public void deleteConfig(ConfigEntity config) {
         new LambdaTask(() -> configDao().delete(config)).execute();
+    }
+
+    public void deleteConfig(long id) {
+        new LambdaTask(() -> configDao().removeConfig(id)).execute();
     }
 
     public LiveData<ConfigEntity> getConfig(long id) {
@@ -125,10 +129,19 @@ public abstract class ConfigDatabase extends RoomDatabase {
             new RoomDatabase.Callback(){
 
                 @Override
+                public void onCreate(@NonNull SupportSQLiteDatabase db) {
+                    super.onCreate(db);
+                    new PopulateDbAsync(instance).execute();
+                }
+
+                /*
+                @Override
                 public void onOpen (@NonNull SupportSQLiteDatabase db){
                     super.onOpen(db);
                     new PopulateDbAsync(instance).execute();
                 }
+                */
+
             };
 
     /**
@@ -161,18 +174,15 @@ public abstract class ConfigDatabase extends RoomDatabase {
             // Create master data
             MasterEntity master = new MasterEntity();
 
-            Random random = new Random();
-            master.ip = "192.168.178.117";
+            master.ip = "192.168.0.0";
             master.port = 11311;
-            master.notificationTickerTitle = "Ticker name";
-            master.notificationTitle = "Title name";
 
             // Create configuration data
             ConfigEntity newConfig = new ConfigEntity();
 
             newConfig.creationTime = System.nanoTime();
             newConfig.lastUsed = System.nanoTime();
-            newConfig.name = "New Config";
+            newConfig.name = "Unnamed Config";
             newConfig.isFavourite = false;
             newConfig.master = master;
 

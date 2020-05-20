@@ -2,6 +2,9 @@ package com.schneewittchen.rosandroid.utility;
 
 
 import android.content.Context;
+import android.net.wifi.SupplicantState;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.NetworkOnMainThreadException;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -204,5 +207,19 @@ public class Utils {
         }
 
         return false;
+    }
+
+    public static String getWifiSSID(WifiManager wifiManager) {
+        if (wifiManager == null)
+            return null;
+
+        WifiInfo wifiInfo;
+
+        wifiInfo = wifiManager.getConnectionInfo();
+        if (wifiInfo.getSupplicantState() == SupplicantState.COMPLETED) {
+            return wifiInfo.getSSID();
+        }
+
+        return null;
     }
 }

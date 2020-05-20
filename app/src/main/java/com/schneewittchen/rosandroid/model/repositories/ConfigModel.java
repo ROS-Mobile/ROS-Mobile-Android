@@ -21,8 +21,8 @@ import java.util.Random;
  * @author Nico Studt
  * @version 1.0.4
  * @created on 24.01.20
- * @updated on 31.01.20
- * @modified by
+ * @updated on 20.05.20
+ * @modified by Nico Studt
  */
 public class ConfigModel {
 
@@ -69,12 +69,6 @@ public class ConfigModel {
         mConfigs.setValue(configs);
     }
 
-    public void loadConfigurations(Context context) {
-        Resources res = context.getResources();
-        SharedPreferences sharedPreferences = context.getSharedPreferences(
-                res.getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-    }
-
 
     /**
      * Create a blank configartion without resource adaption.
@@ -86,11 +80,8 @@ public class ConfigModel {
         // Create master data
         MasterEntity master = new MasterEntity();
 
-        Random random = new Random();
-        master.ip = "123.456.789.01";
-        master.port = random.nextInt(99999);
-        master.notificationTickerTitle = "Ticker name";
-        master.notificationTitle = "Title name";
+        master.ip = "192.168.0.0";
+        master.port = 11311;
 
         // Create configuration data
         ConfigEntity newConfig = new ConfigEntity();
@@ -118,8 +109,6 @@ public class ConfigModel {
 
         master.ip = res.getString(R.string.default_master_ip);
         master.port = 12345;
-        master.notificationTickerTitle = res.getString(R.string.default_master_ticker_title);
-        master.notificationTitle = res.getString(R.string.default_master_notification_title);
 
         // Create configuration data
         ConfigEntity newConfig = new ConfigEntity();

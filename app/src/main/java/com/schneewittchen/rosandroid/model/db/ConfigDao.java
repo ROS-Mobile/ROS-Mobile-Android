@@ -4,6 +4,7 @@ import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
@@ -61,6 +62,9 @@ public abstract class ConfigDao implements BaseDao<ConfigEntity>{
 
     @Query("SELECT * FROM config_table ORDER BY creationTime DESC LIMIT 1")
     abstract LiveData<ConfigEntity> getLatestConfig();
+
+    @Query("DELETE FROM config_table where id = :id")
+    abstract void removeConfig(long id);
 
     @Query("DELETE FROM config_table")
     abstract void deleteAll();

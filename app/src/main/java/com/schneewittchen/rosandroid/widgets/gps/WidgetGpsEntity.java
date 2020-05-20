@@ -1,59 +1,61 @@
-package com.schneewittchen.rosandroid.widgets.gridmap;
+package com.schneewittchen.rosandroid.widgets.gps;
 
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.model.entities.SubPubNoteEntity;
 import com.schneewittchen.rosandroid.model.entities.WidgetEntity;
 import com.schneewittchen.rosandroid.widgets.base.BaseDetailViewHolder;
 import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
-import com.schneewittchen.rosandroid.widgets.base.BaseView;
 import com.schneewittchen.rosandroid.widgets.base.BaseNode;
+import com.schneewittchen.rosandroid.widgets.base.BaseView;
 import com.schneewittchen.rosandroid.widgets.camera.WidgetCameraEntity;
 
 /**
  * TODO: Description
  *
- * @author Nico Studt
- * @version 1.0.3
- * @created on 31.01.20
- * @updated on 13.05.20
- * @modified by Nico Studt
+ * @author Nils Rottmann
+ * @version 1.0.0
+ * @created on 05.05.20
+ * @updated on 05.05.20
+ * @modified by
  */
-public class WidgetGridMapEntity extends BaseEntity {
 
-    public WidgetGridMapEntity() {
-        this.setType("GridMap");
+public class WidgetGpsEntity extends BaseEntity {
+
+
+    public WidgetGpsEntity() {
+        this.setType("Gps");
 
         this.width = 4;
         this.height = 4;
         this.subPubNoteEntity = new SubPubNoteEntity();
-        this.subPubNoteEntity.topic = "map";
-        this.subPubNoteEntity.messageType = nav_msgs.OccupancyGrid._TYPE;
+        this.subPubNoteEntity.topic = "gps";
+        this.subPubNoteEntity.messageType = sensor_msgs.NavSatFix._TYPE;
     }
 
 
     @Override
     public String getName() {
-        return "GridMap";
+        return "GPS";
     }
 
     @Override
     public Class<? extends BaseView> getViewType() {
-        return GridMapView.class;
+        return GpsView.class;
     }
 
     @Override
     public int getWidgetDetailViewId() {
-        return R.layout.widget_detail_gridmap;
+        return R.layout.widget_detail_gps;
     }
 
     @Override
     public Class<? extends BaseDetailViewHolder> getDetailViewHolderType() {
-        return GridMapDetailVH.class;
+        return GpsDetailVH.class;
     }
 
     @Override
     public Class<? extends BaseNode> getNodeType() {
-        return GridMapNode.class;
+        return GpsNode.class;
     }
 
 
@@ -66,8 +68,8 @@ public class WidgetGridMapEntity extends BaseEntity {
     }
 
     @Override
-    public WidgetGridMapEntity copy() {
-        WidgetGridMapEntity newEnt = new WidgetGridMapEntity();
+    public WidgetGpsEntity copy() {
+        WidgetGpsEntity newEnt = new WidgetGpsEntity();
         newEnt.insert(this);
 
         return newEnt;
@@ -75,11 +77,12 @@ public class WidgetGridMapEntity extends BaseEntity {
 
     @Override
     public boolean equalContent(BaseEntity widget) {
-        if (!(widget instanceof WidgetGridMapEntity))
+        if (!(widget instanceof WidgetGpsEntity))
             return false;
 
-        WidgetGridMapEntity other = (WidgetGridMapEntity) widget;
+        WidgetGpsEntity other = (WidgetGpsEntity) widget;
 
         return this.subPubNoteEntity.equals(other.subPubNoteEntity);
     }
 }
+

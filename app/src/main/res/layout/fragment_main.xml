@@ -39,9 +39,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/black16dp"
+                    app:tabGravity="center"
                     app:tabIndicatorColor="#81D4FA"
                     app:tabIndicatorGravity="bottom"
-                    app:tabMode="fixed">
+                    app:tabMode="auto"
+                    app:tabPaddingEnd="0dp"
+                    app:tabPaddingStart="0dp">
 
                     <com.google.android.material.tabs.TabItem
                         android:layout_width="wrap_content"
@@ -89,16 +92,16 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:fitsSystemWindows="true"
         android:background="@android:color/transparent"
-        app:headerLayout="@layout/drawer_header"
-        >
+        android:fitsSystemWindows="true"
+        android:visibility="visible"
+        app:headerLayout="@layout/drawer_header">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/black01dp"
-            android:layout_marginTop="@dimen/navigation_header_height">
+            android:layout_marginTop="@dimen/navigation_header_height"
+            android:background="@color/black01dp">
 
             <fragment
                 android:id="@+id/fragment"

@@ -16,4 +16,27 @@ public class SubPubNoteEntity {
 
     public String topic;
     public String messageType;
+
+
+    public SubPubNoteEntity() {}
+
+    public SubPubNoteEntity(SubPubNoteEntity other) {
+        this.topic = other.topic;
+        this.messageType = other.messageType;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) return true;
+
+        if (o instanceof SubPubNoteEntity) {
+            SubPubNoteEntity other = (SubPubNoteEntity) o;
+
+            return other.topic.equals(topic)
+                    && other.messageType.equals(messageType);
+        }
+
+        return false;
+    }
 }
