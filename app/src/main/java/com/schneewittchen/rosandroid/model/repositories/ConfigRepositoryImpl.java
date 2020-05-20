@@ -23,12 +23,12 @@ import java.util.List;
  * @author Nico Studt
  * @version 1.0.6
  * @created on 26.01.20
- * @updated on 15.05.20
+ * @updated on 20.05.20
  * @modified by Nico Studt
  */
 public class ConfigRepositoryImpl implements ConfigRepository {
 
-    private static final String TAG = ConfigRepositoryImpl.class.getCanonicalName();
+    private static final String TAG = ConfigRepositoryImpl.class.getSimpleName();
     private static ConfigRepositoryImpl mInstance;
 
     private ConfigDatabase mConfigDatabase;
@@ -42,6 +42,8 @@ public class ConfigRepositoryImpl implements ConfigRepository {
 
         mCurrentConfigId = new MediatorLiveData<>();
         mCurrentConfigId.addSource(mConfigDatabase.getLatestConfig(), config -> {
+            Log.i(TAG, "New Config: " + config);
+
             if(config != null)
                 mCurrentConfigId.postValue(config.id);
         });
@@ -79,7 +81,7 @@ public class ConfigRepositoryImpl implements ConfigRepository {
 
     @Override
     public void removeConfig(long configId) {
-
+        mConfigDatabase.deleteConfig(configId);
     }
 
     @Override

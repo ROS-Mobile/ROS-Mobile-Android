@@ -1,5 +1,7 @@
 package com.schneewittchen.rosandroid.widgets.base;
 
+import android.content.Context;
+import android.text.InputType;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -8,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.schneewittchen.rosandroid.R;
@@ -29,6 +32,7 @@ public class BaseDetailViewHolder<T extends BaseEntity> extends RecyclerView.Vie
     protected TextView title;
     protected ImageView openButton;
     protected ImageButton updateButton;
+    protected ImageButton renameButton;
     protected DetailListener updateListener;
     protected EditText xEdittext, yEdittext, widthEditText, heightEdittext;
     protected T entity;
@@ -46,6 +50,7 @@ public class BaseDetailViewHolder<T extends BaseEntity> extends RecyclerView.Vie
         detailContend = view.findViewById(R.id.detailContend);
         updateButton = view.findViewById(R.id.update_button);
         openButton = view.findViewById(R.id.open_button);
+        renameButton = view.findViewById(R.id.rename_button);
         viewBackground = view.findViewById(R.id.view_background);
         viewForeground = view.findViewById(R.id.view_foreground);
         xEdittext = view.findViewById(R.id.x_edit_text);
@@ -66,8 +71,9 @@ public class BaseDetailViewHolder<T extends BaseEntity> extends RecyclerView.Vie
         updateButton.setOnClickListener(v -> {
             update();
         });
-
         updateButton.setEnabled(true);
+
+        renameButton.setOnClickListener(v -> showRenameDialog());
     }
 
     private void update() {
@@ -80,7 +86,7 @@ public class BaseDetailViewHolder<T extends BaseEntity> extends RecyclerView.Vie
     public void baseBind(T entity) {
         this.entity = entity;
 
-        title.setText(entity.getName());
+        title.setText(entity.name);
         xEdittext.setText(String.valueOf(entity.posX));
         yEdittext.setText(String.valueOf(entity.posY));
         widthEditText.setText(String.valueOf(entity.width));
@@ -90,10 +96,38 @@ public class BaseDetailViewHolder<T extends BaseEntity> extends RecyclerView.Vie
     }
 
     private void baseUpdateEntity() {
+
+        entity.name = title.getText().toString();
         entity.posX = Integer.parseInt(xEdittext.getText().toString());
         entity.posY = Integer.parseInt(yEdittext.getText().toString());
         entity.width = Integer.parseInt(widthEditText.getText().toString());
         entity.height = Integer.parseInt(heightEdittext.getText().toString());
+    }
+
+    private void showRenameDialog() {
+        Context context = this.itemView.getContext();
+
+        if (context == null)
+            return;
+
+        // Set up the input
+        final EditText input = new EditText(context);
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+
+        AlertDialog dialog =  new AlertDialog.Builder(context)
+                .setTitle(R.string.rename_config)
+                .setView(input)
+                .setPositiveButton(R.string.ok, (view, which) ->
+                    rename(input.getText().toString()))
+                .setNegativeButton(R.string.cancel, (view, which) -> view.cancel())
+                .create();
+
+        dialog.show();
+    }
+
+    public void rename(String newName) {
+        newName = newName.trim();
+        title.setText(newName);
     }
 
     public void init(View view) {};

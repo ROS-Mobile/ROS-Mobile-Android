@@ -8,9 +8,12 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.google.common.base.Preconditions;
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.widgets.base.BaseDetailViewHolder;
 import com.schneewittchen.rosandroid.widgets.base.DetailListener;
+
+import java.util.Locale;
 
 
 /**
@@ -19,34 +22,35 @@ import com.schneewittchen.rosandroid.widgets.base.DetailListener;
  * @author Nico Studt
  * @version 1.0.2
  * @created on 13.02.20
- * @updated on 18.04.20
- * @modified by
+ * @updated on 20.05.20
+ * @modified by Nico Studt
  */
 public class JoystickDetailVH extends BaseDetailViewHolder<WidgetJoystickEntity> {
 
-    EditText topicNameText;
+    private EditText topicNameText;
 
-    Spinner xDirSpinner;
-    Spinner xAxisSpinner;
-    EditText xScaleLeft;
-    EditText xScaleRight;
-    TextView xScaleMiddle;
+    private Spinner xDirSpinner;
+    private Spinner xAxisSpinner;
+    private EditText xScaleLeft;
+    private EditText xScaleRight;
+    private TextView xScaleMiddle;
 
-    Spinner yDirSpinner;
-    Spinner yAxisSpinner;
-    EditText yScaleLeft;
-    EditText yScaleRight;
-    TextView yScaleMiddle;
+    private Spinner yDirSpinner;
+    private Spinner yAxisSpinner;
+    private EditText yScaleLeft;
+    private EditText yScaleRight;
+    private TextView yScaleMiddle;
 
-    ArrayAdapter<CharSequence> xDirAdapter;
-    ArrayAdapter<CharSequence> xAxisAdapter;
-    ArrayAdapter<CharSequence> yDirAdapter;
-    ArrayAdapter<CharSequence> yAxisAdapter;
+    private ArrayAdapter<CharSequence> xDirAdapter;
+    private ArrayAdapter<CharSequence> xAxisAdapter;
+    private ArrayAdapter<CharSequence> yDirAdapter;
+    private ArrayAdapter<CharSequence> yAxisAdapter;
 
 
     public JoystickDetailVH(@NonNull View view, DetailListener updateListener) {
         super(view, updateListener);
     }
+
 
     @Override
     public void init(View view) {
@@ -93,10 +97,12 @@ public class JoystickDetailVH extends BaseDetailViewHolder<WidgetJoystickEntity>
         yDirSpinner.setSelection(yDirAdapter.getPosition(yAxisMapping[0]));
         yAxisSpinner.setSelection(yAxisAdapter.getPosition(yAxisMapping[1]));
 
-        xScaleLeft.setText(String.valueOf(entity.xScaleLeft));
-        xScaleRight.setText(String.valueOf(entity.xScaleRight));
-        yScaleLeft.setText(String.valueOf(entity.yScaleLeft));
-        yScaleRight.setText(String.valueOf(entity.yScaleRight));
+        xScaleLeft.setText(String.format(Locale.US, "%.2f", entity.xScaleLeft));
+        xScaleRight.setText(String.format(Locale.US, "%.2f", entity.xScaleRight));
+        xScaleMiddle.setText(String.format(Locale.US, "%.2f", (entity.xScaleRight + entity.xScaleLeft) / 2));
+        yScaleLeft.setText(String.format(Locale.US, "%.2f", entity.yScaleLeft));
+        yScaleRight.setText(String.format(Locale.US, "%.2f", entity.yScaleRight));
+        yScaleMiddle.setText(String.format(Locale.US, "%.2f", (entity.yScaleRight + entity.yScaleLeft) / 2));
     }
 
     @Override
@@ -105,9 +111,18 @@ public class JoystickDetailVH extends BaseDetailViewHolder<WidgetJoystickEntity>
         entity.subPubNoteEntity.topic = topicNameText.getText().toString();
         entity.xAxisMapping = xDirSpinner.getSelectedItem() + "/" + xAxisSpinner.getSelectedItem();
         entity.yAxisMapping = yDirSpinner.getSelectedItem() + "/" + yAxisSpinner.getSelectedItem();
-        entity.xScaleLeft = Float.parseFloat(xScaleLeft.getText().toString());
-        entity.xScaleRight = Float.parseFloat(xScaleRight.getText().toString());
-        entity.yScaleLeft = Float.parseFloat(yScaleLeft.getText().toString());
-        entity.yScaleRight = Float.parseFloat(yScaleRight.getText().toString());
+
+        for (String str: new String[]{"xScaleLeft", "xScaleRight", "yScaleLeft", "yScaleRight"}) {
+            try {
+                EditText editText = (EditText) this.getClass().getDeclaredField(str).get(this);
+
+                assert editText != null;
+                float value = Float.parseFloat(editText.getText().toString());
+
+                entity.getClass().getField(str).set(entity, value);
+
+            } catch (Exception ignored) {
+            }
+        }
     }
 }

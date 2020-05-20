@@ -55,18 +55,6 @@ public abstract class BaseEntity extends WidgetEntity {
         this.height = entity.height;
     }
 
-    protected void fillContend(BaseEntity other) {
-        other.posX = posX;
-        other.posY = posY;
-        other.width = width;
-        other.height = height;
-        other.id = id;
-        other.name = name;
-        other.type = type;
-        other.configId = configId;
-        other.creationTime = creationTime;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (o == this) return true;
@@ -75,6 +63,7 @@ public abstract class BaseEntity extends WidgetEntity {
             BaseEntity other = (BaseEntity) o;
 
             return other.id == this.id
+                    && other.name.equals(this.name)
                     && other.configId == this.configId
                     && other.type.equals(this.type)
                     && other.posX == this.posX

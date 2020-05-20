@@ -64,7 +64,7 @@ public abstract class ConfigDatabase extends RoomDatabase {
     // Config methods ------------------------------------------------------------------------------
 
     public void addConfig(ConfigEntity config) {
-        new LambdaTask(() -> configDao().insert(config)).execute();
+        new LambdaTask(() -> configDao().insertComplete(config)).execute();
     }
 
     public void updateConfig(ConfigEntity config) {
@@ -73,6 +73,10 @@ public abstract class ConfigDatabase extends RoomDatabase {
 
     public void deleteConfig(ConfigEntity config) {
         new LambdaTask(() -> configDao().delete(config)).execute();
+    }
+
+    public void deleteConfig(long id) {
+        new LambdaTask(() -> configDao().removeConfig(id)).execute();
     }
 
     public LiveData<ConfigEntity> getConfig(long id) {
@@ -170,17 +174,15 @@ public abstract class ConfigDatabase extends RoomDatabase {
             // Create master data
             MasterEntity master = new MasterEntity();
 
-            master.ip = "192.168.0.3";
+            master.ip = "192.168.0.0";
             master.port = 11311;
-            master.notificationTickerTitle = "Ticker name";
-            master.notificationTitle = "Title name";
 
             // Create configuration data
             ConfigEntity newConfig = new ConfigEntity();
 
             newConfig.creationTime = System.nanoTime();
             newConfig.lastUsed = System.nanoTime();
-            newConfig.name = "Untitled Config 1";
+            newConfig.name = "Unnamed Config";
             newConfig.isFavourite = false;
             newConfig.master = master;
 

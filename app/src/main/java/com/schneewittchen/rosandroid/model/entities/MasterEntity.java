@@ -23,6 +23,4 @@ public class MasterEntity {
 
     public String ip;
     public int port;
-    public String notificationTitle;
-    public String notificationTickerTitle;
 }

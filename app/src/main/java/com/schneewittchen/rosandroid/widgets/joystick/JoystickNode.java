@@ -38,7 +38,7 @@ public class JoystickNode extends BaseNode<WidgetJoystickEntity> {
             public void run() {
                 publish();
             }
-        }, 100, 200);
+        }, 100, 100);
     }
 
     private void publish() {

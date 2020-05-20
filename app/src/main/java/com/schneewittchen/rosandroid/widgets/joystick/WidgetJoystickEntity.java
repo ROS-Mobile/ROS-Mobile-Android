@@ -28,8 +28,8 @@ public class WidgetJoystickEntity extends BaseEntity {
         this.subPubNoteEntity = new SubPubNoteEntity();
         this.subPubNoteEntity.topic = "cmd_vel";
         this.subPubNoteEntity.messageType = geometry_msgs.Twist._TYPE;
-        this.xAxisMapping = "Linear/X";
-        this.yAxisMapping = "Angular/Z";
+        this.xAxisMapping = "Angular/Z";
+        this.yAxisMapping = "Linear/X";
         this.xScaleLeft = -1;
         this.xScaleRight = 1;
         this.yScaleLeft = -1;

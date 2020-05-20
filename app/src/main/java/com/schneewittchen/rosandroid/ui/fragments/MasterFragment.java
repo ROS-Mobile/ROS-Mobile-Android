@@ -68,9 +68,6 @@ public class MasterFragment extends Fragment implements TextView.OnEditorActionL
 
         mViewModel.getMaster().observe(getViewLifecycleOwner(), master -> {
             if (master == null) return;
-
-            binding.NotificationTitleText.setText(master.notificationTitle);
-            binding.TickerTitleChoiceText.setText(master.notificationTickerTitle);
             binding.masterIpEditText.setText(master.ip);
             binding.masterPortEditText.setText(String.valueOf(master.port));
         });
@@ -103,9 +100,11 @@ public class MasterFragment extends Fragment implements TextView.OnEditorActionL
         if (connectionType == ConnectionType.DISCONNECTED
                 || connectionType == ConnectionType.FAILED) {
             connectVisibility = View.VISIBLE;
+            binding.disconnectButton.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
 
         } else if (connectionType == ConnectionType.CONNECTED) {
             disconnectVisibility = View.VISIBLE;
+            binding.disconnectButton.setBackgroundColor(getResources().getColor(R.color.delete_red));
 
         } else if (connectionType == ConnectionType.PENDING) {
             pendingVisibility = View.VISIBLE;

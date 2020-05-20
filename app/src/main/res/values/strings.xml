@@ -41,5 +41,9 @@
     <string name="new_config_name">New config name</string>
     <string name="ok">OK</string>
     <string name="button_disconnect">Disconnect</string>
+    <string name="really_delete">Do you really want to delete the current configuration permanently?</string>
+    <string name="yes">YES</string>
+    <string name="no">NO</string>
+    <string name="rename_config">Rename Config</string>
 
 </resources>

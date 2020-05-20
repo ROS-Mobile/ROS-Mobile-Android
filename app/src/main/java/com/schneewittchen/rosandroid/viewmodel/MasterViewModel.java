@@ -1,6 +1,8 @@
 package com.schneewittchen.rosandroid.viewmodel;
 
 import android.app.Application;
+import android.content.Context;
+import android.net.wifi.WifiManager;
 import android.os.Handler;
 
 import androidx.annotation.NonNull;
@@ -11,6 +13,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.schneewittchen.rosandroid.domain.RosDomain;
 import com.schneewittchen.rosandroid.model.entities.MasterEntity;
 import com.schneewittchen.rosandroid.model.repositories.ConnectionType;
+import com.schneewittchen.rosandroid.utility.Utils;
 
 
 /**
@@ -59,6 +62,8 @@ public class MasterViewModel extends AndroidViewModel {
     }
 
     public void connectToMaster() {
+        setWifiSSID();
+        setIpText();
         rosDomain.connectToMaster();
     }
 
@@ -79,8 +84,7 @@ public class MasterViewModel extends AndroidViewModel {
             deviceIpLiveData = new MutableLiveData<>();
         }
 
-        Handler handler = new Handler();
-        handler.postDelayed(() -> deviceIpLiveData.postValue("My Test IP 123"), 5000);
+        setIpText();
 
         return deviceIpLiveData;
     }
@@ -90,12 +94,27 @@ public class MasterViewModel extends AndroidViewModel {
             networkSSIDLiveData = new MutableLiveData<>();
         }
 
-        Handler handler = new Handler();
-        handler.postDelayed(() -> networkSSIDLiveData.postValue("WLANDiesDas"), 8000);
-
+        setWifiSSID();
 
         return networkSSIDLiveData;
     }
 
+    private void setIpText() {
+        String ssid = Utils.getIPAddress(true);
+
+        deviceIpLiveData.postValue(ssid);
+    }
+
+    private void setWifiSSID() {
+        WifiManager wifiManager = (WifiManager) getApplication().getApplicationContext()
+                .getSystemService(Context.WIFI_SERVICE);
+        String ssid = Utils.getWifiSSID(wifiManager);
+
+        if (ssid == null) {
+            ssid = "None";
+        }
+
+        networkSSIDLiveData.postValue(ssid);
+    }
 
 }

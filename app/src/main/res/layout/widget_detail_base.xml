@@ -64,10 +64,22 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
+                android:id="@+id/rename_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:background="?actionBarItemBackground"
+                android:src="@drawable/ic_mode_edit_white_24dp"
+                android:tint="@color/state_button_color"
+                app:layout_constraintBottom_toBottomOf="@+id/title"
+                app:layout_constraintStart_toEndOf="@+id/title"
+                app:layout_constraintTop_toTopOf="@+id/title" />
+
+            <ImageButton
                 android:id="@+id/update_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="16dp"
                 android:background="?actionBarItemBackground"
                 android:src="@drawable/ic_refresh"
                 android:tint="@color/state_button_color"

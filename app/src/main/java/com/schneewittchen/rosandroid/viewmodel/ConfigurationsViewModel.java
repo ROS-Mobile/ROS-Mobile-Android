@@ -1,12 +1,14 @@
 package com.schneewittchen.rosandroid.viewmodel;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 
+import com.schneewittchen.rosandroid.domain.RosDomain;
 import com.schneewittchen.rosandroid.model.entities.ConfigEntity;
 import com.schneewittchen.rosandroid.model.repositories.ConfigRepository;
 import com.schneewittchen.rosandroid.model.repositories.ConfigRepositoryImpl;
@@ -28,6 +30,9 @@ import java.util.List;
  */
 public class ConfigurationsViewModel extends AndroidViewModel {
 
+    private static String TAG = ConfigurationsViewModel.class.getSimpleName();
+
+    private RosDomain rosDomain;
     private ConfigRepository configRepository;
     private MediatorLiveData<String> currentConfigTitle;
     private LiveData<ConfigEntity> currentConfig;
@@ -39,6 +44,7 @@ public class ConfigurationsViewModel extends AndroidViewModel {
     public ConfigurationsViewModel(@NonNull Application application) {
         super(application);
 
+        rosDomain = RosDomain.getInstance(application);
         configRepository = ConfigRepositoryImpl.getInstance(application);
         this.initListeners();
     }
@@ -52,6 +58,8 @@ public class ConfigurationsViewModel extends AndroidViewModel {
         currentConfigTitle.addSource(currentConfig, configuration -> {
             if (configuration != null) {
                 currentConfigTitle.postValue(configuration.name);
+            }else {
+                currentConfigTitle.postValue(null);
             }
         });
 
@@ -90,11 +98,21 @@ public class ConfigurationsViewModel extends AndroidViewModel {
             return;
         }
 
+        newName = newName.trim();
+
         ConfigEntity config = currentConfig.getValue();
         config.name = newName;
         configRepository.updateConfig(config);
     }
 
+    public void deleteConfig() {
+        if (currentConfig.getValue() == null) {
+            return;
+        }
+
+        Log.i(TAG, "Delete current config");
+        configRepository.removeConfig(currentConfig.getValue().id);
+    }
 
     public void addConfig() {
         configRepository.createConfig();
@@ -106,6 +124,7 @@ public class ConfigurationsViewModel extends AndroidViewModel {
 
         for (ConfigEntity config: configList.getValue()) {
             if (config.name.equals(configName)) {
+                rosDomain.disconnectFromMaster();
                 configRepository.chooseConfig(config.id);
                 return;
             }
@@ -123,4 +142,6 @@ public class ConfigurationsViewModel extends AndroidViewModel {
     public LiveData<List<String>> getFavoriteConfigNames() {
         return this.favoriteConfigNames;
     }
- }
+
+
+}
