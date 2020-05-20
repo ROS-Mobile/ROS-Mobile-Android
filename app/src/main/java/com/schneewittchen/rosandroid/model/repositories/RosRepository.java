@@ -42,7 +42,7 @@ import java.util.List;
  * @author Nico Studt
  * @version 1.1.2
  * @created on 16.01.20
- * @updated on 15.05.20
+ * @updated on 20.05.20
  * @modified by Nico Studt
  */
 public class RosRepository implements DataListener {
@@ -121,8 +121,11 @@ public class RosRepository implements DataListener {
      */
     public void disconnectFromMaster() {
         Log.i(TAG, "Disconnect from Master");
-        this.unregisterAllNodes();
+        if (nodeMainExecutorService == null) {
+            return;
+        }
 
+        this.unregisterAllNodes();
         nodeMainExecutorService.shutdown();
     }
 
