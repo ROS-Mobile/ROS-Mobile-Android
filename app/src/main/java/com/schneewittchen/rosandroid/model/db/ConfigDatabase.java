@@ -116,7 +116,7 @@ public abstract class ConfigDatabase extends RoomDatabase {
     public void deleteWidget(WidgetEntity widget) {
         new LambdaTask(() -> {
             int id = widgetDao().delete(widget);
-            System.out.println("Id deleted: " + id);
+            // System.out.println("Id deleted: " + id);
         }).execute();
     }
 

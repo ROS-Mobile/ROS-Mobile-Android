@@ -88,8 +88,7 @@ public class CameraView extends BaseView {
 
     @Override
     public void setData(BaseData data) {
-        // TODO
-        System.out.println("CameraView: SetData!");
+        // System.out.println("CameraView: SetData!");
         this.data = (CameraData) data;
         this.invalidate();
     }

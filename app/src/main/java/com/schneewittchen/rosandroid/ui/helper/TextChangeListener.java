@@ -25,17 +25,19 @@ public abstract class TextChangeListener<T> implements TextWatcher {
 
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        System.out.println("Before Text Changed: " + s);
+        return;
+        // System.out.println("Before Text Changed: " + s);
     }
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-        System.out.println("On Text Changed: " + s);
+        return;
+        // System.out.println("On Text Changed: " + s);
     }
 
     @Override
     public void afterTextChanged(Editable s) {
-        System.out.println("After Text Changed: " + s.toString());
+        // System.out.println("After Text Changed: " + s.toString());
         this.onTextChanged(target, s);
     }
 

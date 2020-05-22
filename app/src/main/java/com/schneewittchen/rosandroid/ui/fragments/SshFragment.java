@@ -142,7 +142,7 @@ public class SshFragment extends Fragment {
         try {
             port = Integer.parseInt(portStr);
         } catch (NumberFormatException nfe) {
-            System.out.println("Could not parse " + nfe);
+            nfe.printStackTrace();
         }
 
         mViewModel.connectViaSSH(username, password, ipAddress, port);
