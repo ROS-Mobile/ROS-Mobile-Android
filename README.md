@@ -66,4 +66,4 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 ## Contributor / Maintainer
 
-[Nico Studt](), [Nils Rottmann](https://nrottmann.github.io/)
+[Nico Studt](https://torellin.github.io/), [Nils Rottmann](https://nrottmann.github.io/)
