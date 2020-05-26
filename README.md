@@ -21,13 +21,13 @@ There are three different ways for installing ROS-Mobile onto your mobile device
 
 ##### Install current APK:
 
-- Download the current ROS-Mobile version as apk file and store it in an easy-to-find location onto your mobile device
+- Download the current ROS-Mobile version as [apk file](https://github.com/ROS-Mobile/ROS-Mobile-Android/blob/master/app/release/app-release.apk) and store it in an easy-to-find location onto your mobile device
 - Allow third-party apps on your device. Therefore go to **Menu > Settings > Security** and check **Unknown Sources** 
 - Go now to the apk file, tap it, then hit install
 
 ##### Download from Google Playstore:
 
-- Simply go to the Google Playstore Website of the ROS-Mobile app and download it. It will be installed automatically
+- Simply go to the [Google Playstore Website](https://play.google.com/store/apps/details?id=com.schneewittchen.rosandroid) of the ROS-Mobile app and download it. It will be installed automatically
 
 ## Introduction Video
 [![Introduction Video](http://img.youtube.com/vi/T0HrEcO-0x0/0.jpg)](http://www.youtube.com/watch?v=T0HrEcO-0x0)
