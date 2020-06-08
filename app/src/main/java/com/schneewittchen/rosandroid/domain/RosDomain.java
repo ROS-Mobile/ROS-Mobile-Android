@@ -1,7 +1,6 @@
 package com.schneewittchen.rosandroid.domain;
 
 import android.app.Application;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
@@ -15,7 +14,6 @@ import com.schneewittchen.rosandroid.model.repositories.RosRepository;
 import com.schneewittchen.rosandroid.widgets.base.BaseData;
 import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 /**
@@ -44,7 +42,6 @@ public class RosDomain {
     private LiveData<List<BaseEntity>> currentWidgets;
     private LiveData<MasterEntity> currentMaster;
 
-
     private RosDomain(@NonNull Application application) {
         this.rosRepo = RosRepository.getInstance(application);
         this.configRepository = ConfigRepositoryImpl.getInstance(application);
@@ -65,7 +62,6 @@ public class RosDomain {
         if (mInstance == null) {
             mInstance = new RosDomain(application);
         }
-
         return mInstance;
     }
 

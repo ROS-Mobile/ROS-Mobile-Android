@@ -12,6 +12,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.schneewittchen.rosandroid.model.entities.ConfigEntity;
 import com.schneewittchen.rosandroid.model.entities.MasterEntity;
+import com.schneewittchen.rosandroid.model.entities.SSHEntity;
 import com.schneewittchen.rosandroid.model.entities.WidgetEntity;
 import com.schneewittchen.rosandroid.utility.Constants;
 import com.schneewittchen.rosandroid.utility.LambdaTask;
@@ -29,9 +30,11 @@ import java.util.Random;
  * @created on 31.01.20
  * @updated on 15.05.20
  * @modified by Nico Studt
+ * @updated on 04.06.20
+ * @modified by Nils Rottmann
  */
 @Database(entities =
-        {ConfigEntity.class, MasterEntity.class, WidgetEntity.class},
+        {ConfigEntity.class, MasterEntity.class, WidgetEntity.class, SSHEntity.class},
         version = 1,
         exportSchema = false)
 public abstract class ConfigDatabase extends RoomDatabase {
@@ -59,6 +62,7 @@ public abstract class ConfigDatabase extends RoomDatabase {
     public abstract ConfigDao configDao();
     public abstract MasterDao masterDao();
     public abstract WidgetDao widgetDao();
+    public abstract SSHDao sshDao();
 
 
     // Config methods ------------------------------------------------------------------------------
@@ -94,7 +98,7 @@ public abstract class ConfigDatabase extends RoomDatabase {
 
     // Master methods ------------------------------------------------------------------------------
 
-    public void updataMaster(MasterEntity master) {
+    public void updateMaster(MasterEntity master) {
         new LambdaTask(() -> masterDao().update(master)).execute();
     }
 
@@ -103,13 +107,23 @@ public abstract class ConfigDatabase extends RoomDatabase {
     }
 
 
+    // SSH methods ------------------------------------------------------------------------------
+
+    public void updateSSH(SSHEntity ssh) {
+        new LambdaTask(() -> sshDao().update(ssh)).execute();
+    }
+
+    public LiveData<SSHEntity> getSSH(long id) {
+        return sshDao().getSSH(id);
+    }
+
     // Widget methods ------------------------------------------------------------------------------
 
     public void addWidget(WidgetEntity widget) {
         new LambdaTask(() -> widgetDao().insert(widget)).execute();
     }
 
-    public void updataWidget(WidgetEntity widget) {
+    public void updateWidget(WidgetEntity widget) {
         new LambdaTask(() -> widgetDao().update(widget)).execute();
     }
 
@@ -124,6 +138,7 @@ public abstract class ConfigDatabase extends RoomDatabase {
         return widgetDao().getWidgets(id);
     }
 
+    // Populate database
 
     private static RoomDatabase.Callback sRoomDatabaseCallback =
             new RoomDatabase.Callback(){
@@ -152,12 +167,14 @@ public abstract class ConfigDatabase extends RoomDatabase {
         // TODO: Delete this and run only if new created db
         private final ConfigDao configDao;
         private final MasterDao masterDao;
+        private final SSHDao sshDao;
         private final WidgetDao widgetDao;
 
 
         PopulateDbAsync(ConfigDatabase db) {
             configDao = db.configDao();
             masterDao = db.masterDao();
+            sshDao = db.sshDao();
             widgetDao = db.widgetDao();
         }
 
@@ -169,6 +186,7 @@ public abstract class ConfigDatabase extends RoomDatabase {
             // when it is first created
             configDao.deleteAll();
             masterDao.deleteAll();
+            sshDao.deleteAll();
             widgetDao.deleteAll();
 
             // Create master data
@@ -176,6 +194,14 @@ public abstract class ConfigDatabase extends RoomDatabase {
 
             master.ip = "192.168.0.0";
             master.port = 11311;
+
+            // Create ssh
+            SSHEntity ssh = new SSHEntity();
+
+            ssh.ip = "192.168.1.1";
+            ssh.port = 22;
+            ssh.username = "pi";
+            ssh.password = "raspberry";
 
             // Create configuration data
             ConfigEntity newConfig = new ConfigEntity();
@@ -185,11 +211,11 @@ public abstract class ConfigDatabase extends RoomDatabase {
             newConfig.name = "Unnamed Config";
             newConfig.isFavourite = false;
             newConfig.master = master;
+            newConfig.ssh = ssh;
 
             configDao.insertComplete(newConfig);
 
             return null;
         }
     }
-
 }

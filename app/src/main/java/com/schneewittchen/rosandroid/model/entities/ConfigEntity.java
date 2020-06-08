@@ -12,8 +12,8 @@ import java.util.ArrayList;
  * @author Nico Studt
  * @version 1.0.1
  * @created on 30.01.20
- * @updated on 31.01.20
- * @modified by
+ * @updated on 04.06.20
+ * @modified by Nils Rottmann
  */
 @Entity(tableName = "config_table")
 public class ConfigEntity {
@@ -28,6 +28,9 @@ public class ConfigEntity {
 
     @Ignore
     public MasterEntity master;
+
+    @Ignore
+    public SSHEntity ssh;
 
     @Ignore
     public ArrayList<WidgetEntity> widgets;

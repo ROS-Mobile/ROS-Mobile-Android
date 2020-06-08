@@ -8,6 +8,7 @@ import android.content.res.Resources;
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.model.entities.ConfigEntity;
 import com.schneewittchen.rosandroid.model.entities.MasterEntity;
+import com.schneewittchen.rosandroid.model.entities.SSHEntity;
 import com.schneewittchen.rosandroid.utility.ListLiveData;
 
 import java.lang.ref.WeakReference;
@@ -23,6 +24,8 @@ import java.util.Random;
  * @created on 24.01.20
  * @updated on 20.05.20
  * @modified by Nico Studt
+ * @updated on 04.06.20
+ * @modified by Nils Rottmann
  */
 public class ConfigModel {
 
@@ -91,6 +94,14 @@ public class ConfigModel {
         newConfig.isFavourite = false;
         newConfig.master = master;
 
+        // Create ssh data
+        SSHEntity ssh = new SSHEntity();
+
+        ssh.ip = "192.168.1.1";
+        ssh.port = 22;
+        ssh.username = "pi";
+        ssh.password = "raspberry";
+
         return newConfig;
     }
 
@@ -118,6 +129,14 @@ public class ConfigModel {
         newConfig.name = res.getString(R.string.default_config_name);
         newConfig.isFavourite = false;
         newConfig.master = master;
+
+        // Create ssh data
+        SSHEntity ssh = new SSHEntity();
+
+        ssh.ip = "192.168.1.1";
+        ssh.port = 22;
+        ssh.username = "pi";
+        ssh.password = "raspberry";
 
         return newConfig;
     }

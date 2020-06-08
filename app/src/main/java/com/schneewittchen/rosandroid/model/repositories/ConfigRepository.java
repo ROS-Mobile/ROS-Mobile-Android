@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData;
 
 import com.schneewittchen.rosandroid.model.entities.ConfigEntity;
 import com.schneewittchen.rosandroid.model.entities.MasterEntity;
+import com.schneewittchen.rosandroid.model.entities.SSHEntity;
 import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
 
 import java.lang.reflect.InvocationTargetException;
@@ -18,6 +19,8 @@ import java.util.List;
  * @version 1.0.2
  * @created on 26.01.20
  * @updated on 11.04.20
+ * @modified by Nils Rottmann
+ * @updated on 04.06.20
  * @modified by Nils Rottmann
  */
 public interface ConfigRepository {
@@ -66,4 +69,11 @@ public interface ConfigRepository {
     void updateWidget(BaseEntity widget);
 
     LiveData<List<BaseEntity>> getWidgets(long id);
+
+
+    void updateSSH(SSHEntity ssh);
+
+    void setSSH(SSHEntity ssh, String configId);
+
+    LiveData<SSHEntity> getSSH(long configId);
 }

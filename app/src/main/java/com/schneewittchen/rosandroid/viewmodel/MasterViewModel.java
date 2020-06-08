@@ -2,6 +2,7 @@ package com.schneewittchen.rosandroid.viewmodel;
 
 import android.app.Application;
 import android.content.Context;
+import android.icu.util.ICUUncheckedIOException;
 import android.net.wifi.WifiManager;
 import android.os.Handler;
 
