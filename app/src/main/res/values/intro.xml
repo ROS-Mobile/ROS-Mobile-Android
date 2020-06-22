@@ -11,7 +11,7 @@
     </string-array>
 
     <string-array name="intro_descr">
-        <item>ROS-Mobile is an Android application designed for dynamic control and visualization of mobile robotic system operated by the Robot Operating System (ROS). The application uses ROS nodes initializing publisher and subscriber with standard ROS messages.</item>
+        <item>ROS-Mobile is an Android application designed for dynamic control and visualization of mobile robotic system operated by the Robot Operating System (ROS).</item>
         <item>Create your own configurations for each of your robotic systems.</item>
         <item>Enhance your configurations by defining customizable nodes in the Details section.</item>
         <item>Monitoring of your robotic system, for example by displaying an occupancy grid map.</item>

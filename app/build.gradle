@@ -60,4 +60,7 @@ dependencies {
 
     // Open Street Maps (e.g. for GPS)
     implementation 'org.osmdroid:osmdroid-android:6.1.6'
+
+    // Playing Youtube Videos
+    implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:10.0.5'
 }
