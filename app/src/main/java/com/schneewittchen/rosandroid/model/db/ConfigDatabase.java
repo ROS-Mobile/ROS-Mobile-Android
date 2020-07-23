@@ -1,6 +1,7 @@
 package com.schneewittchen.rosandroid.model.db;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.AsyncTask;
 
 import androidx.annotation.NonNull;
@@ -10,6 +11,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.model.entities.ConfigEntity;
 import com.schneewittchen.rosandroid.model.entities.MasterEntity;
 import com.schneewittchen.rosandroid.model.entities.SSHEntity;
@@ -212,6 +214,7 @@ public abstract class ConfigDatabase extends RoomDatabase {
             newConfig.isFavourite = false;
             newConfig.master = master;
             newConfig.ssh = ssh;
+            newConfig.widgetCount = 0;
 
             configDao.insertComplete(newConfig);
 

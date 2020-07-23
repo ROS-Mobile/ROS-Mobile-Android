@@ -86,14 +86,6 @@ public class ConfigModel {
         master.ip = "192.168.0.0";
         master.port = 11311;
 
-        // Create configuration data
-        ConfigEntity newConfig = new ConfigEntity();
-
-        newConfig.creationTime = System.nanoTime();
-        newConfig.name = "New Config";
-        newConfig.isFavourite = false;
-        newConfig.master = master;
-
         // Create ssh data
         SSHEntity ssh = new SSHEntity();
 
@@ -101,6 +93,16 @@ public class ConfigModel {
         ssh.port = 22;
         ssh.username = "pi";
         ssh.password = "raspberry";
+
+        // Create configuration data
+        ConfigEntity newConfig = new ConfigEntity();
+
+        newConfig.creationTime = System.nanoTime();
+        newConfig.name = "New Config";
+        newConfig.isFavourite = false;
+        newConfig.master = master;
+        newConfig.ssh = ssh;
+        newConfig.widgetCount = 0;
 
         return newConfig;
     }
@@ -121,6 +123,14 @@ public class ConfigModel {
         master.ip = res.getString(R.string.default_master_ip);
         master.port = 12345;
 
+        // Create ssh data
+        SSHEntity ssh = new SSHEntity();
+
+        ssh.ip = "192.168.1.1";
+        ssh.port = 22;
+        ssh.username = "pi";
+        ssh.password = "raspberry";
+
         // Create configuration data
         ConfigEntity newConfig = new ConfigEntity();
 
@@ -129,14 +139,9 @@ public class ConfigModel {
         newConfig.name = res.getString(R.string.default_config_name);
         newConfig.isFavourite = false;
         newConfig.master = master;
+        newConfig.ssh = ssh;
+        newConfig.widgetCount = 0;
 
-        // Create ssh data
-        SSHEntity ssh = new SSHEntity();
-
-        ssh.ip = "192.168.1.1";
-        ssh.port = 22;
-        ssh.username = "pi";
-        ssh.password = "raspberry";
 
         return newConfig;
     }

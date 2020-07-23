@@ -2,6 +2,7 @@ package com.schneewittchen.rosandroid.model.repositories;
 
 import android.app.Application;
 import android.content.Context;
+import android.icu.text.SymbolTable;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
@@ -146,7 +147,7 @@ public class ConfigRepositoryImpl implements ConfigRepository {
 
             widget.configId = mCurrentConfigId.getValue();
             widget.creationTime = System.nanoTime();
-            widget.name = widget.getName();
+            widget.name = widget.getName(); //+ Integer.toString(mConfigDatabase.getLatestConfig().getValue().widgetCount);
 
             mConfigDatabase.addWidget(widget);
             Log.i(TAG, "Widget added to database: " + widget);

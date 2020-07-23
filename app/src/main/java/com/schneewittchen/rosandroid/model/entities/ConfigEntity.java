@@ -1,8 +1,12 @@
 package com.schneewittchen.rosandroid.model.entities;
 
+import android.content.res.Resources;
+
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
+
+import com.schneewittchen.rosandroid.R;
 
 import java.util.ArrayList;
 
@@ -25,6 +29,7 @@ public class ConfigEntity {
     public long lastUsed;
     public String name;
     public boolean isFavourite;
+    public int widgetCount;
 
     @Ignore
     public MasterEntity master;
