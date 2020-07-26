@@ -15,6 +15,7 @@ import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.model.entities.ConfigEntity;
 import com.schneewittchen.rosandroid.model.entities.MasterEntity;
 import com.schneewittchen.rosandroid.model.entities.SSHEntity;
+import com.schneewittchen.rosandroid.model.entities.WidgetCountEntity;
 import com.schneewittchen.rosandroid.model.entities.WidgetEntity;
 import com.schneewittchen.rosandroid.utility.Constants;
 import com.schneewittchen.rosandroid.utility.LambdaTask;
@@ -28,16 +29,18 @@ import java.util.Random;
  * TODO: Description
  *
  * @author Nico Studt
- * @version 1.0.2
+ * @version 1.0.3
  * @created on 31.01.20
  * @updated on 15.05.20
  * @modified by Nico Studt
  * @updated on 04.06.20
  * @modified by Nils Rottmann
+ * @updated on 27.07.20
+ * @modified by Nico Studt
  */
 @Database(entities =
-        {ConfigEntity.class, MasterEntity.class, WidgetEntity.class, SSHEntity.class},
-        version = 1,
+        {ConfigEntity.class, MasterEntity.class, WidgetEntity.class, SSHEntity.class, WidgetCountEntity.class},
+        version = 2,
         exportSchema = false)
 public abstract class ConfigDatabase extends RoomDatabase {
 
@@ -64,6 +67,7 @@ public abstract class ConfigDatabase extends RoomDatabase {
     public abstract ConfigDao configDao();
     public abstract MasterDao masterDao();
     public abstract WidgetDao widgetDao();
+    public abstract WidgetCountDao widgetCountDao();
     public abstract SSHDao sshDao();
 
 
@@ -123,6 +127,7 @@ public abstract class ConfigDatabase extends RoomDatabase {
 
     public void addWidget(WidgetEntity widget) {
         new LambdaTask(() -> widgetDao().insert(widget)).execute();
+        new LambdaTask(() -> widgetCountDao().incrementValue(widget.name)).execute();
     }
 
     public void updateWidget(WidgetEntity widget) {

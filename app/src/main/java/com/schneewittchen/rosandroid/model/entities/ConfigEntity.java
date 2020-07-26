@@ -9,6 +9,7 @@ import androidx.room.PrimaryKey;
 import com.schneewittchen.rosandroid.R;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * TODO: Description

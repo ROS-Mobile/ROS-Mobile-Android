@@ -136,7 +136,8 @@ public class ConfigRepositoryImpl implements ConfigRepository {
         if (mCurrentConfigId.getValue() == null) {
             return;
         }
-
+        // TODO: Load widget count from widget_count_dao and extend name
+        
         String prefix = "com.schneewittchen.rosandroid.widgets.";
         String className = prefix + widgetType.toLowerCase() + ".Widget" + widgetType + "Entity";
 

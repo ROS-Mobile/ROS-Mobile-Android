@@ -72,6 +72,7 @@ public class RosDomain {
 
     public void createWidget(String widgetType) {
         configRepository.createWidget(widgetType);
+
     }
 
     public void addWidget(BaseEntity widget) {
