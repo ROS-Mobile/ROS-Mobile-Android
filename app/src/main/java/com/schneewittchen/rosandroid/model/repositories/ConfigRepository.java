@@ -22,10 +22,14 @@ import java.util.List;
  * @modified by Nils Rottmann
  * @updated on 04.06.20
  * @modified by Nils Rottmann
+ * @updated on 27.07.20
+ * @modified by Nils Rottmann
  */
 public interface ConfigRepository {
 
     void chooseConfig(long configId);
+
+    void createFirstConfig(String name);
 
     void createConfig(Context context);
 

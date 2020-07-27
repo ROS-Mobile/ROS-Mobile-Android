@@ -13,6 +13,7 @@ import androidx.room.Transaction;
 import com.schneewittchen.rosandroid.model.entities.ConfigEntity;
 import com.schneewittchen.rosandroid.model.entities.MasterEntity;
 import com.schneewittchen.rosandroid.model.entities.SSHEntity;
+import com.schneewittchen.rosandroid.model.entities.WidgetCountEntity;
 import com.schneewittchen.rosandroid.model.entities.WidgetEntity;
 
 import java.util.List;
@@ -25,6 +26,8 @@ import java.util.List;
  * @version 1.0.1
  * @created on 31.01.20
  * @updated on 04.06.20
+ * @modified by Nils Rottmann
+ * @updated on 27.07.20
  * @modified by Nils Rottmann
  */
 @Dao
@@ -58,6 +61,14 @@ public abstract class ConfigDao implements BaseDao<ConfigEntity>{
             insert(config.ssh);
         }
 
+        if (config.widgetCounts != null) {
+            // Update widgetCount config id and save
+            for(int i=0; i<config.widgetCounts.size(); i++) {
+                config.widgetCounts.get(i).configId = configId;
+                insert(config.widgetCounts.get(i));
+            }
+        }
+
         for (WidgetEntity widget: config.widgets) {
             insert(widget);
         }
@@ -84,6 +95,9 @@ public abstract class ConfigDao implements BaseDao<ConfigEntity>{
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract void insert(WidgetEntity widgetEntity);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract void insert(WidgetCountEntity widgetCountEntity);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract void insert(SSHEntity ssh);

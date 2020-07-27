@@ -27,21 +27,16 @@ import com.schneewittchen.rosandroid.ui.helper.OnBackPressedListener;
  * @created on 16.01.20
  * @updated on 19.06.20
  * @modified by Nils Rottmann
+ * @updated on 27.07.20
+ * @modified by Nils Rottmann
  */
 public class MainActivity extends AppCompatActivity {
 
     private static final int LOCATION_PERM = 101;
 
-    String configName;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if(getIntent().hasExtra("CHECKIN_CONFIG_NAME")) {
-            configName = getIntent().getStringExtra("CHECKIN_CONFIG_NAME");
-        }
 
         setContentView(R.layout.activity_main);
 

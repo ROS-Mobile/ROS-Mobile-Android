@@ -8,10 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,7 +18,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.ui.helper.IntroViewPagerAdapter;
@@ -38,8 +35,8 @@ import static android.content.Context.MODE_PRIVATE;
  * @author Nils Rottmann
  * @version 1.0.0
  * @created on 22.06.20
- * @updated on
- * @modified by
+ * @updated on 27.07.20
+ * @modified by Nils Rottmann
  */
 
 public class IntroFragment extends Fragment {
@@ -51,6 +48,8 @@ public class IntroFragment extends Fragment {
     int position = 0;
     Button buttonGetStarted;
     Animation buttonAnimation;
+    Button buttonConfiguration;
+    EditText editTextConfigName;
 
     YouTubePlayerView videoView;
 
@@ -65,6 +64,8 @@ public class IntroFragment extends Fragment {
         // Init Views
         buttonNext = view.findViewById(R.id.onboarding_btn_next);
         buttonGetStarted = view.findViewById(R.id.onboarding_btn_getStarted);
+        buttonConfiguration = view.findViewById(R.id.onboarding_btn_startConfig);
+        editTextConfigName = view.findViewById(R.id.onboarding_editText_configName);
         tabIndicator = view.findViewById(R.id.tabIndicator);
         videoView = view.findViewById(R.id.onboarding_video_view);
         buttonAnimation = AnimationUtils.loadAnimation(view.getContext(), R.anim.onboarding_buttton_animation);
@@ -100,7 +101,7 @@ public class IntroFragment extends Fragment {
                 }
 
                 if (position == mList.size()) { // when we reach the last screen
-                    loadLastScreen();
+                    loadVideoScreen();
                 }
             }
         });
@@ -110,7 +111,7 @@ public class IntroFragment extends Fragment {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 if(tab.getPosition() == mList.size()) {
-                    loadLastScreen();
+                    loadVideoScreen();
                 }
             }
 
@@ -127,13 +128,22 @@ public class IntroFragment extends Fragment {
         buttonGetStarted.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: Get a String from a EditText and then name the first Config as this
-                // String test = "testTest";
-                // mViewModel.setConfigName(test);
-                // First save the checked in
+                loadConfigNameScreen();
+            }
+        });
+
+        // NameConfig Click Listener
+        buttonConfiguration.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Get string for first config name
+                Bundle bundle = new Bundle();
+                bundle.putString("configName",editTextConfigName.getText().toString());
+                // Save the Prefs
                 savePrefsData();
                 // Start the next fragment
                 MainFragment mainFragment = new MainFragment();
+                mainFragment.setArguments(bundle);
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.main_container, mainFragment)
                         .addToBackStack(null)
@@ -150,7 +160,7 @@ public class IntroFragment extends Fragment {
 
 
     // show the get started button and hide the indicator and the next button
-    private void loadLastScreen() {
+    private void loadVideoScreen() {
         buttonNext.setVisibility(View.INVISIBLE);
         buttonGetStarted.setVisibility(View.VISIBLE);
         tabIndicator.setVisibility(View.INVISIBLE);
@@ -158,6 +168,15 @@ public class IntroFragment extends Fragment {
         videoView.setVisibility(View.VISIBLE);
         // Setup Button animation
         buttonGetStarted.setAnimation(buttonAnimation);
+    }
+
+    private void loadConfigNameScreen() {
+        buttonGetStarted.setVisibility(View.INVISIBLE);
+        videoView.setVisibility(View.INVISIBLE);
+        buttonConfiguration.setVisibility(View.VISIBLE);
+        editTextConfigName.setVisibility(View.VISIBLE);
+        // Setup Button animation
+        buttonConfiguration.setAnimation(buttonAnimation);
     }
 
     private void savePrefsData() {

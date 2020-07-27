@@ -19,6 +19,8 @@ import java.util.HashMap;
  * @created on 30.01.20
  * @updated on 04.06.20
  * @modified by Nils Rottmann
+ * @updated on 27.07.20
+ * @modified by Nils Rottmann
  */
 @Entity(tableName = "config_table")
 public class ConfigEntity {
@@ -30,7 +32,6 @@ public class ConfigEntity {
     public long lastUsed;
     public String name;
     public boolean isFavourite;
-    public int widgetCount;
 
     @Ignore
     public MasterEntity master;
@@ -40,6 +41,9 @@ public class ConfigEntity {
 
     @Ignore
     public ArrayList<WidgetEntity> widgets;
+
+    @Ignore
+    public ArrayList<WidgetCountEntity> widgetCounts;
 
     public ConfigEntity() {
         widgets = new ArrayList<>();

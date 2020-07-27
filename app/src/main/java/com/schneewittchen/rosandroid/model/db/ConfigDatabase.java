@@ -21,6 +21,7 @@ import com.schneewittchen.rosandroid.utility.Constants;
 import com.schneewittchen.rosandroid.utility.LambdaTask;
 import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -37,6 +38,8 @@ import java.util.Random;
  * @modified by Nils Rottmann
  * @updated on 27.07.20
  * @modified by Nico Studt
+ * @updated on 27.07.20
+ * @modified by Nils Rottmann
  */
 @Database(entities =
         {ConfigEntity.class, MasterEntity.class, WidgetEntity.class, SSHEntity.class, WidgetCountEntity.class},
@@ -48,6 +51,7 @@ public abstract class ConfigDatabase extends RoomDatabase {
 
     private static final String TAG = ConfigDatabase.class.getCanonicalName();
     private static ConfigDatabase instance;
+    private static String[] widgetNames;
 
     public static synchronized ConfigDatabase getInstance(Context context) {
         if (instance == null){
@@ -57,6 +61,8 @@ public abstract class ConfigDatabase extends RoomDatabase {
                     .fallbackToDestructiveMigration()
                     .build();
         }
+
+        widgetNames = context.getResources().getStringArray(R.array.widget_names);
 
         return instance;
     }
@@ -127,7 +133,7 @@ public abstract class ConfigDatabase extends RoomDatabase {
 
     public void addWidget(WidgetEntity widget) {
         new LambdaTask(() -> widgetDao().insert(widget)).execute();
-        new LambdaTask(() -> widgetCountDao().incrementValue(widget.name)).execute();
+        new LambdaTask(() -> widgetCountDao().incrementValue(widget.configId, widget.type)).execute();
     }
 
     public void updateWidget(WidgetEntity widget) {
@@ -145,8 +151,15 @@ public abstract class ConfigDatabase extends RoomDatabase {
         return widgetDao().getWidgets(id);
     }
 
-    // Populate database
+    // Widget Count methods ------------------------------------------------------------------------
 
+    public WidgetCountEntity getWidgetCount(long id, String type) {
+        return widgetCountDao().getWidgetCountEntity(id, type);
+    }
+
+
+    // General database methods --------------------------------------------------------------------
+    // Populate database
     private static RoomDatabase.Callback sRoomDatabaseCallback =
             new RoomDatabase.Callback(){
 
@@ -176,6 +189,7 @@ public abstract class ConfigDatabase extends RoomDatabase {
         private final MasterDao masterDao;
         private final SSHDao sshDao;
         private final WidgetDao widgetDao;
+        private final WidgetCountDao widgetCountDao;
 
 
         PopulateDbAsync(ConfigDatabase db) {
@@ -183,6 +197,7 @@ public abstract class ConfigDatabase extends RoomDatabase {
             masterDao = db.masterDao();
             sshDao = db.sshDao();
             widgetDao = db.widgetDao();
+            widgetCountDao = db.widgetCountDao();
         }
 
 
@@ -195,6 +210,7 @@ public abstract class ConfigDatabase extends RoomDatabase {
             masterDao.deleteAll();
             sshDao.deleteAll();
             widgetDao.deleteAll();
+            widgetCountDao.deleteAll();
 
             // Create master data
             MasterEntity master = new MasterEntity();
@@ -210,6 +226,15 @@ public abstract class ConfigDatabase extends RoomDatabase {
             ssh.username = "pi";
             ssh.password = "raspberry";
 
+            // Create widgetCount
+            ArrayList<WidgetCountEntity> widgetCountEntityList = new ArrayList<WidgetCountEntity>();
+            for (int i=0; i<widgetNames.length; i++) {
+                WidgetCountEntity widgetCountEntity = new WidgetCountEntity();
+                widgetCountEntity.type = widgetNames[i];
+                widgetCountEntity.count = 0;
+                widgetCountEntityList.add(widgetCountEntity);
+            }
+
             // Create configuration data
             ConfigEntity newConfig = new ConfigEntity();
 
@@ -219,7 +244,7 @@ public abstract class ConfigDatabase extends RoomDatabase {
             newConfig.isFavourite = false;
             newConfig.master = master;
             newConfig.ssh = ssh;
-            newConfig.widgetCount = 0;
+            newConfig.widgetCounts = widgetCountEntityList;
 
             configDao.insertComplete(newConfig);
 

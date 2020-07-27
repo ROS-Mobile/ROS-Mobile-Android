@@ -13,6 +13,8 @@ import androidx.room.PrimaryKey;
  * @author Nico Studt
  * @version 1.0.0
  * @created on 26.07.20
+ * @updated on 27.07.20
+ * @modified by Nils Rottmann
  */
 @Entity(tableName = "widget_count_table")
 public class WidgetCountEntity {
@@ -24,8 +26,8 @@ public class WidgetCountEntity {
     @NonNull
     public long configId;
 
-    @ColumnInfo(name = "widget_name")
-    public String name;
+    @ColumnInfo(name = "widget_type")
+    public String type;
 
     @ColumnInfo(name = "widget_count")
     public long count;
