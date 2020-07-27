@@ -161,22 +161,21 @@ public class IntroFragment extends Fragment {
 
     // show the get started button and hide the indicator and the next button
     private void loadVideoScreen() {
+        buttonGetStarted.setAnimation(buttonAnimation);
         buttonNext.setVisibility(View.INVISIBLE);
         buttonGetStarted.setVisibility(View.VISIBLE);
         tabIndicator.setVisibility(View.INVISIBLE);
         screenPager.setVisibility(View.INVISIBLE);
         videoView.setVisibility(View.VISIBLE);
-        // Setup Button animation
-        buttonGetStarted.setAnimation(buttonAnimation);
     }
 
     private void loadConfigNameScreen() {
+        buttonGetStarted.setAnimation(null);
+        buttonConfiguration.setAnimation(buttonAnimation);
         buttonGetStarted.setVisibility(View.INVISIBLE);
         videoView.setVisibility(View.INVISIBLE);
         buttonConfiguration.setVisibility(View.VISIBLE);
         editTextConfigName.setVisibility(View.VISIBLE);
-        // Setup Button animation
-        buttonConfiguration.setAnimation(buttonAnimation);
     }
 
     private void savePrefsData() {

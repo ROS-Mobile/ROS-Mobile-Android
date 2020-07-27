@@ -88,9 +88,9 @@ public class MainFragment extends Fragment implements OnBackPressedListener {
         mViewModel = new ViewModelProvider(this).get(MainViewModel.class);
 
         // TODO: Enable first config name
-        /* if(this.getArguments() != null) {
+        if(this.getArguments() != null) {
             mViewModel.createFirstConfig(this.getArguments().getString("configName"));
-        } */
+        }
 
         mViewModel.getConfigTitle().observe(getViewLifecycleOwner(), this::setTitle);
     }

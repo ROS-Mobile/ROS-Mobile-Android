@@ -166,7 +166,7 @@ public abstract class ConfigDatabase extends RoomDatabase {
                 @Override
                 public void onCreate(@NonNull SupportSQLiteDatabase db) {
                     super.onCreate(db);
-                    new PopulateDbAsync(instance).execute();
+                    // new PopulateDbAsync(instance).execute();
                 }
 
                 /*
