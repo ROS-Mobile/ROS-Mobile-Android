@@ -39,9 +39,15 @@ public class SshViewModel extends AndroidViewModel {
         sshRepositoryImpl.updateSSHConfig(ssh);
     }
 
-    public void setSshPort(int portInt) {
+    public void setSshPort(String portString) {
+        int port = 22;
+        try {
+            port = Integer.parseInt(portString);
+        } catch (NumberFormatException nfe) {
+            nfe.printStackTrace();
+        }
         SSHEntity ssh = currentSSH.getValue();
-        ssh.port = portInt;
+        ssh.port = port;
         sshRepositoryImpl.updateSSHConfig(ssh);
     }
 

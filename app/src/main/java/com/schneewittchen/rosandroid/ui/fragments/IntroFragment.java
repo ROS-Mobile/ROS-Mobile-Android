@@ -61,6 +61,9 @@ public class IntroFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        // Create the view model
+        mViewModel = new ViewModelProvider(this).get(IntroViewModel.class);
+
         // Init Views
         buttonNext = view.findViewById(R.id.onboarding_btn_next);
         buttonGetStarted = view.findViewById(R.id.onboarding_btn_getStarted);
@@ -70,19 +73,11 @@ public class IntroFragment extends Fragment {
         videoView = view.findViewById(R.id.onboarding_video_view);
         buttonAnimation = AnimationUtils.loadAnimation(view.getContext(), R.anim.onboarding_buttton_animation);
 
-        // Fill the list
-        List<ScreenItem> mList = new ArrayList<>();
-        String[] title_array = getResources().getStringArray(R.array.intro_title);
-        String[] descr_array = getResources().getStringArray(R.array.intro_descr);
-        TypedArray img_array = getResources().obtainTypedArray(R.array.intro_img);
-        for(int i=0; i<title_array.length; i++) {
-            mList.add(new ScreenItem(title_array[i], descr_array[i], img_array.getResourceId(i,-1)));
-        }
-
         // Set the video
         getLifecycle().addObserver(videoView);
 
         // Setup the viewPager
+        List<ScreenItem> mList = mViewModel.getScreenItems();
         screenPager = view.findViewById(R.id.screen_viewpager);
         introViewPagerAdapter = new IntroViewPagerAdapter(this.getContext(), mList);
         screenPager.setAdapter(introViewPagerAdapter);
@@ -155,7 +150,6 @@ public class IntroFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(IntroViewModel.class);
     }
 
 

@@ -166,22 +166,13 @@ public class SshFragment extends Fragment implements TextView.OnEditorActionList
         if (actionId == EditorInfo.IME_ACTION_DONE){
             if (id == R.id.ip_address_editText) {
                 Editable sshIp = binding.ipAddressEditText.getText();
-
                 if (sshIp != null) {
                     mViewModel.setSshIp(sshIp.toString());
                 }
-
             } else if (id == R.id.port_editText) {
                 Editable sshPort = binding.portEditText.getText();
-
                 if (sshPort != null) {
-                    int port = 22;
-                    try {
-                        port = Integer.parseInt(sshPort.toString());
-                    } catch (NumberFormatException nfe) {
-                        nfe.printStackTrace();
-                    }
-                    mViewModel.setSshPort(port);
+                    mViewModel.setSshPort(sshPort.toString());
                 }
             } else if (id == R.id.password_editText) {
                 Editable sshPassword = binding.passwordEditText.getText();

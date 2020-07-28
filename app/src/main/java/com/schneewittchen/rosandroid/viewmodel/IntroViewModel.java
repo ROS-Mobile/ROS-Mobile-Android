@@ -1,15 +1,21 @@
 package com.schneewittchen.rosandroid.viewmodel;
 
 import android.app.Application;
+import android.content.res.TypedArray;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 
+import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.model.entities.ConfigEntity;
 import com.schneewittchen.rosandroid.model.repositories.ConfigRepository;
 import com.schneewittchen.rosandroid.model.repositories.ConfigRepositoryImpl;
+import com.schneewittchen.rosandroid.ui.helper.ScreenItem;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * TODO: Description
@@ -33,9 +39,14 @@ public class IntroViewModel extends AndroidViewModel {
         configRepo = ConfigRepositoryImpl.getInstance(getApplication());
     }
 
-    public void setConfigName(String configName) {
-        ConfigEntity config = currentConfig.getValue();
-        config.name = configName;
-        configRepo.updateConfig(config);
+    public List<ScreenItem> getScreenItems() {
+        List<ScreenItem> mList = new ArrayList<>();
+        String[] title_array = getApplication().getResources().getStringArray(R.array.intro_title);
+        String[] descr_array = getApplication().getResources().getStringArray(R.array.intro_descr);
+        TypedArray img_array = getApplication().getResources().obtainTypedArray(R.array.intro_img);
+        for(int i=0; i<title_array.length; i++) {
+            mList.add(new ScreenItem(title_array[i], descr_array[i], img_array.getResourceId(i,-1)));
+        }
+        return mList;
     }
 }
