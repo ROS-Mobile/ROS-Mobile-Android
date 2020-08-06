@@ -6,11 +6,9 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-import com.schneewittchen.rosandroid.domain.RosDomain;
 import com.schneewittchen.rosandroid.model.entities.SSHEntity;
-import com.schneewittchen.rosandroid.model.repositories.ConfigRepositoryImpl;
-import com.schneewittchen.rosandroid.model.repositories.SshRepository;
 import com.schneewittchen.rosandroid.model.repositories.SshRepositoryImpl;
+
 
 /**
  * TODO: Description
@@ -27,6 +25,7 @@ public class SshViewModel extends AndroidViewModel {
     SshRepositoryImpl sshRepositoryImpl;
     private LiveData<SSHEntity> currentSSH;
 
+
     public SshViewModel(@NonNull Application application) {
         super(application);
         sshRepositoryImpl = SshRepositoryImpl.getInstance(application);
@@ -41,11 +40,13 @@ public class SshViewModel extends AndroidViewModel {
 
     public void setSshPort(String portString) {
         int port = 22;
+
         try {
             port = Integer.parseInt(portString);
         } catch (NumberFormatException nfe) {
             nfe.printStackTrace();
         }
+
         SSHEntity ssh = currentSSH.getValue();
         ssh.port = port;
         sshRepositoryImpl.updateSSHConfig(ssh);

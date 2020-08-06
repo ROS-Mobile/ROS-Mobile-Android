@@ -15,18 +15,17 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.databinding.FragmentSshBinding;
 import com.schneewittchen.rosandroid.ui.helper.SshRecyclerViewAdapter;
 import com.schneewittchen.rosandroid.viewmodel.SshViewModel;
+
 
 /**
  * TODO: Description
@@ -117,7 +116,7 @@ public class SshFragment extends Fragment implements TextView.OnEditorActionList
             final String message = terminalEditText.getText().toString();
             mViewModel.sendViaSSH(message);
             terminalEditText.setText("");
-            hideKeyBoard();
+            hideSoftKeyboard();
         });
 
         mViewModel.getOutputData().observe(this.getViewLifecycleOwner(), s -> {
@@ -127,6 +126,7 @@ public class SshFragment extends Fragment implements TextView.OnEditorActionList
 
         mViewModel.isConnected().observe(this.getViewLifecycleOwner(), connectionFlag -> {
             connected = connectionFlag;
+
             if (connectionFlag) {
                 connectButton.setText("Disconnect");
             } else {
@@ -140,11 +140,6 @@ public class SshFragment extends Fragment implements TextView.OnEditorActionList
         binding.portEditText.setOnEditorActionListener(this);
         binding.usernameEditText.setOnEditorActionListener(this);
         binding.passwordEditText.setOnEditorActionListener(this);
-    }
-
-    private void hideKeyBoard() {
-        final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
     }
 
     private void connectSsh() {
@@ -166,19 +161,25 @@ public class SshFragment extends Fragment implements TextView.OnEditorActionList
         if (actionId == EditorInfo.IME_ACTION_DONE){
             if (id == R.id.ip_address_editText) {
                 Editable sshIp = binding.ipAddressEditText.getText();
+
                 if (sshIp != null) {
                     mViewModel.setSshIp(sshIp.toString());
                 }
+
             } else if (id == R.id.port_editText) {
                 Editable sshPort = binding.portEditText.getText();
+
                 if (sshPort != null) {
                     mViewModel.setSshPort(sshPort.toString());
                 }
+
             } else if (id == R.id.password_editText) {
                 Editable sshPassword = binding.passwordEditText.getText();
+
                 if (sshPassword != null) {
                     mViewModel.setSshPassword(sshPassword.toString());
                 }
+
             } else if (id == R.id.username_editText) {
                 Editable sshUsername = binding.usernameEditText.getText();
                 if (sshUsername != null) {

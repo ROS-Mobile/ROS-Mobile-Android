@@ -2,7 +2,6 @@ package com.schneewittchen.rosandroid.model.repositories;
 
 import android.app.Application;
 import android.content.Context;
-import android.icu.text.SymbolTable;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
@@ -14,7 +13,6 @@ import com.schneewittchen.rosandroid.model.entities.ConfigEntity;
 import com.schneewittchen.rosandroid.model.entities.MasterEntity;
 import com.schneewittchen.rosandroid.model.entities.SSHEntity;
 import com.schneewittchen.rosandroid.model.entities.WidgetCountEntity;
-import com.schneewittchen.rosandroid.utility.LambdaTask;
 import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
 
 import java.lang.reflect.Constructor;
@@ -147,6 +145,7 @@ public class ConfigRepositoryImpl implements ConfigRepository {
         if (mCurrentConfigId.getValue() == null) {
             return;
         }
+
         // TODO: Load widget count from widget_count_dao and extend name
         long indexCurrentWidget = 0;
         WidgetCountEntity widgetCount = mConfigDatabase.getWidgetCount(mCurrentConfigId.getValue(), widgetType);
