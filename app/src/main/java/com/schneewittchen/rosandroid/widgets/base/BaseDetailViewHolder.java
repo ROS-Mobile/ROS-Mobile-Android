@@ -24,6 +24,8 @@ import com.schneewittchen.rosandroid.R;
  * @created on 13.02.20
  * @updated on 10.05.20
  * @modified by Nico Studt
+ * @updated on 27.07.20
+ * @modified by Nils Rottmann
  */
 public class BaseDetailViewHolder<T extends BaseEntity> extends RecyclerView.ViewHolder {
 
@@ -115,7 +117,7 @@ public class BaseDetailViewHolder<T extends BaseEntity> extends RecyclerView.Vie
         input.setInputType(InputType.TYPE_CLASS_TEXT);
 
         AlertDialog dialog =  new AlertDialog.Builder(context)
-                .setTitle(R.string.rename_config)
+                .setTitle(R.string.rename_widget)
                 .setView(input)
                 .setPositiveButton(R.string.ok, (view, which) ->
                     rename(input.getText().toString()))

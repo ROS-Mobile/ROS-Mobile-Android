@@ -8,9 +8,12 @@ import android.content.res.Resources;
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.model.entities.ConfigEntity;
 import com.schneewittchen.rosandroid.model.entities.MasterEntity;
+import com.schneewittchen.rosandroid.model.entities.SSHEntity;
+import com.schneewittchen.rosandroid.model.entities.WidgetCountEntity;
 import com.schneewittchen.rosandroid.utility.ListLiveData;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -23,6 +26,10 @@ import java.util.Random;
  * @created on 24.01.20
  * @updated on 20.05.20
  * @modified by Nico Studt
+ * @updated on 04.06.20
+ * @modified by Nils Rottmann
+ * @updated on 27.07.20
+ * @modified by Nils Rottmann
  */
 public class ConfigModel {
 
@@ -30,12 +37,14 @@ public class ConfigModel {
 
     private WeakReference<Application> appRef;
     private ListLiveData<ConfigEntity> mConfigs;
-
+    private static String[] widgetNames;
 
     public static ConfigModel getInstance(Application application) {
         if (mInstance == null) {
             mInstance = new ConfigModel(application);
         }
+
+        widgetNames = application.getResources().getStringArray(R.array.widget_names);
 
         return mInstance;
     }
@@ -83,6 +92,23 @@ public class ConfigModel {
         master.ip = "192.168.0.0";
         master.port = 11311;
 
+        // Create ssh data
+        SSHEntity ssh = new SSHEntity();
+
+        ssh.ip = "192.168.1.1";
+        ssh.port = 22;
+        ssh.username = "pi";
+        ssh.password = "raspberry";
+
+        // Create widgetCount
+        ArrayList<WidgetCountEntity> widgetCountEntityList = new ArrayList<WidgetCountEntity>();
+        for (int i=0; i<widgetNames.length; i++) {
+            WidgetCountEntity widgetCountEntity = new WidgetCountEntity();
+            widgetCountEntity.type = widgetNames[i];
+            widgetCountEntity.count = 0;
+            widgetCountEntityList.add(widgetCountEntity);
+        }
+
         // Create configuration data
         ConfigEntity newConfig = new ConfigEntity();
 
@@ -90,6 +116,8 @@ public class ConfigModel {
         newConfig.name = "New Config";
         newConfig.isFavourite = false;
         newConfig.master = master;
+        newConfig.ssh = ssh;
+        newConfig.widgetCounts = widgetCountEntityList;
 
         return newConfig;
     }
@@ -110,6 +138,23 @@ public class ConfigModel {
         master.ip = res.getString(R.string.default_master_ip);
         master.port = 12345;
 
+        // Create ssh data
+        SSHEntity ssh = new SSHEntity();
+
+        ssh.ip = "192.168.1.1";
+        ssh.port = 22;
+        ssh.username = "pi";
+        ssh.password = "raspberry";
+
+        // Create widgetCount
+        ArrayList<WidgetCountEntity> widgetCountEntityList = new ArrayList<WidgetCountEntity>();
+        for (int i=0; i<widgetNames.length; i++) {
+            WidgetCountEntity widgetCountEntity = new WidgetCountEntity();
+            widgetCountEntity.type = widgetNames[i];
+            widgetCountEntity.count = 0;
+            widgetCountEntityList.add(widgetCountEntity);
+        }
+
         // Create configuration data
         ConfigEntity newConfig = new ConfigEntity();
 
@@ -118,6 +163,9 @@ public class ConfigModel {
         newConfig.name = res.getString(R.string.default_config_name);
         newConfig.isFavourite = false;
         newConfig.master = master;
+        newConfig.ssh = ssh;
+        newConfig.widgetCounts = widgetCountEntityList;
+
 
         return newConfig;
     }

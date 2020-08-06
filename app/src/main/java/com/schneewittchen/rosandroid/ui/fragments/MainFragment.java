@@ -23,6 +23,7 @@ import com.schneewittchen.rosandroid.ui.helper.OnBackPressedListener;
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.ui.helper.ConfigTabsPagerAdapter;
 import com.schneewittchen.rosandroid.ui.helper.LockableViewPager;
+import com.schneewittchen.rosandroid.utility.LambdaTask;
 import com.schneewittchen.rosandroid.viewmodel.MainViewModel;
 
 /**
@@ -31,8 +32,8 @@ import com.schneewittchen.rosandroid.viewmodel.MainViewModel;
  * @author Nico Studt
  * @version 1.0.1
  * @created on 10.01.20
- * @updated on 31.01.20
- * @modified by
+ * @updated on 27.07.20
+ * @modified by Nils Rottmann
  */
 public class MainFragment extends Fragment implements OnBackPressedListener {
 
@@ -43,7 +44,6 @@ public class MainFragment extends Fragment implements OnBackPressedListener {
     DrawerLayout drawerLayout;
     Toolbar toolbar;
     MainViewModel mViewModel;
-
 
     public static MainFragment newInstance() {
         return new MainFragment();
@@ -86,6 +86,11 @@ public class MainFragment extends Fragment implements OnBackPressedListener {
         super.onActivityCreated(savedInstanceState);
 
         mViewModel = new ViewModelProvider(this).get(MainViewModel.class);
+
+        // TODO: Enable first config name
+        if(this.getArguments() != null) {
+            mViewModel.createFirstConfig(this.getArguments().getString("configName"));
+        }
 
         mViewModel.getConfigTitle().observe(getViewLifecycleOwner(), this::setTitle);
     }
@@ -130,5 +135,4 @@ public class MainFragment extends Fragment implements OnBackPressedListener {
                              @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_main, container, false);
     }
-
 }

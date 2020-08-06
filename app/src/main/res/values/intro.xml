@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="intro_title">
+        <item>ROS-Mobile</item>
+        <item>Configuration</item>
+        <item>Customization</item>
+        <item>Monitoring</item>
+        <item>Controlling</item>
+        <item>SSH</item>
+    </string-array>
+
+    <string-array name="intro_descr">
+        <item>ROS-Mobile is an Android application designed for dynamic control and visualization of mobile robotic systems operated by the Robot Operating System (ROS).</item>
+        <item>Create your own configurations for each of your robotic systems.</item>
+        <item>Enhance your configurations by defining customizable nodes in the Details section.</item>
+        <item>Monitoring of your robotic system, for example by displaying an occupancy grid map.</item>
+        <item>Controlling of your robotic system, for example using teleoperational control via the joystick node.</item>
+        <item>Directly accessing the robot system via the embedded SSH terminal.</item>
+    </string-array>
+
+    <integer-array name="intro_img">
+        <item>@drawable/intro_start</item>
+        <item>@drawable/intro_config</item>
+        <item>@drawable/intro_details</item>
+        <item>@drawable/intro_map</item>
+        <item>@drawable/intro_joystick</item>
+        <item>@drawable/intro_ssh</item>
+    </integer-array>
+
+</resources>

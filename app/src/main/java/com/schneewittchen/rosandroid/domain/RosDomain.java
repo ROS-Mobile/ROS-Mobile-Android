@@ -1,7 +1,6 @@
 package com.schneewittchen.rosandroid.domain;
 
 import android.app.Application;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
@@ -12,10 +11,10 @@ import com.schneewittchen.rosandroid.model.repositories.ConfigRepository;
 import com.schneewittchen.rosandroid.model.repositories.ConfigRepositoryImpl;
 import com.schneewittchen.rosandroid.model.repositories.ConnectionType;
 import com.schneewittchen.rosandroid.model.repositories.RosRepository;
+import com.schneewittchen.rosandroid.utility.LambdaTask;
 import com.schneewittchen.rosandroid.widgets.base.BaseData;
 import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 /**
@@ -28,6 +27,8 @@ import java.util.List;
  * @modified by Nico Studt
  * @updated on 15.05.20
  * @modified by Nico Studt
+ * @updated on 27.07.20
+ * @modified by Nils Rottmann
  */
 public class RosDomain {
 
@@ -43,7 +44,6 @@ public class RosDomain {
     // Data objects
     private LiveData<List<BaseEntity>> currentWidgets;
     private LiveData<MasterEntity> currentMaster;
-
 
     private RosDomain(@NonNull Application application) {
         this.rosRepo = RosRepository.getInstance(application);
@@ -65,7 +65,6 @@ public class RosDomain {
         if (mInstance == null) {
             mInstance = new RosDomain(application);
         }
-
         return mInstance;
     }
 
@@ -75,7 +74,7 @@ public class RosDomain {
     }
 
     public void createWidget(String widgetType) {
-        configRepository.createWidget(widgetType);
+        new LambdaTask(() -> configRepository.createWidget(widgetType)).execute();
     }
 
     public void addWidget(BaseEntity widget) {

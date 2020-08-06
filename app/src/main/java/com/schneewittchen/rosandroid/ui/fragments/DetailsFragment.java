@@ -120,7 +120,7 @@ public class DetailsFragment extends Fragment implements RecyclerItemTouchHelper
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
         dialogBuilder.setTitle("Widgets");
         dialogBuilder.setItems(widgetNames, (dialog, item) -> {
-            String selectedText = widgetNames[item];  //Selected item in listview
+            String selectedText = widgetNames[item];  //Selected item in list view
             mViewModel.createWidget(selectedText);
 
             Log.i(TAG, "Selected Text: " + selectedText);

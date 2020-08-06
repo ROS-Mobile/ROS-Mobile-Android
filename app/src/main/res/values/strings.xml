@@ -24,7 +24,7 @@
     <string name="password_hint">Password</string>
     <string name="terminal_hint">Terminal Input</string>
 
-        <!-- Default config -->
+    <!-- Default config -->
     <string name="default_config_name">New Config</string>
     <string name="default_master_ip">123.456.789.01</string>
     <string name="default_master_ticker_title">Default ticker title</string>
@@ -45,5 +45,6 @@
     <string name="yes">YES</string>
     <string name="no">NO</string>
     <string name="rename_config">Rename Config</string>
+    <string name="rename_widget">Rename Node</string>
 
 </resources>

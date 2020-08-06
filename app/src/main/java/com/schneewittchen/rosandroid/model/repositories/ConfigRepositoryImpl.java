@@ -11,6 +11,8 @@ import androidx.lifecycle.Transformations;
 import com.schneewittchen.rosandroid.model.db.ConfigDatabase;
 import com.schneewittchen.rosandroid.model.entities.ConfigEntity;
 import com.schneewittchen.rosandroid.model.entities.MasterEntity;
+import com.schneewittchen.rosandroid.model.entities.SSHEntity;
+import com.schneewittchen.rosandroid.model.entities.WidgetCountEntity;
 import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
 
 import java.lang.reflect.Constructor;
@@ -25,6 +27,10 @@ import java.util.List;
  * @created on 26.01.20
  * @updated on 20.05.20
  * @modified by Nico Studt
+ * @updated on 04.06.20
+ * @modified by Nils Rottmann
+ * @updated on 27.07.20
+ * @modified by Nils Rottmann
  */
 public class ConfigRepositoryImpl implements ConfigRepository {
 
@@ -66,6 +72,13 @@ public class ConfigRepositoryImpl implements ConfigRepository {
         if(mCurrentConfigId.getValue() == null || mCurrentConfigId.getValue() != configId){
             mCurrentConfigId.postValue(configId);
         }
+    }
+
+    @Override
+    public void createFirstConfig(String name) {
+        ConfigEntity config = mConfigModel.getNewConfig();
+        config.name = name;
+        mConfigDatabase.addConfig(config);
     }
 
     @Override
@@ -133,6 +146,13 @@ public class ConfigRepositoryImpl implements ConfigRepository {
             return;
         }
 
+        // TODO: Load widget count from widget_count_dao and extend name
+        long indexCurrentWidget = 0;
+        WidgetCountEntity widgetCount = mConfigDatabase.getWidgetCount(mCurrentConfigId.getValue(), widgetType);
+        if(widgetCount != null) {
+            indexCurrentWidget = widgetCount.count;
+        }
+        
         String prefix = "com.schneewittchen.rosandroid.widgets.";
         String className = prefix + widgetType.toLowerCase() + ".Widget" + widgetType + "Entity";
 
@@ -143,7 +163,7 @@ public class ConfigRepositoryImpl implements ConfigRepository {
 
             widget.configId = mCurrentConfigId.getValue();
             widget.creationTime = System.nanoTime();
-            widget.name = widget.getName();
+            widget.name = widget.getName() + indexCurrentWidget;
 
             mConfigDatabase.addWidget(widget);
             Log.i(TAG, "Widget added to database: " + widget);
@@ -161,7 +181,7 @@ public class ConfigRepositoryImpl implements ConfigRepository {
 
     @Override
     public void updateWidget(BaseEntity widget) {
-        mConfigDatabase.updataWidget(widget);
+        mConfigDatabase.updateWidget(widget);
     }
 
     @Override
@@ -177,7 +197,7 @@ public class ConfigRepositoryImpl implements ConfigRepository {
     }
 
 
-    // MASTERS -------------------------------------------------------------------------------------
+    // Masters -------------------------------------------------------------------------------------
 
     @Override
     public void setMaster(MasterEntity master, String configId) {
@@ -186,11 +206,28 @@ public class ConfigRepositoryImpl implements ConfigRepository {
 
     @Override
     public void updateMaster(MasterEntity master) {
-        mConfigDatabase.updataMaster(master);
+        mConfigDatabase.updateMaster(master);
     }
 
     @Override
     public LiveData<MasterEntity> getMaster(long configId) {
         return mConfigDatabase.getMaster(configId);
+    }
+
+    // SSH -------------------------------------------------------------------------------------
+
+    @Override
+    public void setSSH(SSHEntity ssh, String configId) {
+        ssh.ip = configId;
+    }
+
+    @Override
+    public void updateSSH(SSHEntity ssh) {
+        mConfigDatabase.updateSSH(ssh);
+    }
+
+    @Override
+    public LiveData<SSHEntity> getSSH(long configId) {
+        return mConfigDatabase.getSSH(configId);
     }
 }
