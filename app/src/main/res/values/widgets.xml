@@ -2,6 +2,7 @@
 <resources>
 
     <string-array name="widget_names">
+        <item>Debug</item>
         <item>Joystick</item>
         <item>GridMap</item>
         <item>Camera</item>
