@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.schneewittchen.rosandroid.R;
+import com.schneewittchen.rosandroid.viewmodel.DetailsViewModel;
 import com.schneewittchen.rosandroid.widgets.base.BaseDetailViewHolder;
 import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
 import com.schneewittchen.rosandroid.widgets.base.DetailListener;
@@ -33,9 +34,11 @@ public class WidgetDetailListAdapter extends RecyclerView.Adapter<BaseDetailView
     private DetailListener detailListener;
     private AsyncListDiffer<BaseEntity> mDiffer;
     private ArrayList<Class<? extends BaseDetailViewHolder>> types;
+    private DetailsViewModel mViewModel;
 
 
-    public WidgetDetailListAdapter() {
+    public WidgetDetailListAdapter(DetailsViewModel viewModel) {
+        this.mViewModel = viewModel;
         mDiffer = new AsyncListDiffer<>(this, diffCallback);
         types = new ArrayList<>();
     }
@@ -51,7 +54,10 @@ public class WidgetDetailListAdapter extends RecyclerView.Adapter<BaseDetailView
             LayoutInflater inflator = LayoutInflater.from(parent.getContext());
             View itemView = inflator.inflate(R.layout.widget_detail_base, parent, false);
 
-            return cons.newInstance(itemView, this);
+            BaseDetailViewHolder baseDetailViewHolder = cons.newInstance(itemView, this);
+            baseDetailViewHolder.setViewModel(mViewModel);
+            return baseDetailViewHolder;
+            // return cons.newInstance(itemView, this);
 
         } catch (Exception e) {
             e.printStackTrace();
