@@ -28,7 +28,11 @@ import com.schneewittchen.rosandroid.widgets.base.BaseDetailViewHolder;
 import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
 import com.schneewittchen.rosandroid.widgets.base.DetailListener;
 
+import org.ros.internal.node.response.Response;
+import org.ros.master.client.TopicType;
+
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
 
 /**
@@ -83,7 +87,7 @@ public class DetailsFragment extends Fragment implements RecyclerItemTouchHelper
         addWidgetButton.setOnClickListener((View v) -> showDialogWithWidgetNames());
 
         // Setup recyclerview
-        mAdapter = new WidgetDetailListAdapter();
+        mAdapter = new WidgetDetailListAdapter(mViewModel);
         mAdapter.setChangeListener(this);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));

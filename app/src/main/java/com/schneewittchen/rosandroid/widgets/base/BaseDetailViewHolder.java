@@ -11,9 +11,18 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.schneewittchen.rosandroid.R;
+import com.schneewittchen.rosandroid.viewmodel.DetailsViewModel;
+
+import org.jboss.netty.channel.local.DefaultLocalServerChannelFactory;
+import org.ros.internal.node.response.Response;
+import org.ros.master.client.TopicType;
+
+import java.util.List;
 
 
 /**
@@ -38,7 +47,7 @@ public class BaseDetailViewHolder<T extends BaseEntity> extends RecyclerView.Vie
     protected DetailListener updateListener;
     protected EditText xEdittext, yEdittext, widthEditText, heightEdittext;
     protected T entity;
-
+    protected DetailsViewModel mViewModel;
 
     public BaseDetailViewHolder(@NonNull View view, DetailListener updateListener) {
         super(view);
@@ -137,4 +146,8 @@ public class BaseDetailViewHolder<T extends BaseEntity> extends RecyclerView.Vie
     protected void bind(T entity) {};
 
     protected void updateEntity() {};
+
+    public void setViewModel(DetailsViewModel viewModel) {
+        this.mViewModel = viewModel;
+    }
 }

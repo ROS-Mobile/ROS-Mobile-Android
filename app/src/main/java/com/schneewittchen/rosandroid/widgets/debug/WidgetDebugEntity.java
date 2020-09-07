@@ -11,7 +11,11 @@ import com.schneewittchen.rosandroid.widgets.camera.CameraDetailVH;
 import com.schneewittchen.rosandroid.widgets.camera.CameraNode;
 import com.schneewittchen.rosandroid.widgets.camera.CameraView;
 
+import org.ros.internal.node.response.Response;
+import org.ros.master.client.TopicType;
 import org.ros.node.topic.Subscriber;
+
+import java.util.List;
 
 /**
  * TODO: Description

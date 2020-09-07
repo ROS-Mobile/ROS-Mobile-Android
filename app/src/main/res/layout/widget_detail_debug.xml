@@ -38,15 +38,25 @@
         app:layout_constraintTop_toBottomOf="@+id/textView6">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/topicNameText"
+            android:id="@+id/dummyText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:imeOptions="actionDone"
             android:inputType="text"
             android:singleLine="true"
-            android:text="camera/raw_image" />
+            android:text=" " />
 
     </com.google.android.material.textfield.TextInputLayout>
+
+    <Spinner
+        android:id="@+id/topicNameText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:enabled="false"
+        android:foregroundTintMode="add"
+        android:imeOptions="actionDone"
+        app:layout_constraintBottom_toBottomOf="@+id/input_layout"
+        app:layout_constraintTop_toTopOf="@+id/input_layout" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/input_layout2"
@@ -63,7 +73,7 @@
         app:layout_constraintTop_toBottomOf="@id/input_layout">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/dummyText"
+            android:id="@+id/topicTypeText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:imeOptions="actionDone"
@@ -72,16 +82,5 @@
             android:text=" " />
 
     </com.google.android.material.textfield.TextInputLayout>
-
-    <Spinner
-        android:id="@+id/topicTypeText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:enabled="false"
-        android:entries="@array/camera_msg_types"
-        android:foregroundTintMode="add"
-        android:imeOptions="actionDone"
-        app:layout_constraintBottom_toBottomOf="@+id/input_layout2"
-        app:layout_constraintTop_toTopOf="@+id/input_layout2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

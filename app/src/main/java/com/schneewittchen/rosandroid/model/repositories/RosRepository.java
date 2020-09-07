@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListUpdateCallback;
 
 import com.schneewittchen.rosandroid.model.entities.MasterEntity;
+import com.schneewittchen.rosandroid.model.entities.RosTopic;
 import com.schneewittchen.rosandroid.ros.ConnectionCheckTask;
 import com.schneewittchen.rosandroid.ros.ConnectionListener;
 import com.schneewittchen.rosandroid.ros.NodeMainExecutorService;
@@ -26,6 +27,11 @@ import com.schneewittchen.rosandroid.widgets.base.BaseNode;
 import com.schneewittchen.rosandroid.widgets.base.DataListener;
 
 import org.ros.address.InetAddressFactory;
+import org.ros.internal.node.client.MasterClient;
+import org.ros.internal.node.response.Response;
+import org.ros.internal.node.server.master.MasterServer;
+import org.ros.master.client.TopicType;
+import org.ros.namespace.GraphName;
 import org.ros.node.NodeConfiguration;
 
 import java.lang.ref.WeakReference;
@@ -370,6 +376,8 @@ public class RosRepository implements DataListener {
             nodeMainExecutorService.setMasterUri(customMasterUri);
             nodeMainExecutorService.setRosHostname(getDefaultHostAddress());
 
+
+
             serviceListener = nodeMainExecutorService ->
                     rosConnected.postValue(ConnectionType.DISCONNECTED);
 
@@ -383,6 +391,24 @@ public class RosRepository implements DataListener {
         public void onServiceDisconnected(ComponentName name) {
             nodeMainExecutorService.removeListener(serviceListener);
         }
+    }
+
+    public List<RosTopic> getTopicList() {
+        // Get a list with all available topics from the ROS Master
+        ArrayList<RosTopic> topicList = new ArrayList<>();
+        if (nodeMainExecutorService == null || nodeConfiguration == null) {
+            return topicList;
+        }
+        MasterClient masterClient = new MasterClient(nodeMainExecutorService.getMasterUri());
+        GraphName graphName = GraphName.newAnonymous();
+        Response<List<TopicType>> responseList = masterClient.getTopicTypes(graphName);
+        for (TopicType result: responseList.getResult()) {
+            RosTopic rosTopic = new RosTopic();
+            rosTopic.name = result.getName();
+            rosTopic.type = result.getMessageType();
+            topicList.add(rosTopic);
+        }
+        return topicList;
     }
 
 }
