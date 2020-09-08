@@ -1,5 +1,7 @@
 package com.schneewittchen.rosandroid.widgets.debug;
 
+import android.util.Log;
+
 import com.schneewittchen.rosandroid.widgets.base.BaseData;
 import com.schneewittchen.rosandroid.widgets.base.BaseNode;
 
@@ -40,8 +42,9 @@ public class DebugNode extends BaseNode {
                 data.setId(widget.id);
                 listener.onNewData(data);
             });
+
         } catch(Exception e) {
-            System.out.println(e);
+            e.printStackTrace();
         }
 
     }

@@ -7,9 +7,10 @@ import com.schneewittchen.rosandroid.widgets.base.BaseData;
 import org.apache.commons.lang.StringUtils;
 import org.ros.internal.message.Message;
 import org.ros.internal.message.field.Field;
+import org.ros.internal.message.field.ListField;
 
-import java.util.Arrays;
-import java.util.Collection;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -25,56 +26,87 @@ import java.util.List;
 
 public class DebugData extends BaseData {
 
-    // The data
-    Message data;
-
+    public static final String TAG = DebugData.class.getSimpleName();
     public String value;
+    private ArrayList<String> content;
 
-
+    
     public DebugData(Message message) {
-        value = msgToString(message, 0);
-        value += "---------";
+        content = new ArrayList<>();
+        msgToString(message, 0);
+
+        content.add("---------");
+        value = joinContent("\n", content);
         Log.d(TAG, value);
     }
 
 
-    private String msgToString(Message message, int level) {
+    private void msgToString(Message message, int level) {
         List<Field> fields = message.toRawMessage().getFields();
-        StringBuilder out = new StringBuilder();
 
         for(Field field: fields) {
-            out.append(fieldToString(field, level));
+            fieldToString(field, level);
         }
-
-        return out.toString();
     }
 
-    private String fieldToString(Field field, int level) {
-        String out = StringUtils.repeat("\t", level);
-        out += field.getName();
-        out += ": ";
+    private void fieldToString(Field field, int level) {
+        String fieldString = StringUtils.repeat("\t", level) + field.getName() + ":";
+        content.add(fieldString);
 
         Object value = field.getValue();
 
-        if (value instanceof Field) {
-            out = fieldToString(field, level + 1);
-
-        } else if (value instanceof Message) {
-            out += "\n" + msgToString((Message)value, level + 1);
-
-        } else if (value instanceof Collection) {
-            out += "[";
-
-            for (Object o: (Collection<?>)value) {
-                out += o + ", ";
+        if (field instanceof ListField) {
+            for (Object o: ((ListField) field).getValue()) {
+                String listPrefix = StringUtils.repeat("\t", level+1) + "-";
+                content.add(listPrefix);
+                msgToString((Message)o, level + 2);
             }
 
-            out += "]";
+        }else if (value instanceof Field) {
+            fieldToString(field, level + 1);
 
-        }  else {
-            out += value;
+        } else if (value instanceof Message) {
+            msgToString((Message)value, level + 1);
+
+        } else {
+            String valueStr;
+
+            if (value.getClass().isArray()) {
+                // Value is a type of list
+                int length = Array.getLength(value);
+                valueStr = "[";
+
+                for(int i = 0; i < length; i++){
+                    if (i > 0)
+                        valueStr += ", ";
+
+                    valueStr += Array.get(value, i);
+                }
+
+                valueStr += "]";
+
+            } else {
+                // Only single value
+                valueStr = String.valueOf(value);
+            }
+
+            String last = content.get(content.size() -1);
+            content.set(content.size() -1, last + " " + valueStr);
         }
 
-        return out + "\n";
+    }
+
+    private String joinContent(String delimiter, List<String> content) {
+        String loopDelim = "";
+        StringBuilder out = new StringBuilder();
+
+        for(String s : content) {
+            out.append(loopDelim);
+            out.append(s);
+
+            loopDelim = delimiter;
+        }
+
+        return out.toString();
     }
 }
