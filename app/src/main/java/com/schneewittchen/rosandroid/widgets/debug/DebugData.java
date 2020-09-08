@@ -1,21 +1,16 @@
 package com.schneewittchen.rosandroid.widgets.debug;
 
-import android.renderscript.Sampler;
+import android.util.Log;
 
 import com.schneewittchen.rosandroid.widgets.base.BaseData;
 
-import org.jboss.netty.buffer.ChannelBuffer;
+import org.apache.commons.lang.StringUtils;
 import org.ros.internal.message.Message;
 import org.ros.internal.message.field.Field;
-import org.ros.internal.message.field.ListField;
-import org.ros.internal.node.response.Response;
-import org.ros.master.client.TopicType;
 
-import java.lang.reflect.Proxy;
-import java.lang.reflect.WildcardType;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
-
-import nav_msgs.Odometry;
 
 
 /**
@@ -23,9 +18,9 @@ import nav_msgs.Odometry;
  *
  * @author Nils Rottmann
  * @version 1.0.0
- * @created on 17.08.20
- * @updated on
- * @modified by
+ * @created on 17.08.2020
+ * @updated on 07.10.2020
+ * @modified by Nico Studt
  */
 
 public class DebugData extends BaseData {
@@ -33,36 +28,53 @@ public class DebugData extends BaseData {
     // The data
     Message data;
 
-    // The constructor
+    public String value;
+
+
     public DebugData(Message message) {
-        List<Field> fieldList = message.toRawMessage().getFields();
-        Object value = fieldList.get(0).getValue();
-        toString((Field) value);
-        /* Odometry odometry = (Odometry) message;
-        String channel = "";
-        message.toRawMessage().getChannelBuffer(channel); */
-        /* System.out.println(message.toRawMessage().getDefinition());
-        System.out.println(message.toRawMessage().getFields().toString());
-        System.out.println(message.toRawMessage().getFields().get(0).getValue().toString());
-        System.out.println(message.toRawMessage().getFields().get(1).getValue().toString());
-        System.out.println(message.toRawMessage().getFields().get(2).getValue().toString());*/
-
-
-
-        //System.out.println(odometry.getPose().getPose().getPosition().getX());
-        //System.out.println(odometry.getPose().getPose().getPosition().getY());
-        //System.out.println(odometry.getPose().getPose().getPosition().getZ());
-
-
-
-        this.data = message;
+        value = msgToString(message, 0);
+        value += "---------";
+        Log.d(TAG, value);
     }
 
-    void toString(Field field) {
-        Object value = field.getValue();
-        System.out.println(value + "");
-        if(value instanceof Field) {
-            toString((Field) value);
+
+    private String msgToString(Message message, int level) {
+        List<Field> fields = message.toRawMessage().getFields();
+        StringBuilder out = new StringBuilder();
+
+        for(Field field: fields) {
+            out.append(fieldToString(field, level));
         }
+
+        return out.toString();
+    }
+
+    private String fieldToString(Field field, int level) {
+        String out = StringUtils.repeat("\t", level);
+        out += field.getName();
+        out += ": ";
+
+        Object value = field.getValue();
+
+        if (value instanceof Field) {
+            out = fieldToString(field, level + 1);
+
+        } else if (value instanceof Message) {
+            out += "\n" + msgToString((Message)value, level + 1);
+
+        } else if (value instanceof Collection) {
+            out += "[";
+
+            for (Object o: (Collection<?>)value) {
+                out += o + ", ";
+            }
+
+            out += "]";
+
+        }  else {
+            out += value;
+        }
+
+        return out + "\n";
     }
 }

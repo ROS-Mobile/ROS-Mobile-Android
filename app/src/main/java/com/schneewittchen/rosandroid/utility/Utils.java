@@ -222,4 +222,22 @@ public class Utils {
 
         return null;
     }
+
+    /**
+     * Check if class of an object contains a field by a given field name.
+     * @param object Object to check
+     * @param fieldName Name of the field
+     * @return Object class includes the field
+     */
+    public static boolean doesObjectContainField(Object object, String fieldName) {
+        Class<?> objectClass = object.getClass();
+
+        for (java.lang.reflect.Field field : objectClass.getFields()) {
+            if (field.getName().equals(fieldName)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
