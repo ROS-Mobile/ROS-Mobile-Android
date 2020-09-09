@@ -131,7 +131,6 @@ public class GpsView extends BaseView {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         boolean dragged = false;
-        Log.i(TAG,"EVENT = " + String.valueOf(event.getAction()));
         gestureDetector.onTouchEvent(event);
         switch (event.getAction() & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_DOWN:
