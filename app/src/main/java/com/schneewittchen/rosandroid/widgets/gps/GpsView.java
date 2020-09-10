@@ -81,8 +81,8 @@ public class GpsView extends BaseView {
     private double moveLat = 0;
     private double moveLon = 0;
 
-    private double AccLat = 0;
-    private double AccLon = 0;
+    private double accLat = 0;
+    private double accLon = 0;
 
     private boolean hadLongPressed = false;
 
@@ -189,20 +189,16 @@ public class GpsView extends BaseView {
         // Move the map to specific location
         zoomScale = (float) Math.pow(2, scaleFactor);
 
-
         // Just separating acceleration component
-        AccLat = (translateY/zoomScale) * dragSensitivity;
-        AccLon = (translateX/zoomScale) * dragSensitivity;
+        accLat = (translateY/zoomScale) * dragSensitivity;
+        accLon = (translateX/zoomScale) * dragSensitivity;
 
+        moveLat = moveLat + accLat;
+        moveLon = moveLon - accLon;
 
-        moveLat = moveLat + AccLat;
-        moveLon = moveLon - AccLon;
-
-
-        // Resets dinamics, otherwide everytime GPS publishes it keeps scrolling the map
+        // Resets dynamics, otherwise every time GPS publishes it keeps scrolling the map
         translateY = 0;
         translateX = 0;
-
 
         centerGeoPoint.setLatitude(locationGeoPoint.getLatitude() + moveLat);
         centerGeoPoint.setLongitude(locationGeoPoint.getLongitude() + moveLon);
