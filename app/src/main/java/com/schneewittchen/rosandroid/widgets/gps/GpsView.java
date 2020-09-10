@@ -10,6 +10,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
+import android.view.GestureDetector;
 
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
@@ -80,6 +81,11 @@ public class GpsView extends BaseView {
     private double moveLat = 0;
     private double moveLon = 0;
 
+    private double accLat = 0;
+    private double accLon = 0;
+
+    private boolean hadLongPressed = false;
+
     public GpsView(Context context) {
         super(context);
         init();
@@ -115,9 +121,17 @@ public class GpsView extends BaseView {
         detector = new ScaleGestureDetector(getContext(), new GpsView.ScaleListener());
     }
 
+    final GestureDetector gestureDetector = new GestureDetector(new GestureDetector.SimpleOnGestureListener() {
+        public void onLongPress(MotionEvent e) {
+            moveLat = 0;
+            moveLon = 0;
+        }
+    });
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         boolean dragged = false;
+        gestureDetector.onTouchEvent(event);
         switch (event.getAction() & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_DOWN:
                 mode = DRAG;
@@ -174,8 +188,18 @@ public class GpsView extends BaseView {
 
         // Move the map to specific location
         zoomScale = (float) Math.pow(2, scaleFactor);
-        moveLat = moveLat + (translateY/zoomScale) * dragSensitivity;
-        moveLon = moveLon - (translateX/zoomScale) * dragSensitivity;
+
+        // Just separating acceleration component
+        accLat = (translateY/zoomScale) * dragSensitivity;
+        accLon = (translateX/zoomScale) * dragSensitivity;
+
+        moveLat = moveLat + accLat;
+        moveLon = moveLon - accLon;
+
+        // Resets dynamics, otherwise every time GPS publishes it keeps scrolling the map
+        translateY = 0;
+        translateX = 0;
+
         centerGeoPoint.setLatitude(locationGeoPoint.getLatitude() + moveLat);
         centerGeoPoint.setLongitude(locationGeoPoint.getLongitude() + moveLon);
         mapController.setCenter(centerGeoPoint);
