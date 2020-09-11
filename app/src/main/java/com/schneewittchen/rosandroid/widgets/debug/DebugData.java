@@ -30,7 +30,7 @@ public class DebugData extends BaseData {
     public String value;
     private ArrayList<String> content;
 
-    
+
     public DebugData(Message message) {
         content = new ArrayList<>();
         msgToString(message, 0);
