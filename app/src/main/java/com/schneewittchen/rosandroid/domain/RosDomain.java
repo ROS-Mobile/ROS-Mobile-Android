@@ -7,7 +7,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Transformations;
 
 import com.schneewittchen.rosandroid.model.entities.MasterEntity;
-import com.schneewittchen.rosandroid.model.entities.RosTopic;
+import com.schneewittchen.rosandroid.ros.Topic;
 import com.schneewittchen.rosandroid.model.repositories.ConfigRepository;
 import com.schneewittchen.rosandroid.model.repositories.ConfigRepositoryImpl;
 import com.schneewittchen.rosandroid.model.repositories.ConnectionType;
@@ -15,9 +15,6 @@ import com.schneewittchen.rosandroid.model.repositories.RosRepository;
 import com.schneewittchen.rosandroid.utility.LambdaTask;
 import com.schneewittchen.rosandroid.widgets.base.BaseData;
 import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
-
-import org.ros.internal.node.response.Response;
-import org.ros.master.client.TopicType;
 
 import java.util.List;
 
@@ -49,6 +46,7 @@ public class RosDomain {
     private LiveData<List<BaseEntity>> currentWidgets;
     private LiveData<MasterEntity> currentMaster;
 
+
     private RosDomain(@NonNull Application application) {
         this.rosRepo = RosRepository.getInstance(application);
         this.configRepository = ConfigRepositoryImpl.getInstance(application);
@@ -69,6 +67,7 @@ public class RosDomain {
         if (mInstance == null) {
             mInstance = new RosDomain(application);
         }
+
         return mInstance;
     }
 
@@ -120,5 +119,5 @@ public class RosDomain {
         return rosRepo.getRosConnectionStatus();
     }
 
-    public List<RosTopic> getTopicList() { return rosRepo.getTopicList(); }
+    public List<Topic> getTopicList() { return rosRepo.getTopicList(); }
 }

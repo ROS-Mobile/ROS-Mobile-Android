@@ -7,16 +7,11 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 
-import com.google.gson.internal.$Gson$Preconditions;
 import com.schneewittchen.rosandroid.domain.RosDomain;
-import com.schneewittchen.rosandroid.model.entities.RosTopic;
+import com.schneewittchen.rosandroid.ros.Topic;
 import com.schneewittchen.rosandroid.model.repositories.WidgetModel;
 import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
 
-import org.ros.internal.node.response.Response;
-import org.ros.master.client.TopicType;
-
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 
@@ -82,6 +77,6 @@ public class DetailsViewModel extends AndroidViewModel {
         return widgetsEmpty;
     }
 
-    public List<RosTopic> getTopicList() {
+    public List<Topic> getTopicList() {
         return rosDomain.getTopicList(); }
 }

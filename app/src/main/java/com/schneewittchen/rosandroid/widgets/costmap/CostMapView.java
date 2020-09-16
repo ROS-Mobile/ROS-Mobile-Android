@@ -1,13 +1,10 @@
-package com.schneewittchen.rosandroid.widgets.gridmap;
+package com.schneewittchen.rosandroid.widgets.costmap;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.LinearGradient;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import android.graphics.Shader;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -25,16 +22,16 @@ import com.schneewittchen.rosandroid.widgets.base.BaseView;
  *
  * @author Nico Studt
  * @version 1.0.0
- * @created on 18.10.19
- * @updated on 13.05.20
- * @modified by Nico Studt
+ * @created on 14.09.2020
+ * @updated
+ * @modified
  */
-public class GridMapView extends BaseView implements View.OnTouchListener {
+public class CostMapView extends BaseView implements View.OnTouchListener {
 
-    public static final String TAG = "GridmapView";
+    public static final String TAG = "CostMapView";
 
     // Grid Map Information
-    GridMapData data;
+    CostMapData data;
 
     // Rectangle Surrounding
     Paint borderPaint;
@@ -46,12 +43,12 @@ public class GridMapView extends BaseView implements View.OnTouchListener {
     MatrixGestureDetector gestureDetector;
 
 
-    public GridMapView(Context context) {
+    public CostMapView(Context context) {
         super(context);
         init();
     }
 
-    public GridMapView(Context context, @Nullable AttributeSet attrs) {
+    public CostMapView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init();
     }
@@ -114,7 +111,7 @@ public class GridMapView extends BaseView implements View.OnTouchListener {
 
     @Override
     public void setData(BaseData newData) {
-        this.data = (GridMapData) newData;
+        this.data = (CostMapData) newData;
         this.invalidate();
     }
 

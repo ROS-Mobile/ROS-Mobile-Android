@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListUpdateCallback;
 
 import com.schneewittchen.rosandroid.model.entities.MasterEntity;
-import com.schneewittchen.rosandroid.model.entities.RosTopic;
+import com.schneewittchen.rosandroid.ros.Topic;
 import com.schneewittchen.rosandroid.ros.ConnectionCheckTask;
 import com.schneewittchen.rosandroid.ros.ConnectionListener;
 import com.schneewittchen.rosandroid.ros.NodeMainExecutorService;
@@ -29,7 +29,6 @@ import com.schneewittchen.rosandroid.widgets.base.DataListener;
 import org.ros.address.InetAddressFactory;
 import org.ros.internal.node.client.MasterClient;
 import org.ros.internal.node.response.Response;
-import org.ros.internal.node.server.master.MasterServer;
 import org.ros.master.client.TopicType;
 import org.ros.namespace.GraphName;
 import org.ros.node.NodeConfiguration;
@@ -224,7 +223,7 @@ public class RosRepository implements DataListener {
             return;
         }
 
-        NodeMainExecutorServiceConnection serviceConnection = new NodeMainExecutorServiceConnection(getMasterURI());
+        RosServiceConnection serviceConnection = new RosServiceConnection(getMasterURI());
 
         // Create service intent
         Intent serviceIntent = new Intent(context, NodeMainExecutorService.class);
@@ -357,26 +356,48 @@ public class RosRepository implements DataListener {
         this.receivedData.postValue(newData);
     }
 
+    /**
+     * Get a list from the ROS Master with all available topics.
+     * @return Topic list
+     */
+    public List<Topic> getTopicList() {
+        ArrayList<Topic> topicList = new ArrayList<>();
+        if (nodeMainExecutorService == null || nodeConfiguration == null) {
+            return topicList;
+        }
 
-    private final class NodeMainExecutorServiceConnection implements ServiceConnection {
+        MasterClient masterClient = new MasterClient(nodeMainExecutorService.getMasterUri());
+        GraphName graphName = GraphName.newAnonymous();
+        Response<List<TopicType>> responseList = masterClient.getTopicTypes(graphName);
+
+        for (TopicType result: responseList.getResult()) {
+            String name = result.getName();
+            String type = result.getMessageType();
+
+            Topic rosTopic = new Topic(name, type);
+            topicList.add(rosTopic);
+        }
+
+        return topicList;
+    }
+
+
+    private final class RosServiceConnection implements ServiceConnection {
 
         NodeMainExecutorServiceListener serviceListener;
         URI customMasterUri;
 
 
-        NodeMainExecutorServiceConnection(URI customUri) {
+        RosServiceConnection(URI customUri) {
             customMasterUri = customUri;
         }
 
 
         @Override
         public void onServiceConnected(ComponentName name, IBinder binder) {
-            Log.i(TAG, "Service connected");
             nodeMainExecutorService = ((NodeMainExecutorService.LocalBinder) binder).getService();
             nodeMainExecutorService.setMasterUri(customMasterUri);
             nodeMainExecutorService.setRosHostname(getDefaultHostAddress());
-
-
 
             serviceListener = nodeMainExecutorService ->
                     rosConnected.postValue(ConnectionType.DISCONNECTED);
@@ -393,22 +414,6 @@ public class RosRepository implements DataListener {
         }
     }
 
-    public List<RosTopic> getTopicList() {
-        // Get a list with all available topics from the ROS Master
-        ArrayList<RosTopic> topicList = new ArrayList<>();
-        if (nodeMainExecutorService == null || nodeConfiguration == null) {
-            return topicList;
-        }
-        MasterClient masterClient = new MasterClient(nodeMainExecutorService.getMasterUri());
-        GraphName graphName = GraphName.newAnonymous();
-        Response<List<TopicType>> responseList = masterClient.getTopicTypes(graphName);
-        for (TopicType result: responseList.getResult()) {
-            RosTopic rosTopic = new RosTopic();
-            rosTopic.name = result.getName();
-            rosTopic.type = result.getMessageType();
-            topicList.add(rosTopic);
-        }
-        return topicList;
-    }
+
 
 }

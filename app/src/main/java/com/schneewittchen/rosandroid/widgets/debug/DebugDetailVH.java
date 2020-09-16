@@ -1,6 +1,5 @@
 package com.schneewittchen.rosandroid.widgets.debug;
 
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -10,7 +9,7 @@ import android.widget.Spinner;
 import androidx.annotation.NonNull;
 
 import com.schneewittchen.rosandroid.R;
-import com.schneewittchen.rosandroid.model.entities.RosTopic;
+import com.schneewittchen.rosandroid.ros.Topic;
 import com.schneewittchen.rosandroid.widgets.base.BaseDetailViewHolder;
 import com.schneewittchen.rosandroid.widgets.base.DetailListener;
 
@@ -76,7 +75,7 @@ public class DebugDetailVH extends BaseDetailViewHolder<WidgetDebugEntity> {
     public void updateMessageType() {
         String currentTopicName = topicNameText.getSelectedItem().toString();
         String currentMessageType = "";
-        for (RosTopic rosTopic: mViewModel.getTopicList()) {
+        for (Topic rosTopic: mViewModel.getTopicList()) {
             if(rosTopic.name.equals(currentTopicName)) {
                 currentMessageType = rosTopic.type;
             }
@@ -89,7 +88,7 @@ public class DebugDetailVH extends BaseDetailViewHolder<WidgetDebugEntity> {
     public void updateSpinner() {
         // Get the list
         List<String> nameList = new ArrayList<>();
-        for (RosTopic rosTopic: mViewModel.getTopicList()) {
+        for (Topic rosTopic: mViewModel.getTopicList()) {
             nameList.add(rosTopic.name);
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.mViewModel.getApplication().getBaseContext(),

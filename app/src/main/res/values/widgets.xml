@@ -7,6 +7,7 @@
         <item>GridMap</item>
         <item>Camera</item>
         <item>Gps</item>
+        <item>CostMap</item>
     </string-array>
 
     <string-array name="widget_descr">
