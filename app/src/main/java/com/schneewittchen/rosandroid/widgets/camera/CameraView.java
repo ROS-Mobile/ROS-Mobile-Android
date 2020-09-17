@@ -88,7 +88,7 @@ public class CameraView extends BaseView {
         }
 
         // Draw Border
-        canvas.drawRoundRect(leftViz, topViz, width, height, cornerWidth, cornerWidth, paint);
+        canvas.drawRoundRect(leftViz, topViz, widthViz, heightViz, cornerWidth, cornerWidth, paint);
     }
 
     @Override

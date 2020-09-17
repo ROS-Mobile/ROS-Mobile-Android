@@ -1,14 +1,14 @@
 package com.schneewittchen.rosandroid.widgets.camera;
 
 import android.view.View;
-import android.widget.EditText;
-import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 
 import com.schneewittchen.rosandroid.R;
-import com.schneewittchen.rosandroid.widgets.base.BaseDetailViewHolder;
+import com.schneewittchen.rosandroid.widgets.base.BaseDetailSubscriberVH;
 import com.schneewittchen.rosandroid.widgets.base.DetailListener;
+
+import java.util.Arrays;
 
 
 /**
@@ -17,34 +17,15 @@ import com.schneewittchen.rosandroid.widgets.base.DetailListener;
  * @author Nils Rottmann
  * @version 1.0.0
  * @created on 13.05.20
- * @updated on
+ * @updated on 07.09.20
  * @modified by Nico Studt
+ * @updated on 17.09.20
+ * @modified by Nils Rottmann
  */
-public class CameraDetailVH extends BaseDetailViewHolder<WidgetCameraEntity> {
-
-    EditText topicNameText;
-    Spinner topicTypeText;
+public class CameraDetailVH extends BaseDetailSubscriberVH<WidgetCameraEntity> {
 
     public CameraDetailVH(@NonNull View view, DetailListener updateListener) {
         super(view, updateListener);
-    }
-
-
-    @Override
-    public void init(View view) {
-        topicNameText = view.findViewById(R.id.topicNameText);
-        topicTypeText = view.findViewById(R.id.topicTypeText);
-    }
-
-    @Override
-    public void bind(WidgetCameraEntity entity) {
-        topicNameText.setText(entity.subPubNoteEntity.topic);
-        this.entity.subPubNoteEntity.messageType =  topicTypeText.getSelectedItem().toString();
-    }
-
-    @Override
-    public void updateEntity() {
-        entity.subPubNoteEntity.messageType = topicTypeText.getSelectedItem().toString();
-        entity.subPubNoteEntity.topic = topicNameText.getText().toString();
+        this.setTopicTypeList(Arrays.asList(view.getResources().getStringArray(R.array.camera_msg_types)));
     }
 }

@@ -34,4 +34,14 @@
         <item>sensor_msgs/CompressedImage</item>
     </string-array>
 
+    <!-- GPS -->
+    <string-array name="gps_msg_types">
+        <item>sensor_msgs/NavSatFix</item>
+    </string-array>
+
+    <!-- GridMap -->
+    <string-array name="gridmap_msg_types">
+        <item>nav_msgs/OccupancyGrid</item>
+    </string-array>
+
 </resources>

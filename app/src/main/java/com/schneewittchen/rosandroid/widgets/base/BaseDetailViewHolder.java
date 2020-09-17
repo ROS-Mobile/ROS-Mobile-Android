@@ -1,7 +1,9 @@
 package com.schneewittchen.rosandroid.widgets.base;
 
 import android.content.Context;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -44,7 +46,6 @@ public class BaseDetailViewHolder<T extends BaseEntity> extends RecyclerView.Vie
     public LinearLayout detailContend;
     protected TextView title;
     protected ImageView openButton;
-    protected ImageButton updateButton;
     protected ImageButton renameButton;
     protected DetailListener updateListener;
     protected EditText xEdittext, yEdittext, widthEditText, heightEdittext;
@@ -61,7 +62,6 @@ public class BaseDetailViewHolder<T extends BaseEntity> extends RecyclerView.Vie
     private void baseInit(View view) {
         title = view.findViewById(R.id.title);
         detailContend = view.findViewById(R.id.detailContend);
-        updateButton = view.findViewById(R.id.update_button);
         openButton = view.findViewById(R.id.open_button);
         renameButton = view.findViewById(R.id.rename_button);
         viewBackground = view.findViewById(R.id.view_background);
@@ -81,10 +81,70 @@ public class BaseDetailViewHolder<T extends BaseEntity> extends RecyclerView.Vie
             }
         });
 
-        updateButton.setOnClickListener(v -> {
-            update();
+        xEdittext.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                try {
+                    entity.posX = Integer.parseInt(xEdittext.getText().toString());
+                    update();
+                } catch (Exception ignored) {
+                }
+            }
         });
-        updateButton.setEnabled(true);
+        yEdittext.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                try {
+                    entity.posY = Integer.parseInt(yEdittext.getText().toString());
+                    update();
+                } catch (Exception ignored) {
+                }
+            }
+        });
+        widthEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                try {
+                    entity.width = Integer.parseInt(widthEditText.getText().toString());
+                    update();
+                } catch (Exception ignored) {
+                }
+            }
+        });
+        heightEdittext.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                try {
+                    entity.height = Integer.parseInt(heightEdittext.getText().toString());
+                    update();
+                } catch (Exception ignored) {
+                }
+            }
+        });
 
         renameButton.setOnClickListener(v -> showRenameDialog());
     }
@@ -109,12 +169,7 @@ public class BaseDetailViewHolder<T extends BaseEntity> extends RecyclerView.Vie
     }
 
     private void baseUpdateEntity() {
-
         entity.name = title.getText().toString();
-        entity.posX = Integer.parseInt(xEdittext.getText().toString());
-        entity.posY = Integer.parseInt(yEdittext.getText().toString());
-        entity.width = Integer.parseInt(widthEditText.getText().toString());
-        entity.height = Integer.parseInt(heightEdittext.getText().toString());
     }
 
     private void showRenameDialog() {
