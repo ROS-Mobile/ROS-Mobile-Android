@@ -21,8 +21,8 @@ import com.schneewittchen.rosandroid.widgets.base.BaseView;
  * @author Nils Rottmann
  * @version 1.0.0
  * @created on 27.04.19
- * @updated on
- * @modified by
+ * @updated on 17.09.20
+ * @modified by Nils Rottmann
  */
 public class CameraView extends BaseView {
 
@@ -40,7 +40,6 @@ public class CameraView extends BaseView {
 
     public CameraView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-
         init();
     }
 
@@ -88,7 +87,6 @@ public class CameraView extends BaseView {
 
     @Override
     public void setData(BaseData data) {
-        // System.out.println("CameraView: SetData!");
         this.data = (CameraData) data;
         this.invalidate();
     }

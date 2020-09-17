@@ -6,6 +6,7 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 
+import com.schneewittchen.rosandroid.model.entities.WidgetEntity;
 
 
 /**
@@ -16,13 +17,15 @@ import androidx.annotation.Nullable;
  * @created on 15.03.20
  * @updated on 21.04.20
  * @modified by Nils Rottmann
+ * @updated on 17.09.20
+ * @modified by Nils Rottmann
  */
 public class BaseView extends View implements Interactable {
 
     DataListener dataListener;
     long dataId;
     Position position;
-    BaseEntity widgetEntity;
+    protected BaseEntity widgetEntity;
 
 
     public BaseView(Context context) {
@@ -82,6 +85,10 @@ public class BaseView extends View implements Interactable {
     public void setWidgetEntity(BaseEntity widgetEntity) {
         this.widgetEntity = widgetEntity;
         this.setDataId(widgetEntity.id);
+    }
+
+    public WidgetEntity getWidgetEntity() {
+        return this.widgetEntity;
     }
     
     public boolean sameWidget(BaseEntity other) {

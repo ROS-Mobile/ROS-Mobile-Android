@@ -23,8 +23,8 @@ import java.util.List;
  * @author Nils Rottmann
  * @version 1.0.0
  * @created on 17.08.20
- * @updated on
- * @modified by
+ * @updated on 17.09.20
+ * @modified by Nils Rottmann
  */
 public class WidgetDebugEntity extends BaseEntity {
 
@@ -36,6 +36,7 @@ public class WidgetDebugEntity extends BaseEntity {
         this.subPubNoteEntity = new SubPubNoteEntity();
         this.subPubNoteEntity.topic = "debug";
         this.subPubNoteEntity.messageType = Subscriber.TOPIC_MESSAGE_TYPE_WILDCARD;
+        this.numberMessages = 10;
     }
 
 
@@ -72,6 +73,8 @@ public class WidgetDebugEntity extends BaseEntity {
 
         this.subPubNoteEntity.topic = entity.subPubNoteEntity.topic;
         this.subPubNoteEntity.messageType = entity.subPubNoteEntity.messageType;
+        this.numberMessages = entity.numberMessages;
+        this.validMessage = entity.validMessage;
     }
 
     @Override
@@ -89,7 +92,9 @@ public class WidgetDebugEntity extends BaseEntity {
 
         WidgetDebugEntity other = (WidgetDebugEntity) widget;
 
-        return this.subPubNoteEntity.equals(other.subPubNoteEntity);
+        return this.subPubNoteEntity.equals(other.subPubNoteEntity)
+                && this.numberMessages == other.numberMessages
+                && this.validMessage == other.validMessage;
     }
 }
 

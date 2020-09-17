@@ -15,6 +15,8 @@ import androidx.room.PrimaryKey;
  * @created on 30.01.20
  * @updated on 27.04.20
  * @modified by Nils Rottmann
+ * @updated on 17.09.20
+ * @modified by Nils Rottmann
  */
 @Entity(tableName = "widget_table")
 public class WidgetEntity {
@@ -76,4 +78,12 @@ public class WidgetEntity {
 
     @ColumnInfo(name = "y_scale_right")
     public float yScaleRight;
+
+    // Debug specifics
+
+    @ColumnInfo(name = "number_messages")
+    public int numberMessages;
+
+    @ColumnInfo(name = "valid_message")
+    public boolean validMessage;
 }

@@ -35,6 +35,8 @@ import java.util.List;
  * @modified by Nico Studt
  * @updated on 27.07.20
  * @modified by Nils Rottmann
+ * @updated on 17.09.20
+ * @modified by Nils Rottmann
  */
 public class BaseDetailViewHolder<T extends BaseEntity> extends RecyclerView.ViewHolder {
 
@@ -87,7 +89,7 @@ public class BaseDetailViewHolder<T extends BaseEntity> extends RecyclerView.Vie
         renameButton.setOnClickListener(v -> showRenameDialog());
     }
 
-    private void update() {
+    protected void update() {
         baseUpdateEntity();
         updateEntity();
 

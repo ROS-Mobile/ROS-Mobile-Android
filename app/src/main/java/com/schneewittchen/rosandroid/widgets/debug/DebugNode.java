@@ -6,6 +6,7 @@ import com.schneewittchen.rosandroid.widgets.base.BaseData;
 import com.schneewittchen.rosandroid.widgets.base.BaseNode;
 
 import org.ros.internal.message.Message;
+import org.ros.internal.message.RawMessage;
 import org.ros.internal.node.client.MasterClient;
 import org.ros.internal.node.response.Response;
 import org.ros.master.client.TopicType;
@@ -14,6 +15,8 @@ import org.ros.node.topic.Subscriber;
 
 import java.util.List;
 
+import std_msgs.Empty;
+
 
 /**
  * TODO: Description
@@ -21,8 +24,8 @@ import java.util.List;
  * @author Nils Rottmann
  * @version 1.0.0
  * @created on 17.08.20
- * @updated on
- * @modified by
+ * @updated on 17.09.20
+ * @modified by Nils Rottmann
  */
 
 public class DebugNode extends BaseNode {
@@ -33,6 +36,9 @@ public class DebugNode extends BaseNode {
     public void onStart(ConnectedNode connectedNode) {
 
         try{
+            widget.validMessage = true;
+            this.setWidget(widget);
+
             Subscriber<Message> subscriber = connectedNode.newSubscriber(
                     widget.subPubNoteEntity.topic,
                     widget.subPubNoteEntity.messageType);
@@ -42,8 +48,9 @@ public class DebugNode extends BaseNode {
                 data.setId(widget.id);
                 listener.onNewData(data);
             });
-
         } catch(Exception e) {
+            widget.validMessage = false;
+            this.setWidget(widget);
             e.printStackTrace();
         }
 

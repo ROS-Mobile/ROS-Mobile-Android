@@ -36,6 +36,8 @@ import java.util.List;
  * @created on 18.10.19
  * @updated on 22.04.20
  * @modified by Nils Rottmann
+ * @updated on 17.09.20
+ * @modified by Nils Rottmann
  */
 public class WidgetGroup extends ViewGroup {
 
@@ -206,8 +208,8 @@ public class WidgetGroup extends ViewGroup {
             if (view.sameWidget(entity)) {
                 Position position = new Position(entity.posX, entity.posY,
                         entity.width, entity.height);
-
                 view.setPosition(position);
+                view.setWidgetEntity(entity);
                 return;
             }
         }
