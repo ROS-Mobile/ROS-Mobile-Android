@@ -169,14 +169,11 @@ public class SshRepositoryImpl implements SshRepository {
 
     @Override
     public void sendMessage(String message) {
-        new Thread((new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    commander.println(message);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        new Thread((() -> {
+            try {
+                commander.println(message);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         })).start();
     }

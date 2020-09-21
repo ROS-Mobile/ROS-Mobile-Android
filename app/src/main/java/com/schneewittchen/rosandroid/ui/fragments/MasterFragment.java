@@ -18,7 +18,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.databinding.FragmentMasterBinding;
-import com.schneewittchen.rosandroid.model.repositories.ConnectionType;
+import com.schneewittchen.rosandroid.model.rosRepo.connection.ConnectionType;
 import com.schneewittchen.rosandroid.viewmodel.MasterViewModel;
 
 

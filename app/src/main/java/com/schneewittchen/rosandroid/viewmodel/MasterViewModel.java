@@ -2,9 +2,7 @@ package com.schneewittchen.rosandroid.viewmodel;
 
 import android.app.Application;
 import android.content.Context;
-import android.icu.util.ICUUncheckedIOException;
 import android.net.wifi.WifiManager;
-import android.os.Handler;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -13,7 +11,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.schneewittchen.rosandroid.domain.RosDomain;
 import com.schneewittchen.rosandroid.model.entities.MasterEntity;
-import com.schneewittchen.rosandroid.model.repositories.ConnectionType;
+import com.schneewittchen.rosandroid.model.rosRepo.connection.ConnectionType;
 import com.schneewittchen.rosandroid.utility.Utils;
 
 

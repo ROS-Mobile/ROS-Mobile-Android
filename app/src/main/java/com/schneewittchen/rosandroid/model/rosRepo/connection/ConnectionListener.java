@@ -1,4 +1,4 @@
-package com.schneewittchen.rosandroid.ros;
+package com.schneewittchen.rosandroid.model.rosRepo.connection;
 
 /**
  * TODO: Description

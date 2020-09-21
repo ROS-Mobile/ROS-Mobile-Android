@@ -25,6 +25,7 @@ public class Topic {
         this.type = type;
     }
 
+
     public void setName(String newName) {
         this.name = newName;
     }

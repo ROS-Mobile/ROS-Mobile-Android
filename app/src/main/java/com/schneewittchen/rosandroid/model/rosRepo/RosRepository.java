@@ -1,4 +1,4 @@
-package com.schneewittchen.rosandroid.model.repositories;
+package com.schneewittchen.rosandroid.model.rosRepo;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -14,11 +14,12 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListUpdateCallback;
 
 import com.schneewittchen.rosandroid.model.entities.MasterEntity;
+import com.schneewittchen.rosandroid.model.rosRepo.connection.ConnectionType;
 import com.schneewittchen.rosandroid.ros.Topic;
-import com.schneewittchen.rosandroid.ros.ConnectionCheckTask;
-import com.schneewittchen.rosandroid.ros.ConnectionListener;
-import com.schneewittchen.rosandroid.ros.NodeMainExecutorService;
-import com.schneewittchen.rosandroid.ros.NodeMainExecutorServiceListener;
+import com.schneewittchen.rosandroid.model.rosRepo.connection.ConnectionCheckTask;
+import com.schneewittchen.rosandroid.model.rosRepo.connection.ConnectionListener;
+import com.schneewittchen.rosandroid.model.rosRepo.nodes.NodeMainExecutorService;
+import com.schneewittchen.rosandroid.model.rosRepo.nodes.NodeMainExecutorServiceListener;
 import com.schneewittchen.rosandroid.ui.helper.WidgetDiffCallback;
 import com.schneewittchen.rosandroid.utility.Utils;
 import com.schneewittchen.rosandroid.widgets.base.BaseData;
@@ -56,14 +57,11 @@ public class RosRepository implements DataListener {
     private static RosRepository instance;
 
     private WeakReference<Context> contextReference;
-
     private MasterEntity master;
     private List<BaseEntity> currentWidgets;
     private HashMap<Long, BaseNode> currentNodes;
     private MutableLiveData<ConnectionType> rosConnected;
-
     private MutableLiveData<BaseData> receivedData;
-
     private NodeMainExecutorService nodeMainExecutorService;
     private NodeConfiguration nodeConfiguration;
 

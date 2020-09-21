@@ -1,4 +1,6 @@
-package com.schneewittchen.rosandroid.ros;
+package com.schneewittchen.rosandroid.model.rosRepo.nodes;
+
+import com.schneewittchen.rosandroid.ros.Topic;
 
 import java.util.List;
 
