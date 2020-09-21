@@ -151,8 +151,6 @@ public class BaseDetailViewHolder<T extends BaseEntity> extends RecyclerView.Vie
 
     protected void update() {
         baseUpdateEntity();
-        updateEntity();
-
         updateListener.onDetailsChanged(entity);
     }
 

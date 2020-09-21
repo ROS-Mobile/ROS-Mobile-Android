@@ -59,7 +59,11 @@ public class DebugData extends BaseData {
             for (Object o: ((ListField) field).getValue()) {
                 String listPrefix = StringUtils.repeat("\t", level+1) + "-";
                 content.add(listPrefix);
-                msgToString((Message)o, level + 2);
+                if (o instanceof String) {
+                    content.add((String) o);
+                } else if (o instanceof Message) {
+                    msgToString((Message) o, level + 2);
+                }
             }
 
         }else if (value instanceof Field) {

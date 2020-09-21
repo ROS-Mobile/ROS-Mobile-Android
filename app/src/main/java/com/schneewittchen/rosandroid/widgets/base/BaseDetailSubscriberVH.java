@@ -69,7 +69,7 @@ public class BaseDetailSubscriberVH<W extends BaseEntity> extends BaseDetailView
 
             @Override
             public void onSpinnerClosed() {
-                update();
+                updateEntity();
             }
         });
 
@@ -80,7 +80,7 @@ public class BaseDetailSubscriberVH<W extends BaseEntity> extends BaseDetailView
 
             @Override
             public void onSpinnerClosed() {
-                update();
+                updateEntity();
             }
         });
     }
@@ -102,6 +102,7 @@ public class BaseDetailSubscriberVH<W extends BaseEntity> extends BaseDetailView
         if (topicNameText.getSelectedItem() != null) {
             entity.subPubNoteEntity.topic = topicNameText.getSelectedItem().toString();
         }
+        this.update();
     }
 
     void updateTopicNameSpinner() {
