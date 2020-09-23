@@ -1,4 +1,4 @@
-package com.schneewittchen.rosandroid.model.rosRepo.nodes;
+package com.schneewittchen.rosandroid.model.rosRepo.node;
 
 import org.ros.internal.message.Message;
 import org.ros.node.ConnectedNode;

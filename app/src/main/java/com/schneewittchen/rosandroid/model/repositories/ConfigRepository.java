@@ -8,6 +8,7 @@ import com.schneewittchen.rosandroid.model.entities.ConfigEntity;
 import com.schneewittchen.rosandroid.model.entities.MasterEntity;
 import com.schneewittchen.rosandroid.model.entities.SSHEntity;
 import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
+import com.schneewittchen.rosandroid.widgets.test.BaseWidget;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
@@ -66,13 +67,13 @@ public interface ConfigRepository {
 
     void createWidget(String widgetType);
 
-    void deleteWidget(BaseEntity widget);
+    void deleteWidget(BaseWidget widget);
 
-    void addWidget(BaseEntity widget);
+    void addWidget(BaseWidget widget);
 
-    void updateWidget(BaseEntity widget);
+    void updateWidget(BaseWidget widget);
 
-    LiveData<List<BaseEntity>> getWidgets(long id);
+    LiveData<List<BaseWidget>> getWidgets(long id);
 
 
     void updateSSH(SSHEntity ssh);

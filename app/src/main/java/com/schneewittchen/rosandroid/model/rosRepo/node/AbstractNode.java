@@ -1,4 +1,4 @@
-package com.schneewittchen.rosandroid.model.rosRepo.nodes;
+package com.schneewittchen.rosandroid.model.rosRepo.node;
 
 import android.util.Log;
 
@@ -22,12 +22,16 @@ public abstract class AbstractNode implements NodeMain {
 
     public static final String TAG = AbstractNode.class.getSimpleName();
 
-    Topic topic;
+    private Topic topic;
 
 
     public abstract void onStart(ConnectedNode parentNode);
 
 
+    private Topic getTopic() {
+        return this.topic;
+    }
+    
     @Override
     public GraphName getDefaultNodeName() {
         return GraphName.of(topic.getName());

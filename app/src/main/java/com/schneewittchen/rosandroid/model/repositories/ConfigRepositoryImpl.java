@@ -13,7 +13,7 @@ import com.schneewittchen.rosandroid.model.entities.ConfigEntity;
 import com.schneewittchen.rosandroid.model.entities.MasterEntity;
 import com.schneewittchen.rosandroid.model.entities.SSHEntity;
 import com.schneewittchen.rosandroid.model.entities.WidgetCountEntity;
-import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
+import com.schneewittchen.rosandroid.widgets.test.BaseWidget;
 
 import java.lang.reflect.Constructor;
 import java.util.List;
@@ -23,7 +23,7 @@ import java.util.List;
  * TODO: Description
  *
  * @author Nico Studt
- * @version 1.0.6
+ * @version 1.0.7
  * @created on 26.01.20
  * @updated on 20.05.20
  * @modified by Nico Studt
@@ -31,10 +31,14 @@ import java.util.List;
  * @modified by Nils Rottmann
  * @updated on 27.07.20
  * @modified by Nils Rottmann
+ * @updated on 23.09.20
+ * @modified by Nico Studt
  */
 public class ConfigRepositoryImpl implements ConfigRepository {
 
     private static final String TAG = ConfigRepositoryImpl.class.getSimpleName();
+    private static final String WIDGET_PREFIX = "com.schneewittchen.rosandroid.widgets.";
+
     private static ConfigRepositoryImpl mInstance;
 
     private ConfigDatabase mConfigDatabase;
@@ -152,18 +156,17 @@ public class ConfigRepositoryImpl implements ConfigRepository {
         if(widgetCount != null) {
             indexCurrentWidget = widgetCount.count;
         }
-        
-        String prefix = "com.schneewittchen.rosandroid.widgets.";
-        String className = prefix + widgetType.toLowerCase() + ".Widget" + widgetType + "Entity";
+
+        String className = WIDGET_PREFIX + widgetType.toLowerCase() + ".Widget" + widgetType + "Entity";
 
         try {
             Class<?> subclass = Class.forName(className);
-            Constructor<?> ctor = subclass.getConstructor();
-            BaseEntity widget = (BaseEntity) ctor.newInstance();
+            Constructor<?> constructor = subclass.getConstructor();
+            BaseWidget widget = (BaseWidget) constructor.newInstance();
 
             widget.configId = mCurrentConfigId.getValue();
-            widget.creationTime = System.nanoTime();
-            widget.name = widget.getName() + indexCurrentWidget;
+            widget.creationTime = System.currentTimeMillis();
+            widget.name = widgetType + " " + indexCurrentWidget;
 
             mConfigDatabase.addWidget(widget);
             Log.i(TAG, "Widget added to database: " + widget);
@@ -175,24 +178,24 @@ public class ConfigRepositoryImpl implements ConfigRepository {
     }
 
     @Override
-    public void addWidget(BaseEntity widget) {
+    public void addWidget(BaseWidget widget) {
         mConfigDatabase.addWidget(widget);
     }
 
     @Override
-    public void updateWidget(BaseEntity widget) {
+    public void updateWidget(BaseWidget widget) {
         mConfigDatabase.updateWidget(widget);
     }
 
     @Override
-    public void deleteWidget(BaseEntity widget) {
+    public void deleteWidget(BaseWidget widget) {
         mConfigDatabase.deleteWidget(widget);
 
         Log.i(TAG, "Widget deleted");
     }
 
     @Override
-    public LiveData<List<BaseEntity>> getWidgets(long id) {
+    public LiveData<List<BaseWidget>> getWidgets(long id) {
         return mConfigDatabase.getWidgets(id);
     }
 

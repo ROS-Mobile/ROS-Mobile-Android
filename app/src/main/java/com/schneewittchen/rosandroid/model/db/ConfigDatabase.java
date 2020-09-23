@@ -1,15 +1,11 @@
 package com.schneewittchen.rosandroid.model.db;
 
 import android.content.Context;
-import android.content.res.Resources;
-import android.os.AsyncTask;
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
-import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.model.entities.ConfigEntity;
@@ -19,18 +15,16 @@ import com.schneewittchen.rosandroid.model.entities.WidgetCountEntity;
 import com.schneewittchen.rosandroid.model.entities.WidgetEntity;
 import com.schneewittchen.rosandroid.utility.Constants;
 import com.schneewittchen.rosandroid.utility.LambdaTask;
-import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
+import com.schneewittchen.rosandroid.widgets.test.BaseWidget;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 
 /**
  * TODO: Description
  *
  * @author Nico Studt
- * @version 1.0.3
+ * @version 1.0.4
  * @created on 31.01.20
  * @updated on 15.05.20
  * @modified by Nico Studt
@@ -40,24 +34,23 @@ import java.util.Random;
  * @modified by Nico Studt
  * @updated on 27.07.20
  * @modified by Nils Rottmann
+ * @updated on 23.09.20
+ * @modified by Nico Studt
  */
 @Database(entities =
         {ConfigEntity.class, MasterEntity.class, WidgetEntity.class, SSHEntity.class, WidgetCountEntity.class},
-        version = 2,
-        exportSchema = false)
+        version = 3, exportSchema = false)
 public abstract class ConfigDatabase extends RoomDatabase {
-
-    // Static instance -----------------------------------------------------------------------------
 
     private static final String TAG = ConfigDatabase.class.getCanonicalName();
     private static ConfigDatabase instance;
     private static String[] widgetNames;
 
-    public static synchronized ConfigDatabase getInstance(Context context) {
+
+    public static synchronized ConfigDatabase getInstance(final Context context) {
         if (instance == null){
             instance = Room.databaseBuilder(context.getApplicationContext(),
                     ConfigDatabase.class, Constants.dbName)
-                    .addCallback(sRoomDatabaseCallback)
                     .fallbackToDestructiveMigration()
                     .build();
         }
@@ -129,126 +122,41 @@ public abstract class ConfigDatabase extends RoomDatabase {
         return sshDao().getSSH(id);
     }
 
+
     // Widget methods ------------------------------------------------------------------------------
 
-    public void addWidget(WidgetEntity widget) {
-        new LambdaTask(() -> widgetDao().insert(widget)).execute();
-        new LambdaTask(() -> widgetCountDao().incrementValue(widget.configId, widget.type)).execute();
+    public void addWidget(BaseWidget widget) {
+        new LambdaTask(() ->
+                widgetDao().insert(widget))
+                .execute();
+        new LambdaTask(() ->
+                widgetCountDao()
+                        .incrementValue(widget.configId, widget.getClass().getSimpleName()))
+                .execute();
+
     }
 
-    public void updateWidget(WidgetEntity widget) {
-        new LambdaTask(() -> widgetDao().update(widget)).execute();
+    public void updateWidget(BaseWidget widget) {
+        new LambdaTask(() ->
+                widgetDao().update(widget))
+                .execute();
     }
 
-    public void deleteWidget(WidgetEntity widget) {
-        new LambdaTask(() -> {
-            int id = widgetDao().delete(widget);
-            // System.out.println("Id deleted: " + id);
-        }).execute();
+    public void deleteWidget(BaseWidget widget) {
+        new LambdaTask(() ->
+                widgetDao().delete(widget))
+                .execute();
     }
 
-    public LiveData<List<BaseEntity>> getWidgets(long id) {
+    public LiveData<List<BaseWidget>> getWidgets(long id) {
         return widgetDao().getWidgets(id);
     }
 
+
     // Widget Count methods ------------------------------------------------------------------------
 
-    public WidgetCountEntity getWidgetCount(long id, String type) {
-        return widgetCountDao().getWidgetCountEntity(id, type);
+    public WidgetCountEntity getWidgetCount(long id, String className) {
+        return widgetCountDao().getWidgetCountEntity(id, className);
     }
 
-
-    // General database methods --------------------------------------------------------------------
-    // Populate database
-    private static RoomDatabase.Callback sRoomDatabaseCallback =
-            new RoomDatabase.Callback(){
-
-                @Override
-                public void onCreate(@NonNull SupportSQLiteDatabase db) {
-                    super.onCreate(db);
-                    // new PopulateDbAsync(instance).execute();
-                }
-
-                /*
-                @Override
-                public void onOpen (@NonNull SupportSQLiteDatabase db){
-                    super.onOpen(db);
-                    new PopulateDbAsync(instance).execute();
-                }
-                */
-
-            };
-
-    /**
-     * Delete and Populate the database in the background.
-     */
-    private static class PopulateDbAsync extends AsyncTask<Void, Void, Void> {
-
-        // TODO: Delete this and run only if new created db
-        private final ConfigDao configDao;
-        private final MasterDao masterDao;
-        private final SSHDao sshDao;
-        private final WidgetDao widgetDao;
-        private final WidgetCountDao widgetCountDao;
-
-
-        PopulateDbAsync(ConfigDatabase db) {
-            configDao = db.configDao();
-            masterDao = db.masterDao();
-            sshDao = db.sshDao();
-            widgetDao = db.widgetDao();
-            widgetCountDao = db.widgetCountDao();
-        }
-
-
-        @Override
-        protected Void doInBackground(final Void... params) {
-            // Start the app with a clean database every time.
-            // Not needed if you only populate the database
-            // when it is first created
-            configDao.deleteAll();
-            masterDao.deleteAll();
-            sshDao.deleteAll();
-            widgetDao.deleteAll();
-            widgetCountDao.deleteAll();
-
-            // Create master data
-            MasterEntity master = new MasterEntity();
-
-            master.ip = "192.168.0.0";
-            master.port = 11311;
-
-            // Create ssh
-            SSHEntity ssh = new SSHEntity();
-
-            ssh.ip = "192.168.1.1";
-            ssh.port = 22;
-            ssh.username = "pi";
-            ssh.password = "raspberry";
-
-            // Create widgetCount
-            ArrayList<WidgetCountEntity> widgetCountEntityList = new ArrayList<WidgetCountEntity>();
-            for (int i=0; i<widgetNames.length; i++) {
-                WidgetCountEntity widgetCountEntity = new WidgetCountEntity();
-                widgetCountEntity.type = widgetNames[i];
-                widgetCountEntity.count = 0;
-                widgetCountEntityList.add(widgetCountEntity);
-            }
-
-            // Create configuration data
-            ConfigEntity newConfig = new ConfigEntity();
-
-            newConfig.creationTime = System.nanoTime();
-            newConfig.lastUsed = System.nanoTime();
-            newConfig.name = "Unnamed Config";
-            newConfig.isFavourite = false;
-            newConfig.master = master;
-            newConfig.ssh = ssh;
-            newConfig.widgetCounts = widgetCountEntityList;
-
-            configDao.insertComplete(newConfig);
-
-            return null;
-        }
-    }
 }

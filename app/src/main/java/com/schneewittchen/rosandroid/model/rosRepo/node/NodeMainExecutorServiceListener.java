@@ -14,7 +14,7 @@
  * the License.
  */
 
-package com.schneewittchen.rosandroid.model.rosRepo.nodes;
+package com.schneewittchen.rosandroid.model.rosRepo.node;
 
 /**
  * TODO: Description

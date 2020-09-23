@@ -2,6 +2,7 @@ package com.schneewittchen.rosandroid.model.entities;
 
 import android.util.Log;
 
+import com.google.gson.GsonBuilder;
 import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
 
 import java.lang.reflect.Constructor;
@@ -21,7 +22,7 @@ import java.util.List;
  */
 public class WidgetFactory {
 
-    private static final String TAG = WidgetFactory.class.getCanonicalName();
+    private static final String TAG = WidgetFactory.class.getSimpleName();
     private static final String WIDGET_PATH = "com.schneewittchen.rosandroid.widgets.";
 
 

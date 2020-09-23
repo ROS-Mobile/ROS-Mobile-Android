@@ -4,7 +4,6 @@ import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
-import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
@@ -14,7 +13,7 @@ import com.schneewittchen.rosandroid.model.entities.ConfigEntity;
 import com.schneewittchen.rosandroid.model.entities.MasterEntity;
 import com.schneewittchen.rosandroid.model.entities.SSHEntity;
 import com.schneewittchen.rosandroid.model.entities.WidgetCountEntity;
-import com.schneewittchen.rosandroid.model.entities.WidgetEntity;
+import com.schneewittchen.rosandroid.widgets.test.BaseWidget;
 
 import java.util.List;
 
@@ -28,6 +27,8 @@ import java.util.List;
  * @updated on 04.06.20
  * @modified by Nils Rottmann
  * @updated on 27.07.20
+ * @modified by Nils Rottmann
+ * @updated on 23.09.20
  * @modified by Nils Rottmann
  */
 @Dao
@@ -69,7 +70,7 @@ public abstract class ConfigDao implements BaseDao<ConfigEntity>{
             }
         }
 
-        for (WidgetEntity widget: config.widgets) {
+        for (BaseWidget widget: config.widgets) {
             insert(widget);
         }
     }
@@ -90,11 +91,12 @@ public abstract class ConfigDao implements BaseDao<ConfigEntity>{
     abstract void deleteAll();
 
 
+    // TODO: Check double insert of widgets etc ???
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract void insert(MasterEntity master);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract void insert(WidgetEntity widgetEntity);
+    abstract void insert(BaseWidget widgetEntity);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract void insert(WidgetCountEntity widgetCountEntity);

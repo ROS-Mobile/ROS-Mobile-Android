@@ -19,7 +19,7 @@ public interface BaseDao<T> {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insert(T obj);
 
-    @Update
+    @Update(onConflict = OnConflictStrategy.REPLACE)
     void update(T obj);
 
     @Delete

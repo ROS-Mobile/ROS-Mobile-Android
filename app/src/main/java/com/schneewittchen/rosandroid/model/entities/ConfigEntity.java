@@ -7,6 +7,7 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.schneewittchen.rosandroid.R;
+import com.schneewittchen.rosandroid.widgets.test.BaseWidget;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,12 +41,14 @@ public class ConfigEntity {
     public SSHEntity ssh;
 
     @Ignore
-    public ArrayList<WidgetEntity> widgets;
+    public ArrayList<BaseWidget> widgets;
 
     @Ignore
     public ArrayList<WidgetCountEntity> widgetCounts;
 
+
     public ConfigEntity() {
         widgets = new ArrayList<>();
+        widgetCounts = new ArrayList<>();
     }
 }

@@ -15,11 +15,13 @@ import androidx.recyclerview.widget.ListUpdateCallback;
 
 import com.schneewittchen.rosandroid.model.entities.MasterEntity;
 import com.schneewittchen.rosandroid.model.rosRepo.connection.ConnectionType;
+import com.schneewittchen.rosandroid.model.rosRepo.message.RosMessage;
+import com.schneewittchen.rosandroid.model.rosRepo.node.AbstractNode;
 import com.schneewittchen.rosandroid.ros.Topic;
 import com.schneewittchen.rosandroid.model.rosRepo.connection.ConnectionCheckTask;
 import com.schneewittchen.rosandroid.model.rosRepo.connection.ConnectionListener;
-import com.schneewittchen.rosandroid.model.rosRepo.nodes.NodeMainExecutorService;
-import com.schneewittchen.rosandroid.model.rosRepo.nodes.NodeMainExecutorServiceListener;
+import com.schneewittchen.rosandroid.model.rosRepo.node.NodeMainExecutorService;
+import com.schneewittchen.rosandroid.model.rosRepo.node.NodeMainExecutorServiceListener;
 import com.schneewittchen.rosandroid.ui.helper.WidgetDiffCallback;
 import com.schneewittchen.rosandroid.utility.Utils;
 import com.schneewittchen.rosandroid.widgets.base.BaseData;
@@ -59,7 +61,7 @@ public class RosRepository implements DataListener {
     private WeakReference<Context> contextReference;
     private MasterEntity master;
     private List<BaseEntity> currentWidgets;
-    private HashMap<Long, BaseNode> currentNodes;
+    private HashMap<Topic, AbstractNode> currentNodes;
     private MutableLiveData<ConnectionType> rosConnected;
     private MutableLiveData<BaseData> receivedData;
     private NodeMainExecutorService nodeMainExecutorService;
@@ -198,8 +200,8 @@ public class RosRepository implements DataListener {
      * Find the associated node and inform it about the changed data.
      * @param data Widget data that has changed
      */
-    public void informWidgetDataChange(BaseData data) {
-        BaseNode node = currentNodes.get(data.id);
+    public void informWidgetDataChange(RosMessage data) {
+        AbstractNode node = currentNodes.get(data.getTopic());
 
         if(node != null) {
             node.onNewData(data);
@@ -237,7 +239,7 @@ public class RosRepository implements DataListener {
      * The node will be created and subsequently registered.
      * @param widget Widget to be added
      */
-    private void addNode(BaseEntity  widget) {
+    private void addNode(BaseEntity widget) {
         // Create node main from widget
         Class<? extends BaseNode> clazz = widget.getNodeType();
 
@@ -246,7 +248,7 @@ public class RosRepository implements DataListener {
             BaseNode node = cons.newInstance();
             node.setWidget(widget);
             node.setListener(this);
-            currentNodes.put(widget.id, node);
+            currentNodes.put(widget.get, node);
             registerNode(node);
 
         } catch (Exception e) {
@@ -261,7 +263,8 @@ public class RosRepository implements DataListener {
      */
     private void updateNode(BaseEntity widget) {
         Log.i(TAG, "Update Node: " + widget.name);
-        BaseNode node = currentNodes.get(widget.id);
+        Topic topic = new Topic(widget.subPubNoteEntity.topic, widget.subPubNoteEntity.messageType);
+        AbstractNode node = currentNodes.get(topic);
         assert node != null;
 
         node.setWidget(widget);
@@ -272,9 +275,10 @@ public class RosRepository implements DataListener {
      * Remove a widget and its associated Node in the ROS graph.
      * @param widget Widget to remove
      */
-    private void removeNode(BaseEntity  widget) {
-        BaseNode node = currentNodes.get(widget.id);
-        this.currentNodes.remove(widget.id);
+    private void removeNode(BaseEntity widget) {
+        Topic topic = new Topic(widget.subPubNoteEntity.topic, widget.subPubNoteEntity.messageType);
+        AbstractNode node = currentNodes.get(topic);
+        this.currentNodes.remove(topic);
         this.unregisterNode(node);
     }
 
@@ -282,7 +286,7 @@ public class RosRepository implements DataListener {
      * Connect the node to ROS node graph if a connection to the ROS master is running.
      * @param node Node to connect
      */
-    private void registerNode(BaseNode node) {
+    private void registerNode(AbstractNode node) {
         Log.i(TAG, "register Node");
 
         if (rosConnected.getValue() != ConnectionType.CONNECTED) {
@@ -297,7 +301,7 @@ public class RosRepository implements DataListener {
      * Disconnect the node from ROS node graph if a connection to the ROS master is running.
      * @param node Node to disconnect
      */
-    private void unregisterNode(BaseNode node) {
+    private void unregisterNode(AbstractNode node) {
         Log.i(TAG, "unregister Node");
 
         if (rosConnected.getValue() != ConnectionType.CONNECTED) {
@@ -309,13 +313,13 @@ public class RosRepository implements DataListener {
     }
 
     private void registerAllNodes() {
-        for (BaseNode node: currentNodes.values()) {
+        for (AbstractNode node: currentNodes.values()) {
             this.registerNode(node);
         }
     }
 
     private void unregisterAllNodes() {
-        for (BaseNode node: currentNodes.values()) {
+        for (AbstractNode node: currentNodes.values()) {
             this.unregisterNode(node);
         }
     }
@@ -325,7 +329,7 @@ public class RosRepository implements DataListener {
      * unregistered from the service and reregistered due to the implementation of ROS.
      * @param node Node main to be reregistered
      */
-    private void reregisterNode(BaseNode node) {
+    private void reregisterNode(AbstractNode node) {
         Log.i(TAG, "Reregister Node");
 
         unregisterNode(node);
