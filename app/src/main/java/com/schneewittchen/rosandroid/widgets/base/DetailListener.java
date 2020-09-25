@@ -1,6 +1,8 @@
 package com.schneewittchen.rosandroid.widgets.base;
 
 
+import com.schneewittchen.rosandroid.widgets.test.BaseWidget;
+
 /**
  * TODO: Description
  *
@@ -12,5 +14,5 @@ package com.schneewittchen.rosandroid.widgets.base;
  */
 public interface DetailListener {
 
-    void onDetailsChanged(BaseEntity widgetEntity);
+    void onDetailsChanged(BaseWidget widgetEntity);
 }

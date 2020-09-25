@@ -6,6 +6,7 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 
+import com.schneewittchen.rosandroid.widgets.test.BaseWidget;
 
 
 /**
@@ -22,7 +23,7 @@ public class BaseView extends View implements Interactable {
     DataListener dataListener;
     long dataId;
     Position position;
-    BaseEntity widgetEntity;
+    BaseWidget widgetEntity;
 
 
     public BaseView(Context context) {
@@ -79,12 +80,15 @@ public class BaseView extends View implements Interactable {
         return this.position;
     }
 
-    public void setWidgetEntity(BaseEntity widgetEntity) {
+    public void setWidgetEntity(BaseWidget widgetEntity) {
+        Position position = new Position(widgetEntity.posX, widgetEntity.posY,
+                                        widgetEntity.width, widgetEntity.height);
         this.widgetEntity = widgetEntity;
         this.setDataId(widgetEntity.id);
+        this.setPosition(position);
     }
     
-    public boolean sameWidget(BaseEntity other) {
+    public boolean sameWidget(BaseWidget other) {
         return this.dataId == other.id;
     }
 }

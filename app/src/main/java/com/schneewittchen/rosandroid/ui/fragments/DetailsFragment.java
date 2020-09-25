@@ -26,7 +26,9 @@ import com.schneewittchen.rosandroid.ui.helper.WidgetDetailListAdapter;
 import com.schneewittchen.rosandroid.viewmodel.DetailsViewModel;
 import com.schneewittchen.rosandroid.widgets.base.BaseDetailViewHolder;
 import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
+import com.schneewittchen.rosandroid.widgets.base.BaseView;
 import com.schneewittchen.rosandroid.widgets.base.DetailListener;
+import com.schneewittchen.rosandroid.widgets.test.BaseWidget;
 
 import org.ros.internal.node.response.Response;
 import org.ros.master.client.TopicType;
@@ -153,21 +155,18 @@ public class DetailsFragment extends Fragment implements RecyclerItemTouchHelper
 
     private void deleteWidget(int index) {
         // get the removed item name to display it in snack bar
-        final BaseEntity deletedWidget = mAdapter.getItem(index);
-
-        String name = deletedWidget.getName();
+        final BaseWidget deletedWidget = mAdapter.getItem(index);
 
         // remove the item from recycler view
         //mAdapter.removeItem(viewHolder.getAdapterPosition());
         mViewModel.deleteWidget(deletedWidget);
 
         // showing snack bar with Undo option
-        String undoText = getString(R.string.widget_undo, name);
+        String undoText = getString(R.string.widget_undo, deletedWidget.name);
         Snackbar snackbar = Snackbar.make(coordinatorLayout, undoText, Snackbar.LENGTH_LONG);
 
         snackbar.setAction("UNDO", view -> {
             // undo is selected, restore the deleted item
-            //mAdapter.restoreItem(deletedItem, deletedIndex);
             mViewModel.restoreWidget();
         });
 
@@ -176,7 +175,7 @@ public class DetailsFragment extends Fragment implements RecyclerItemTouchHelper
     }
 
     @Override
-    public void onDetailsChanged(BaseEntity widgetEntity) {
+    public void onDetailsChanged(BaseWidget widgetEntity) {
         Log.i(TAG, "Changed: " + widgetEntity.name + " " + widgetEntity.posX);
         mViewModel.updateWidget(widgetEntity);
     }

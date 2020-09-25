@@ -13,6 +13,8 @@ import com.schneewittchen.rosandroid.model.entities.ConfigEntity;
 import com.schneewittchen.rosandroid.model.entities.MasterEntity;
 import com.schneewittchen.rosandroid.model.entities.SSHEntity;
 import com.schneewittchen.rosandroid.model.entities.WidgetCountEntity;
+import com.schneewittchen.rosandroid.utility.Constants;
+import com.schneewittchen.rosandroid.utility.Utils;
 import com.schneewittchen.rosandroid.widgets.test.BaseWidget;
 
 import java.lang.reflect.Constructor;
@@ -157,23 +159,23 @@ public class ConfigRepositoryImpl implements ConfigRepository {
             indexCurrentWidget = widgetCount.count;
         }
 
-        String className = WIDGET_PREFIX + widgetType.toLowerCase() + ".Widget" + widgetType + "Entity";
+        // Create actual widget object
+        String classPath = String.format(Constants.ENTITY_FORMAT, widgetType.toLowerCase(), widgetType);
+        Object object = Utils.getObjectFromClassName(classPath);
 
-        try {
-            Class<?> subclass = Class.forName(className);
-            Constructor<?> constructor = subclass.getConstructor();
-            BaseWidget widget = (BaseWidget) constructor.newInstance();
-
-            widget.configId = mCurrentConfigId.getValue();
-            widget.creationTime = System.currentTimeMillis();
-            widget.name = widgetType + " " + indexCurrentWidget;
-
-            mConfigDatabase.addWidget(widget);
-            Log.i(TAG, "Widget added to database: " + widget);
-
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (!(object instanceof BaseWidget)) {
+            Log.i(TAG, "Widget can not be created from: " + classPath);
+            return;
         }
+
+        BaseWidget widget = (BaseWidget) object;
+        widget.configId = mCurrentConfigId.getValue();
+        widget.creationTime = System.currentTimeMillis();
+        widget.name = widgetType + " " + indexCurrentWidget;
+        widget.type = widgetType;
+
+        mConfigDatabase.addWidget(widget);
+        Log.i(TAG, "Widget added to database: " + widget);
 
     }
 

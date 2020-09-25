@@ -1,7 +1,5 @@
 package com.schneewittchen.rosandroid.model.rosRepo.message;
 
-import com.schneewittchen.rosandroid.ros.Topic;
-
 import org.ros.internal.message.Message;
 
 /**

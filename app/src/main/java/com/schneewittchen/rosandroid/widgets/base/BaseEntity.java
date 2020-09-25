@@ -1,7 +1,7 @@
 package com.schneewittchen.rosandroid.widgets.base;
 
-import com.schneewittchen.rosandroid.model.entities.SubPubNoteEntity;
 import com.schneewittchen.rosandroid.model.entities.WidgetEntity;
+
 
 /**
  * TODO: Description

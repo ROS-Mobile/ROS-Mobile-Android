@@ -14,6 +14,8 @@ import com.schneewittchen.rosandroid.model.entities.MasterEntity;
 import com.schneewittchen.rosandroid.model.entities.SSHEntity;
 import com.schneewittchen.rosandroid.model.entities.WidgetCountEntity;
 import com.schneewittchen.rosandroid.widgets.test.BaseWidget;
+import com.schneewittchen.rosandroid.widgets.test.GsonWidgetParser;
+import com.schneewittchen.rosandroid.widgets.test.WidgetStorageData;
 
 import java.util.List;
 
@@ -29,51 +31,13 @@ import java.util.List;
  * @updated on 27.07.20
  * @modified by Nils Rottmann
  * @updated on 23.09.20
- * @modified by Nils Rottmann
+ * @modified by Nico Studt
  */
 @Dao
 public abstract class ConfigDao implements BaseDao<ConfigEntity>{
 
     static final String TAG = ConfigDao.class.getCanonicalName();
 
-
-    @Transaction
-    public void insertComplete(ConfigEntity config) {
-        Log.i(TAG, "Insert config: " + config);
-
-        // First save config to get its id
-        long configId = insert(config);
-
-        Log.i(TAG, "Inserted with id: " + configId);
-
-        if (config.master != null) {
-            // Update masters config id
-            config.master.configId = configId;
-
-            // Save master
-            insert(config.master);
-        }
-
-        if (config.ssh != null) {
-            // Update SSH config id
-            config.ssh.configId = configId;
-
-            // Save SSH
-            insert(config.ssh);
-        }
-
-        if (config.widgetCounts != null) {
-            // Update widgetCount config id and save
-            for(int i=0; i<config.widgetCounts.size(); i++) {
-                config.widgetCounts.get(i).configId = configId;
-                insert(config.widgetCounts.get(i));
-            }
-        }
-
-        for (BaseWidget widget: config.widgets) {
-            insert(widget);
-        }
-    }
 
     @Query("SELECT * FROM config_table")
     abstract LiveData<List<ConfigEntity>> getAllConfigs();
@@ -89,20 +53,5 @@ public abstract class ConfigDao implements BaseDao<ConfigEntity>{
 
     @Query("DELETE FROM config_table")
     abstract void deleteAll();
-
-
-    // TODO: Check double insert of widgets etc ???
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract void insert(MasterEntity master);
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract void insert(BaseWidget widgetEntity);
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract void insert(WidgetCountEntity widgetCountEntity);
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract void insert(SSHEntity ssh);
-
 
 }

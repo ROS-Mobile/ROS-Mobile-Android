@@ -3,6 +3,7 @@ package com.schneewittchen.rosandroid.widgets.test;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -32,6 +33,13 @@ public class GsonWidgetParser {
         return instance;
     }
 
+
+    public GsonWidgetParser() {
+        gson = new GsonBuilder()
+                .registerTypeAdapter(BaseWidget.class, new WidgetSerializationAdapter())
+                .setPrettyPrinting()
+                .create();
+    }
 
     /**
      * Convert a Widget Storage Object list into a Base Widget list.

@@ -12,10 +12,10 @@ import com.schneewittchen.rosandroid.model.entities.ConfigEntity;
 import com.schneewittchen.rosandroid.model.entities.MasterEntity;
 import com.schneewittchen.rosandroid.model.entities.SSHEntity;
 import com.schneewittchen.rosandroid.model.entities.WidgetCountEntity;
-import com.schneewittchen.rosandroid.model.entities.WidgetEntity;
 import com.schneewittchen.rosandroid.utility.Constants;
 import com.schneewittchen.rosandroid.utility.LambdaTask;
 import com.schneewittchen.rosandroid.widgets.test.BaseWidget;
+import com.schneewittchen.rosandroid.widgets.test.WidgetStorageData;
 
 import java.util.List;
 
@@ -38,7 +38,7 @@ import java.util.List;
  * @modified by Nico Studt
  */
 @Database(entities =
-        {ConfigEntity.class, MasterEntity.class, WidgetEntity.class, SSHEntity.class, WidgetCountEntity.class},
+        {ConfigEntity.class, MasterEntity.class, WidgetStorageData.class, SSHEntity.class, WidgetCountEntity.class},
         version = 3, exportSchema = false)
 public abstract class ConfigDatabase extends RoomDatabase {
 
@@ -50,7 +50,7 @@ public abstract class ConfigDatabase extends RoomDatabase {
     public static synchronized ConfigDatabase getInstance(final Context context) {
         if (instance == null){
             instance = Room.databaseBuilder(context.getApplicationContext(),
-                    ConfigDatabase.class, Constants.dbName)
+                    ConfigDatabase.class, Constants.DB_NAME)
                     .fallbackToDestructiveMigration()
                     .build();
         }
@@ -73,7 +73,7 @@ public abstract class ConfigDatabase extends RoomDatabase {
     // Config methods ------------------------------------------------------------------------------
 
     public void addConfig(ConfigEntity config) {
-        new LambdaTask(() -> configDao().insertComplete(config)).execute();
+        new LambdaTask(() -> configDao().insert(config)).execute();
     }
 
     public void updateConfig(ConfigEntity config) {

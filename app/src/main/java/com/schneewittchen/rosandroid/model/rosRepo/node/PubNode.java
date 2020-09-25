@@ -16,24 +16,24 @@ import java.util.TimerTask;
  * @updated on
  * @modified by
  */
-class PubNode extends AbstractNode {
+public class PubNode extends AbstractNode {
 
     private Publisher<Message> publisher;
     private Message lastMessage;
+    private Timer pubTimer;
     private long pubPeriod = 100L;
     private boolean immediatePublish = true;
 
 
     @Override
     public void onStart(ConnectedNode parentNode) {
-        publisher = parentNode.newPublisher(topic.getName(), topic.getType());
+        publisher = parentNode.newPublisher(topic.name, topic.type);
 
         // Start timer for sequential publishing
         if (!immediatePublish) {
             this.createAndStartSchedule();
         }
     }
-
 
     /**
      * Set publishing frequency.
@@ -70,7 +70,7 @@ class PubNode extends AbstractNode {
     }
 
     private void createAndStartSchedule() {
-        Timer pubTimer = new Timer();
+        pubTimer = new Timer();
 
         pubTimer.schedule(new TimerTask() {
             @Override

@@ -5,7 +5,6 @@ import androidx.lifecycle.MediatorLiveData;
 import androidx.room.Dao;
 import androidx.room.Query;
 
-import com.schneewittchen.rosandroid.model.entities.WidgetEntity;
 import com.schneewittchen.rosandroid.widgets.test.BaseWidget;
 import com.schneewittchen.rosandroid.widgets.test.GsonWidgetParser;
 import com.schneewittchen.rosandroid.widgets.test.WidgetStorageData;

@@ -7,16 +7,17 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Transformations;
 
 import com.schneewittchen.rosandroid.model.entities.MasterEntity;
-import com.schneewittchen.rosandroid.ros.Topic;
 import com.schneewittchen.rosandroid.model.repositories.ConfigRepository;
 import com.schneewittchen.rosandroid.model.repositories.ConfigRepositoryImpl;
-import com.schneewittchen.rosandroid.model.rosRepo.connection.ConnectionType;
 import com.schneewittchen.rosandroid.model.rosRepo.RosRepository;
+import com.schneewittchen.rosandroid.model.rosRepo.connection.ConnectionType;
+import com.schneewittchen.rosandroid.model.rosRepo.message.Topic;
 import com.schneewittchen.rosandroid.utility.LambdaTask;
 import com.schneewittchen.rosandroid.widgets.base.BaseData;
-import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
+import com.schneewittchen.rosandroid.widgets.test.BaseWidget;
 
 import java.util.List;
+
 
 /**
  * TODO: Description
@@ -43,7 +44,7 @@ public class RosDomain {
     private RosRepository rosRepo;
 
     // Data objects
-    private LiveData<List<BaseEntity>> currentWidgets;
+    private LiveData<List<BaseWidget>> currentWidgets;
     private LiveData<MasterEntity> currentMaster;
 
 
@@ -73,26 +74,26 @@ public class RosDomain {
 
 
     public void informWidgetDataChange(BaseData data) {
-        rosRepo.informWidgetDataChange(data);
+        //rosRepo.informWidgetDataChange(data);
     }
 
     public void createWidget(String widgetType) {
         new LambdaTask(() -> configRepository.createWidget(widgetType)).execute();
     }
 
-    public void addWidget(BaseEntity widget) {
+    public void addWidget(BaseWidget widget) {
         configRepository.addWidget(widget);
     }
 
-    public void updateWidget(BaseEntity widget) {
+    public void updateWidget(BaseWidget widget) {
         configRepository.updateWidget(widget);
     }
 
-    public void deleteWidget(BaseEntity widget) {
+    public void deleteWidget(BaseWidget widget) {
         configRepository.deleteWidget(widget);
     }
 
-    public LiveData<List<BaseEntity>> getCurrentWidgets() {
+    public LiveData<List<BaseWidget>> getCurrentWidgets() {
         return this.currentWidgets;
     }
 

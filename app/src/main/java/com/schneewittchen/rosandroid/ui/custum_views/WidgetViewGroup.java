@@ -13,15 +13,16 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListUpdateCallback;
 
+import com.schneewittchen.rosandroid.BuildConfig;
 import com.schneewittchen.rosandroid.R;
-import com.schneewittchen.rosandroid.model.entities.WidgetEntity;
-import com.schneewittchen.rosandroid.ui.helper.WidgetDiffCallback;
+import com.schneewittchen.rosandroid.utility.Constants;
+import com.schneewittchen.rosandroid.utility.WidgetDiffCallback;
 import com.schneewittchen.rosandroid.utility.Utils;
-import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
 import com.schneewittchen.rosandroid.widgets.base.BaseView;
 import com.schneewittchen.rosandroid.widgets.base.DataListener;
 import com.schneewittchen.rosandroid.widgets.base.Position;
 import com.schneewittchen.rosandroid.widgets.base.BaseData;
+import com.schneewittchen.rosandroid.widgets.test.BaseWidget;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
@@ -32,25 +33,27 @@ import java.util.List;
  * TODO: Description
  *
  * @author Nico Studt
- * @version 1.1.1
+ * @version 1.1.2
  * @created on 18.10.19
  * @updated on 22.04.20
  * @modified by Nils Rottmann
+ * @updated on 25.09.20
+ * @modified by Nils Rottmann
  */
-public class WidgetGroup extends ViewGroup {
+public class WidgetViewGroup extends ViewGroup {
 
-    public static final String TAG = WidgetGroup.class.getSimpleName();
+    public static final String TAG = WidgetViewGroup.class.getSimpleName();
 
     Paint crossPaint;
     int tilesX;
     int tilesY;
     float tileWidth;
-    List<BaseEntity> widgetList;
+    List<BaseWidget> widgetList;
     DataListener widgetDataListener;
     DataListener dataListener;
 
 
-    public WidgetGroup(Context context, AttributeSet attrs) {
+    public WidgetViewGroup(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         this.widgetList = new ArrayList<>();
@@ -58,9 +61,9 @@ public class WidgetGroup extends ViewGroup {
         this.setWillNotDraw(false);
 
         TypedArray a = getContext().obtainStyledAttributes(attrs,
-                        R.styleable.WidgetGroup, 0, 0);
+                        R.styleable.WidgetViewGroup, 0, 0);
 
-        int crossColor = a.getColor(R.styleable.WidgetGroup_crossColor,
+        int crossColor = a.getColor(R.styleable.WidgetViewGroup_crossColor,
                 getResources().getColor(R.color.colorAccent));
 
         a.recycle();
@@ -141,7 +144,7 @@ public class WidgetGroup extends ViewGroup {
         }
     }
 
-    public void setWidgets(List<BaseEntity> newWidgets) {
+    public void setWidgets(List<BaseWidget> newWidgets) {
         WidgetDiffCallback diffCallback = new WidgetDiffCallback(newWidgets, this.widgetList);
         DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
 
@@ -179,27 +182,35 @@ public class WidgetGroup extends ViewGroup {
 
 
 
-    private void addViewFor(BaseEntity entity) {
-        Class<? extends BaseView> clazz = entity.getViewType();
+    private void addViewFor(BaseWidget entity) {
+        // Create actual widget view object
+        String classPath = BuildConfig.APPLICATION_ID
+                + String.format(Constants.VIEW_FORMAT, entity.type.toLowerCase(), entity.type);
+        Object object;
 
         try {
-            Constructor<? extends BaseView> cons  = clazz.getConstructor(Context.class);
+            Class<?> clazz = Class.forName(classPath);
+            Constructor<?> constructor = clazz.getConstructor(Context.class);
+            object = constructor.newInstance(this.getContext());
 
-            Position position = new Position(entity.posX, entity.posY,
-                                            entity.width, entity.height);
-            BaseView widgetView = cons.newInstance(this.getContext());
-            widgetView.setWidgetEntity(entity);
-            widgetView.setDataListener(widgetDataListener);
-            widgetView.setPosition(position);
-
-            this.addView(widgetView);
+            if (!(object instanceof BaseView)) {
+                Log.i(TAG, "View can not be created from: " + classPath);
+                return;
+            }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            return;
         }
+
+        // Init widget view
+        BaseView widgetView = (BaseView) object;
+        widgetView.setWidgetEntity(entity);
+        widgetView.setDataListener(widgetDataListener);
+
+        this.addView(widgetView);
     }
 
-    private void changeViewFor(BaseEntity entity) {
+    private void changeViewFor(BaseWidget entity) {
         for(int i = 0; i < this.getChildCount(); i++) {
             BaseView view = (BaseView) this.getChildAt(i);
 
@@ -213,9 +224,10 @@ public class WidgetGroup extends ViewGroup {
         }
     }
 
-    private void removeViewFor(BaseEntity entity) {
+    private void removeViewFor(BaseWidget entity) {
         for(int i = 0; i < this.getChildCount(); i++) {
             BaseView view = (BaseView) this.getChildAt(i);
+
             if (view.sameWidget(entity)) {
                 this.removeView(view);
                 return;
@@ -227,7 +239,7 @@ public class WidgetGroup extends ViewGroup {
         view.setDataListener(widgetDataListener);
     }
 
-    public List<BaseEntity> getWidgets() {
+    public List<BaseWidget> getWidgets() {
         return this.widgetList;
     }
 

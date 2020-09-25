@@ -1,7 +1,8 @@
-package com.schneewittchen.rosandroid.ros;
+package com.schneewittchen.rosandroid.model.rosRepo.message;
+
 
 /**
- * ROS topic class for sub/pub nodes.
+ * ROS topic class for subscriber/publisher nodes.
  *
  * @author Nico Studt
  * @version 1.0.0
@@ -12,34 +13,17 @@ public class Topic {
     /**
      * Topic name e.g. '/map'
      */
-    private String name;
+    public String name;
 
     /**
      * Type of the topic e.g. 'nav_msgs.OccupancyGrid'
      */
-    private String type;
+    public String type;
 
 
     public Topic(String name, String type) {
         this.name = name;
         this.type = type;
-    }
-
-
-    public void setName(String newName) {
-        this.name = newName;
-    }
-
-    public void setType(String newtype) {
-        this.type = newtype;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getType() {
-        return this.type;
     }
 
     @Override
@@ -53,7 +37,7 @@ public class Topic {
 
         Topic other = (Topic) object;
 
-        return other.getName().equals(name) && other.getType().equals(type);
+        return other.name.equals(name) && other.type.equals(type);
     }
 
     @Override

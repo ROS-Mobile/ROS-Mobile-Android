@@ -14,22 +14,25 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListUpdateCallback;
 
 import com.schneewittchen.rosandroid.model.entities.MasterEntity;
+import com.schneewittchen.rosandroid.model.rosRepo.connection.ConnectionCheckTask;
+import com.schneewittchen.rosandroid.model.rosRepo.connection.ConnectionListener;
 import com.schneewittchen.rosandroid.model.rosRepo.connection.ConnectionType;
 import com.schneewittchen.rosandroid.model.rosRepo.message.RosMessage;
 import com.schneewittchen.rosandroid.model.rosRepo.node.AbstractNode;
-import com.schneewittchen.rosandroid.ros.Topic;
-import com.schneewittchen.rosandroid.model.rosRepo.connection.ConnectionCheckTask;
-import com.schneewittchen.rosandroid.model.rosRepo.connection.ConnectionListener;
 import com.schneewittchen.rosandroid.model.rosRepo.node.NodeMainExecutorService;
 import com.schneewittchen.rosandroid.model.rosRepo.node.NodeMainExecutorServiceListener;
-import com.schneewittchen.rosandroid.ui.helper.WidgetDiffCallback;
+import com.schneewittchen.rosandroid.model.rosRepo.node.PubNode;
+import com.schneewittchen.rosandroid.model.rosRepo.node.SubNode;
+import com.schneewittchen.rosandroid.model.rosRepo.message.Topic;
 import com.schneewittchen.rosandroid.utility.Utils;
+import com.schneewittchen.rosandroid.utility.WidgetDiffCallback;
 import com.schneewittchen.rosandroid.widgets.base.BaseData;
-import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
-import com.schneewittchen.rosandroid.widgets.base.BaseNode;
-import com.schneewittchen.rosandroid.widgets.base.DataListener;
+import com.schneewittchen.rosandroid.widgets.test.BaseWidget;
+import com.schneewittchen.rosandroid.widgets.test.PublisherWidget;
+import com.schneewittchen.rosandroid.widgets.test.SubscriberWidget;
 
 import org.ros.address.InetAddressFactory;
+import org.ros.internal.message.Message;
 import org.ros.internal.node.client.MasterClient;
 import org.ros.internal.node.response.Response;
 import org.ros.master.client.TopicType;
@@ -37,30 +40,32 @@ import org.ros.namespace.GraphName;
 import org.ros.node.NodeConfiguration;
 
 import java.lang.ref.WeakReference;
-import java.lang.reflect.Constructor;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 
 /**
  * The ROS repository is responsible for connecting to the ROS master
  * and creating nodes depending on the respective widgets.
  *
  * @author Nico Studt
- * @version 1.1.2
+ * @version 1.1.3
  * @created on 16.01.20
  * @updated on 20.05.20
  * @modified by Nico Studt
+ * @updated on 24.09.20
+ * @modified by Nico Studt
  */
-public class RosRepository implements DataListener {
+public class RosRepository implements SubNode.NodeListener {
 
     private static final String TAG = RosRepository.class.getSimpleName();
     private static RosRepository instance;
 
     private WeakReference<Context> contextReference;
     private MasterEntity master;
-    private List<BaseEntity> currentWidgets;
+    private List<BaseWidget> currentWidgets;
     private HashMap<Topic, AbstractNode> currentNodes;
     private MutableLiveData<ConnectionType> rosConnected;
     private MutableLiveData<BaseData> receivedData;
@@ -84,12 +89,19 @@ public class RosRepository implements DataListener {
      * Return the singleton instance of the repository.
      * @return Instance of this Repository
      */
-    public static RosRepository getInstance(Context context){
+    public static RosRepository getInstance(final Context context){
         if(instance == null){
             instance = new RosRepository(context);
         }
 
         return instance;
+    }
+
+
+    @Override
+    public void onData(Message newData) {
+        // TODO: Move data towards domain
+        //this.receivedData.postValue(newData);
     }
 
     /**
@@ -159,21 +171,21 @@ public class RosRepository implements DataListener {
      * should be called.
      * @param widgets Current list of widgets
      */
-    public void updateWidgets(List<BaseEntity> widgets) {
+    public void updateWidgets(List<BaseWidget> widgets) {
         WidgetDiffCallback diffCallback = new WidgetDiffCallback(widgets, this.currentWidgets);
         DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
 
         diffResult.dispatchUpdatesTo(new ListUpdateCallback() {
             @Override
             public void onInserted(int position, int count) {
-                for (int i=position; i<position+count; i++) {
+                for (int i = position; i < position + count; i++) {
                     addNode(widgets.get(i));
                 }
             }
 
             @Override
             public void onRemoved(int position, int count) {
-                for (int i=position; i<position+count; i++) {
+                for (int i = position; i < position + count; i++) {
                     removeNode(currentWidgets.get(i));
                 }
             }
@@ -183,7 +195,7 @@ public class RosRepository implements DataListener {
 
             @Override
             public void onChanged(int position, int count, @Nullable Object payload) {
-                for(int i = position; i < position +count; i++) {
+                for(int i = position; i < position + count; i++) {
                     updateNode(widgets.get(i));
                 }
 
@@ -204,7 +216,7 @@ public class RosRepository implements DataListener {
         AbstractNode node = currentNodes.get(data.getTopic());
 
         if(node != null) {
-            node.onNewData(data);
+            //node.onNewData(data);
         }
     }
 
@@ -239,35 +251,34 @@ public class RosRepository implements DataListener {
      * The node will be created and subsequently registered.
      * @param widget Widget to be added
      */
-    private void addNode(BaseEntity widget) {
-        // Create node main from widget
-        Class<? extends BaseNode> clazz = widget.getNodeType();
+    private void addNode(BaseWidget widget) {
 
-        try {
-            Constructor<? extends BaseNode> cons  = clazz.getConstructor();
-            BaseNode node = cons.newInstance();
-            node.setWidget(widget);
-            node.setListener(this);
-            currentNodes.put(widget.get, node);
-            registerNode(node);
+        // Create a new node from widget
+        AbstractNode node;
+        if (widget instanceof PublisherWidget) {
+            node = new PubNode();
 
-        } catch (Exception e) {
-            Log.e(TAG, "Error while adding node: " + e.getLocalizedMessage());
-            e.printStackTrace();
+        } else if (widget instanceof SubscriberWidget) {
+            node = new SubNode(this);
+
+        }else {
+            Log.i(TAG, "Widget is either publisher nor subscriber.");
+            return;
         }
+
+        // Set node topic, add to node list and register it
+        node.setTopic(widget.topic);
+        currentNodes.put(node.getTopic(), node);
     }
 
     /**
      * Update a widget and its associated Node by ID in the ROS graph.
      * @param widget Widget to update
      */
-    private void updateNode(BaseEntity widget) {
+    private void updateNode(BaseWidget widget) {
         Log.i(TAG, "Update Node: " + widget.name);
-        Topic topic = new Topic(widget.subPubNoteEntity.topic, widget.subPubNoteEntity.messageType);
-        AbstractNode node = currentNodes.get(topic);
+        AbstractNode node = currentNodes.get(widget.topic);
         assert node != null;
-
-        node.setWidget(widget);
         this.reregisterNode(node);
     }
 
@@ -275,10 +286,8 @@ public class RosRepository implements DataListener {
      * Remove a widget and its associated Node in the ROS graph.
      * @param widget Widget to remove
      */
-    private void removeNode(BaseEntity widget) {
-        Topic topic = new Topic(widget.subPubNoteEntity.topic, widget.subPubNoteEntity.messageType);
-        AbstractNode node = currentNodes.get(topic);
-        this.currentNodes.remove(topic);
+    private void removeNode(BaseWidget widget) {
+        AbstractNode node = this.currentNodes.remove(widget.topic);
         this.unregisterNode(node);
     }
 
@@ -353,11 +362,6 @@ public class RosRepository implements DataListener {
         return receivedData;
     }
 
-    @Override
-    public void onNewData(BaseData newData) {
-        this.receivedData.postValue(newData);
-    }
-
     /**
      * Get a list from the ROS Master with all available topics.
      * @return Topic list
@@ -415,7 +419,4 @@ public class RosRepository implements DataListener {
             nodeMainExecutorService.removeListener(serviceListener);
         }
     }
-
-
-
 }

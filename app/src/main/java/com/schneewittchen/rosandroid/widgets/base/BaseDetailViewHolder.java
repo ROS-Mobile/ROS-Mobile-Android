@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.viewmodel.DetailsViewModel;
+import com.schneewittchen.rosandroid.widgets.test.BaseWidget;
 
 import org.jboss.netty.channel.local.DefaultLocalServerChannelFactory;
 import org.ros.internal.node.response.Response;
@@ -36,7 +37,7 @@ import java.util.List;
  * @updated on 27.07.20
  * @modified by Nils Rottmann
  */
-public class BaseDetailViewHolder<T extends BaseEntity> extends RecyclerView.ViewHolder {
+public class BaseDetailViewHolder<T extends BaseWidget> extends RecyclerView.ViewHolder {
 
     public View viewBackground, viewForeground;
     public LinearLayout detailContend;
@@ -54,7 +55,6 @@ public class BaseDetailViewHolder<T extends BaseEntity> extends RecyclerView.Vie
         this.updateListener = updateListener;
         baseInit(view);
     }
-
 
     private void baseInit(View view) {
         title = view.findViewById(R.id.title);

@@ -8,7 +8,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
-import com.google.common.base.Preconditions;
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.widgets.base.BaseDetailViewHolder;
 import com.schneewittchen.rosandroid.widgets.base.DetailListener;
@@ -25,7 +24,7 @@ import java.util.Locale;
  * @updated on 20.05.20
  * @modified by Nico Studt
  */
-public class JoystickDetailVH extends BaseDetailViewHolder<WidgetJoystickEntity> {
+public class JoystickDetailVH extends BaseDetailViewHolder<JoystickEntity> {
 
     private EditText topicNameText;
 
@@ -50,6 +49,7 @@ public class JoystickDetailVH extends BaseDetailViewHolder<WidgetJoystickEntity>
     public JoystickDetailVH(@NonNull View view, DetailListener updateListener) {
         super(view, updateListener);
     }
+
 
 
     @Override
@@ -85,8 +85,8 @@ public class JoystickDetailVH extends BaseDetailViewHolder<WidgetJoystickEntity>
     }
 
     @Override
-    public void bind(WidgetJoystickEntity entity) {
-        topicNameText.setText(entity.subPubNoteEntity.topic);
+    public void bind(JoystickEntity entity) {
+        topicNameText.setText(entity.topic.name);
 
         String[] xAxisMapping = entity.xAxisMapping.split("/");
 
@@ -107,8 +107,8 @@ public class JoystickDetailVH extends BaseDetailViewHolder<WidgetJoystickEntity>
 
     @Override
     public void updateEntity() {
-        entity.subPubNoteEntity.messageType = geometry_msgs.Twist._TYPE;
-        entity.subPubNoteEntity.topic = topicNameText.getText().toString();
+        entity.topic.type = geometry_msgs.Twist._TYPE;
+        entity.topic.name = topicNameText.getText().toString();
         entity.xAxisMapping = xDirSpinner.getSelectedItem() + "/" + xAxisSpinner.getSelectedItem();
         entity.yAxisMapping = yDirSpinner.getSelectedItem() + "/" + yAxisSpinner.getSelectedItem();
 

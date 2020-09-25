@@ -1,7 +1,6 @@
 package com.schneewittchen.rosandroid.ui.fragments;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.schneewittchen.rosandroid.R;
-import com.schneewittchen.rosandroid.ui.custum_views.WidgetGroup;
+import com.schneewittchen.rosandroid.ui.custum_views.WidgetViewGroup;
 import com.schneewittchen.rosandroid.viewmodel.VizViewModel;
 import com.schneewittchen.rosandroid.widgets.base.DataListener;
 import com.schneewittchen.rosandroid.widgets.base.BaseData;
@@ -32,7 +31,7 @@ public class VizFragment extends Fragment implements DataListener {
     public static final String TAG = VizFragment.class.getSimpleName();
 
     private VizViewModel mViewModel;
-    private WidgetGroup widgetGroupview;
+    private WidgetViewGroup widgetViewGroupview;
 
 
     public static VizFragment newInstance() {
@@ -51,8 +50,8 @@ public class VizFragment extends Fragment implements DataListener {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        widgetGroupview = view.findViewById(R.id.widget_groupview);
-        widgetGroupview.setDataListener(this);
+        widgetViewGroupview = view.findViewById(R.id.widget_groupview);
+        widgetViewGroupview.setDataListener(this);
     }
 
     @Override
@@ -62,11 +61,11 @@ public class VizFragment extends Fragment implements DataListener {
         mViewModel = new ViewModelProvider(this).get(VizViewModel.class);
 
         mViewModel.getCurrentWidgets().observe(getViewLifecycleOwner(), widgetEntities -> {
-            widgetGroupview.setWidgets(widgetEntities);
+            widgetViewGroupview.setWidgets(widgetEntities);
         });
 
         mViewModel.getData().observe(getViewLifecycleOwner(), data -> {
-            widgetGroupview.setData(data);
+            widgetViewGroupview.setData(data);
         });
     }
 

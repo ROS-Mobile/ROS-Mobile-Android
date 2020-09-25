@@ -2,12 +2,13 @@ package com.schneewittchen.rosandroid.model.rosRepo.node;
 
 import android.util.Log;
 
-import com.schneewittchen.rosandroid.ros.Topic;
+import com.schneewittchen.rosandroid.model.rosRepo.message.Topic;
 
 import org.ros.namespace.GraphName;
 import org.ros.node.ConnectedNode;
 import org.ros.node.Node;
 import org.ros.node.NodeMain;
+
 
 /**
  * TODO: Description
@@ -15,41 +16,45 @@ import org.ros.node.NodeMain;
  * @author Nico Studt
  * @version 1.0.0
  * @created on 15.09.20
- * @updated on
- * @modified by
  */
-public abstract class AbstractNode implements NodeMain {
+public class AbstractNode implements NodeMain {
 
     public static final String TAG = AbstractNode.class.getSimpleName();
 
-    private Topic topic;
+    protected Topic topic;
 
-
-    public abstract void onStart(ConnectedNode parentNode);
-
-
-    private Topic getTopic() {
-        return this.topic;
-    }
-    
     @Override
-    public GraphName getDefaultNodeName() {
-        return GraphName.of(topic.getName());
+    public void onStart(ConnectedNode parentNode) {
+        Log.i(TAG, "On Start:  " + topic.name);
     }
-
 
     @Override
     public void onShutdown(Node node) {
-        Log.i(TAG, "On Shutdown:  " + topic.getName());
+        Log.i(TAG, "On Shutdown:  " + topic.name);
     }
 
     @Override
     public void onShutdownComplete(Node node) {
-        Log.i(TAG, "On Shutdown Complete: " + topic.getName());
+        Log.i(TAG, "On Shutdown Complete: " + topic.name);
     }
 
     @Override
     public void onError(Node node, Throwable throwable) {
         throwable.printStackTrace();
     }
+
+    @Override
+    public GraphName getDefaultNodeName() {
+        return GraphName.of(topic.name);
+    }
+
+
+    public Topic getTopic() {
+        return this.topic;
+    }
+
+    public void setTopic(Topic topic) {
+        this.topic = topic;
+    }
+
 }

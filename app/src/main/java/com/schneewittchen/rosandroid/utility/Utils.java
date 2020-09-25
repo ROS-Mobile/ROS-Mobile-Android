@@ -1,19 +1,22 @@
 package com.schneewittchen.rosandroid.utility;
 
-
 import android.content.Context;
 import android.net.wifi.SupplicantState;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
-import android.os.NetworkOnMainThreadException;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
+
+import com.schneewittchen.rosandroid.BuildConfig;
+import com.schneewittchen.rosandroid.widgets.test.BaseWidget;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -25,14 +28,15 @@ import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
 
+
 /**
  * TODO: Description
  *
  * @author Nico Studt
  * @version 1.0.0
  * @created on 10.01.20
- * @updated on 16.01.20
- * @modified by
+ * @updated on 25.09.20
+ * @modified by Nico Studt
  */
 public class Utils {
 
@@ -55,6 +59,30 @@ public class Utils {
         float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, dm);
 
         return px;
+    }
+
+    public static Object getObjectFromClassName(String relativeClassPath){
+        String classPath = BuildConfig.APPLICATION_ID + relativeClassPath;
+
+        try {
+            Class<?> clazz = Class.forName(classPath);
+            Constructor<?> constructor = clazz.getConstructor();
+            return constructor.newInstance();
+
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public static int getResId(String resName, Class<?> clazz) {
+        try {
+            Field idField = clazz.getDeclaredField(resName);
+            return idField.getInt(idField);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
     }
 
     /**

@@ -1,11 +1,9 @@
-package com.schneewittchen.rosandroid.ui.helper;
-
-import android.util.Log;
+package com.schneewittchen.rosandroid.utility;
 
 import androidx.recyclerview.widget.DiffUtil;
 import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
+import com.schneewittchen.rosandroid.widgets.test.BaseWidget;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -13,22 +11,24 @@ import java.util.List;
  * TODO: Description
  *
  * @author Nico Studt
- * @version 1.0.0
+ * @version 1.0.1
  * @created on 05.02.20
- * @updated on 02.04.20
- * @modified by
+ * @updated on 24.09.20
+ * @modified by Nico Studt
  */
 public class WidgetDiffCallback extends DiffUtil.Callback{
 
     public static String TAG = WidgetDiffCallback.class.getSimpleName();
 
-    List<BaseEntity> oldWidgets;
-    List<BaseEntity> newWidgets;
+    List<BaseWidget> oldWidgets;
+    List<BaseWidget> newWidgets;
 
-    public WidgetDiffCallback(List<BaseEntity> newWidgets, List<BaseEntity> oldWidgets) {
+
+    public WidgetDiffCallback(List<BaseWidget> newWidgets, List<BaseWidget> oldWidgets) {
         this.newWidgets = newWidgets;
         this.oldWidgets = oldWidgets;
     }
+
 
     @Override
     public int getOldListSize() {
@@ -42,21 +42,18 @@ public class WidgetDiffCallback extends DiffUtil.Callback{
 
     @Override
     public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-        BaseEntity oldWidget = oldWidgets.get(oldItemPosition);
-        BaseEntity newWidget = newWidgets.get(newItemPosition);
+        BaseWidget oldWidget = oldWidgets.get(oldItemPosition);
+        BaseWidget newWidget = newWidgets.get(newItemPosition);
 
         return oldWidget.id == newWidget.id;
     }
 
     @Override
     public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-        BaseEntity oldWidget = oldWidgets.get(oldItemPosition);
-        BaseEntity newWidget = newWidgets.get(newItemPosition);
+        BaseWidget oldWidget = oldWidgets.get(oldItemPosition);
+        BaseWidget newWidget = newWidgets.get(newItemPosition);
 
-        boolean objectEquals = oldWidget.equals(newWidget);
-        boolean contentSame = oldWidget.equalContent(newWidget);
-
-        return  objectEquals && contentSame;
+        return oldWidget.equals(newWidget);
     }
 
 }
