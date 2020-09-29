@@ -51,7 +51,6 @@ public class JoystickDetailVH extends BaseDetailViewHolder<JoystickEntity> {
     }
 
 
-
     @Override
     public void init(View view) {
         topicNameText = view.findViewById(R.id.topicNameText);
@@ -107,10 +106,10 @@ public class JoystickDetailVH extends BaseDetailViewHolder<JoystickEntity> {
 
     @Override
     public void updateEntity() {
-        entity.topic.type = geometry_msgs.Twist._TYPE;
-        entity.topic.name = topicNameText.getText().toString();
-        entity.xAxisMapping = xDirSpinner.getSelectedItem() + "/" + xAxisSpinner.getSelectedItem();
-        entity.yAxisMapping = yDirSpinner.getSelectedItem() + "/" + yAxisSpinner.getSelectedItem();
+        widget.topic.type = geometry_msgs.Twist._TYPE;
+        widget.topic.name = topicNameText.getText().toString();
+        widget.xAxisMapping = xDirSpinner.getSelectedItem() + "/" + xAxisSpinner.getSelectedItem();
+        widget.yAxisMapping = yDirSpinner.getSelectedItem() + "/" + yAxisSpinner.getSelectedItem();
 
         for (String str: new String[]{"xScaleLeft", "xScaleRight", "yScaleLeft", "yScaleRight"}) {
             try {
@@ -119,7 +118,7 @@ public class JoystickDetailVH extends BaseDetailViewHolder<JoystickEntity> {
                 assert editText != null;
                 float value = Float.parseFloat(editText.getText().toString());
 
-                entity.getClass().getField(str).set(entity, value);
+                widget.getClass().getField(str).set(widget, value);
 
             } catch (Exception ignored) {
             }

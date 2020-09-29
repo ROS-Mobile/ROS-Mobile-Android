@@ -11,19 +11,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.schneewittchen.rosandroid.R;
-import com.schneewittchen.rosandroid.viewmodel.DetailsViewModel;
 import com.schneewittchen.rosandroid.widgets.test.BaseWidget;
-
-import org.jboss.netty.channel.local.DefaultLocalServerChannelFactory;
-import org.ros.internal.node.response.Response;
-import org.ros.master.client.TopicType;
-
-import java.util.List;
 
 
 /**
@@ -37,7 +28,7 @@ import java.util.List;
  * @updated on 27.07.20
  * @modified by Nils Rottmann
  */
-public class BaseDetailViewHolder<T extends BaseWidget> extends RecyclerView.ViewHolder {
+public abstract class BaseDetailViewHolder<T extends BaseWidget> extends RecyclerView.ViewHolder {
 
     public View viewBackground, viewForeground;
     public LinearLayout detailContend;
@@ -47,8 +38,8 @@ public class BaseDetailViewHolder<T extends BaseWidget> extends RecyclerView.Vie
     protected ImageButton renameButton;
     protected DetailListener updateListener;
     protected EditText xEdittext, yEdittext, widthEditText, heightEdittext;
-    protected T entity;
-    protected DetailsViewModel mViewModel;
+    protected T widget;
+
 
     public BaseDetailViewHolder(@NonNull View view, DetailListener updateListener) {
         super(view);
@@ -56,7 +47,15 @@ public class BaseDetailViewHolder<T extends BaseWidget> extends RecyclerView.Vie
         baseInit(view);
     }
 
-    private void baseInit(View view) {
+
+    public abstract void init(View view);
+
+    protected abstract void bind(T entity);
+
+    protected abstract void updateEntity();
+
+
+    public void baseInit(View view) {
         title = view.findViewById(R.id.title);
         detailContend = view.findViewById(R.id.detailContend);
         updateButton = view.findViewById(R.id.update_button);
@@ -87,15 +86,8 @@ public class BaseDetailViewHolder<T extends BaseWidget> extends RecyclerView.Vie
         renameButton.setOnClickListener(v -> showRenameDialog());
     }
 
-    private void update() {
-        baseUpdateEntity();
-        updateEntity();
-
-        updateListener.onDetailsChanged(entity);
-    }
-
     public void baseBind(T entity) {
-        this.entity = entity;
+        this.widget = entity;
 
         title.setText(entity.name);
         xEdittext.setText(String.valueOf(entity.posX));
@@ -106,13 +98,19 @@ public class BaseDetailViewHolder<T extends BaseWidget> extends RecyclerView.Vie
         bind(entity);
     }
 
-    private void baseUpdateEntity() {
+    protected void update() {
+        baseUpdateEntity();
+        updateEntity();
 
-        entity.name = title.getText().toString();
-        entity.posX = Integer.parseInt(xEdittext.getText().toString());
-        entity.posY = Integer.parseInt(yEdittext.getText().toString());
-        entity.width = Integer.parseInt(widthEditText.getText().toString());
-        entity.height = Integer.parseInt(heightEdittext.getText().toString());
+        updateListener.onDetailsChanged(widget);
+    }
+
+    private void baseUpdateEntity() {
+        widget.name = title.getText().toString();
+        widget.posX = Integer.parseInt(xEdittext.getText().toString());
+        widget.posY = Integer.parseInt(yEdittext.getText().toString());
+        widget.width = Integer.parseInt(widthEditText.getText().toString());
+        widget.height = Integer.parseInt(heightEdittext.getText().toString());
     }
 
     private void showRenameDialog() {
@@ -141,13 +139,4 @@ public class BaseDetailViewHolder<T extends BaseWidget> extends RecyclerView.Vie
         title.setText(newName);
     }
 
-    public void init(View view) {};
-
-    protected void bind(T entity) {};
-
-    protected void updateEntity() {};
-
-    public void setViewModel(DetailsViewModel viewModel) {
-        this.mViewModel = viewModel;
-    }
 }

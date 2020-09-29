@@ -1,7 +1,5 @@
 package com.schneewittchen.rosandroid.ui.helper;
 
-import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +15,6 @@ import com.schneewittchen.rosandroid.utility.Constants;
 import com.schneewittchen.rosandroid.utility.Utils;
 import com.schneewittchen.rosandroid.viewmodel.DetailsViewModel;
 import com.schneewittchen.rosandroid.widgets.base.BaseDetailViewHolder;
-import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
-import com.schneewittchen.rosandroid.widgets.base.BaseView;
 import com.schneewittchen.rosandroid.widgets.base.DetailListener;
 import com.schneewittchen.rosandroid.widgets.test.BaseWidget;
 
@@ -63,10 +59,7 @@ public class WidgetDetailListAdapter extends RecyclerView.Adapter<BaseDetailView
             LayoutInflater inflator = LayoutInflater.from(parent.getContext());
             View itemView = inflator.inflate(R.layout.widget_detail_base, parent, false);
 
-            BaseDetailViewHolder<?> baseDetailViewHolder = cons.newInstance(itemView, this);
-            baseDetailViewHolder.setViewModel(mViewModel);
-
-            return baseDetailViewHolder;
+            return cons.newInstance(itemView, this);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -85,7 +78,6 @@ public class WidgetDetailListAdapter extends RecyclerView.Adapter<BaseDetailView
         // Get layout id
         String layoutStr = String.format(Constants.DETAIL_LAYOUT_FORMAT, widget.type.toLowerCase());
         int detailContentLayout = Utils.getResId(layoutStr, R.layout.class);
-        //int detailContentLayout = entity.getWidgetDetailViewId();
 
         // Inflate layout
         View inflatedView = inflator.inflate(detailContentLayout, null);
@@ -127,6 +119,12 @@ public class WidgetDetailListAdapter extends RecyclerView.Adapter<BaseDetailView
         return mDiffer.getCurrentList().size();
     }
 
+    @Override
+    public void onDetailsChanged(BaseWidget widget) {
+        if(detailListener != null) {
+            this.detailListener.onDetailsChanged(widget);
+        }
+    }
 
     public BaseWidget getItem(int position) {
         return mDiffer.getCurrentList().get(position);
@@ -138,14 +136,6 @@ public class WidgetDetailListAdapter extends RecyclerView.Adapter<BaseDetailView
 
     public void setChangeListener(DetailListener detailListener) {
         this.detailListener = detailListener;
-    }
-
-
-    @Override
-    public void onDetailsChanged(BaseWidget widget) {
-        if(detailListener != null) {
-            this.detailListener.onDetailsChanged(widget);
-        }
     }
 
 

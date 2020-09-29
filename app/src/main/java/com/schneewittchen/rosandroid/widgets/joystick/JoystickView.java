@@ -1,10 +1,8 @@
 package com.schneewittchen.rosandroid.widgets.joystick;
 
-import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
@@ -38,6 +36,7 @@ public class JoystickView extends BaseView {
     float posX;
     float posY;
 
+
     public JoystickView(Context context) {
         super(context);
         init();
@@ -47,6 +46,7 @@ public class JoystickView extends BaseView {
         super(context, attrs);
         init();
     }
+
 
     private void init(){
         joystickRadius = Utils.cmToPx(getContext(), 1)/2;
