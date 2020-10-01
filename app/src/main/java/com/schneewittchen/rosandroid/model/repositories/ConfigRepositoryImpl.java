@@ -1,23 +1,22 @@
 package com.schneewittchen.rosandroid.model.repositories;
 
 import android.app.Application;
-import android.content.Context;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.Transformations;
 
-import com.schneewittchen.rosandroid.model.db.ConfigDatabase;
+import com.schneewittchen.rosandroid.model.db.DataStorage;
 import com.schneewittchen.rosandroid.model.entities.ConfigEntity;
 import com.schneewittchen.rosandroid.model.entities.MasterEntity;
 import com.schneewittchen.rosandroid.model.entities.SSHEntity;
 import com.schneewittchen.rosandroid.model.entities.WidgetCountEntity;
 import com.schneewittchen.rosandroid.utility.Constants;
+import com.schneewittchen.rosandroid.utility.LambdaTask;
 import com.schneewittchen.rosandroid.utility.Utils;
 import com.schneewittchen.rosandroid.widgets.test.BaseWidget;
 
-import java.lang.reflect.Constructor;
 import java.util.List;
 
 
@@ -39,21 +38,18 @@ import java.util.List;
 public class ConfigRepositoryImpl implements ConfigRepository {
 
     private static final String TAG = ConfigRepositoryImpl.class.getSimpleName();
-    private static final String WIDGET_PREFIX = "com.schneewittchen.rosandroid.widgets.";
 
     private static ConfigRepositoryImpl mInstance;
 
-    private ConfigDatabase mConfigDatabase;
-    private ConfigModel mConfigModel;
+    private DataStorage mDataStorage;
     private MediatorLiveData<Long> mCurrentConfigId;
 
 
     private ConfigRepositoryImpl(Application application){
-        mConfigDatabase = ConfigDatabase.getInstance(application);
-        mConfigModel = ConfigModel.getInstance(application);
+        mDataStorage = DataStorage.getInstance(application);
 
         mCurrentConfigId = new MediatorLiveData<>();
-        mCurrentConfigId.addSource(mConfigDatabase.getLatestConfig(), config -> {
+        mCurrentConfigId.addSource(mDataStorage.getLatestConfig(), config -> {
             Log.i(TAG, "New Config: " + config);
 
             if(config != null)
@@ -81,40 +77,46 @@ public class ConfigRepositoryImpl implements ConfigRepository {
     }
 
     @Override
-    public void createFirstConfig(String name) {
-        ConfigEntity config = mConfigModel.getNewConfig();
-        config.name = name;
-        mConfigDatabase.addConfig(config);
-    }
+    public void createConfig(String name) {
+        ConfigEntity config = new ConfigEntity();
+        config.creationTime = System.currentTimeMillis();
+        config.lastUsed = config.creationTime;
 
-    @Override
-    public void createConfig(Context context) {
+        if (name != null) {
+            config.name = name;
+        }
 
-    }
+        mDataStorage.addConfig(config);
 
-    @Override
-    public void createConfig() {
-        ConfigEntity config = mConfigModel.getNewConfig();
-        mConfigDatabase.addConfig(config);
+        // Get config to link master and SSH with config id
+        // TODO: Get id while adding
+
+        new LambdaTask(() -> {
+            long configId = mDataStorage.getLatestConfigDirect().id;
+
+            // Create new master connection
+            MasterEntity master = new MasterEntity();
+            master.configId = configId;
+            mDataStorage.addMaster(master);
+
+            // Create new ssh connection
+            SSHEntity sshEntity = new SSHEntity();
+            sshEntity.configId = configId;
+            mDataStorage.addSSH(sshEntity);
+        }).execute();
     }
 
     @Override
     public void removeConfig(long configId) {
-        mConfigDatabase.deleteConfig(configId);
+        mDataStorage.deleteConfig(configId);
+        mDataStorage.deleteMaster(configId);
+        mDataStorage.deleteSSH(configId);
     }
 
-    @Override
-    public void addConfig(ConfigEntity config) {
-    }
-
-    @Override
-    public void setConfig(ConfigEntity config, String configId) {
-
-    }
 
     @Override
     public void updateConfig(ConfigEntity config) {
-        mConfigDatabase.updateConfig(config);
+        mDataStorage.updateConfig(config);
     }
 
     @Override
@@ -124,23 +126,18 @@ public class ConfigRepositoryImpl implements ConfigRepository {
 
     @Override
     public LiveData<ConfigEntity> getConfig(long id) {
-        return mConfigDatabase.getConfig(id);
+        return mDataStorage.getConfig(id);
     }
 
     @Override
     public LiveData<ConfigEntity> getCurrentConfig() {
         return Transformations.switchMap(mCurrentConfigId, id ->
-                mConfigDatabase.getConfig(id));
-    }
-
-    @Override
-    public ConfigEntity getNewConfig() {
-        return null;
+                mDataStorage.getConfig(id));
     }
 
     @Override
     public LiveData<List<ConfigEntity>> getAllConfigs() {
-        return mConfigDatabase.getAllConfigs();
+        return mDataStorage.getAllConfigs();
     }
 
 
@@ -154,7 +151,7 @@ public class ConfigRepositoryImpl implements ConfigRepository {
 
         // TODO: Load widget count from widget_count_dao and extend name
         long indexCurrentWidget = 0;
-        WidgetCountEntity widgetCount = mConfigDatabase.getWidgetCount(mCurrentConfigId.getValue(), widgetType);
+        WidgetCountEntity widgetCount = mDataStorage.getWidgetCount(mCurrentConfigId.getValue(), widgetType);
         if(widgetCount != null) {
             indexCurrentWidget = widgetCount.count;
         }
@@ -174,49 +171,44 @@ public class ConfigRepositoryImpl implements ConfigRepository {
         widget.name = widgetType + " " + indexCurrentWidget;
         widget.type = widgetType;
 
-        mConfigDatabase.addWidget(widget);
+        mDataStorage.addWidget(widget);
         Log.i(TAG, "Widget added to database: " + widget);
 
     }
 
     @Override
     public void addWidget(BaseWidget widget) {
-        mConfigDatabase.addWidget(widget);
+        mDataStorage.addWidget(widget);
     }
 
     @Override
     public void updateWidget(BaseWidget widget) {
-        mConfigDatabase.updateWidget(widget);
+        mDataStorage.updateWidget(widget);
     }
 
     @Override
     public void deleteWidget(BaseWidget widget) {
-        mConfigDatabase.deleteWidget(widget);
+        mDataStorage.deleteWidget(widget);
 
         Log.i(TAG, "Widget deleted");
     }
 
     @Override
     public LiveData<List<BaseWidget>> getWidgets(long id) {
-        return mConfigDatabase.getWidgets(id);
+        return mDataStorage.getWidgets(id);
     }
 
 
     // Masters -------------------------------------------------------------------------------------
 
     @Override
-    public void setMaster(MasterEntity master, String configId) {
-        master.ip = configId;
-    }
-
-    @Override
     public void updateMaster(MasterEntity master) {
-        mConfigDatabase.updateMaster(master);
+        mDataStorage.updateMaster(master);
     }
 
     @Override
     public LiveData<MasterEntity> getMaster(long configId) {
-        return mConfigDatabase.getMaster(configId);
+        return mDataStorage.getMaster(configId);
     }
 
     // SSH -------------------------------------------------------------------------------------
@@ -228,11 +220,11 @@ public class ConfigRepositoryImpl implements ConfigRepository {
 
     @Override
     public void updateSSH(SSHEntity ssh) {
-        mConfigDatabase.updateSSH(ssh);
+        mDataStorage.updateSSH(ssh);
     }
 
     @Override
     public LiveData<SSHEntity> getSSH(long configId) {
-        return mConfigDatabase.getSSH(configId);
+        return mDataStorage.getSSH(configId);
     }
 }

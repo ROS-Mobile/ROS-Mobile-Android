@@ -54,9 +54,6 @@ public class WidgetEntity {
     @NonNull
     public int height;
 
-    @Embedded(prefix = "subPubEntity")
-    public SubPubNoteEntity subPubNoteEntity;
-
     // Joystick specifics
 
     @ColumnInfo(name = "x_axis_mapping")

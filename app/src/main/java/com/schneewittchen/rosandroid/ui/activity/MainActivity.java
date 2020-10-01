@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int LOCATION_PERM = 101;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,7 +84,6 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean restorePrefData() {
         SharedPreferences pref = getApplicationContext().getSharedPreferences("onboardingPrefs", MODE_PRIVATE);
-        Boolean checkedIn = pref.getBoolean("CheckedIn", false);
-        return checkedIn;
+        return pref.getBoolean("CheckedIn", false);
     }
 }

@@ -115,7 +115,7 @@ public class ConfigurationsViewModel extends AndroidViewModel {
     }
 
     public void addConfig() {
-        configRepository.createConfig();
+        configRepository.createConfig(null);
     }
 
     public void chooseConfig(String configName) {

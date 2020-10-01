@@ -1,8 +1,9 @@
 package com.schneewittchen.rosandroid.ui.fragments;
 
+import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.res.TypedArray;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,10 +25,8 @@ import com.schneewittchen.rosandroid.ui.helper.IntroViewPagerAdapter;
 import com.schneewittchen.rosandroid.ui.helper.ScreenItem;
 import com.schneewittchen.rosandroid.viewmodel.IntroViewModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import static android.content.Context.MODE_PRIVATE;
 
 /**
  * TODO: Description
@@ -41,23 +40,26 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class IntroFragment extends Fragment {
 
-    private ViewPager screenPager;
+    private static final String TAG = IntroFragment.class.getSimpleName();
+
+
+    ViewPager screenPager;
     IntroViewPagerAdapter introViewPagerAdapter;
     TabLayout tabIndicator;
     Button buttonNext;
-    int position = 0;
     Button buttonGetStarted;
     Animation buttonAnimation;
     Button buttonConfiguration;
     EditText editTextConfigName;
-
     YouTubePlayerView videoView;
-
     IntroViewModel mViewModel;
+    List<ScreenItem> screenItems;
+    int itemPosition;
 
     public static IntroFragment newInstance() {
         return new IntroFragment();
     }
+
 
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
@@ -77,81 +79,77 @@ public class IntroFragment extends Fragment {
         getLifecycle().addObserver(videoView);
 
         // Setup the viewPager
-        List<ScreenItem> mList = mViewModel.getScreenItems();
+        screenItems = mViewModel.getScreenItems();
         screenPager = view.findViewById(R.id.screen_viewpager);
-        introViewPagerAdapter = new IntroViewPagerAdapter(this.getContext(), mList);
+        introViewPagerAdapter = new IntroViewPagerAdapter(this.getContext(), screenItems);
         screenPager.setAdapter(introViewPagerAdapter);
 
         // Steup tablayout
         tabIndicator.setupWithViewPager(screenPager);
 
-        // next button click listener
-        buttonNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                position = screenPager.getCurrentItem();
-                if(position < mList.size()) {
-                    position++;
-                    screenPager.setCurrentItem(position);
-                }
-
-                if (position == mList.size()) { // when we reach the last screen
-                    loadVideoScreen();
-                }
-            }
-        });
-
         // tablayout add change listener
-        tabIndicator.addOnTabSelectedListener(new TabLayout.BaseOnTabSelectedListener() {
+        tabIndicator.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                if(tab.getPosition() == mList.size()) {
+                if(tab.getPosition() == screenItems.size()) {
                     loadVideoScreen();
                 }
             }
 
             @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-            }
+            public void onTabUnselected(TabLayout.Tab tab) {}
 
             @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-            }
+            public void onTabReselected(TabLayout.Tab tab) {}
         });
+
+        // next button click listener
+        buttonNext.setOnClickListener(v -> jumpToNextScreen());
 
         // Get started Button click listener
-        buttonGetStarted.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadConfigNameScreen();
-            }
-        });
+        buttonGetStarted.setOnClickListener(v -> loadConfigNameScreen());
 
         // NameConfig Click Listener
-        buttonConfiguration.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Get string for first config name
-                Bundle bundle = new Bundle();
-                bundle.putString("configName",editTextConfigName.getText().toString());
-                // Save the Prefs
-                savePrefsData();
-                // Start the next fragment
-                MainFragment mainFragment = new MainFragment();
-                mainFragment.setArguments(bundle);
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.main_container, mainFragment)
-                        .addToBackStack(null)
-                        .commit();
-            }
-        });
+        buttonConfiguration.setOnClickListener(v -> loadMainFragment());
+    }
+
+    private void loadMainFragment() {
+        // Get string for first config name
+        Bundle bundle = new Bundle();
+        bundle.putString("configName",editTextConfigName.getText().toString());
+
+        // Save the Prefs
+        savePrefsData();
+
+        // Start the next fragment
+        if (getActivity() == null) {
+            return;
+        }
+
+        MainFragment mainFragment = new MainFragment();
+        mainFragment.setArguments(bundle);
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.main_container, mainFragment)
+                .addToBackStack(null)
+                .commit();
+    }
+
+    private void jumpToNextScreen() {
+        itemPosition = screenPager.getCurrentItem();
+        itemPosition++;
+
+        if(itemPosition < screenItems.size()) {
+            screenPager.setCurrentItem(itemPosition);
+
+        } else {
+            loadVideoScreen();
+        }
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
     }
-
 
     // show the get started button and hide the indicator and the next button
     private void loadVideoScreen() {
@@ -173,10 +171,14 @@ public class IntroFragment extends Fragment {
     }
 
     private void savePrefsData() {
-        SharedPreferences pref = getContext().getSharedPreferences("onboardingPrefs", MODE_PRIVATE);
+        if (getContext() == null) {
+            return;
+        }
+
+        SharedPreferences pref = getContext().getSharedPreferences("onboardingPrefs", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
         editor.putBoolean("CheckedIn",true);
-        editor.commit();
+        editor.apply();
     }
 
     @Nullable

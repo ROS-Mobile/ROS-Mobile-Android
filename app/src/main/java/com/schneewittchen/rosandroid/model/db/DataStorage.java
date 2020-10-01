@@ -40,17 +40,17 @@ import java.util.List;
 @Database(entities =
         {ConfigEntity.class, MasterEntity.class, WidgetStorageData.class, SSHEntity.class, WidgetCountEntity.class},
         version = 3, exportSchema = false)
-public abstract class ConfigDatabase extends RoomDatabase {
+public abstract class DataStorage extends RoomDatabase {
 
-    private static final String TAG = ConfigDatabase.class.getCanonicalName();
-    private static ConfigDatabase instance;
+    private static final String TAG = DataStorage.class.getCanonicalName();
+    private static DataStorage instance;
     private static String[] widgetNames;
 
 
-    public static synchronized ConfigDatabase getInstance(final Context context) {
+    public static synchronized DataStorage getInstance(final Context context) {
         if (instance == null){
             instance = Room.databaseBuilder(context.getApplicationContext(),
-                    ConfigDatabase.class, Constants.DB_NAME)
+                    DataStorage.class, Constants.DB_NAME)
                     .fallbackToDestructiveMigration()
                     .build();
         }
@@ -61,7 +61,7 @@ public abstract class ConfigDatabase extends RoomDatabase {
     }
 
 
-    // Methods -------------------------------------------------------------------------------------
+    // DAO Methods ---------------------------------------------------------------------------------
 
     public abstract ConfigDao configDao();
     public abstract MasterDao masterDao();
@@ -96,6 +96,10 @@ public abstract class ConfigDatabase extends RoomDatabase {
         return configDao().getLatestConfig();
     }
 
+    public ConfigEntity getLatestConfigDirect() {
+        return configDao().getLatestConfigDirect();
+    }
+
     public LiveData<List<ConfigEntity>> getAllConfigs() {
         return configDao().getAllConfigs();
     }
@@ -103,8 +107,16 @@ public abstract class ConfigDatabase extends RoomDatabase {
 
     // Master methods ------------------------------------------------------------------------------
 
+    public void addMaster(MasterEntity master) {
+        new LambdaTask(() -> masterDao().insert(master)).execute();
+    }
+
     public void updateMaster(MasterEntity master) {
         new LambdaTask(() -> masterDao().update(master)).execute();
+    }
+
+    public void deleteMaster(long configId) {
+        new LambdaTask(() -> masterDao().delete(configId)).execute();
     }
 
     public LiveData<MasterEntity> getMaster(long id) {
@@ -112,10 +124,18 @@ public abstract class ConfigDatabase extends RoomDatabase {
     }
 
 
-    // SSH methods ------------------------------------------------------------------------------
+    // SSH methods ---------------------------------------------------------------------------------
+
+    public void addSSH(SSHEntity ssh) {
+        new LambdaTask(() -> sshDao().insert(ssh)).execute();
+    }
 
     public void updateSSH(SSHEntity ssh) {
         new LambdaTask(() -> sshDao().update(ssh)).execute();
+    }
+
+    public void deleteSSH(long configId) {
+        new LambdaTask(() -> sshDao().delete(configId)).execute();
     }
 
     public LiveData<SSHEntity> getSSH(long id) {
@@ -151,9 +171,6 @@ public abstract class ConfigDatabase extends RoomDatabase {
     public LiveData<List<BaseWidget>> getWidgets(long id) {
         return widgetDao().getWidgets(id);
     }
-
-
-    // Widget Count methods ------------------------------------------------------------------------
 
     public WidgetCountEntity getWidgetCount(long id, String className) {
         return widgetCountDao().getWidgetCountEntity(id, className);

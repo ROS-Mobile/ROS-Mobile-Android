@@ -1,18 +1,9 @@
 package com.schneewittchen.rosandroid.model.db;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MediatorLiveData;
 import androidx.room.Dao;
 import androidx.room.Query;
 
-import com.schneewittchen.rosandroid.model.entities.MasterEntity;
-import com.schneewittchen.rosandroid.model.entities.SSHEntity;
 import com.schneewittchen.rosandroid.model.entities.WidgetCountEntity;
-import com.schneewittchen.rosandroid.model.entities.WidgetEntity;
-import com.schneewittchen.rosandroid.model.entities.WidgetFactory;
-import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
-
-import java.util.List;
 
 /**
  * TODO: Description
