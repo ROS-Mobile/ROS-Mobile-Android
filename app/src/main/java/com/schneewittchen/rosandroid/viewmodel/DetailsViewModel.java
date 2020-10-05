@@ -28,6 +28,8 @@ import java.util.List;
  * @created on 10.01.20
  * @updated on 15.05.20
  * @modified by Nico Studt
+ * @updated on 05.10.20
+ * @modified by Nils Rottmann
  */
 public class DetailsViewModel extends AndroidViewModel {
 
@@ -70,6 +72,8 @@ public class DetailsViewModel extends AndroidViewModel {
     public int getAvailableWidgetNames() {
         return WidgetModel.getWidgetNames();
     }
+
+    public int getAvailableWidgetDescr() { return WidgetModel.getWidgetDescr(); }
 
     public LiveData<Boolean> widgetsEmpty() {
         if (widgetsEmpty == null) {

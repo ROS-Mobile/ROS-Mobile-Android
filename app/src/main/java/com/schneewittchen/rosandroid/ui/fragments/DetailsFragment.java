@@ -1,5 +1,6 @@
 package com.schneewittchen.rosandroid.ui.fragments;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -43,6 +44,8 @@ import java.util.List;
  * @created on 10.01.20
  * @updated on 15.05.20
  * @modified by Nico Studt
+ * @updated on 05.10.20
+ * @modified by Nils Rottmann
  */
 public class DetailsFragment extends Fragment implements RecyclerItemTouchHelper.TouchListener, DetailListener {
 
@@ -120,14 +123,30 @@ public class DetailsFragment extends Fragment implements RecyclerItemTouchHelper
         }
 
         String[] widgetNames = getResources().getStringArray(mViewModel.getAvailableWidgetNames());
+        String[] widgetDescr = getResources().getStringArray(mViewModel.getAvailableWidgetDescr());
 
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
         dialogBuilder.setTitle("Widgets");
-        dialogBuilder.setItems(widgetNames, (dialog, item) -> {
-            String selectedText = widgetNames[item];  //Selected item in list view
-            mViewModel.createWidget(selectedText);
 
-            Log.i(TAG, "Selected Text: " + selectedText);
+        dialogBuilder.setItems(widgetNames, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+                AlertDialog.Builder dialogChecker = new AlertDialog.Builder(getContext());
+                dialogChecker.setTitle(widgetNames[item]);
+                dialogChecker.setMessage(widgetDescr[item]);
+
+                dialogChecker.setPositiveButton("Create", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                mViewModel.createWidget(widgetNames[item]);
+                                Log.i(TAG, "Selected Text: " + widgetNames[item]);
+                            }
+                        });
+                        dialogChecker.setNegativeButton("Cancel", null);
+
+                AlertDialog dialogCheckerObject = dialogChecker.create();
+                dialogCheckerObject.show();
+            }
         });
 
         //Create alert dialog object via builder

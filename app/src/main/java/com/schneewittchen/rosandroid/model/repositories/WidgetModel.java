@@ -11,10 +11,14 @@ import com.schneewittchen.rosandroid.R;
  * @created on 20.01.20
  * @updated on 27.04.20
  * @modified by Nils Rottmann
+ * @updated on 05.10.20
+ * @modified by Nils Rottmann
  */
 public class WidgetModel {
 
     public static int getWidgetNames() {
         return R.array.widget_names;
     }
+
+    public static int getWidgetDescr() { return R.array.widget_descr; }
 }
