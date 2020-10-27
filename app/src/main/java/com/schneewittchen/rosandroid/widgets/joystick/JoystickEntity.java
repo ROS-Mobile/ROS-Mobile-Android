@@ -1,8 +1,7 @@
 package com.schneewittchen.rosandroid.widgets.joystick;
 
-
-import com.schneewittchen.rosandroid.model.rosRepo.message.Topic;
-import com.schneewittchen.rosandroid.widgets.test.PublisherWidget;
+import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.Topic;
+import com.schneewittchen.rosandroid.model.entities.PublisherEntity;
 
 import geometry_msgs.Twist;
 
@@ -16,7 +15,7 @@ import geometry_msgs.Twist;
  * @updated on 10.05.20
  * @modified by Nico Studt
  */
-public class JoystickEntity extends PublisherWidget {
+public class JoystickEntity extends PublisherEntity {
 
     public String xAxisMapping;
     public String yAxisMapping;
@@ -31,30 +30,13 @@ public class JoystickEntity extends PublisherWidget {
         this.height = 4;
         this.topic = new Topic("cmd_vel", Twist._TYPE);
         this.immediatePublish = false;
-        this.publishRate = 10f;
+        this.publishRate = 20f;
         this.xAxisMapping = "Angular/Z";
         this.yAxisMapping = "Linear/X";
-        this.xScaleLeft = -1;
-        this.xScaleRight = 1;
+        this.xScaleLeft = 1;
+        this.xScaleRight = -1;
         this.yScaleLeft = -1;
         this.yScaleRight = 1;
-    }
-
-
-    @Override
-    public boolean equals(Object o) {
-        if (!super.equals(o)) {
-            return false;
-        }
-
-        JoystickEntity other = (JoystickEntity) o;
-
-        return this.xAxisMapping.equals(other.xAxisMapping)
-                && this.yAxisMapping.equals(other.yAxisMapping)
-                && this.xScaleLeft == other.xScaleLeft
-                && this.xScaleRight == other.xScaleRight
-                && this.yScaleLeft == other.yScaleLeft
-                && this.yScaleRight == other.yScaleRight;
     }
 
 }

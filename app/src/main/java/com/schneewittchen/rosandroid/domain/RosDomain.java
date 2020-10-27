@@ -9,12 +9,13 @@ import androidx.lifecycle.Transformations;
 import com.schneewittchen.rosandroid.model.entities.MasterEntity;
 import com.schneewittchen.rosandroid.model.repositories.ConfigRepository;
 import com.schneewittchen.rosandroid.model.repositories.ConfigRepositoryImpl;
-import com.schneewittchen.rosandroid.model.rosRepo.RosRepository;
-import com.schneewittchen.rosandroid.model.rosRepo.connection.ConnectionType;
-import com.schneewittchen.rosandroid.model.rosRepo.message.Topic;
+import com.schneewittchen.rosandroid.model.repositories.rosRepo.RosRepository;
+import com.schneewittchen.rosandroid.model.repositories.rosRepo.connection.ConnectionType;
+import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.RosData;
+import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.Topic;
 import com.schneewittchen.rosandroid.utility.LambdaTask;
-import com.schneewittchen.rosandroid.widgets.base.BaseData;
-import com.schneewittchen.rosandroid.widgets.test.BaseWidget;
+import com.schneewittchen.rosandroid.model.repositories.rosRepo.node.BaseData;
+import com.schneewittchen.rosandroid.model.entities.BaseEntity;
 
 import java.util.List;
 
@@ -40,12 +41,12 @@ public class RosDomain {
     private static RosDomain mInstance;
 
     // Repositories
-    private ConfigRepository configRepository;
-    private RosRepository rosRepo;
+    private final ConfigRepository configRepository;
+    private final RosRepository rosRepo;
 
     // Data objects
-    private LiveData<List<BaseWidget>> currentWidgets;
-    private LiveData<MasterEntity> currentMaster;
+    private final LiveData<List<BaseEntity>> currentWidgets;
+    private final LiveData<MasterEntity> currentMaster;
 
 
     private RosDomain(@NonNull Application application) {
@@ -73,31 +74,31 @@ public class RosDomain {
     }
 
 
-    public void informWidgetDataChange(BaseData data) {
-        //rosRepo.informWidgetDataChange(data);
+    public void publishData(BaseData data) {
+        rosRepo.publishData(data);
     }
 
     public void createWidget(String widgetType) {
         new LambdaTask(() -> configRepository.createWidget(widgetType)).execute();
     }
 
-    public void addWidget(BaseWidget widget) {
+    public void addWidget(BaseEntity widget) {
         configRepository.addWidget(widget);
     }
 
-    public void updateWidget(BaseWidget widget) {
+    public void updateWidget(BaseEntity widget) {
         configRepository.updateWidget(widget);
     }
 
-    public void deleteWidget(BaseWidget widget) {
+    public void deleteWidget(BaseEntity widget) {
         configRepository.deleteWidget(widget);
     }
 
-    public LiveData<List<BaseWidget>> getCurrentWidgets() {
+    public LiveData<List<BaseEntity>> getCurrentWidgets() {
         return this.currentWidgets;
     }
 
-    public LiveData<BaseData> getData(){ return this.rosRepo.getData(); }
+    public LiveData<RosData> getData(){ return this.rosRepo.getData(); }
 
 
     public void updateMaster(MasterEntity master) {

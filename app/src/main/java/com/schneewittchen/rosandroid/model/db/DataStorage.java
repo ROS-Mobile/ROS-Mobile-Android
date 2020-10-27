@@ -14,8 +14,8 @@ import com.schneewittchen.rosandroid.model.entities.SSHEntity;
 import com.schneewittchen.rosandroid.model.entities.WidgetCountEntity;
 import com.schneewittchen.rosandroid.utility.Constants;
 import com.schneewittchen.rosandroid.utility.LambdaTask;
-import com.schneewittchen.rosandroid.widgets.test.BaseWidget;
-import com.schneewittchen.rosandroid.widgets.test.WidgetStorageData;
+import com.schneewittchen.rosandroid.model.entities.BaseEntity;
+import com.schneewittchen.rosandroid.model.entities.WidgetStorageData;
 
 import java.util.List;
 
@@ -39,7 +39,7 @@ import java.util.List;
  */
 @Database(entities =
         {ConfigEntity.class, MasterEntity.class, WidgetStorageData.class, SSHEntity.class, WidgetCountEntity.class},
-        version = 3, exportSchema = false)
+        version = 4, exportSchema = false)
 public abstract class DataStorage extends RoomDatabase {
 
     private static final String TAG = DataStorage.class.getCanonicalName();
@@ -145,7 +145,7 @@ public abstract class DataStorage extends RoomDatabase {
 
     // Widget methods ------------------------------------------------------------------------------
 
-    public void addWidget(BaseWidget widget) {
+    public void addWidget(BaseEntity widget) {
         new LambdaTask(() ->
                 widgetDao().insert(widget))
                 .execute();
@@ -156,24 +156,28 @@ public abstract class DataStorage extends RoomDatabase {
 
     }
 
-    public void updateWidget(BaseWidget widget) {
+    public void updateWidget(BaseEntity widget) {
         new LambdaTask(() ->
                 widgetDao().update(widget))
                 .execute();
     }
 
-    public void deleteWidget(BaseWidget widget) {
+    public void deleteWidget(BaseEntity widget) {
         new LambdaTask(() ->
                 widgetDao().delete(widget))
                 .execute();
     }
 
-    public LiveData<List<BaseWidget>> getWidgets(long id) {
+    public LiveData<List<BaseEntity>> getWidgets(long id) {
         return widgetDao().getWidgets(id);
     }
 
     public WidgetCountEntity getWidgetCount(long id, String className) {
         return widgetCountDao().getWidgetCountEntity(id, className);
+    }
+
+    public int countWidget(long configId, String typeName) {
+        return widgetDao().getCount(configId, typeName);
     }
 
 }

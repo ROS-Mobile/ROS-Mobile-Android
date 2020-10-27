@@ -9,7 +9,6 @@ import android.util.Log;
 import android.util.TypedValue;
 
 import com.schneewittchen.rosandroid.BuildConfig;
-import com.schneewittchen.rosandroid.widgets.test.BaseWidget;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;

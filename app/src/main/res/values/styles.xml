@@ -11,6 +11,11 @@
         <item name="windowNoTitle">true</item>
         <item name="actionOverflowMenuStyle">@style/MyOverflowMenu</item>
         <item name="android:navigationBarColor">@color/black01dp</item>
+
+        <item name="snackbarStyle">@style/snackbar_style</item>
+        <item name="snackbarTextViewStyle">@style/snackbar_text</item>
+        <item name="snackbarButtonStyle">@style/snackbar_button</item>
+
         </style>
 
 
@@ -24,6 +29,18 @@
             <item name="overlapAnchor">false</item>
             <item name="android:overlapAnchor" tools:ignore="NewApi">false</item>
             <item name="android:dropDownVerticalOffset">8.0dp</item>
+        </style>
+
+        <style name="snackbar_style" parent="Widget.MaterialComponents.Snackbar">
+            <item name="android:background">@color/black08dp</item>
+        </style>
+
+        <style name="snackbar_text" parent="@style/Widget.MaterialComponents.Snackbar.TextView">
+            <item name="android:textColor">@color/whiteHigh</item>
+        </style>
+
+        <style name="snackbar_button" parent="@style/Widget.MaterialComponents.Button.TextButton.Snackbar">
+            <item name="android:textColor">@color/color_attention</item>
         </style>
 
         </resources>

@@ -9,8 +9,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.schneewittchen.rosandroid.R;
-import com.schneewittchen.rosandroid.widgets.base.BaseDetailViewHolder;
-import com.schneewittchen.rosandroid.widgets.base.DetailListener;
+import com.schneewittchen.rosandroid.ui.views.BaseDetailViewHolder;
+import com.schneewittchen.rosandroid.ui.fragments.details.WidgetChangeListener;
 
 import java.util.Locale;
 
@@ -46,7 +46,7 @@ public class JoystickDetailVH extends BaseDetailViewHolder<JoystickEntity> {
     private ArrayAdapter<CharSequence> yAxisAdapter;
 
 
-    public JoystickDetailVH(@NonNull View view, DetailListener updateListener) {
+    public JoystickDetailVH(@NonNull View view, WidgetChangeListener updateListener) {
         super(view, updateListener);
     }
 

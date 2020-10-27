@@ -78,7 +78,7 @@
             android:visibility="gone"
             tools:visibility="visible" />
 
-        <com.schneewittchen.rosandroid.ui.helper.LockableViewPager
+        <com.schneewittchen.rosandroid.ui.fragments.main.LockableViewPager
             android:id="@+id/configViewpager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -106,7 +106,7 @@
 
             <fragment
                 android:id="@+id/fragment"
-                android:name="com.schneewittchen.rosandroid.ui.fragments.ConfigurationsFragment"
+                android:name="com.schneewittchen.rosandroid.ui.fragments.config.ConfigurationsFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:layout="@layout/fragment_configurations" />

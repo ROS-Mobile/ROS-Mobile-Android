@@ -18,7 +18,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.databinding.FragmentMasterBinding;
-import com.schneewittchen.rosandroid.model.rosRepo.connection.ConnectionType;
+import com.schneewittchen.rosandroid.model.repositories.rosRepo.connection.ConnectionType;
 import com.schneewittchen.rosandroid.viewmodel.MasterViewModel;
 
 
@@ -126,7 +126,7 @@ public class MasterFragment extends Fragment implements TextView.OnEditorActionL
     public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
         int id = view.getId();
 
-        if (actionId == EditorInfo.IME_ACTION_DONE){
+        if (actionId == EditorInfo.IME_ACTION_DONE) {
             if (id == R.id.master_ip_editText) {
                 Editable masterIp = binding.masterIpEditText.getText();
 

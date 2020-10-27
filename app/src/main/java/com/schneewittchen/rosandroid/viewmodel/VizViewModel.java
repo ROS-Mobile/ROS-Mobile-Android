@@ -7,9 +7,9 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import com.schneewittchen.rosandroid.domain.RosDomain;
-import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
-import com.schneewittchen.rosandroid.widgets.base.BaseData;
-import com.schneewittchen.rosandroid.widgets.test.BaseWidget;
+import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.RosData;
+import com.schneewittchen.rosandroid.model.repositories.rosRepo.node.BaseData;
+import com.schneewittchen.rosandroid.model.entities.BaseEntity;
 
 import java.util.List;
 
@@ -27,7 +27,7 @@ public class VizViewModel extends AndroidViewModel {
 
     private static final String TAG = VizViewModel.class.getSimpleName();
 
-    private RosDomain rosDomain;
+    private final RosDomain rosDomain;
 
 
     public VizViewModel(@NonNull Application application) {
@@ -37,14 +37,16 @@ public class VizViewModel extends AndroidViewModel {
     }
 
 
-    public LiveData<List<BaseWidget>> getCurrentWidgets() {
+    public LiveData<List<BaseEntity>> getCurrentWidgets() {
         return rosDomain.getCurrentWidgets();
     }
 
-    public LiveData<BaseData> getData() {return this.rosDomain.getData();}
+    public LiveData<RosData> getData() {
+        return this.rosDomain.getData();
+    }
 
 
-    public void informWidgetDataChange(BaseData data) {
-        rosDomain.informWidgetDataChange(data);
+    public void publishData(BaseData data) {
+        rosDomain.publishData(data);
     }
 }

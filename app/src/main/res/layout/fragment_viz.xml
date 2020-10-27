@@ -7,14 +7,14 @@
     android:layout_height="match_parent">
 
 
-    <com.schneewittchen.rosandroid.ui.custum_views.WidgetViewGroup
+    <com.schneewittchen.rosandroid.ui.views.WidgetViewGroup
         android:id="@+id/widget_groupview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="8dp"
         app:crossColor="#8000BCD4">
 
-    </com.schneewittchen.rosandroid.ui.custum_views.WidgetViewGroup>
+    </com.schneewittchen.rosandroid.ui.views.WidgetViewGroup>
 
 
 </RelativeLayout>

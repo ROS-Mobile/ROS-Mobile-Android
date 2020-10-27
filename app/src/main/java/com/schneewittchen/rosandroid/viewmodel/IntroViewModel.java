@@ -9,7 +9,7 @@ import androidx.lifecycle.AndroidViewModel;
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.model.repositories.ConfigRepository;
 import com.schneewittchen.rosandroid.model.repositories.ConfigRepositoryImpl;
-import com.schneewittchen.rosandroid.ui.helper.ScreenItem;
+import com.schneewittchen.rosandroid.ui.fragments.intro.ScreenItem;
 
 import java.util.ArrayList;
 import java.util.List;

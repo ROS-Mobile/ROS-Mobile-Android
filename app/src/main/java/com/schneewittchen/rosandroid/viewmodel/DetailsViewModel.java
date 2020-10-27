@@ -8,9 +8,9 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 
 import com.schneewittchen.rosandroid.domain.RosDomain;
-import com.schneewittchen.rosandroid.model.rosRepo.message.Topic;
+import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.Topic;
 import com.schneewittchen.rosandroid.model.repositories.WidgetModel;
-import com.schneewittchen.rosandroid.widgets.test.BaseWidget;
+import com.schneewittchen.rosandroid.model.entities.BaseEntity;
 
 import java.util.List;
 
@@ -30,10 +30,10 @@ public class DetailsViewModel extends AndroidViewModel {
 
     private static final String TAG = DetailsViewModel.class.getSimpleName();
 
-    private RosDomain rosDomain;
+    private final RosDomain rosDomain;
 
     private MediatorLiveData<Boolean> widgetsEmpty;
-    private BaseWidget lastDeletedWidget;
+    private BaseEntity lastDeletedWidget;
 
 
     public DetailsViewModel(@NonNull Application application) {
@@ -47,11 +47,11 @@ public class DetailsViewModel extends AndroidViewModel {
         rosDomain.createWidget(selectedText);
     }
 
-    public void updateWidget(BaseWidget widget) {
+    public void updateWidget(BaseEntity widget) {
         rosDomain.updateWidget(widget);
     }
 
-    public void deleteWidget(BaseWidget widget) {
+    public void deleteWidget(BaseEntity widget) {
         lastDeletedWidget = widget;
         rosDomain.deleteWidget(widget);
     }
@@ -60,7 +60,7 @@ public class DetailsViewModel extends AndroidViewModel {
         rosDomain.addWidget(lastDeletedWidget);
     }
 
-    public LiveData<List<BaseWidget>> getCurrentWidgets() {
+    public LiveData<List<BaseEntity>> getCurrentWidgets() {
         return rosDomain.getCurrentWidgets();
     }
 

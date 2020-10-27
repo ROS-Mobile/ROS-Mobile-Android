@@ -11,10 +11,10 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.schneewittchen.rosandroid.R;
-import com.schneewittchen.rosandroid.ui.custum_views.WidgetViewGroup;
+import com.schneewittchen.rosandroid.ui.views.WidgetViewGroup;
 import com.schneewittchen.rosandroid.viewmodel.VizViewModel;
-import com.schneewittchen.rosandroid.widgets.base.DataListener;
-import com.schneewittchen.rosandroid.widgets.base.BaseData;
+import com.schneewittchen.rosandroid.ui.general.DataListener;
+import com.schneewittchen.rosandroid.model.repositories.rosRepo.node.BaseData;
 
 
 /**
@@ -65,12 +65,12 @@ public class VizFragment extends Fragment implements DataListener {
         });
 
         mViewModel.getData().observe(getViewLifecycleOwner(), data -> {
-            widgetViewGroupview.setData(data);
+            widgetViewGroupview.onNewData(data);
         });
     }
 
     @Override
-    public void onNewData(BaseData data) {
-        mViewModel.informWidgetDataChange(data);
+    public void onNewWidgetData(BaseData data) {
+        mViewModel.publishData(data);
     }
 }

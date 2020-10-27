@@ -1,16 +1,12 @@
 package com.schneewittchen.rosandroid.model.repositories;
 
-import android.content.Context;
-
 import androidx.lifecycle.LiveData;
 
 import com.schneewittchen.rosandroid.model.entities.ConfigEntity;
 import com.schneewittchen.rosandroid.model.entities.MasterEntity;
 import com.schneewittchen.rosandroid.model.entities.SSHEntity;
-import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
-import com.schneewittchen.rosandroid.widgets.test.BaseWidget;
+import com.schneewittchen.rosandroid.model.entities.BaseEntity;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 /**
@@ -51,16 +47,15 @@ public interface ConfigRepository {
     LiveData<MasterEntity> getMaster(long configId);
 
 
-
     void createWidget(String widgetType);
 
-    void deleteWidget(BaseWidget widget);
+    void deleteWidget(BaseEntity widget);
 
-    void addWidget(BaseWidget widget);
+    void addWidget(BaseEntity widget);
 
-    void updateWidget(BaseWidget widget);
+    void updateWidget(BaseEntity widget);
 
-    LiveData<List<BaseWidget>> getWidgets(long id);
+    LiveData<List<BaseEntity>> getWidgets(long id);
 
 
     void updateSSH(SSHEntity ssh);

@@ -50,8 +50,8 @@ public class SshRepositoryImpl implements SshRepository {
     MutableLiveData<String> outputData;
     MutableLiveData<Boolean> connected;
 
-    private ConfigRepository configRepository;
-    private LiveData<SSHEntity> currentSSH;
+    private final ConfigRepository configRepository;
+    private final LiveData<SSHEntity> currentSSH;
 
 
     private SshRepositoryImpl(@NonNull Application application) {

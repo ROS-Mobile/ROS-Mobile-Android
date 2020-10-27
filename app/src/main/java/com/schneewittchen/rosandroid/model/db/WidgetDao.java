@@ -5,9 +5,9 @@ import androidx.lifecycle.MediatorLiveData;
 import androidx.room.Dao;
 import androidx.room.Query;
 
-import com.schneewittchen.rosandroid.widgets.test.BaseWidget;
-import com.schneewittchen.rosandroid.widgets.test.GsonWidgetParser;
-import com.schneewittchen.rosandroid.widgets.test.WidgetStorageData;
+import com.schneewittchen.rosandroid.model.entities.BaseEntity;
+import com.schneewittchen.rosandroid.model.general.GsonWidgetParser;
+import com.schneewittchen.rosandroid.model.entities.WidgetStorageData;
 
 import java.util.List;
 
@@ -36,9 +36,12 @@ public abstract class WidgetDao implements BaseDao<WidgetStorageData>{
     @Query("DELETE FROM widget_table_test")
     abstract void deleteAll();
 
+    @Query("SELECT COUNT(id) FROM widget_table_test WHERE widget_config_id = :configId AND type_name = :widgetType")
+    public abstract int getCount(long configId, String widgetType);
 
-    public LiveData<List<BaseWidget>> getWidgets(long configId) {
-        MediatorLiveData<List<BaseWidget>> widgetList = new MediatorLiveData<>();
+
+    public LiveData<List<BaseEntity>> getWidgets(long configId) {
+        MediatorLiveData<List<BaseEntity>> widgetList = new MediatorLiveData<>();
 
         widgetList.addSource(getWidgetsFor(configId), widgetEntities ->
                 widgetList.postValue(GsonWidgetParser.getInstance().convert(widgetEntities)));
@@ -46,17 +49,17 @@ public abstract class WidgetDao implements BaseDao<WidgetStorageData>{
         return widgetList;
     }
 
-    public void insert(BaseWidget widget) {
+    public void insert(BaseEntity widget) {
         WidgetStorageData storageData = GsonWidgetParser.getInstance().convert(widget);
         this.insert(storageData);
     }
 
-    public void update(BaseWidget widget) {
+    public void update(BaseEntity widget) {
         WidgetStorageData storageData = GsonWidgetParser.getInstance().convert(widget);
         this.update(storageData);
     }
 
-    public int delete(BaseWidget widget) {
+    public int delete(BaseEntity widget) {
         return this.deleteById(widget.id);
     }
 }

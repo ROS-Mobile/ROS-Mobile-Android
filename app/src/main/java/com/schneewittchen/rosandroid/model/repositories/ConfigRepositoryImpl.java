@@ -11,11 +11,10 @@ import com.schneewittchen.rosandroid.model.db.DataStorage;
 import com.schneewittchen.rosandroid.model.entities.ConfigEntity;
 import com.schneewittchen.rosandroid.model.entities.MasterEntity;
 import com.schneewittchen.rosandroid.model.entities.SSHEntity;
-import com.schneewittchen.rosandroid.model.entities.WidgetCountEntity;
 import com.schneewittchen.rosandroid.utility.Constants;
 import com.schneewittchen.rosandroid.utility.LambdaTask;
 import com.schneewittchen.rosandroid.utility.Utils;
-import com.schneewittchen.rosandroid.widgets.test.BaseWidget;
+import com.schneewittchen.rosandroid.model.entities.BaseEntity;
 
 import java.util.List;
 
@@ -41,8 +40,8 @@ public class ConfigRepositoryImpl implements ConfigRepository {
 
     private static ConfigRepositoryImpl mInstance;
 
-    private DataStorage mDataStorage;
-    private MediatorLiveData<Long> mCurrentConfigId;
+    private final DataStorage mDataStorage;
+    private final MediatorLiveData<Long> mCurrentConfigId;
 
 
     private ConfigRepositoryImpl(Application application){
@@ -145,30 +144,25 @@ public class ConfigRepositoryImpl implements ConfigRepository {
 
     @Override
     public void createWidget(String widgetType) {
-        if (mCurrentConfigId.getValue() == null) {
-            return;
-        }
-
-        // TODO: Load widget count from widget_count_dao and extend name
-        long indexCurrentWidget = 0;
-        WidgetCountEntity widgetCount = mDataStorage.getWidgetCount(mCurrentConfigId.getValue(), widgetType);
-        if(widgetCount != null) {
-            indexCurrentWidget = widgetCount.count;
-        }
-
         // Create actual widget object
         String classPath = String.format(Constants.ENTITY_FORMAT, widgetType.toLowerCase(), widgetType);
         Object object = Utils.getObjectFromClassName(classPath);
 
-        if (!(object instanceof BaseWidget)) {
+        if (!(object instanceof BaseEntity)) {
             Log.i(TAG, "Widget can not be created from: " + classPath);
             return;
         }
 
-        BaseWidget widget = (BaseWidget) object;
-        widget.configId = mCurrentConfigId.getValue();
+        BaseEntity widget = (BaseEntity) object;
+        long configId = mCurrentConfigId.getValue();
+
+        // Get widget count
+        String typeName = widget.getClass().getName();
+        int nextCount = mDataStorage.countWidget(configId, typeName) + 1;
+
+        widget.configId = configId;
         widget.creationTime = System.currentTimeMillis();
-        widget.name = widgetType + " " + indexCurrentWidget;
+        widget.name = widgetType + " " + nextCount;
         widget.type = widgetType;
 
         mDataStorage.addWidget(widget);
@@ -177,24 +171,24 @@ public class ConfigRepositoryImpl implements ConfigRepository {
     }
 
     @Override
-    public void addWidget(BaseWidget widget) {
+    public void addWidget(BaseEntity widget) {
         mDataStorage.addWidget(widget);
     }
 
     @Override
-    public void updateWidget(BaseWidget widget) {
+    public void updateWidget(BaseEntity widget) {
         mDataStorage.updateWidget(widget);
     }
 
     @Override
-    public void deleteWidget(BaseWidget widget) {
+    public void deleteWidget(BaseEntity widget) {
         mDataStorage.deleteWidget(widget);
 
         Log.i(TAG, "Widget deleted");
     }
 
     @Override
-    public LiveData<List<BaseWidget>> getWidgets(long id) {
+    public LiveData<List<BaseEntity>> getWidgets(long id) {
         return mDataStorage.getWidgets(id);
     }
 

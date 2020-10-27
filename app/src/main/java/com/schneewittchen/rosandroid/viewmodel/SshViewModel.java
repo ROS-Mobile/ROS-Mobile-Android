@@ -23,7 +23,7 @@ import com.schneewittchen.rosandroid.model.repositories.SshRepositoryImpl;
 public class SshViewModel extends AndroidViewModel {
 
     SshRepositoryImpl sshRepositoryImpl;
-    private LiveData<SSHEntity> currentSSH;
+    private final LiveData<SSHEntity> currentSSH;
 
 
     public SshViewModel(@NonNull Application application) {
