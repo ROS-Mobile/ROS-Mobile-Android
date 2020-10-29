@@ -1,14 +1,12 @@
 package com.schneewittchen.rosandroid.widgets.gridmap;
 
 import android.view.View;
-import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 
 import com.schneewittchen.rosandroid.R;
-import com.schneewittchen.rosandroid.widgets.base.BaseDetailSubscriberVH;
-import com.schneewittchen.rosandroid.widgets.base.BaseDetailViewHolder;
-import com.schneewittchen.rosandroid.widgets.base.DetailListener;
+import com.schneewittchen.rosandroid.ui.fragments.details.WidgetChangeListener;
+import com.schneewittchen.rosandroid.ui.views.BaseDetailSubscriberVH;
 
 import java.util.Arrays;
 
@@ -24,9 +22,9 @@ import java.util.Arrays;
  * @updated on 17.09.20
  * @modified by Nils Rottmann
  */
-public class GridMapDetailVH extends BaseDetailSubscriberVH<WidgetGridMapEntity> {
+public class GridMapDetailVH extends BaseDetailSubscriberVH<GridMapEntity> {
 
-    public GridMapDetailVH(@NonNull View view, DetailListener updateListener) {
+    public GridMapDetailVH(@NonNull View view, WidgetChangeListener updateListener) {
         super(view, updateListener);
         this.setTopicTypeList(Arrays.asList(view.getResources().getStringArray(R.array.gridmap_msg_types)));
     }

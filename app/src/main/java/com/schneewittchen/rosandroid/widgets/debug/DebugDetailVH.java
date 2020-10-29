@@ -13,10 +13,13 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 
 import com.schneewittchen.rosandroid.R;
-import com.schneewittchen.rosandroid.model.entities.RosTopic;
+import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.Topic;
+import com.schneewittchen.rosandroid.ui.fragments.details.WidgetChangeListener;
+import com.schneewittchen.rosandroid.ui.views.BaseDetailViewHolder;
 import com.schneewittchen.rosandroid.utility.CustomSpinner;
-import com.schneewittchen.rosandroid.widgets.base.BaseDetailViewHolder;
-import com.schneewittchen.rosandroid.widgets.base.DetailListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -39,10 +42,12 @@ public class DebugDetailVH extends BaseDetailViewHolder<DebugEntity> {
     List<String> nameList;
     ArrayAdapter<String> adapter;
 
+
     // Constructor
-    public DebugDetailVH(@NonNull View view, DetailListener updateListener) {
+    public DebugDetailVH(@NonNull View view, WidgetChangeListener updateListener) {
         super(view, updateListener);
     }
+
 
     // Initialization
     @Override
@@ -92,19 +97,27 @@ public class DebugDetailVH extends BaseDetailViewHolder<DebugEntity> {
         });
     }
 
+
     @Override
-    public void bind(WidgetDebugEntity entity) {
+    public void bind(DebugEntity entity) {
         // Set current selection
         updateSpinner();
-        topicNameText.setSelection(nameList.indexOf(entity.subPubNoteEntity.topic));
+
+        topicNameText.setSelection(nameList.indexOf(entity.topic.type));
+
         if (entity.validMessage) {
-            topicTypeText.setText(entity.subPubNoteEntity.messageType);
+            topicTypeText.setText(entity.topic.type);
+
         } else {
-            String tmp = entity.subPubNoteEntity.messageType + " (unsupported)";
+            String tmp = entity.topic.type + " (unsupported)";
+
             Spannable spannable = new SpannableString(tmp);
-            spannable.setSpan(new ForegroundColorSpan(Color.RED), entity.subPubNoteEntity.messageType.length(), tmp.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spannable.setSpan(new ForegroundColorSpan(Color.RED), entity.topic.type.length(),
+                    tmp.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
             topicTypeText.setText(spannable);
         }
+
         numberDebugMsgs.setText(Integer.toString(entity.numberMessages));
     }
 
@@ -113,22 +126,26 @@ public class DebugDetailVH extends BaseDetailViewHolder<DebugEntity> {
         if (topicNameText.getSelectedItem() != null) {
             String currentTopicName = topicNameText.getSelectedItem().toString();
             String currentMessageType = "";
-            for (RosTopic rosTopic : mViewModel.getTopicList()) {
+
+            for (Topic rosTopic : mViewModel.getTopicList()) {
                 if (rosTopic.name.equals(currentTopicName)) {
                     currentMessageType = rosTopic.type;
                 }
             }
-            entity.subPubNoteEntity.topic = topicNameText.getSelectedItem().toString();
-            entity.subPubNoteEntity.messageType = currentMessageType;
+
+            entity.topic.name = topicNameText.getSelectedItem().toString();
+            entity.topic.type = currentMessageType;
         }
     }
 
     public void updateSpinner() {
         // Get the list
         nameList = new ArrayList<>();
-        for (RosTopic rosTopic: mViewModel.getTopicList()) {
+
+        for (Topic rosTopic: mViewModel.getTopicList()) {
             nameList.add(rosTopic.name);
         }
+
         adapter.clear();
         adapter.addAll(nameList);
     }

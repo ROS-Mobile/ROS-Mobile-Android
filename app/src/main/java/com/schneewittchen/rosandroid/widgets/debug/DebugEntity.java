@@ -18,7 +18,6 @@ import org.ros.node.topic.Subscriber;
 public class DebugEntity extends SubscriberEntity {
 
     public int numberMessages;
-    public boolean validMessage;
 
 
     public DebugEntity() {
@@ -26,6 +25,5 @@ public class DebugEntity extends SubscriberEntity {
         this.height = 3;
         this.topic = new Topic("debug", Subscriber.TOPIC_MESSAGE_TYPE_WILDCARD);
         this.numberMessages = 10;
-        this.validMessage = false;
     }
 }

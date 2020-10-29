@@ -17,8 +17,8 @@ import androidx.core.view.GestureDetectorCompat;
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.ui.views.SubscriberView;
 import com.schneewittchen.rosandroid.utility.Utils;
-import com.schneewittchen.rosandroid.widgets.base.BaseData;
-import com.schneewittchen.rosandroid.widgets.base.BaseView;
+
+import org.ros.internal.message.Message;
 
 import java.util.ArrayList;
 
@@ -71,6 +71,7 @@ public class DebugView extends SubscriberView {
     private int posX = 0;
     private int posY = 0;
     private float dragSensitivity = 0.05f;
+
 
     public DebugView(Context context) {
         super(context);
@@ -159,13 +160,13 @@ public class DebugView extends SubscriberView {
         canvas.restore();
     }
 
-
     @Override
-    public void setData(BaseData data) {
-        DebugData debugData = (DebugData) data;
+    public void onNewMessage(Message message) {
+        DebugData debugData = new DebugData(message);
+        DebugEntity entity = (DebugEntity) widgetEntity;
 
         dataList.add(debugData.value);
-        while(dataList.size() > this.widgetEntity.numberMessages) {
+        while(dataList.size() > entity.numberMessages) {
             dataList.remove(0);
         }
 
@@ -179,6 +180,7 @@ public class DebugView extends SubscriberView {
     public boolean onTouchEvent(MotionEvent event) {
         // Handle double click
         gestureDetector.onTouchEvent(event);
+
         // Handle scrolling
         if(stopUpdate) {
             boolean dragged = false;

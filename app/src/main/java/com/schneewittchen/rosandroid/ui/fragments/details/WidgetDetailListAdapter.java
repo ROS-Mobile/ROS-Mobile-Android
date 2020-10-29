@@ -43,7 +43,7 @@ public class WidgetDetailListAdapter extends RecyclerView.Adapter<BaseDetailView
 
     public WidgetDetailListAdapter(DetailsViewModel viewModel) {
         this.mViewModel = viewModel;
-        mDiffer = new AsyncListDiffer<BaseEntity>(this, diffCallback);
+        mDiffer = new AsyncListDiffer<>(this, diffCallback);
         types = new ArrayList<>();
     }
 
@@ -58,7 +58,10 @@ public class WidgetDetailListAdapter extends RecyclerView.Adapter<BaseDetailView
             LayoutInflater inflator = LayoutInflater.from(parent.getContext());
             View itemView = inflator.inflate(R.layout.widget_detail_base, parent, false);
 
-            return cons.newInstance(itemView, this);
+            BaseDetailViewHolder viewHolder = cons.newInstance(itemView, this);
+            viewHolder.setViewModel(mViewModel);
+
+            return viewHolder;
 
         } catch (Exception e) {
             e.printStackTrace();

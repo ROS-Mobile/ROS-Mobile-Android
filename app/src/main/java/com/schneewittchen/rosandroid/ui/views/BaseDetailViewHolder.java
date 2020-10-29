@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.model.entities.BaseEntity;
 import com.schneewittchen.rosandroid.ui.fragments.details.WidgetChangeListener;
+import com.schneewittchen.rosandroid.viewmodel.DetailsViewModel;
 
 
 /**
@@ -39,8 +40,9 @@ public abstract class BaseDetailViewHolder<T extends BaseEntity> extends Recycle
     protected ImageButton renameButton;
     protected WidgetChangeListener changeListener;
     protected EditText xEdittext, yEdittext, widthEditText, heightEdittext;
-    protected T widget;
-
+    protected T entity;
+    protected DetailsViewModel mViewModel;
+    
 
     public BaseDetailViewHolder(@NonNull View view, WidgetChangeListener changeListener) {
         super(view);
@@ -88,7 +90,7 @@ public abstract class BaseDetailViewHolder<T extends BaseEntity> extends Recycle
     }
 
     public void baseBind(T entity) {
-        this.widget = entity;
+        this.entity = entity;
 
         title.setText(entity.name);
         xEdittext.setText(String.valueOf(entity.posX));
@@ -103,15 +105,15 @@ public abstract class BaseDetailViewHolder<T extends BaseEntity> extends Recycle
         baseUpdateEntity();
         updateEntity();
 
-        changeListener.onWidgetDetailsChanged(widget);
+        changeListener.onWidgetDetailsChanged(entity);
     }
 
     private void baseUpdateEntity() {
-        widget.name = title.getText().toString();
-        widget.posX = Integer.parseInt(xEdittext.getText().toString());
-        widget.posY = Integer.parseInt(yEdittext.getText().toString());
-        widget.width = Integer.parseInt(widthEditText.getText().toString());
-        widget.height = Integer.parseInt(heightEdittext.getText().toString());
+        entity.name = title.getText().toString();
+        entity.posX = Integer.parseInt(xEdittext.getText().toString());
+        entity.posY = Integer.parseInt(yEdittext.getText().toString());
+        entity.width = Integer.parseInt(widthEditText.getText().toString());
+        entity.height = Integer.parseInt(heightEdittext.getText().toString());
     }
 
     private void showRenameDialog() {
@@ -138,6 +140,10 @@ public abstract class BaseDetailViewHolder<T extends BaseEntity> extends Recycle
     public void rename(String newName) {
         newName = newName.trim();
         title.setText(newName);
+    }
+
+    public void setViewModel(DetailsViewModel viewModel) {
+        this.mViewModel = viewModel;
     }
 
 }

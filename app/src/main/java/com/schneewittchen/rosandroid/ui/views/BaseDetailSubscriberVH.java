@@ -1,6 +1,5 @@
-package com.schneewittchen.rosandroid.widgets.base;
+package com.schneewittchen.rosandroid.ui.views;
 
-import android.nfc.Tag;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -8,11 +7,14 @@ import android.widget.ArrayAdapter;
 import androidx.annotation.NonNull;
 
 import com.schneewittchen.rosandroid.R;
-import com.schneewittchen.rosandroid.model.entities.RosTopic;
+import com.schneewittchen.rosandroid.model.entities.BaseEntity;
+import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.Topic;
+import com.schneewittchen.rosandroid.ui.fragments.details.WidgetChangeListener;
 import com.schneewittchen.rosandroid.utility.CustomSpinner;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  * TODO: Description
@@ -23,10 +25,9 @@ import java.util.List;
  * @updated on
  * @modified by
  */
-
 public class BaseDetailSubscriberVH<W extends BaseEntity> extends BaseDetailViewHolder {
 
-    public static final String TAG = "BaseDetailPublisherVH";
+    public static final String TAG = BaseDetailViewHolder.class.getSimpleName();
 
     CustomSpinner topicNameText;
     CustomSpinner topicTypeText;
@@ -38,25 +39,27 @@ public class BaseDetailSubscriberVH<W extends BaseEntity> extends BaseDetailView
     ArrayAdapter<String> topicTypeAdapter;
 
 
-    public BaseDetailSubscriberVH(@NonNull View view, DetailListener updateListener) {
+    public BaseDetailSubscriberVH(@NonNull View view, WidgetChangeListener updateListener) {
         super(view, updateListener);
     }
+
 
     @Override
     public void init(View view) {
         Log.i(TAG, "init");
+
         // Initialize Views
         topicNameText = view.findViewById(R.id.topicNameText);
         topicTypeText = view.findViewById(R.id.topicTypeText);
 
         // Initialize Topic Name Spinner
         topicNameList = new ArrayList<>();
-        topicNameAdapter = new ArrayAdapter<String>(view.getContext(),
+        topicNameAdapter = new ArrayAdapter<>(view.getContext(),
                 android.R.layout.simple_spinner_dropdown_item, topicNameList);
         topicNameText.setAdapter(topicNameAdapter);
 
         // Initialize Topic Type Spinner
-        topicTypeAdapter = new ArrayAdapter<String>(view.getContext(),
+        topicTypeAdapter = new ArrayAdapter<>(view.getContext(),
                 android.R.layout.simple_spinner_dropdown_item, topicTypeList);
         topicTypeText.setAdapter(topicTypeAdapter);
 
@@ -89,30 +92,39 @@ public class BaseDetailSubscriberVH<W extends BaseEntity> extends BaseDetailView
     public void bind(BaseEntity entity) {
         Log.i(TAG, "bind");
         updateTopicNameSpinner();
-        topicTypeText.setSelection(topicTypeList.indexOf(entity.subPubNoteEntity.messageType));
-        topicNameText.setSelection(topicNameList.indexOf(entity.subPubNoteEntity.topic));
+
+        String messageType = entity.topic.type;
+        String topicName = entity.topic.name;
+
+        topicTypeText.setSelection(topicTypeList.indexOf(messageType));
+        topicNameText.setSelection(topicNameList.indexOf(topicName));
     }
 
     @Override
     public void updateEntity() {
         Log.i(TAG, "updateEntity");
+
         if (topicTypeText.getSelectedItem() != null) {
-            entity.subPubNoteEntity.messageType = topicTypeText.getSelectedItem().toString();
+            entity.topic.type = topicTypeText.getSelectedItem().toString();
         }
+
         if (topicNameText.getSelectedItem() != null) {
-            entity.subPubNoteEntity.topic = topicNameText.getSelectedItem().toString();
+            entity.topic.name = topicNameText.getSelectedItem().toString();
         }
+
         this.update();
     }
 
     void updateTopicNameSpinner() {
         // Get the list with all suitable topics
         topicNameList = new ArrayList<>();
-        for (RosTopic rosTopic: mViewModel.getTopicList()) {
-            if (rosTopic.type.equals(entity.subPubNoteEntity.messageType)) {
+
+        for (Topic rosTopic: mViewModel.getTopicList()) {
+            if (rosTopic.type.equals(entity.topic.type)) {
                 topicNameList.add(rosTopic.name);
             }
         }
+
         topicNameAdapter.clear();
         topicNameAdapter.addAll(topicNameList);
     }

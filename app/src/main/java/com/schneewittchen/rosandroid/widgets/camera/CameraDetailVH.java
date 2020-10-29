@@ -6,8 +6,8 @@ import android.view.View;
 import androidx.annotation.NonNull;
 
 import com.schneewittchen.rosandroid.R;
-import com.schneewittchen.rosandroid.widgets.base.BaseDetailSubscriberVH;
-import com.schneewittchen.rosandroid.widgets.base.DetailListener;
+import com.schneewittchen.rosandroid.ui.fragments.details.WidgetChangeListener;
+import com.schneewittchen.rosandroid.ui.views.BaseDetailSubscriberVH;
 
 import java.util.Arrays;
 
@@ -23,9 +23,9 @@ import java.util.Arrays;
  * @updated on 17.09.20
  * @modified by Nils Rottmann
  */
-public class CameraDetailVH extends BaseDetailSubscriberVH<WidgetCameraEntity> {
+public class CameraDetailVH extends BaseDetailSubscriberVH<CameraEntity> {
 
-    public static final String TAG = "CameraDetailVH";
+    public static final String TAG = CameraDetailVH.class.getSimpleName();
 
 
     public CameraDetailVH(@NonNull View view, WidgetChangeListener updateListener) {

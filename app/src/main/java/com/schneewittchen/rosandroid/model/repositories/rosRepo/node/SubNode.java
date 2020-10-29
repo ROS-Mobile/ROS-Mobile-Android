@@ -28,11 +28,20 @@ public class SubNode extends AbstractNode {
     public void onStart(ConnectedNode parentNode) {
         super.onStart(parentNode);
 
-        Subscriber<? extends Message> subscriber = parentNode.newSubscriber(topic.name, topic.type);
+        try {
+            this.widget.validMessage = true;
 
-        subscriber.addMessageListener(data -> {
-            listener.onNewMessage(new RosData(topic, data));
-        });
+            Subscriber<? extends Message> subscriber = parentNode.newSubscriber(topic.name, topic.type);
+
+            subscriber.addMessageListener(data -> {
+                listener.onNewMessage(new RosData(topic, data));
+            });
+
+        } catch(Exception e) {
+            this.widget.validMessage = false;
+            e.printStackTrace();
+        }
+
     }
 
     public interface NodeListener  {

@@ -1,5 +1,6 @@
 package com.schneewittchen.rosandroid.ui.fragments.details;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -111,14 +112,27 @@ public class DetailsFragment extends Fragment implements RecyclerItemTouchHelper
         }
 
         String[] widgetNames = getResources().getStringArray(R.array.widget_names);
+        String[] widgetDescr = getResources().getStringArray(R.array.widget_descr);
 
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
-        dialogBuilder.setTitle("Widgets");
-        dialogBuilder.setItems(widgetNames, (dialog, item) -> {
-            String selectedText = widgetNames[item];  //Selected item in list view
-            mViewModel.createWidget(selectedText);
 
-            Log.i(TAG, "Selected Text: " + selectedText);
+        dialogBuilder.setTitle("Widgets");
+
+        dialogBuilder.setItems(widgetNames, (dialog, item) -> {
+            AlertDialog.Builder dialogChecker = new AlertDialog.Builder(getContext());
+            
+            dialogChecker.setTitle(widgetNames[item]);
+            dialogChecker.setMessage(widgetDescr[item]);
+
+            dialogChecker.setPositiveButton("Create", (dialog1, which) -> {
+                mViewModel.createWidget(widgetNames[item]);
+                Log.i(TAG, "Selected Text: " + widgetNames[item]);
+            });
+
+            dialogChecker.setNegativeButton("Cancel", null);
+
+            AlertDialog dialogCheckerObject = dialogChecker.create();
+            dialogCheckerObject.show();
         });
 
         //Create alert dialog object via builder

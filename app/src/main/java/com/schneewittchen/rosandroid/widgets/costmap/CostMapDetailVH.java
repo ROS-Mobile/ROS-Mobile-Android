@@ -44,7 +44,7 @@ public class CostMapDetailVH extends BaseDetailViewHolder<CostMapEntity> {
 
     @Override
     public void updateEntity() {
-        this.widget.topic.type = topicTypeText.getText().toString();
-        this.widget.topic.name = topicNameText.getText().toString();
+        this.entity.topic.type = topicTypeText.getText().toString();
+        this.entity.topic.name = topicNameText.getText().toString();
     }
 }

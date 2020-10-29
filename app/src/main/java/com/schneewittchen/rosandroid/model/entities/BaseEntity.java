@@ -26,6 +26,7 @@ public abstract class BaseEntity {
     public int posY;
     public int width;
     public int height;
+    public boolean validMessage;
 
 
     public boolean equalRosState(BaseEntity other) {
