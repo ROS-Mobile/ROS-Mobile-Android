@@ -28,6 +28,8 @@ import sensor_msgs.Image;
  * @created on 27.04.19
  * @updated on 20.10.2020
  * @modified by Nico Studt
+ * @updated on 17.09.20
+ * @modified by Nils Rottmann
  */
 public class CameraView extends SubscriberView {
 
@@ -46,7 +48,6 @@ public class CameraView extends SubscriberView {
 
     public CameraView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-
         init();
     }
     
@@ -93,7 +94,7 @@ public class CameraView extends SubscriberView {
         }
 
         // Draw Border
-        canvas.drawRoundRect(leftViz, topViz, width, height, cornerWidth, cornerWidth, paint);
+        canvas.drawRoundRect(leftViz, topViz, widthViz, heightViz, cornerWidth, cornerWidth, paint);
     }
 
     @Override

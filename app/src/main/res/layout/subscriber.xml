@@ -73,7 +73,7 @@
         app:layout_constraintTop_toBottomOf="@id/input_layout">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/topicTypeText"
+            android:id="@+id/dummy2Text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:imeOptions="actionDone"
@@ -83,50 +83,14 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <View
-        android:id="@+id/divider2"
+    <com.schneewittchen.rosandroid.utility.CustomSpinner
+        android:id="@+id/topicTypeText"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="12dp"
-        android:background="?android:attr/listDivider"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/input_layout2" />
-
-    <TextView
-        android:id="@+id/textView8"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Debug-Parameters"
-        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-        android:textColor="@color/colorAccent"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/divider2" />
-
-    <TextView
-        android:id="@+id/textView11"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:text="Stored Debug Messages"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView8" />
-
-    <EditText
-        android:id="@+id/numberDebug"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="number"
-        android:text="10"
-        android:layout_marginEnd="24dp"
+        android:enabled="false"
         android:foregroundTintMode="add"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        app:layout_constraintBottom_toBottomOf="@+id/textView11"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textView11"/>
+        android:imeOptions="actionDone"
+        app:layout_constraintBottom_toBottomOf="@+id/input_layout2"
+        app:layout_constraintTop_toTopOf="@+id/input_layout2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

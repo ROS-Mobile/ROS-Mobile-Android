@@ -17,8 +17,8 @@ import androidx.core.view.GestureDetectorCompat;
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.ui.views.SubscriberView;
 import com.schneewittchen.rosandroid.utility.Utils;
-
-import org.ros.internal.message.Message;
+import com.schneewittchen.rosandroid.widgets.base.BaseData;
+import com.schneewittchen.rosandroid.widgets.base.BaseView;
 
 import java.util.ArrayList;
 
@@ -31,8 +31,6 @@ import java.util.ArrayList;
  * @created on 17.08.20
  * @updated on 17.09.20
  * @modified by Nils Rottmann
- * @updated on 22.10.2020
- * @modified by Nico Studt
  */
 public class DebugView extends SubscriberView {
 
@@ -74,7 +72,6 @@ public class DebugView extends SubscriberView {
     private int posY = 0;
     private float dragSensitivity = 0.05f;
 
-
     public DebugView(Context context) {
         super(context);
         init();
@@ -105,7 +102,7 @@ public class DebugView extends SubscriberView {
             @Override
             public boolean onDoubleTap(MotionEvent e) {
                 stopUpdate = !stopUpdate;
-                if (stopUpdate) {
+                if(stopUpdate) {
                     output = "";
                     for (String string : dataList) {
                         output = output.concat(string);
@@ -144,7 +141,7 @@ public class DebugView extends SubscriberView {
         // Draw background and rectangle
         canvas.drawPaint(paintDark);
         canvas.drawRoundRect(leftViz, topViz, widthViz, heightViz, cornerWidth, cornerWidth, paint);
-        canvas.translate(this.cornerWidth, this.cornerWidth);
+        canvas.translate(this.cornerWidth,this.cornerWidth);
 
         // Calculate the drag
         posY = posY - (int) (translateY * dragSensitivity);
@@ -153,7 +150,7 @@ public class DebugView extends SubscriberView {
         System.out.println(posY);
 
         // Draw data
-        textView.scrollTo(posX, posY);
+        textView.scrollTo(posX,posY);
         scrollView.measure(getWidth(), getHeight());
         scrollView.layout(0, 0, getWidth(), getHeight());
         scrollView.draw(canvas);
@@ -164,11 +161,11 @@ public class DebugView extends SubscriberView {
 
 
     @Override
-    public void onNewMessage(Message message) {
-        DebugData debugData = new DebugData(message);
+    public void setData(BaseData data) {
+        DebugData debugData = (DebugData) data;
 
         dataList.add(debugData.value);
-        while (dataList.size() > ((DebugEntity)widgetEntity).numberMessages) {
+        while(dataList.size() > this.widgetEntity.numberMessages) {
             dataList.remove(0);
         }
 
@@ -183,7 +180,7 @@ public class DebugView extends SubscriberView {
         // Handle double click
         gestureDetector.onTouchEvent(event);
         // Handle scrolling
-        if (stopUpdate) {
+        if(stopUpdate) {
             boolean dragged = false;
             switch (event.getAction() & MotionEvent.ACTION_MASK) {
                 case MotionEvent.ACTION_DOWN:
@@ -218,10 +215,9 @@ public class DebugView extends SubscriberView {
 
     private void updateView() {
         textView.setText(this.output);
-        textView.measure(getWidth() - (int) (this.cornerWidth * 2), 0);
+        textView.measure(getWidth()- (int)(this.cornerWidth*2), 0);
         scrollView.removeView(textView);
-        scrollView.addView(textView, getWidth() - (int) (this.cornerWidth * 2), textView.getMeasuredHeight());
-
+        scrollView.addView(textView, getWidth()- (int)(this.cornerWidth*2), textView.getMeasuredHeight());
         this.invalidate();
     }
 }

@@ -6,9 +6,13 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 
 import com.schneewittchen.rosandroid.R;
-import com.schneewittchen.rosandroid.ui.fragments.details.WidgetChangeListener;
-import com.schneewittchen.rosandroid.ui.views.BaseDetailViewHolder;
+import com.schneewittchen.rosandroid.widgets.base.BaseDetailSubscriberVH;
+import com.schneewittchen.rosandroid.widgets.base.BaseDetailViewHolder;
+import com.schneewittchen.rosandroid.widgets.base.DetailListener;
+import com.schneewittchen.rosandroid.widgets.camera.WidgetCameraEntity;
+import com.schneewittchen.rosandroid.widgets.gridmap.WidgetGridMapEntity;
 
+import java.util.Arrays;
 
 /**
  * TODO: Description
@@ -16,36 +20,15 @@ import com.schneewittchen.rosandroid.ui.views.BaseDetailViewHolder;
  * @author Nils Rottmann
  * @version 1.0.0
  * @created on 05.05.20
- * @updated on 27.10.2020
- * @modified by Nico Studt
+ * @updated on 17.09.20
+ * @modified by Nils Rottmann
  */
 
-public class GpsDetailVH extends BaseDetailViewHolder<GpsEntity> {
+public class GpsDetailVH extends BaseDetailSubscriberVH<WidgetGpsEntity> {
 
-    EditText topicNameText;
-    EditText topicTypeText;
-
-
-    public GpsDetailVH(@NonNull View view, WidgetChangeListener changeListener) {
-        super(view, changeListener);
+    public GpsDetailVH(@NonNull View view, DetailListener updateListener) {
+        super(view, updateListener);
+        this.setTopicTypeList(Arrays.asList(view.getResources().getStringArray(R.array.gps_msg_types)));
     }
 
-
-    @Override
-    public void init(View view) {
-        topicNameText = view.findViewById(R.id.topicNameText);
-        topicTypeText = view.findViewById(R.id.topicTypeText);
-    }
-
-    @Override
-    public void bind(GpsEntity entity) {
-        topicNameText.setText(entity.topic.name);
-        topicTypeText.setText(entity.topic.type);
-    }
-
-    @Override
-    public void updateEntity() {
-        this.widget.topic.type = topicTypeText.getText().toString();
-        this.widget.topic.name = topicNameText.getText().toString();
-    }
 }

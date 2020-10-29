@@ -6,8 +6,11 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 
 import com.schneewittchen.rosandroid.R;
-import com.schneewittchen.rosandroid.ui.fragments.details.WidgetChangeListener;
-import com.schneewittchen.rosandroid.ui.views.BaseDetailViewHolder;
+import com.schneewittchen.rosandroid.widgets.base.BaseDetailSubscriberVH;
+import com.schneewittchen.rosandroid.widgets.base.BaseDetailViewHolder;
+import com.schneewittchen.rosandroid.widgets.base.DetailListener;
+
+import java.util.Arrays;
 
 
 /**
@@ -18,33 +21,14 @@ import com.schneewittchen.rosandroid.ui.views.BaseDetailViewHolder;
  * @created on 13.02.20
  * @updated on 13.05.20
  * @modified by Nico Studt
+ * @updated on 17.09.20
+ * @modified by Nils Rottmann
  */
-public class GridMapDetailVH extends BaseDetailViewHolder<GridMapEntity> {
+public class GridMapDetailVH extends BaseDetailSubscriberVH<WidgetGridMapEntity> {
 
-    EditText topicNameText;
-    EditText topicTypeText;
-
-
-    public GridMapDetailVH(@NonNull View view, WidgetChangeListener updateListener) {
+    public GridMapDetailVH(@NonNull View view, DetailListener updateListener) {
         super(view, updateListener);
+        this.setTopicTypeList(Arrays.asList(view.getResources().getStringArray(R.array.gridmap_msg_types)));
     }
 
-
-    @Override
-    public void init(View view) {
-        topicNameText = view.findViewById(R.id.topicNameText);
-        topicTypeText = view.findViewById(R.id.topicTypeText);
-    }
-
-    @Override
-    public void bind(GridMapEntity entity) {
-        topicNameText.setText(entity.topic.name);
-        topicTypeText.setText(entity.topic.type);
-    }
-
-    @Override
-    public void updateEntity() {
-        this.widget.topic.type = topicTypeText.getText().toString();
-        this.widget.topic.name = topicNameText.getText().toString();
-    }
 }
