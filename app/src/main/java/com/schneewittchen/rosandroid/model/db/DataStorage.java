@@ -86,6 +86,9 @@ public abstract class DataStorage extends RoomDatabase {
 
     public void deleteConfig(long id) {
         new LambdaTask(() -> configDao().removeConfig(id)).execute();
+        new LambdaTask(() -> masterDao().delete(id)).execute();
+        new LambdaTask(() -> sshDao().delete(id)).execute();
+        new LambdaTask(() -> widgetDao().deleteWithConfigId(id)).execute();
     }
 
     public LiveData<ConfigEntity> getConfig(long id) {

@@ -5,7 +5,7 @@ import android.util.AttributeSet;
 
 import androidx.annotation.Nullable;
 
-import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.RosData;
+import org.ros.internal.message.Message;
 
 
 /**
@@ -32,5 +32,5 @@ public abstract class SubscriberView extends BaseView {
     }
 
 
-    public abstract void onNewMessage(RosData rosData);
+    public abstract void onNewMessage(Message message);
 }

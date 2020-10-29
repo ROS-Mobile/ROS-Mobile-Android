@@ -110,7 +110,7 @@ public class DetailsFragment extends Fragment implements RecyclerItemTouchHelper
             return;
         }
 
-        String[] widgetNames = getResources().getStringArray(mViewModel.getAvailableWidgetNames());
+        String[] widgetNames = getResources().getStringArray(R.array.widget_names);
 
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
         dialogBuilder.setTitle("Widgets");

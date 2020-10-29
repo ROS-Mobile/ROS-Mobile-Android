@@ -9,7 +9,6 @@ import androidx.lifecycle.MediatorLiveData;
 
 import com.schneewittchen.rosandroid.domain.RosDomain;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.Topic;
-import com.schneewittchen.rosandroid.model.repositories.WidgetModel;
 import com.schneewittchen.rosandroid.model.entities.BaseEntity;
 
 import java.util.List;
@@ -62,10 +61,6 @@ public class DetailsViewModel extends AndroidViewModel {
 
     public LiveData<List<BaseEntity>> getCurrentWidgets() {
         return rosDomain.getCurrentWidgets();
-    }
-
-    public int getAvailableWidgetNames() {
-        return WidgetModel.getWidgetNames();
     }
 
     public LiveData<Boolean> widgetsEmpty() {

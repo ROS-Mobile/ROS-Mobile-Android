@@ -5,6 +5,7 @@ import androidx.room.Query;
 
 import com.schneewittchen.rosandroid.model.entities.WidgetCountEntity;
 
+
 /**
  * TODO: Description
  *

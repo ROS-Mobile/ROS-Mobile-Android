@@ -1,0 +1,31 @@
+package com.schneewittchen.rosandroid.widgets.debug;
+
+import com.schneewittchen.rosandroid.model.entities.SubscriberEntity;
+import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.Topic;
+
+import org.ros.node.topic.Subscriber;
+
+
+/**
+ * TODO: Description
+ *
+ * @author Nils Rottmann
+ * @version 1.0.0
+ * @created on 17.08.20
+ * @updated on 17.09.20
+ * @modified by Nils Rottmann
+ */
+public class DebugEntity extends SubscriberEntity {
+
+    public int numberMessages;
+    public boolean validMessage;
+
+
+    public DebugEntity() {
+        this.width = 4;
+        this.height = 3;
+        this.topic = new Topic("debug", Subscriber.TOPIC_MESSAGE_TYPE_WILDCARD);
+        this.numberMessages = 10;
+        this.validMessage = false;
+    }
+}

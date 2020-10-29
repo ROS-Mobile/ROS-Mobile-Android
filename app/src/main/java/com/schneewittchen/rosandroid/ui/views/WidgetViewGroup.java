@@ -148,7 +148,7 @@ public class WidgetViewGroup extends ViewGroup {
                 SubscriberView subView = (SubscriberView) view;
 
                 if (subView.getTopic().equals(message.getTopic())){
-                    subView.onNewMessage(message);
+                    subView.onNewMessage(message.getMessage());
                 }
             }
         }

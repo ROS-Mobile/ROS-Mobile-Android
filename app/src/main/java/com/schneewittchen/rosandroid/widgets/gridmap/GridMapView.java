@@ -1,4 +1,4 @@
-package com.schneewittchen.rosandroid.widgets.costmap;
+package com.schneewittchen.rosandroid.widgets.gridmap;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -13,8 +13,8 @@ import androidx.annotation.Nullable;
 
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.ui.general.MatrixGestureDetector;
-import com.schneewittchen.rosandroid.utility.Utils;
 import com.schneewittchen.rosandroid.ui.views.SubscriberView;
+import com.schneewittchen.rosandroid.utility.Utils;
 
 import org.ros.internal.message.Message;
 
@@ -26,34 +26,32 @@ import nav_msgs.OccupancyGrid;
  *
  * @author Nico Studt
  * @version 1.0.0
- * @created on 14.09.2020
- * @updated on 22.10.2020
+ * @created on 18.10.19
+ * @updated on 13.05.20
  * @modified by Nico Studt
  */
-public class CostMapView extends SubscriberView implements View.OnTouchListener {
+public class GridMapView extends SubscriberView implements View.OnTouchListener {
 
-    public static final String TAG = "CostMapView";
+    public static final String TAG = "GridmapView";
 
     // Grid Map Information
-    private CostMapData data;
+    private GridMapData data;
 
     // Rectangle Surrounding
     private Paint borderPaint;
     private Paint gridPaint;
     private float cornerWidth;
     private RectF drawRect;
-    
-    // Gestures
     private Matrix matrix;
     private MatrixGestureDetector gestureDetector;
 
 
-    public CostMapView(Context context) {
+    public GridMapView(Context context) {
         super(context);
         init();
     }
 
-    public CostMapView(Context context, @Nullable AttributeSet attrs) {
+    public GridMapView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init();
     }
@@ -116,12 +114,7 @@ public class CostMapView extends SubscriberView implements View.OnTouchListener 
 
     @Override
     public void onNewMessage(Message message) {
-        if(!(message instanceof OccupancyGrid)) {
-            return;
-        }
-        
-        this.data = new CostMapData((OccupancyGrid) message);
+        this.data = new GridMapData((OccupancyGrid) message);
         this.invalidate();
     }
-
 }

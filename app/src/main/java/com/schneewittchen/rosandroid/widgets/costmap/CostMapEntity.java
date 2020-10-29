@@ -16,11 +16,10 @@ import nav_msgs.OccupancyGrid;
  * @modified by Nico Studt
  */
 public class CostMapEntity extends SubscriberEntity {
-
-
+    
     public CostMapEntity() {
-        this.width = 4;
-        this.height = 4;
+        this.width = 6;
+        this.height = 6;
         this.topic = new Topic("move_base/global_costmap/costmap", OccupancyGrid._TYPE);
     }
     

@@ -32,6 +32,9 @@ public abstract class WidgetDao implements BaseDao<WidgetStorageData>{
 
     @Query("DELETE FROM widget_table_test WHERE id = :id")
     abstract int deleteById(long id);
+    
+    @Query("DELETE FROM widget_table_test WHERE widget_config_id = :id")
+    abstract int deleteWithConfigId(long id);
 
     @Query("DELETE FROM widget_table_test")
     abstract void deleteAll();
