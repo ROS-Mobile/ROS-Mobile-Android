@@ -17,7 +17,7 @@ import androidx.room.PrimaryKey;
  * @modified by
  */
 
-@Entity(tableName = "widget_table_test")
+@Entity(tableName = "widget_table")
 public class WidgetStorageData {
 
     @PrimaryKey(autoGenerate = true)
@@ -34,4 +34,8 @@ public class WidgetStorageData {
     @ColumnInfo(name = "data")
     @NonNull
     public String data;
+
+    @ColumnInfo(name = "name")
+    @NonNull
+    public String name;
 }

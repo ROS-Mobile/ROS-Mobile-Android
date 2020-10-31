@@ -27,20 +27,20 @@ import java.util.List;
 public abstract class WidgetDao implements BaseDao<WidgetStorageData>{
 
     //TODO: Update test to real classes
-    @Query("SELECT * FROM widget_table_test WHERE widget_config_id = :configId")
+    @Query("SELECT * FROM widget_table WHERE widget_config_id = :configId")
     protected abstract LiveData<List<WidgetStorageData>> getWidgetsFor(long configId);
 
-    @Query("DELETE FROM widget_table_test WHERE id = :id")
+    @Query("DELETE FROM widget_table WHERE id = :id")
     abstract int deleteById(long id);
     
-    @Query("DELETE FROM widget_table_test WHERE widget_config_id = :id")
+    @Query("DELETE FROM widget_table WHERE widget_config_id = :id")
     abstract int deleteWithConfigId(long id);
 
-    @Query("DELETE FROM widget_table_test")
+    @Query("DELETE FROM widget_table")
     abstract void deleteAll();
 
-    @Query("SELECT COUNT(id) FROM widget_table_test WHERE widget_config_id = :configId AND type_name = :widgetType")
-    public abstract int getCount(long configId, String widgetType);
+    @Query("SELECT EXISTS (SELECT 1 FROM widget_table WHERE widget_config_id = :configId AND name = :name)")
+    public abstract boolean exists(long configId, String name);
 
 
     public LiveData<List<BaseEntity>> getWidgets(long configId) {

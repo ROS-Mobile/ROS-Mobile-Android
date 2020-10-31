@@ -92,6 +92,7 @@ public class GsonWidgetParser {
     public WidgetStorageData convert(BaseEntity widget) {
         WidgetStorageData storageData = new WidgetStorageData();
         storageData.id = widget.id;
+        storageData.name = widget.name;
         storageData.typeName = widget.getClass().getName();
         storageData.configId = widget.configId;
         storageData.data = gson.toJson(widget);

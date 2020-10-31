@@ -17,6 +17,7 @@ import com.schneewittchen.rosandroid.utility.Utils;
 import com.schneewittchen.rosandroid.model.entities.BaseEntity;
 
 import java.util.List;
+import java.util.Locale;
 
 
 /**
@@ -156,13 +157,18 @@ public class ConfigRepositoryImpl implements ConfigRepository {
         BaseEntity widget = (BaseEntity) object;
         long configId = mCurrentConfigId.getValue();
 
-        // Get widget count
-        String typeName = widget.getClass().getName();
-        int nextCount = mDataStorage.countWidget(configId, typeName) + 1;
+        String widgetName = "";
+        for (int count = 1; count > 0; count++) {
+            widgetName = String.format(Locale.ENGLISH, Constants.WIDGET_NAMING, widgetType, count);
+
+            if (!mDataStorage.widgetNameExists(configId, widgetName)) {
+                break;
+            }
+        }
 
         widget.configId = configId;
         widget.creationTime = System.currentTimeMillis();
-        widget.name = widgetType + " " + nextCount;
+        widget.name = widgetName;
         widget.type = widgetType;
 
         mDataStorage.addWidget(widget);

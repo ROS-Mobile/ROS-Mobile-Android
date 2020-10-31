@@ -23,4 +23,6 @@ public class Constants {
     public static final String ENTITY_FORMAT = ".widgets.%s.%sEntity";
 
     public static final String DETAIL_LAYOUT_FORMAT = "widget_detail_%s";
+
+    public static final String WIDGET_NAMING = "%s %d";
 }

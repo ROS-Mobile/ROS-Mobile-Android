@@ -11,7 +11,6 @@ import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.model.entities.ConfigEntity;
 import com.schneewittchen.rosandroid.model.entities.MasterEntity;
 import com.schneewittchen.rosandroid.model.entities.SSHEntity;
-import com.schneewittchen.rosandroid.model.entities.WidgetCountEntity;
 import com.schneewittchen.rosandroid.utility.Constants;
 import com.schneewittchen.rosandroid.utility.LambdaTask;
 import com.schneewittchen.rosandroid.model.entities.BaseEntity;
@@ -38,8 +37,8 @@ import java.util.List;
  * @modified by Nico Studt
  */
 @Database(entities =
-        {ConfigEntity.class, MasterEntity.class, WidgetStorageData.class, SSHEntity.class, WidgetCountEntity.class},
-        version = 4, exportSchema = false)
+        {ConfigEntity.class, MasterEntity.class, WidgetStorageData.class, SSHEntity.class},
+        version = 6, exportSchema = false)
 public abstract class DataStorage extends RoomDatabase {
 
     private static final String TAG = DataStorage.class.getCanonicalName();
@@ -66,7 +65,6 @@ public abstract class DataStorage extends RoomDatabase {
     public abstract ConfigDao configDao();
     public abstract MasterDao masterDao();
     public abstract WidgetDao widgetDao();
-    public abstract WidgetCountDao widgetCountDao();
     public abstract SSHDao sshDao();
 
 
@@ -152,11 +150,6 @@ public abstract class DataStorage extends RoomDatabase {
         new LambdaTask(() ->
                 widgetDao().insert(widget))
                 .execute();
-        new LambdaTask(() ->
-                widgetCountDao()
-                        .incrementValue(widget.configId, widget.getClass().getSimpleName()))
-                .execute();
-
     }
 
     public void updateWidget(BaseEntity widget) {
@@ -175,12 +168,8 @@ public abstract class DataStorage extends RoomDatabase {
         return widgetDao().getWidgets(id);
     }
 
-    public WidgetCountEntity getWidgetCount(long id, String className) {
-        return widgetCountDao().getWidgetCountEntity(id, className);
-    }
-
-    public int countWidget(long configId, String typeName) {
-        return widgetDao().getCount(configId, typeName);
+    public boolean widgetNameExists(long configId, String name) {
+        return widgetDao().exists(configId, name);
     }
 
 }
