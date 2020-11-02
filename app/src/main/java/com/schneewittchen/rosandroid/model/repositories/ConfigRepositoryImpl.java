@@ -88,9 +88,6 @@ public class ConfigRepositoryImpl implements ConfigRepository {
 
         mDataStorage.addConfig(config);
 
-        // Get config to link master and SSH with config id
-        // TODO: Get id while adding
-
         new LambdaTask(() -> {
             long configId = mDataStorage.getLatestConfigDirect().id;
 

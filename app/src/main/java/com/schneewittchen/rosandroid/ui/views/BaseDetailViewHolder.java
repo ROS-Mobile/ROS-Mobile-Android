@@ -40,36 +40,56 @@ public abstract class BaseDetailViewHolder<T extends BaseEntity> extends Recycle
     protected ImageButton renameButton;
     protected WidgetChangeListener changeListener;
     protected EditText xEdittext, yEdittext, widthEditText, heightEdittext;
+
     protected T entity;
     protected DetailsViewModel mViewModel;
     
 
     public BaseDetailViewHolder(@NonNull View view, WidgetChangeListener changeListener) {
         super(view);
+
         this.changeListener = changeListener;
-        baseInit(view);
+        this.detailContend = view.findViewById(R.id.detailContend);
     }
 
 
-    public abstract void init(View view);
-
-    protected abstract void bind(T entity);
-
+    protected abstract void initView(View parentView);
+    protected abstract void bindEntity(T entity);
     protected abstract void updateEntity();
 
 
-    public void baseInit(View view) {
-        title = view.findViewById(R.id.title);
-        detailContend = view.findViewById(R.id.detailContend);
-        updateButton = view.findViewById(R.id.update_button);
-        openButton = view.findViewById(R.id.open_button);
-        renameButton = view.findViewById(R.id.rename_button);
-        viewBackground = view.findViewById(R.id.view_background);
-        viewForeground = view.findViewById(R.id.view_foreground);
-        xEdittext = view.findViewById(R.id.x_edit_text);
-        yEdittext = view.findViewById(R.id.y_edit_text);
-        widthEditText = view.findViewById(R.id.width_edit_text);
-        heightEdittext = view.findViewById(R.id.height_edit_text);
+    public void init() {
+        baseInitView(this.itemView);
+        initView(this.itemView);
+    }
+
+    public void bind(T entity) {
+        baseBindEntity(entity);
+        bindEntity(entity);
+    }
+
+    /**
+     * Call this method internally to update the bound widget info
+     * and subsequently force an update of the widget list.
+     */
+    protected void forceWidgetUpdate() {
+        baseUpdateEntity();
+        updateEntity();
+        changeListener.onWidgetDetailsChanged(entity);
+    }
+
+
+    protected void baseInitView(View parentView) {
+        title           = parentView.findViewById(R.id.title);
+        updateButton    = parentView.findViewById(R.id.update_button);
+        openButton      = parentView.findViewById(R.id.open_button);
+        renameButton    = parentView.findViewById(R.id.rename_button);
+        viewBackground  = parentView.findViewById(R.id.view_background);
+        viewForeground  = parentView.findViewById(R.id.view_foreground);
+        xEdittext       = parentView.findViewById(R.id.x_edit_text);
+        yEdittext       = parentView.findViewById(R.id.y_edit_text);
+        widthEditText   = parentView.findViewById(R.id.width_edit_text);
+        heightEdittext  = parentView.findViewById(R.id.height_edit_text);
 
         openButton.setOnClickListener(v -> {
             if (detailContend.getVisibility() == View.GONE) {
@@ -81,15 +101,13 @@ public abstract class BaseDetailViewHolder<T extends BaseEntity> extends Recycle
             }
         });
 
-        updateButton.setOnClickListener(v -> {
-            update();
-        });
+        updateButton.setOnClickListener(v -> forceWidgetUpdate());
         updateButton.setEnabled(true);
 
         renameButton.setOnClickListener(v -> showRenameDialog());
     }
 
-    public void baseBind(T entity) {
+    protected void baseBindEntity(T entity) {
         this.entity = entity;
 
         title.setText(entity.name);
@@ -97,18 +115,9 @@ public abstract class BaseDetailViewHolder<T extends BaseEntity> extends Recycle
         yEdittext.setText(String.valueOf(entity.posY));
         widthEditText.setText(String.valueOf(entity.width));
         heightEdittext.setText(String.valueOf(entity.height));
-
-        bind(entity);
     }
 
-    protected void update() {
-        baseUpdateEntity();
-        updateEntity();
-
-        changeListener.onWidgetDetailsChanged(entity);
-    }
-
-    private void baseUpdateEntity() {
+    protected void baseUpdateEntity() {
         entity.name = title.getText().toString();
         entity.posX = Integer.parseInt(xEdittext.getText().toString());
         entity.posY = Integer.parseInt(yEdittext.getText().toString());

@@ -27,4 +27,19 @@ public class GpsDetailVH extends BaseDetailSubscriberVH<GpsEntity> {
         this.setTopicTypeList(Arrays.asList(view.getResources().getStringArray(R.array.gps_msg_types)));
     }
 
+    @Override
+    protected void initView(View parentView) {
+
+    }
+
+    @Override
+    protected void bindEntity(GpsEntity entity) {
+
+    }
+
+    @Override
+    protected void updateEntity() {
+
+    }
+
 }

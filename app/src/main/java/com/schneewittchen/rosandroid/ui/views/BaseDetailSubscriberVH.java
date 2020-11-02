@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.model.entities.BaseEntity;
+import com.schneewittchen.rosandroid.model.entities.SubscriberEntity;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.Topic;
 import com.schneewittchen.rosandroid.ui.fragments.details.WidgetChangeListener;
 import com.schneewittchen.rosandroid.utility.CustomSpinner;
@@ -25,7 +26,7 @@ import java.util.List;
  * @updated on
  * @modified by
  */
-public class BaseDetailSubscriberVH<W extends BaseEntity> extends BaseDetailViewHolder {
+public abstract class BaseDetailSubscriberVH<T extends SubscriberEntity> extends BaseDetailViewHolder<T> {
 
     public static final String TAG = BaseDetailViewHolder.class.getSimpleName();
 
@@ -35,31 +36,38 @@ public class BaseDetailSubscriberVH<W extends BaseEntity> extends BaseDetailView
     List<String> topicNameList;
     ArrayAdapter<String> topicNameAdapter;
 
-    protected List<String> topicTypeList;
+    private List<String> topicTypeList;
     ArrayAdapter<String> topicTypeAdapter;
 
 
     public BaseDetailSubscriberVH(@NonNull View view, WidgetChangeListener updateListener) {
         super(view, updateListener);
+
+        //this.topicTypeList = this.getTopicTypes();
     }
 
+    public List<String> getTopicTypes(){
+        return null;
+    }
 
     @Override
-    public void init(View view) {
+    protected void baseInitView(View parentView) {
+        super.baseInitView(parentView);
+
         Log.i(TAG, "init");
 
         // Initialize Views
-        topicNameText = view.findViewById(R.id.topicNameText);
-        topicTypeText = view.findViewById(R.id.topicTypeText);
+        topicNameText = parentView.findViewById(R.id.topicNameText);
+        topicTypeText = parentView.findViewById(R.id.topicTypeText);
 
         // Initialize Topic Name Spinner
         topicNameList = new ArrayList<>();
-        topicNameAdapter = new ArrayAdapter<>(view.getContext(),
+        topicNameAdapter = new ArrayAdapter<>(parentView.getContext(),
                 android.R.layout.simple_spinner_dropdown_item, topicNameList);
         topicNameText.setAdapter(topicNameAdapter);
 
         // Initialize Topic Type Spinner
-        topicTypeAdapter = new ArrayAdapter<>(view.getContext(),
+        topicTypeAdapter = new ArrayAdapter<>(parentView.getContext(),
                 android.R.layout.simple_spinner_dropdown_item, topicTypeList);
         topicTypeText.setAdapter(topicTypeAdapter);
 
@@ -89,7 +97,9 @@ public class BaseDetailSubscriberVH<W extends BaseEntity> extends BaseDetailView
     }
 
     @Override
-    public void bind(BaseEntity entity) {
+    protected void baseBindEntity(T entity) {
+        super.baseBindEntity(entity);
+
         Log.i(TAG, "bind");
         updateTopicNameSpinner();
 
@@ -101,7 +111,9 @@ public class BaseDetailSubscriberVH<W extends BaseEntity> extends BaseDetailView
     }
 
     @Override
-    public void updateEntity() {
+    protected void baseUpdateEntity() {
+        super.baseUpdateEntity();
+
         Log.i(TAG, "updateEntity");
 
         if (topicTypeText.getSelectedItem() != null) {
@@ -111,8 +123,6 @@ public class BaseDetailSubscriberVH<W extends BaseEntity> extends BaseDetailView
         if (topicNameText.getSelectedItem() != null) {
             entity.topic.name = topicNameText.getSelectedItem().toString();
         }
-
-        this.update();
     }
 
     void updateTopicNameSpinner() {

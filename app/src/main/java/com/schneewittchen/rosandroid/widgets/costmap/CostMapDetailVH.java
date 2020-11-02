@@ -6,6 +6,7 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 
 import com.schneewittchen.rosandroid.R;
+import com.schneewittchen.rosandroid.ui.views.BaseDetailSubscriberVH;
 import com.schneewittchen.rosandroid.ui.views.BaseDetailViewHolder;
 import com.schneewittchen.rosandroid.ui.fragments.details.WidgetChangeListener;
 
@@ -19,10 +20,7 @@ import com.schneewittchen.rosandroid.ui.fragments.details.WidgetChangeListener;
  * @updated on 23.10.2020
  * @modified by Nico Studt
  */
-public class CostMapDetailVH extends BaseDetailViewHolder<CostMapEntity> {
-
-    EditText topicNameText;
-    EditText topicTypeText;
+public class CostMapDetailVH extends BaseDetailSubscriberVH<CostMapEntity> {
 
 
     public CostMapDetailVH(@NonNull View view, WidgetChangeListener updateListener) {
@@ -31,20 +29,18 @@ public class CostMapDetailVH extends BaseDetailViewHolder<CostMapEntity> {
 
 
     @Override
-    public void init(View view) {
-        topicNameText = view.findViewById(R.id.topicNameText);
-        topicTypeText = view.findViewById(R.id.topicTypeText);
+    protected void initView(View parentView) {
+
     }
 
     @Override
-    public void bind(CostMapEntity entity) {
-        topicNameText.setText(entity.topic.name);
-        topicTypeText.setText(entity.topic.type);
+    protected void bindEntity(CostMapEntity entity) {
+
     }
 
     @Override
-    public void updateEntity() {
-        this.entity.topic.type = topicTypeText.getText().toString();
-        this.entity.topic.name = topicNameText.getText().toString();
+    protected void updateEntity() {
+
     }
+
 }

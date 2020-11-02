@@ -54,7 +54,6 @@ public class CameraData extends BaseData {
         int height = image.getHeight();
         int width = image.getWidth();
         int step = image.getStep();
-        Log.i(TAG, "Image format: " + image.getEncoding());
 
         // Get the starting point of the data
         int dataStart = data.length - (height * step);

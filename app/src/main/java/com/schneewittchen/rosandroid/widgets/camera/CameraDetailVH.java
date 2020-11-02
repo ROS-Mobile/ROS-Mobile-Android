@@ -1,6 +1,5 @@
 package com.schneewittchen.rosandroid.widgets.camera;
 
-import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -9,7 +8,9 @@ import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.ui.fragments.details.WidgetChangeListener;
 import com.schneewittchen.rosandroid.ui.views.BaseDetailSubscriberVH;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -31,7 +32,26 @@ public class CameraDetailVH extends BaseDetailSubscriberVH<CameraEntity> {
     public CameraDetailVH(@NonNull View view, WidgetChangeListener updateListener) {
         super(view, updateListener);
         this.setTopicTypeList(Arrays.asList(view.getResources().getStringArray(R.array.camera_msg_types)));
-
-        Log.i(TAG, "init");
     }
+
+
+    @Override
+    protected void initView(View parentView) {
+
+    }
+
+    @Override
+    protected void bindEntity(CameraEntity entity) {
+
+    }
+
+    @Override
+    protected void updateEntity() {
+
+    }
+
+    public List<String> getTopicTypes() {
+        return Arrays.asList("sensor_msgs/Image", "sensor_msgs/CompressedImage");
+    }
+
 }

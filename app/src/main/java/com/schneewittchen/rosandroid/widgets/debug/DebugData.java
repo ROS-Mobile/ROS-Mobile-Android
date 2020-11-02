@@ -36,7 +36,6 @@ public class DebugData extends BaseData {
 
         content.add("---------");
         value = joinContent("\n", content);
-        Log.d(TAG, value);
     }
 
 
@@ -58,6 +57,7 @@ public class DebugData extends BaseData {
             for (Object o: ((ListField) field).getValue()) {
                 String listPrefix = StringUtils.repeat("\t", level+1) + "-";
                 content.add(listPrefix);
+
                 if (o instanceof String) {
                     content.add((String) o);
                 } else if (o instanceof Message) {

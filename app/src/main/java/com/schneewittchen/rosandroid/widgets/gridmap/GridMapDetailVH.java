@@ -29,4 +29,19 @@ public class GridMapDetailVH extends BaseDetailSubscriberVH<GridMapEntity> {
         this.setTopicTypeList(Arrays.asList(view.getResources().getStringArray(R.array.gridmap_msg_types)));
     }
 
+    @Override
+    protected void initView(View parentView) {
+
+    }
+
+    @Override
+    protected void bindEntity(GridMapEntity entity) {
+
+    }
+
+    @Override
+    protected void updateEntity() {
+
+    }
+
 }

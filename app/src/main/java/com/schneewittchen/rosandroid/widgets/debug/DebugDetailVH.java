@@ -51,7 +51,7 @@ public class DebugDetailVH extends BaseDetailViewHolder<DebugEntity> {
 
     // Initialization
     @Override
-    public void init(View view) {
+    public void initView(View view) {
         // Initialize Views
         topicNameText = view.findViewById(R.id.topicNameText);
         topicTypeText = view.findViewById(R.id.topicTypeText);
@@ -59,7 +59,7 @@ public class DebugDetailVH extends BaseDetailViewHolder<DebugEntity> {
 
         // Initialize Spinner
         nameList = new ArrayList<>();
-        adapter = new ArrayAdapter<String>(view.getContext(),
+        adapter = new ArrayAdapter<>(view.getContext(),
                 android.R.layout.simple_spinner_dropdown_item, nameList);
         topicNameText.setAdapter(adapter);
 
@@ -72,7 +72,7 @@ public class DebugDetailVH extends BaseDetailViewHolder<DebugEntity> {
 
             @Override
             public void onSpinnerClosed() {
-                update();
+                forceWidgetUpdate();
             }
         });
 
@@ -90,7 +90,7 @@ public class DebugDetailVH extends BaseDetailViewHolder<DebugEntity> {
             public void afterTextChanged(Editable s) {
                 try {
                     entity.numberMessages = Integer.parseInt(numberDebugMsgs.getText().toString());
-                    update();
+                    forceWidgetUpdate();
                 } catch (Exception ignored) {
                 }
             }
@@ -99,7 +99,7 @@ public class DebugDetailVH extends BaseDetailViewHolder<DebugEntity> {
 
 
     @Override
-    public void bind(DebugEntity entity) {
+    public void bindEntity(DebugEntity entity) {
         // Set current selection
         updateSpinner();
 

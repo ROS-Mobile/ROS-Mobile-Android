@@ -63,16 +63,22 @@ public abstract class BaseEntity {
         return true;
     }
 
-    public Object copy() {
+    public BaseEntity copy() {
         try {
             Constructor constructor = this.getClass().getConstructor();
             Object newObj = constructor.newInstance();
 
             for(Field f: this.getClass().getFields()) {
-                f.set(newObj, f.get(this));
+                if (f.getType().equals(Topic.class)) {
+                    Topic topicObj = (Topic) f.get(this);
+                    f.set(newObj, new Topic(topicObj));
+
+                } else {
+                    f.set(newObj, f.get(this));
+                }
             }
 
-            return newObj;
+            return (BaseEntity)newObj;
 
         } catch (Exception e) {
             e.printStackTrace();

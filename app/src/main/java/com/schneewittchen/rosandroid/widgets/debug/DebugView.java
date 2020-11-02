@@ -129,7 +129,6 @@ public class DebugView extends SubscriberView {
 
     @Override
     public void onDraw(Canvas canvas) {
-        Log.i(TAG, "On draw");
         super.onDraw(canvas);
         canvas.save();
 
@@ -147,8 +146,6 @@ public class DebugView extends SubscriberView {
         // Calculate the drag
         posY = posY - (int) (translateY * dragSensitivity);
         posY = Math.max(posY, 0);
-        System.out.println(posX);
-        System.out.println(posY);
 
         // Draw data
         textView.scrollTo(posX,posY);

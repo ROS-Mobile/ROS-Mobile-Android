@@ -26,6 +26,12 @@ public class Topic {
         this.type = type;
     }
 
+    public Topic(Topic other) {
+        this.name = other.name;
+        this.type = other.type;
+    }
+
+
     @Override
     public boolean equals(Object object) {
         if (object == this) {

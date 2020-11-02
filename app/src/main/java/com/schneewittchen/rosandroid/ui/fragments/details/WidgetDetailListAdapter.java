@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.schneewittchen.rosandroid.BuildConfig;
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.model.entities.BaseEntity;
+import com.schneewittchen.rosandroid.ui.views.BaseDetailSubscriberVH;
 import com.schneewittchen.rosandroid.ui.views.BaseDetailViewHolder;
 import com.schneewittchen.rosandroid.utility.Constants;
 import com.schneewittchen.rosandroid.utility.Utils;
@@ -33,11 +34,11 @@ import java.util.List;
  * @updated on 25.09.20
  * @modified by Nico Studt
  */
-public class WidgetDetailListAdapter extends RecyclerView.Adapter<BaseDetailViewHolder<?>> implements WidgetChangeListener {
+public class WidgetDetailListAdapter extends RecyclerView.Adapter<BaseDetailViewHolder<BaseEntity>> implements WidgetChangeListener {
 
     private WidgetChangeListener widgetChangeListener;
     private final AsyncListDiffer<BaseEntity> mDiffer;
-    private final ArrayList<Class<? extends BaseDetailViewHolder<?>>> types;
+    private final ArrayList<Class<? extends BaseDetailViewHolder<BaseEntity>>> types;
     private final DetailsViewModel mViewModel;
 
 
@@ -50,15 +51,16 @@ public class WidgetDetailListAdapter extends RecyclerView.Adapter<BaseDetailView
 
     @NonNull
     @Override
-    public BaseDetailViewHolder<?> onCreateViewHolder(@NonNull ViewGroup parent, int itemType) {
+    public BaseDetailViewHolder<BaseEntity> onCreateViewHolder(@NonNull ViewGroup parent, int itemType) {
         try {
-            Class<? extends BaseDetailViewHolder<?>> viewHolderClazz = types.get(itemType);
-            Constructor<? extends BaseDetailViewHolder<?>> cons  = viewHolderClazz.getConstructor(View.class, WidgetChangeListener.class);
+            Class<? extends BaseDetailViewHolder<BaseEntity>> viewHolderClazz = types.get(itemType);
+            Constructor<? extends BaseDetailViewHolder<BaseEntity>> cons =
+                    viewHolderClazz.getConstructor(View.class, WidgetChangeListener.class);
 
             LayoutInflater inflator = LayoutInflater.from(parent.getContext());
             View itemView = inflator.inflate(R.layout.widget_detail_base, parent, false);
 
-            BaseDetailViewHolder viewHolder = cons.newInstance(itemView, this);
+            BaseDetailViewHolder<BaseEntity> viewHolder = cons.newInstance(itemView, this);
             viewHolder.setViewModel(mViewModel);
 
             return viewHolder;
@@ -71,23 +73,23 @@ public class WidgetDetailListAdapter extends RecyclerView.Adapter<BaseDetailView
 
 
     @Override
-    public void onBindViewHolder(@NonNull BaseDetailViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull BaseDetailViewHolder<BaseEntity> holder, int position) {
         BaseEntity widget = this.getItem(position);
-
-        LayoutInflater inflator = LayoutInflater.from(holder.itemView.getContext());
-        holder.detailContend.removeView(holder.detailContend.getChildAt(1));
 
         // Get layout id
         String layoutStr = String.format(Constants.DETAIL_LAYOUT_FORMAT, widget.type.toLowerCase());
         int detailContentLayout = Utils.getResId(layoutStr, R.layout.class);
 
         // Inflate layout
+        LayoutInflater inflator = LayoutInflater.from(holder.itemView.getContext());
         View inflatedView = inflator.inflate(detailContentLayout, null);
+
+        holder.detailContend.removeView(holder.detailContend.getChildAt(1));
         holder.detailContend.addView(inflatedView);
 
         // Bind to widget
-        holder.init(holder.detailContend);
-        holder.baseBind((BaseEntity) widget.copy());
+        holder.init();
+        holder.bind(widget.copy());
     }
 
     @Override
@@ -98,17 +100,18 @@ public class WidgetDetailListAdapter extends RecyclerView.Adapter<BaseDetailView
                 + String.format(Constants.VIEWHOLDER_FORMAT, entity.type.toLowerCase(), entity.type);
 
         try {
-            Class<?> clazzObject =  Class.forName(classPath);
+            Class<?> clazzObject = Class.forName(classPath);
 
-            if (clazzObject.getSuperclass() != BaseDetailViewHolder.class) {
+            if (clazzObject.getSuperclass() != BaseDetailViewHolder.class
+                    && clazzObject.getSuperclass() != BaseDetailSubscriberVH.class) {
                 return -1;
 
             } else if (types.contains(clazzObject)) {
                 return types.indexOf(clazzObject);
 
             } else {
-                types.add((Class<? extends BaseDetailViewHolder<?>>) clazzObject);
-                return types.size() -1;
+                types.add((Class<? extends BaseDetailViewHolder<BaseEntity>>) clazzObject);
+                return types.size() - 1;
             }
 
         } catch (ClassNotFoundException e) {
@@ -124,7 +127,7 @@ public class WidgetDetailListAdapter extends RecyclerView.Adapter<BaseDetailView
 
     @Override
     public void onWidgetDetailsChanged(BaseEntity widget) {
-        if(widgetChangeListener != null) {
+        if (widgetChangeListener != null) {
             this.widgetChangeListener.onWidgetDetailsChanged(widget);
         }
     }
@@ -133,7 +136,7 @@ public class WidgetDetailListAdapter extends RecyclerView.Adapter<BaseDetailView
         return mDiffer.getCurrentList().get(position);
     }
 
-    public void setWidgets(List<BaseEntity> newWidgets){
+    public void setWidgets(List<BaseEntity> newWidgets) {
         mDiffer.submitList(newWidgets);
     }
 
