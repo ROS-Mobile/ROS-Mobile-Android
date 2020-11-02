@@ -1,6 +1,7 @@
 package com.schneewittchen.rosandroid.widgets.debug;
 
 import android.graphics.Color;
+import android.os.Build;
 import android.text.Editable;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -11,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.Topic;
@@ -18,7 +20,14 @@ import com.schneewittchen.rosandroid.ui.fragments.details.WidgetChangeListener;
 import com.schneewittchen.rosandroid.ui.views.BaseDetailViewHolder;
 import com.schneewittchen.rosandroid.utility.CustomSpinner;
 
+import org.ros.gradle_plugins.RosJavaPlugin;
+import org.ros.internal.message.Message;
+import org.ros.internal.message.RawMessage;
+import org.ros.node.ConnectedNode;
+import org.ros.node.topic.Subscriber;
+
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -99,13 +108,13 @@ public class DebugDetailVH extends BaseDetailViewHolder<DebugEntity> {
 
 
     @Override
-    public void bindEntity(DebugEntity entity) {
-        // Set current selection
+    public void bind(DebugEntity entity) {
         updateSpinner();
+        topicNameText.setSelection(nameList.indexOf(entity.topic.name));
 
-        topicNameText.setSelection(nameList.indexOf(entity.topic.type));
+        topicTypeText.setText(entity.topic.type);
 
-        if (entity.validMessage) {
+        /*if (entity.validMessage) {
             topicTypeText.setText(entity.topic.type);
 
         } else {
@@ -116,7 +125,7 @@ public class DebugDetailVH extends BaseDetailViewHolder<DebugEntity> {
                     tmp.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
             topicTypeText.setText(spannable);
-        }
+        }*/
 
         numberDebugMsgs.setText(Integer.toString(entity.numberMessages));
     }
@@ -145,6 +154,8 @@ public class DebugDetailVH extends BaseDetailViewHolder<DebugEntity> {
         for (Topic rosTopic: mViewModel.getTopicList()) {
             nameList.add(rosTopic.name);
         }
+
+        nameList.sort(Comparator.naturalOrder());
 
         adapter.clear();
         adapter.addAll(nameList);
