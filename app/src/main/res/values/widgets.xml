@@ -6,6 +6,7 @@
         <item>GridMap</item>
         <item>Camera</item>
         <item>Gps</item>
+        <item>Button</item>
     </string-array>
 
     <string-array name="widget_descr">
@@ -31,6 +32,14 @@
     <string-array name="camera_msg_types">
         <item>sensor_msgs/Image</item>
         <item>sensor_msgs/CompressedImage</item>
+    </string-array>
+
+    <!-- Button -->
+    <string-array name="rotation">
+        <item>0°</item>
+        <item>90°</item>
+        <item>180°</item>
+        <item>270°</item>
     </string-array>
 
 </resources>

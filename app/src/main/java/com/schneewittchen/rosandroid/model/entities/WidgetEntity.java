@@ -76,4 +76,12 @@ public class WidgetEntity {
 
     @ColumnInfo(name = "y_scale_right")
     public float yScaleRight;
+
+    // Labeled widgets specifics
+
+    @ColumnInfo(name = "text")
+    public String text;
+
+    @ColumnInfo(name = "rotation")
+    public int rotation;
 }
