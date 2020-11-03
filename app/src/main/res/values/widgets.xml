@@ -7,7 +7,6 @@
         <item>GridMap</item>
         <item>Camera</item>
         <item>Gps</item>
-        <item>CostMap</item>
     </string-array>
 
     <string-array name="widget_descr">
@@ -46,20 +45,24 @@
         <item>Z</item>
     </string-array>
 
+
     <!-- Camera -->
     <string-array name="camera_msg_types">
         <item>sensor_msgs/Image</item>
         <item>sensor_msgs/CompressedImage</item>
     </string-array>
 
+
     <!-- GPS -->
     <string-array name="gps_msg_types">
         <item>sensor_msgs/NavSatFix</item>
     </string-array>
 
+
     <!-- GridMap -->
     <string-array name="gridmap_msg_types">
         <item>nav_msgs/OccupancyGrid</item>
     </string-array>
+
 
 </resources>

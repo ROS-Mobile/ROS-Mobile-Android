@@ -1,7 +1,5 @@
 package com.schneewittchen.rosandroid.widgets.joystick;
 
-import android.util.Log;
-
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.node.BaseData;
 import com.schneewittchen.rosandroid.model.entities.BaseEntity;
 

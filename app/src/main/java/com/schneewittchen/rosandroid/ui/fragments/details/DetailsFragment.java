@@ -116,7 +116,7 @@ public class DetailsFragment extends Fragment implements RecyclerItemTouchHelper
 
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
 
-        dialogBuilder.setTitle("Widgets");
+        dialogBuilder.setTitle("Create Widget");
 
         dialogBuilder.setItems(widgetNames, (dialog, item) -> {
             AlertDialog.Builder dialogChecker = new AlertDialog.Builder(getContext());
