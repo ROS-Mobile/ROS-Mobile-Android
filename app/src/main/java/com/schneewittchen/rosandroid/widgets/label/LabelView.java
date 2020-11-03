@@ -40,7 +40,7 @@ public class LabelView extends BaseView {
         textPaint = new TextPaint();
         textPaint.setColor(Color.WHITE);
         textPaint.setStyle(Paint.Style.FILL_AND_STROKE);
-        textPaint.setTextSize(26 * getResources().getDisplayMetrics().density);
+        textPaint.setTextSize(20 * getResources().getDisplayMetrics().density);
     }
 
     @Override

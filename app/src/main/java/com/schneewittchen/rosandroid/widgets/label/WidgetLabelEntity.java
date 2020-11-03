@@ -19,7 +19,7 @@ public class WidgetLabelEntity extends BaseEntity {
         this.text = "A label";
         this.rotation = 0;
     }
-    
+
 
     @Override
     public String getName() {
