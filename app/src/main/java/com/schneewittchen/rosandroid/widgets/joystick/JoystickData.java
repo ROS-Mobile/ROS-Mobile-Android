@@ -1,5 +1,7 @@
 package com.schneewittchen.rosandroid.widgets.joystick;
 
+import android.util.Log;
+
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.node.BaseData;
 import com.schneewittchen.rosandroid.model.entities.BaseEntity;
 
@@ -21,6 +23,7 @@ import geometry_msgs.Vector3;
  */
 public class JoystickData extends BaseData {
 
+    public static final String TAG = JoystickData.class.getSimpleName();
     public float x;
     public float y;
 

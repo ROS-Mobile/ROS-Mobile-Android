@@ -197,10 +197,7 @@ public class RosRepository implements SubNode.NodeListener {
 
                 // Check if widget has changed
                 BaseEntity oldWidget = widgetEntryMap.get(newWidget.id);
-
-                if (!oldWidget.equalRosState(newWidget)){
-                    updateNode(oldWidget, newWidget);
-                }
+                updateNode(oldWidget, newWidget);
 
             } else{
                 // Node not included in old list
@@ -283,22 +280,15 @@ public class RosRepository implements SubNode.NodeListener {
     private void updateNode(BaseEntity oldWidget, BaseEntity widget) {
         Log.i(TAG, "Update Widget: " + oldWidget.name);
 
-        this.removeNode(oldWidget);
-        AbstractNode node = this.addNode(widget);
-        this.registerNode(node);
+        if (oldWidget.equalRosState(widget)){
+            AbstractNode node = this.currentNodes.get(widget.topic);
+            node.setWidget(widget);
 
-        /*
-        Log.i(TAG, "Update Widget: " + widget.name);
-        // TODO: Test renaming widget
-        AbstractNode node = currentNodes.get(widget.topic);
-        assert node != null;
-
-        Log.i(TAG, "Update Node: " + node.toString());
-
-        node.setWidget(widget);
-
-        this.reregisterNode(node);
-        */
+        } else{
+            this.removeNode(oldWidget);
+            AbstractNode node = this.addNode(widget);
+            this.registerNode(node);
+        }
 
     }
 
