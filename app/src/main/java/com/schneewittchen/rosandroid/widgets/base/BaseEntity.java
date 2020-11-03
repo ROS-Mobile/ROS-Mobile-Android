@@ -22,6 +22,8 @@ public abstract class BaseEntity extends WidgetEntity {
         posY = 0;
         width = 1;
         height = 1;
+        text = "";
+        rotation = 0;
     }
 
 
@@ -53,6 +55,8 @@ public abstract class BaseEntity extends WidgetEntity {
         this.posY = entity.posY;
         this.width = entity.width;
         this.height = entity.height;
+        this.text = entity.text == null ? "" : entity.text;
+        this.rotation = entity.rotation;
     }
 
     @Override
@@ -69,7 +73,9 @@ public abstract class BaseEntity extends WidgetEntity {
                     && other.posX == this.posX
                     && other.posY == this.posY
                     && other.width == this.width
-                    && other.height == this.height;
+                    && other.height == this.height
+                    && other.text == this.text
+                    && other.rotation == this.rotation;
         }
 
         return false;

@@ -105,9 +105,8 @@
             android:id="@+id/btnTextTypeText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:enabled="true"
             android:imeOptions="actionDone"
-            android:inputType="numberDecimal"
+            android:inputType="text"
             android:singleLine="true"
             android:text="A button" />
 

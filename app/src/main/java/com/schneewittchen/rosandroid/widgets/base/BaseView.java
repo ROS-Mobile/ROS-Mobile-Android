@@ -22,7 +22,7 @@ public class BaseView extends View implements Interactable {
     DataListener dataListener;
     long dataId;
     Position position;
-    BaseEntity widgetEntity;
+    protected BaseEntity widgetEntity;
 
 
     public BaseView(Context context) {
