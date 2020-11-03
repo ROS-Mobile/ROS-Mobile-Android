@@ -73,9 +73,7 @@ public abstract class BaseEntity extends WidgetEntity {
                     && other.posX == this.posX
                     && other.posY == this.posY
                     && other.width == this.width
-                    && other.height == this.height
-                    && other.text == this.text
-                    && other.rotation == this.rotation;
+                    && other.height == this.height;
         }
 
         return false;
