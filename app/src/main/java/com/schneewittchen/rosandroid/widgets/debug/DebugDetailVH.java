@@ -66,13 +66,18 @@ public class DebugDetailVH extends BaseDetailViewHolder<DebugEntity> {
         // Define action responses
         topicNameText.setSpinnerEventsListener(new CustomSpinner.OnSpinnerEventsListener() {
             @Override
-            public void onSpinnerOpened() {
+            public void onSpinnerOpened(CustomSpinner spinner) {
                 updateSpinner();
             }
 
             @Override
-            public void onSpinnerClosed() {
+            public void onSpinnerItemSelected(CustomSpinner spinner, Integer position) {
                 forceWidgetUpdate();
+            }
+
+            @Override
+            public void onSpinnerClosed(CustomSpinner spinner) {
+
             }
         });
 

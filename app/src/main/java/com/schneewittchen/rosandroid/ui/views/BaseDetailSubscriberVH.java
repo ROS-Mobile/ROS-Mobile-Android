@@ -26,29 +26,29 @@ import java.util.List;
  * @updated on
  * @modified by
  */
-public abstract class BaseDetailSubscriberVH<T extends SubscriberEntity> extends BaseDetailViewHolder<T> {
+public abstract class BaseDetailSubscriberVH<T extends SubscriberEntity> extends BaseDetailViewHolder<T> implements CustomSpinner.OnSpinnerEventsListener {
 
     public static final String TAG = BaseDetailViewHolder.class.getSimpleName();
 
-    CustomSpinner topicNameText;
-    CustomSpinner topicTypeText;
+    protected CustomSpinner topicNameTextView;
+    protected CustomSpinner topicTypeTextView;
 
-    List<String> topicNameList;
-    ArrayAdapter<String> topicNameAdapter;
-
+    private List<String> topicNameList;
     private List<String> topicTypeList;
-    ArrayAdapter<String> topicTypeAdapter;
+
+    private ArrayAdapter<String> topicTypeAdapter;
+    private ArrayAdapter<String> topicNameAdapter;
 
 
     public BaseDetailSubscriberVH(@NonNull View view, WidgetChangeListener updateListener) {
         super(view, updateListener);
-
-        //this.topicTypeList = this.getTopicTypes();
     }
+
 
     public List<String> getTopicTypes(){
         return null;
     }
+
 
     @Override
     protected void baseInitView(View parentView) {
@@ -57,21 +57,24 @@ public abstract class BaseDetailSubscriberVH<T extends SubscriberEntity> extends
         Log.i(TAG, "init");
 
         // Initialize Views
-        topicNameText = parentView.findViewById(R.id.topicNameText);
-        topicTypeText = parentView.findViewById(R.id.topicTypeText);
+        topicNameTextView = parentView.findViewById(R.id.topicNameText);
+        topicTypeTextView = parentView.findViewById(R.id.topicTypeText);
 
         // Initialize Topic Name Spinner
         topicNameList = new ArrayList<>();
         topicNameAdapter = new ArrayAdapter<>(parentView.getContext(),
                 android.R.layout.simple_spinner_dropdown_item, topicNameList);
-        topicNameText.setAdapter(topicNameAdapter);
+        topicNameTextView.setAdapter(topicNameAdapter);
 
         // Initialize Topic Type Spinner
         topicTypeAdapter = new ArrayAdapter<>(parentView.getContext(),
                 android.R.layout.simple_spinner_dropdown_item, topicTypeList);
-        topicTypeText.setAdapter(topicTypeAdapter);
+        topicTypeTextView.setAdapter(topicTypeAdapter);
 
-        // Define action responses for topic names
+        topicNameTextView.setSpinnerEventsListener(this);
+        topicTypeTextView.setSpinnerEventsListener(this);
+
+        /* Define action responses for topic names
         topicNameText.setSpinnerEventsListener(new CustomSpinner.OnSpinnerEventsListener() {
             @Override
             public void onSpinnerOpened() {
@@ -94,6 +97,7 @@ public abstract class BaseDetailSubscriberVH<T extends SubscriberEntity> extends
                 updateEntity();
             }
         });
+         */
     }
 
     @Override
@@ -106,8 +110,8 @@ public abstract class BaseDetailSubscriberVH<T extends SubscriberEntity> extends
         String messageType = entity.topic.type;
         String topicName = entity.topic.name;
 
-        topicTypeText.setSelection(topicTypeList.indexOf(messageType));
-        topicNameText.setSelection(topicNameList.indexOf(topicName));
+        topicNameTextView.setSelection(topicNameList.indexOf(topicName));
+        topicTypeTextView.setSelection(topicTypeList.indexOf(messageType));
     }
 
     @Override
@@ -116,12 +120,12 @@ public abstract class BaseDetailSubscriberVH<T extends SubscriberEntity> extends
 
         Log.i(TAG, "updateEntity");
 
-        if (topicTypeText.getSelectedItem() != null) {
-            entity.topic.type = topicTypeText.getSelectedItem().toString();
+        if (topicTypeTextView.getSelectedItem() != null) {
+            entity.topic.type = topicTypeTextView.getSelectedItem().toString();
         }
 
-        if (topicNameText.getSelectedItem() != null) {
-            entity.topic.name = topicNameText.getSelectedItem().toString();
+        if (topicNameTextView.getSelectedItem() != null) {
+            entity.topic.name = topicNameTextView.getSelectedItem().toString();
         }
     }
 
@@ -141,5 +145,25 @@ public abstract class BaseDetailSubscriberVH<T extends SubscriberEntity> extends
 
     protected void setTopicTypeList(List<String> list) {
         this.topicTypeList = list;
+    }
+
+    @Override
+    public void onSpinnerOpened(CustomSpinner spinner) {
+
+    }
+
+    @Override
+    public void onSpinnerItemSelected(CustomSpinner spinner, Integer position) {
+        if (position == null) {
+            // Nothing selected
+            return;
+        }
+
+        spinner.setSelection(position);
+    }
+
+    @Override
+    public void onSpinnerClosed(CustomSpinner spinner) {
+
     }
 }
