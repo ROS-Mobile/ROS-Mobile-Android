@@ -2,6 +2,9 @@ package com.schneewittchen.rosandroid.utility;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
+
+import androidx.appcompat.widget.AppCompatSpinner;
 
 /**
  * A custom spinner class
@@ -13,7 +16,7 @@ import android.util.AttributeSet;
  * @modified by
  */
 
-public class CustomSpinner extends androidx.appcompat.widget.AppCompatSpinner {
+public class CustomSpinner extends AppCompatSpinner {
     private static final String TAG = "CustomSpinner";
     private OnSpinnerEventsListener mListener;
     private boolean mOpenInitiated = false;
@@ -44,6 +47,8 @@ public class CustomSpinner extends androidx.appcompat.widget.AppCompatSpinner {
 
         void onSpinnerClosed();
 
+        void onSpinnerEmpty();
+
     }
 
     @Override
@@ -73,6 +78,16 @@ public class CustomSpinner extends androidx.appcompat.widget.AppCompatSpinner {
     }
 
     /**
+     * Perform an empty list event if there are no items available in the adapter list
+     */
+    public void performEmptyListEvent() {
+        mOpenInitiated = false;
+        if (mListener != null) {
+            mListener.onSpinnerEmpty();
+        }
+    }
+
+    /**
      * A boolean flag indicating that the Spinner triggered an open event.
      *
      * @return true for opened Spinner
@@ -83,11 +98,16 @@ public class CustomSpinner extends androidx.appcompat.widget.AppCompatSpinner {
 
     @Override
     public void onWindowFocusChanged(boolean hasWindowFocus) {
-        android.util.Log.d(TAG, "onWindowFocusChanged");
+        Log.d(TAG, "onWindowFocusChanged");
         super.onWindowFocusChanged(hasWindowFocus);
-        if (hasBeenOpened() && hasWindowFocus) {
-            android.util.Log.i(TAG, "closing popup");
-            performClosedEvent();
+        if (hasBeenOpened()) {
+            if (hasWindowFocus) {
+                Log.i(TAG, "closing popup");
+                performClosedEvent();
+            } else {
+                Log.i(TAG, "empty spinner list");
+                performEmptyListEvent();
+            }
         }
     }
 }

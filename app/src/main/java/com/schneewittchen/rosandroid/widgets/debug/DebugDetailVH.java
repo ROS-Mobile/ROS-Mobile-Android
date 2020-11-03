@@ -83,6 +83,9 @@ public class DebugDetailVH extends BaseDetailViewHolder<DebugEntity> {
             public void onSpinnerClosed() {
                 forceWidgetUpdate();
             }
+
+            @Override
+            public void onSpinnerEmpty() { adapter.add(entity.topic.name); }
         });
 
         numberDebugMsgs.addTextChangedListener(new TextWatcher() {
@@ -108,13 +111,13 @@ public class DebugDetailVH extends BaseDetailViewHolder<DebugEntity> {
 
 
     @Override
-    public void bind(DebugEntity entity) {
+    public void bindEntity(DebugEntity entity) {
         updateSpinner();
         topicNameText.setSelection(nameList.indexOf(entity.topic.name));
 
-        topicTypeText.setText(entity.topic.type);
+        // topicTypeText.setText(entity.topic.type);
 
-        /*if (entity.validMessage) {
+        if (entity.validMessage) {
             topicTypeText.setText(entity.topic.type);
 
         } else {
@@ -125,7 +128,7 @@ public class DebugDetailVH extends BaseDetailViewHolder<DebugEntity> {
                     tmp.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
             topicTypeText.setText(spannable);
-        }*/
+        }
 
         numberDebugMsgs.setText(Integer.toString(entity.numberMessages));
     }

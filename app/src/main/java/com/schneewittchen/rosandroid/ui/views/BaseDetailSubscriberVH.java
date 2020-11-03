@@ -80,7 +80,12 @@ public abstract class BaseDetailSubscriberVH<T extends SubscriberEntity> extends
 
             @Override
             public void onSpinnerClosed() {
-                updateEntity();
+                forceWidgetUpdate();
+            }
+
+            @Override
+            public void onSpinnerEmpty() {
+                topicNameAdapter.add(entity.topic.name);
             }
         });
 
@@ -91,7 +96,12 @@ public abstract class BaseDetailSubscriberVH<T extends SubscriberEntity> extends
 
             @Override
             public void onSpinnerClosed() {
-                updateEntity();
+                forceWidgetUpdate();
+            }
+
+            @Override
+            public void onSpinnerEmpty() {
+
             }
         });
     }
@@ -107,6 +117,7 @@ public abstract class BaseDetailSubscriberVH<T extends SubscriberEntity> extends
         String topicName = entity.topic.name;
 
         topicTypeText.setSelection(topicTypeList.indexOf(messageType));
+        topicNameAdapter.add(entity.topic.name);
         topicNameText.setSelection(topicNameList.indexOf(topicName));
     }
 
