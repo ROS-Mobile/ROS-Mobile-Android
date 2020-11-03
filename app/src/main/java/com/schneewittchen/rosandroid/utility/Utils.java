@@ -222,4 +222,14 @@ public class Utils {
 
         return null;
     }
+
+
+
+    public static String numberToDegrees(int number){
+        return new Integer(number).toString() + "°";
+    }
+
+    public static int degreesToNumber(String degrees) {
+        return Integer.parseInt(degrees.substring(0, degrees.length() - 1));
+    }
 }

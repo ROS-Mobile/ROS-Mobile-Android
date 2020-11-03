@@ -21,8 +21,6 @@ import androidx.annotation.Nullable;
 public class ButtonView extends BaseView {
     public static final String TAG = "ButtonView";
 
-    JoystickView.UpdateListener updateListener;
-
     Paint buttonPaint;
     TextPaint textPaint;
     ButtonState state;

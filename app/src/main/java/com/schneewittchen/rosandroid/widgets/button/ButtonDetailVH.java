@@ -6,6 +6,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.schneewittchen.rosandroid.R;
+import com.schneewittchen.rosandroid.utility.Utils;
 import com.schneewittchen.rosandroid.widgets.base.BaseDetailViewHolder;
 import com.schneewittchen.rosandroid.widgets.base.DetailListener;
 import com.schneewittchen.rosandroid.widgets.joystick.WidgetJoystickEntity;
@@ -43,7 +44,7 @@ public class ButtonDetailVH extends BaseDetailViewHolder<WidgetButtonEntity> {
         topicNameText.setText(entity.subPubNoteEntity.topic);
 
         textText.setText(entity.text);
-        rotationSpinner.setSelection(rotationAdapter.getPosition(entity.numberToDegrees(entity.rotation)));
+        rotationSpinner.setSelection(rotationAdapter.getPosition(Utils.numberToDegrees(entity.rotation)));
     }
 
     @Override
@@ -52,6 +53,6 @@ public class ButtonDetailVH extends BaseDetailViewHolder<WidgetButtonEntity> {
         entity.subPubNoteEntity.topic = topicNameText.getText().toString();
 
         entity.text = textText.getText().toString();
-        entity.rotation = entity.degreesToNumber(rotationSpinner.getSelectedItem().toString());
+        entity.rotation = Utils.degreesToNumber(rotationSpinner.getSelectedItem().toString());
     }
 }
