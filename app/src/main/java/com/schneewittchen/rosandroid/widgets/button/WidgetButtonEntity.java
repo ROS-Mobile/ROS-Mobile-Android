@@ -53,6 +53,9 @@ public class WidgetButtonEntity extends BaseEntity {
 
         this.subPubNoteEntity.topic = entity.subPubNoteEntity.topic;
         this.subPubNoteEntity.messageType = entity.subPubNoteEntity.messageType;
+
+        this.text = entity.text;
+        this.rotation = entity.rotation;
     }
 
     @Override
@@ -71,13 +74,5 @@ public class WidgetButtonEntity extends BaseEntity {
         newEnt.insert(this);
 
         return newEnt;
-    }
-
-    public String numberToDegrees(int number){
-        return new Integer(number).toString() + "°";
-    }
-
-    public int degreesToNumber(String degrees) {
-        return Integer.parseInt(degrees.substring(0, degrees.length() - 1));
     }
 }
