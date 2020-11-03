@@ -115,6 +115,16 @@ public class CustomSpinner extends AppCompatSpinner implements AdapterView.OnIte
     }
 
     /**
+     * Perform an empty list event if there are no items available in the adapter list
+     */
+    public void performEmptyListEvent() {
+        mOpenInitiated = false;
+        if (mListener != null) {
+            mListener.onSpinnerEmpty();
+        }
+    }
+
+    /**
      * A boolean flag indicating that the Spinner triggered an open event.
      *
      * @return true for opened Spinner
