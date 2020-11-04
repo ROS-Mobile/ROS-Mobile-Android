@@ -76,19 +76,24 @@ public class ButtonView extends BaseView {
     public void onDraw(Canvas canvas) {
         float width = getWidth();
         float height = getHeight();
+        float textLayoutWidth = width;
+
+        if (widgetEntity.rotation == 90 || widgetEntity.rotation == 270) {
+            textLayoutWidth = height;
+        }
 
         canvas.drawRect(new Rect(0,0,(int)width,(int)height),buttonPaint);
-//        Log.w("", widgetEntity.text);
+
         staticLayout = new StaticLayout(widgetEntity.text,
                 textPaint,
-                (int) getWidth(),
+                (int) textLayoutWidth,
                 Layout.Alignment.ALIGN_CENTER,
                 1.0f,
                 0,
                 false);
         canvas.save();
-        canvas.rotate(widgetEntity.rotation,width / 2,height / 2);
         canvas.translate( ((width / 2)-staticLayout.getWidth()/2), height / 2 - staticLayout.getHeight() / 2);
+        canvas.rotate(widgetEntity.rotation,width / 2,height / 2);
         staticLayout.draw(canvas);
         canvas.restore();
     }
