@@ -2,6 +2,7 @@ package com.schneewittchen.rosandroid.widgets.gridmap;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.RectF;
@@ -40,6 +41,7 @@ public class GridMapView extends SubscriberView implements View.OnTouchListener 
     // Rectangle Surrounding
     private Paint borderPaint;
     private Paint gridPaint;
+    private Paint paintBackground;
     private float cornerWidth;
     private RectF drawRect;
     private Matrix matrix;
@@ -77,6 +79,11 @@ public class GridMapView extends SubscriberView implements View.OnTouchListener 
         this.gridPaint.setAntiAlias(false);
         this.gridPaint.setFilterBitmap(false);
 
+        // Background color
+        this.paintBackground = new Paint();
+        this.paintBackground.setColor(Color.argb(100, 0, 0, 0));
+        this.paintBackground.setStyle(Paint.Style.FILL);
+
         this.drawRect = new RectF(0, 0, 0, 0);
 
         this.setOnTouchListener(this);
@@ -85,6 +92,8 @@ public class GridMapView extends SubscriberView implements View.OnTouchListener 
     @Override
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+
+        canvas.drawPaint(paintBackground);
 
         if (data != null && data.map != null) {
             //canvas.drawBitmap(data.map, 0, 0, gridPaint);

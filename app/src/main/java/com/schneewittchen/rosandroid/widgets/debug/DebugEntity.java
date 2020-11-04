@@ -23,7 +23,7 @@ public class DebugEntity extends SubscriberEntity {
     public DebugEntity() {
         this.width = 4;
         this.height = 3;
-        this.topic = new Topic("debug", Subscriber.TOPIC_MESSAGE_TYPE_WILDCARD);
+        this.topic = new Topic("MessageToDebug", Subscriber.TOPIC_MESSAGE_TYPE_WILDCARD);
         this.numberMessages = 10;
     }
 }

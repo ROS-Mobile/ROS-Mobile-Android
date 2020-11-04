@@ -2,6 +2,7 @@ package com.schneewittchen.rosandroid.widgets.debug;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -87,6 +88,7 @@ public class DebugView extends SubscriberView {
     private void init() {
         // Set canvas parameter
         this.cornerWidth = Utils.dpToPx(getContext(), 8);
+
         paint = new Paint();
         paint.setColor(getResources().getColor(R.color.whiteHigh));
         paint.setStyle(Paint.Style.STROKE);
@@ -123,7 +125,8 @@ public class DebugView extends SubscriberView {
 
         // Background color
         paintDark = new Paint();
-        paintDark.setColor(getResources().getColor(R.color.black00dp));
+        paintDark.setColor(Color.argb(100, 0, 0, 0));
+        //paintDark.setColor(getResources().getColor(R.color.black02dp));
         paintDark.setStyle(Paint.Style.FILL);
     }
 
@@ -187,24 +190,28 @@ public class DebugView extends SubscriberView {
                     startX = event.getX();
                     startY = event.getY();
                     break;
+
                 case MotionEvent.ACTION_MOVE:
                     translateX = event.getX() - startX;
                     translateY = event.getY() - startY;
-                    double distance = Math.sqrt(Math.pow(event.getX() - startX, 2) +
-                            Math.pow(event.getY() - startY, 2)
-                    );
+
+                    double distance = Math.sqrt(Math.pow(translateX, 2) + Math.pow(translateY, 2));
+
                     if (distance > 0) {
                         dragged = true;
                     }
                     break;
+
                 case MotionEvent.ACTION_UP:
                     mode = NONE;
                     dragged = false;
                     break;
+
                 case MotionEvent.ACTION_POINTER_UP:
                     mode = DRAG;
                     break;
             }
+
             if ((mode == DRAG && dragged)) {
                 this.invalidate();
             }

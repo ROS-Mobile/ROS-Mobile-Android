@@ -1,14 +1,17 @@
 package com.schneewittchen.rosandroid.widgets.costmap;
 
 import android.view.View;
-import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 
-import com.schneewittchen.rosandroid.R;
-import com.schneewittchen.rosandroid.ui.views.BaseDetailSubscriberVH;
-import com.schneewittchen.rosandroid.ui.views.BaseDetailViewHolder;
 import com.schneewittchen.rosandroid.ui.fragments.details.WidgetChangeListener;
+import com.schneewittchen.rosandroid.ui.views.BaseDetailSubscriberVH;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+import nav_msgs.OccupancyGrid;
 
 
 /**
@@ -41,6 +44,11 @@ public class CostMapDetailVH extends BaseDetailSubscriberVH<CostMapEntity> {
     @Override
     protected void updateEntity() {
 
+    }
+
+    @Override
+    public List<String> getTopicTypes() {
+        return Collections.singletonList(OccupancyGrid._TYPE);
     }
 
 }

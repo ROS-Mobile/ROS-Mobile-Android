@@ -120,7 +120,7 @@ public class CustomSpinner extends AppCompatSpinner implements AdapterView.OnIte
     public void performEmptyListEvent() {
         mOpenInitiated = false;
         if (mListener != null) {
-            mListener.onSpinnerEmpty();
+            mListener.onSpinnerClosed(this);
         }
     }
 

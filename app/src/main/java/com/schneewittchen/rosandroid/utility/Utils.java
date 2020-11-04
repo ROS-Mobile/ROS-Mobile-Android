@@ -7,6 +7,8 @@ import android.net.wifi.WifiManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import com.schneewittchen.rosandroid.BuildConfig;
 
@@ -38,6 +40,15 @@ import java.util.List;
  * @modified by Nico Studt
  */
 public class Utils {
+
+    public static void hideSoftKeyboard(View view) {
+        final InputMethodManager imm = (InputMethodManager) view.getContext()
+                .getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        if (imm != null) {
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
 
     public static float pxToCm(Context context, float px) {
         DisplayMetrics dm = context.getResources().getDisplayMetrics();

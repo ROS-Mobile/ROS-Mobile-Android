@@ -2,6 +2,7 @@ package com.schneewittchen.rosandroid.widgets.camera;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
@@ -11,11 +12,9 @@ import androidx.annotation.Nullable;
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.ui.views.SubscriberView;
 import com.schneewittchen.rosandroid.utility.Utils;
-import com.schneewittchen.rosandroid.widgets.costmap.CostMapData;
 
 import org.ros.internal.message.Message;
 
-import nav_msgs.OccupancyGrid;
 import sensor_msgs.CompressedImage;
 import sensor_msgs.Image;
 
@@ -35,10 +34,11 @@ public class CameraView extends SubscriberView {
 
     public static final String TAG = CameraView.class.getSimpleName();
 
-    Paint paint;
-    float cornerWidth;
-    CameraData data;
-    RectF imageRect = new RectF();
+    private Paint borderPaint;
+    private Paint paintBackground;
+    private float cornerWidth;
+    private CameraData data;
+    private RectF imageRect = new RectF();
 
 
     public CameraView(Context context) {
@@ -55,14 +55,23 @@ public class CameraView extends SubscriberView {
     private void init() {
         this.cornerWidth = Utils.dpToPx(getContext(), 8);
 
-        paint = new Paint();
-        paint.setColor(getResources().getColor(R.color.whiteHigh));
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(10);
+        borderPaint = new Paint();
+        borderPaint.setColor(getResources().getColor(R.color.whiteHigh));
+        borderPaint.setStyle(Paint.Style.STROKE);
+        borderPaint.setStrokeWidth(10);
+
+        // Background color
+        paintBackground = new Paint();
+        paintBackground.setColor(Color.argb(100, 0, 0, 0));
+        paintBackground.setStyle(Paint.Style.FILL);
     }
 
     @Override
     public void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+
+        canvas.drawPaint(paintBackground);
+
         // Define image size based on the Bitmap width and height
         float leftViz = 0F;
         float topViz = 0F;
@@ -90,11 +99,11 @@ public class CameraView extends SubscriberView {
             }
 
             imageRect.set(left, top, left + width, top + height);
-            canvas.drawBitmap(data.map, null, imageRect, paint);
+            canvas.drawBitmap(data.map, null, imageRect, borderPaint);
         }
 
         // Draw Border
-        canvas.drawRoundRect(leftViz, topViz, widthViz, heightViz, cornerWidth, cornerWidth, paint);
+        canvas.drawRoundRect(leftViz, topViz, widthViz, heightViz, cornerWidth, cornerWidth, borderPaint);
     }
 
     @Override

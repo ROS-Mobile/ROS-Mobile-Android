@@ -7,7 +7,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.schneewittchen.rosandroid.ui.fragments.ssh.SshFragment;
 import com.schneewittchen.rosandroid.ui.fragments.details.DetailsFragment;
-import com.schneewittchen.rosandroid.ui.fragments.VizFragment;
+import com.schneewittchen.rosandroid.ui.fragments.viz.VizFragment;
 import com.schneewittchen.rosandroid.ui.fragments.MasterFragment;
 
 

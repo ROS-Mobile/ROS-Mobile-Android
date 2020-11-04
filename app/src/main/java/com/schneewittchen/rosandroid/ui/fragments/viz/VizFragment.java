@@ -1,4 +1,4 @@
-package com.schneewittchen.rosandroid.ui.fragments;
+package com.schneewittchen.rosandroid.ui.fragments.viz;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,7 +11,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.schneewittchen.rosandroid.R;
-import com.schneewittchen.rosandroid.ui.views.WidgetViewGroup;
 import com.schneewittchen.rosandroid.viewmodel.VizViewModel;
 import com.schneewittchen.rosandroid.ui.general.DataListener;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.node.BaseData;

@@ -16,6 +16,10 @@
         <item name="snackbarTextViewStyle">@style/snackbar_text</item>
         <item name="snackbarButtonStyle">@style/snackbar_button</item>
 
+        <!--
+        <item name= "colorSurface">@color/black16dp</item>
+           -->
+
         </style>
 
 
@@ -31,6 +35,9 @@
             <item name="android:dropDownVerticalOffset">8.0dp</item>
         </style>
 
+
+        <!-- Snackbar styles -->
+
         <style name="snackbar_style" parent="Widget.MaterialComponents.Snackbar">
             <item name="android:background">@color/black08dp</item>
         </style>
@@ -42,5 +49,6 @@
         <style name="snackbar_button" parent="@style/Widget.MaterialComponents.Button.TextButton.Snackbar">
             <item name="android:textColor">@color/color_attention</item>
         </style>
+
 
         </resources>

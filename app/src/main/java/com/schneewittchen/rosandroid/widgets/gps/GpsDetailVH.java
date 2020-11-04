@@ -4,11 +4,13 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 
-import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.ui.fragments.details.WidgetChangeListener;
 import com.schneewittchen.rosandroid.ui.views.BaseDetailSubscriberVH;
 
 import java.util.Arrays;
+import java.util.List;
+
+import sensor_msgs.NavSatFix;
 
 
 /**
@@ -24,8 +26,8 @@ public class GpsDetailVH extends BaseDetailSubscriberVH<GpsEntity> {
 
     public GpsDetailVH(@NonNull View view, WidgetChangeListener updateListener) {
         super(view, updateListener);
-        this.setTopicTypeList(Arrays.asList(view.getResources().getStringArray(R.array.gps_msg_types)));
     }
+
 
     @Override
     protected void initView(View parentView) {
@@ -42,4 +44,8 @@ public class GpsDetailVH extends BaseDetailSubscriberVH<GpsEntity> {
 
     }
 
+    @Override
+    public List<String> getTopicTypes() {
+        return Arrays.asList(NavSatFix._TYPE);
+    }
 }

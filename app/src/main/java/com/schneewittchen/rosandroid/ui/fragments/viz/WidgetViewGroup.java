@@ -1,4 +1,4 @@
-package com.schneewittchen.rosandroid.ui.views;
+package com.schneewittchen.rosandroid.ui.fragments.viz;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -12,6 +12,9 @@ import android.view.ViewGroup;
 import com.schneewittchen.rosandroid.BuildConfig;
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.RosData;
+import com.schneewittchen.rosandroid.ui.views.BaseView;
+import com.schneewittchen.rosandroid.ui.views.PublisherView;
+import com.schneewittchen.rosandroid.ui.views.SubscriberView;
 import com.schneewittchen.rosandroid.utility.Constants;
 import com.schneewittchen.rosandroid.utility.Utils;
 import com.schneewittchen.rosandroid.ui.general.DataListener;
@@ -194,39 +197,6 @@ public class WidgetViewGroup extends ViewGroup {
                 changes = true;
             }
         }
-
-        /*
-        WidgetDiffCallback diffCallback = new WidgetDiffCallback(newWidgets, this.widgetList);
-        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
-
-        diffResult.dispatchUpdatesTo(new ListUpdateCallback() {
-            @Override
-            public void onInserted(int position, int count) {
-                for (int i=position; i<position+count; i++) {
-                    addViewFor(newWidgets.get(i));
-                }
-            }
-
-            @Override
-            public void onRemoved(int position, int count) {
-                for (int i=position; i<position+count; i++) {
-                    removeViewFor(widgetList.get(i));
-                }
-            }
-
-            @Override
-            public void onMoved(int fromPosition, int toPosition) { }
-
-            @Override
-            public void onChanged(int position, int count, @Nullable Object payload) {
-                for(int i = position; i < position +count; i++) {
-                    changeViewFor(newWidgets.get(i));
-                }
-
-                requestLayout();
-            }
-        });
-        */
 
         this.widgetList.clear();
         this.widgetList.addAll(newWidgets);

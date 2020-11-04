@@ -1,33 +1,20 @@
 package com.schneewittchen.rosandroid.widgets.debug;
 
-import android.graphics.Color;
-import android.os.Build;
-import android.text.Editable;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.TextWatcher;
-import android.text.style.ForegroundColorSpan;
+import android.view.KeyEvent;
 import android.view.View;
-import android.widget.ArrayAdapter;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 
+import com.google.android.material.textfield.TextInputEditText;
 import com.schneewittchen.rosandroid.R;
-import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.Topic;
 import com.schneewittchen.rosandroid.ui.fragments.details.WidgetChangeListener;
-import com.schneewittchen.rosandroid.ui.views.BaseDetailViewHolder;
-import com.schneewittchen.rosandroid.utility.CustomSpinner;
-
-import org.ros.gradle_plugins.RosJavaPlugin;
-import org.ros.internal.message.Message;
-import org.ros.internal.message.RawMessage;
-import org.ros.node.ConnectedNode;
-import org.ros.node.topic.Subscriber;
+import com.schneewittchen.rosandroid.ui.views.BaseDetailSubscriberVH;
+import com.schneewittchen.rosandroid.utility.Utils;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 
@@ -40,129 +27,48 @@ import java.util.List;
  * @updated on 17.09.20
  * @modified by Nils Rottmann
  */
-public class DebugDetailVH extends BaseDetailViewHolder<DebugEntity> {
+public class DebugDetailVH extends BaseDetailSubscriberVH<DebugEntity> {
 
-    // Views
-    CustomSpinner topicNameText;
-    EditText topicTypeText;
-    EditText numberDebugMsgs;
-
-    // Spinner Variables
-    List<String> nameList;
-    ArrayAdapter<String> adapter;
+    protected EditText messageNumberEdittext;
 
 
-    // Constructor
-    public DebugDetailVH(@NonNull View view, WidgetChangeListener updateListener) {
-        super(view, updateListener);
-    }
-
-
-    // Initialization
-    @Override
-    public void initView(View view) {
-        // Initialize Views
-        topicNameText = view.findViewById(R.id.topicNameText);
-        topicTypeText = view.findViewById(R.id.topicTypeText);
-        numberDebugMsgs = view.findViewById(R.id.numberDebug);
-
-        // Initialize Spinner
-        nameList = new ArrayList<>();
-        adapter = new ArrayAdapter<>(view.getContext(),
-                android.R.layout.simple_spinner_dropdown_item, nameList);
-        topicNameText.setAdapter(adapter);
-
-        // Define action responses
-        topicNameText.setSpinnerEventsListener(new CustomSpinner.OnSpinnerEventsListener() {
-            @Override
-            public void onSpinnerOpened(CustomSpinner spinner) {
-                updateSpinner();
-            }
-
-            @Override
-            public void onSpinnerItemSelected(CustomSpinner spinner, Integer position) {
-                forceWidgetUpdate();
-            }
-
-            @Override
-            public void onSpinnerClosed(CustomSpinner spinner) {
-
-            }
-        });
-
-        numberDebugMsgs.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                try {
-                    entity.numberMessages = Integer.parseInt(numberDebugMsgs.getText().toString());
-                    forceWidgetUpdate();
-                } catch (Exception ignored) {
-                }
-            }
-        });
+    public DebugDetailVH(@NonNull View view, WidgetChangeListener changeListener) {
+        super(view, changeListener);
     }
 
 
     @Override
-    public void bindEntity(DebugEntity entity) {
-        updateSpinner();
-        topicNameText.setSelection(nameList.indexOf(entity.topic.name));
-
-        // topicTypeText.setText(entity.topic.type);
-
-        if (entity.validMessage) {
-            topicTypeText.setText(entity.topic.type);
-
-        } else {
-            String tmp = entity.topic.type + " (unsupported)";
-
-            Spannable spannable = new SpannableString(tmp);
-            spannable.setSpan(new ForegroundColorSpan(Color.RED), entity.topic.type.length(),
-                    tmp.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-            topicTypeText.setText(spannable);
-        }
-
-        numberDebugMsgs.setText(Integer.toString(entity.numberMessages));
+    protected void initView(View parentView) {
+        messageNumberEdittext = parentView.findViewById(R.id.messageNumberEdittext);
     }
 
     @Override
-    public void updateEntity() {
-        if (topicNameText.getSelectedItem() != null) {
-            String currentTopicName = topicNameText.getSelectedItem().toString();
-            String currentMessageType = "";
+    protected void bindEntity(DebugEntity entity) {
 
-            for (Topic rosTopic : mViewModel.getTopicList()) {
-                if (rosTopic.name.equals(currentTopicName)) {
-                    currentMessageType = rosTopic.type;
-                }
-            }
-
-            entity.topic.name = topicNameText.getSelectedItem().toString();
-            entity.topic.type = currentMessageType;
-        }
     }
 
-    public void updateSpinner() {
-        // Get the list
-        nameList = new ArrayList<>();
+    @Override
+    protected void updateEntity() {
 
-        for (Topic rosTopic: mViewModel.getTopicList()) {
-            nameList.add(rosTopic.name);
+    }
+
+    @Override
+    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+        switch (actionId){
+            case EditorInfo.IME_ACTION_DONE:
+            case EditorInfo.IME_ACTION_NEXT:
+            case EditorInfo.IME_ACTION_PREVIOUS:
+                Utils.hideSoftKeyboard(itemView);
+                itemView.requestFocus();
+                return true;
         }
 
-        nameList.sort(Comparator.naturalOrder());
-
-        adapter.clear();
-        adapter.addAll(nameList);
+        return false;
     }
+
+    @Override
+    public List<String> getTopicTypes() {
+        return new ArrayList<>();
+    }
+
 }

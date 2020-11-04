@@ -2,7 +2,10 @@ package com.schneewittchen.rosandroid.ui.views;
 
 import android.content.Context;
 import android.text.InputType;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -16,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.model.entities.BaseEntity;
 import com.schneewittchen.rosandroid.ui.fragments.details.WidgetChangeListener;
+import com.schneewittchen.rosandroid.utility.Utils;
 import com.schneewittchen.rosandroid.viewmodel.DetailsViewModel;
 
 
@@ -30,7 +34,7 @@ import com.schneewittchen.rosandroid.viewmodel.DetailsViewModel;
  * @updated on 27.07.20
  * @modified by Nils Rottmann
  */
-public abstract class BaseDetailViewHolder<T extends BaseEntity> extends RecyclerView.ViewHolder {
+public abstract class BaseDetailViewHolder<T extends BaseEntity> extends RecyclerView.ViewHolder implements TextView.OnEditorActionListener {
 
     public View viewBackground, viewForeground;
     public LinearLayout detailContend;
@@ -91,6 +95,11 @@ public abstract class BaseDetailViewHolder<T extends BaseEntity> extends Recycle
         widthEditText   = parentView.findViewById(R.id.width_edit_text);
         heightEdittext  = parentView.findViewById(R.id.height_edit_text);
 
+        xEdittext.setOnEditorActionListener(this);
+        yEdittext.setOnEditorActionListener(this);
+        widthEditText.setOnEditorActionListener(this);
+        heightEdittext.setOnEditorActionListener(this);
+
         openButton.setOnClickListener(v -> {
             if (detailContend.getVisibility() == View.GONE) {
                 detailContend.setVisibility(View.VISIBLE);
@@ -105,6 +114,8 @@ public abstract class BaseDetailViewHolder<T extends BaseEntity> extends Recycle
         updateButton.setEnabled(true);
 
         renameButton.setOnClickListener(v -> showRenameDialog());
+
+        parentView.setOnClickListener(v -> parentView.requestFocus());
     }
 
     protected void baseBindEntity(T entity) {
@@ -123,6 +134,20 @@ public abstract class BaseDetailViewHolder<T extends BaseEntity> extends Recycle
         entity.posY = Integer.parseInt(yEdittext.getText().toString());
         entity.width = Integer.parseInt(widthEditText.getText().toString());
         entity.height = Integer.parseInt(heightEdittext.getText().toString());
+    }
+
+    @Override
+    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+        switch (actionId){
+            case EditorInfo.IME_ACTION_DONE:
+            case EditorInfo.IME_ACTION_NEXT:
+            case EditorInfo.IME_ACTION_PREVIOUS:
+                Utils.hideSoftKeyboard(itemView);
+                itemView.requestFocus();
+                return true;
+        }
+
+        return false;
     }
 
     private void showRenameDialog() {
