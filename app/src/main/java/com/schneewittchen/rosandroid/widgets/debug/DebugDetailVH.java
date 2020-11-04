@@ -40,16 +40,17 @@ public class DebugDetailVH extends BaseDetailSubscriberVH<DebugEntity> {
     @Override
     protected void initView(View parentView) {
         messageNumberEdittext = parentView.findViewById(R.id.messageNumberEdittext);
+        messageNumberEdittext.setOnEditorActionListener(this);
     }
 
     @Override
     protected void bindEntity(DebugEntity entity) {
-
+        messageNumberEdittext.setText(String.valueOf(entity.numberMessages));
     }
 
     @Override
     protected void updateEntity() {
-
+        entity.numberMessages = Integer.parseInt(messageNumberEdittext.getText().toString());
     }
 
     @Override

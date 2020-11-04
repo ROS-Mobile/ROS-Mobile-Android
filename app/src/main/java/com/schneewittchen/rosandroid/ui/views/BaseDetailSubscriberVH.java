@@ -8,6 +8,7 @@ import android.widget.AutoCompleteTextView;
 import androidx.annotation.NonNull;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.model.entities.SubscriberEntity;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.Topic;
@@ -34,6 +35,7 @@ public abstract class BaseDetailSubscriberVH<T extends SubscriberEntity> extends
 
     protected AutoCompleteTextView topicNameTextView;
     protected TextInputEditText topicTypeEditText;
+    protected TextInputLayout topicNameInputLayout;
 
     private List<Topic> availableTopics;
     private List<String> topicNameItemList;
@@ -57,6 +59,7 @@ public abstract class BaseDetailSubscriberVH<T extends SubscriberEntity> extends
 
         // Initialize Topic Edittext
         topicTypeEditText = parentView.findViewById(R.id.topicTypeEditText);
+        topicNameInputLayout = parentView.findViewById(R.id.topicNameLayout);
 
         // Initialize Topic Name Spinner
         topicNameItemList = new ArrayList<>();
@@ -66,7 +69,16 @@ public abstract class BaseDetailSubscriberVH<T extends SubscriberEntity> extends
                                                 R.layout.dropdown_menu_popup_item, topicNameItemList);
 
         topicNameTextView.setAdapter(topicNameAdapter);
-        topicNameTextView.setOnClickListener(clickedView -> updateTopicNameSpinner());
+        topicNameTextView.setOnClickListener(clickedView -> {
+            updateTopicNameSpinner();
+            topicNameTextView.showDropDown();
+        });
+
+        topicNameInputLayout.setEndIconOnClickListener(v -> {
+            topicNameTextView.requestFocus();
+            topicNameTextView.callOnClick();
+        });
+
         topicNameTextView.setOnItemClickListener((parent, view, position, id) -> selectNameItem(position));
     }
 
