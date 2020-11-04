@@ -48,12 +48,17 @@ public class LabelView extends BaseView {
         super.onDraw(canvas);
         float width = getWidth();
         float height = getHeight();
+        float textLayoutWidth = width;
+
+        if (widgetEntity.rotation == 90 || widgetEntity.rotation == 270) {
+            textLayoutWidth = height;
+        }
 
         canvas.drawRect(new Rect(0,0,(int)width,(int)height),backgroundPaint);
 
         staticLayout = new StaticLayout(widgetEntity.text,
                 textPaint,
-                (int) getWidth(),
+                (int) textLayoutWidth,
                 Layout.Alignment.ALIGN_CENTER,
                 1.0f,
                 0,
