@@ -92,8 +92,8 @@ public class ButtonView extends BaseView {
                 0,
                 false);
         canvas.save();
-        canvas.translate( ((width / 2)-staticLayout.getWidth()/2), height / 2 - staticLayout.getHeight() / 2);
         canvas.rotate(widgetEntity.rotation,width / 2,height / 2);
+        canvas.translate( ((width / 2)-staticLayout.getWidth()/2), height / 2 - staticLayout.getHeight() / 2);
         staticLayout.draw(canvas);
         canvas.restore();
     }
