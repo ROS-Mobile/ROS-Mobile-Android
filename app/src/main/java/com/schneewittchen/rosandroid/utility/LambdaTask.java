@@ -5,7 +5,7 @@ import android.os.AsyncTask;
 
 /**
  * TODO: Description
- *
+ * TODO: Edit to return values of called functions
  * @author Nico Studt
  * @version 1.0.0
  * @created on 31.01.20

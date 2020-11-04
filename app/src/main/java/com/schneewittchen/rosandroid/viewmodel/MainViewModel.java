@@ -8,9 +8,9 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 
-import com.schneewittchen.rosandroid.model.entities.ConfigEntity;
 import com.schneewittchen.rosandroid.model.repositories.ConfigRepository;
 import com.schneewittchen.rosandroid.model.repositories.ConfigRepositoryImpl;
+
 
 /**
  * TODO: Description
@@ -35,6 +35,7 @@ public class MainViewModel extends AndroidViewModel {
         configRepo = ConfigRepositoryImpl.getInstance(getApplication());
     }
 
+
     public LiveData<String> getConfigTitle() {
         if (configTitle == null) {
             configTitle = new MediatorLiveData<>();
@@ -50,13 +51,12 @@ public class MainViewModel extends AndroidViewModel {
 
                 configTitle.setValue(configuration.name);
             });
-
         }
 
         return configTitle;
     }
 
     public void createFirstConfig(String name) {
-        configRepo.createFirstConfig(name);
+        configRepo.createConfig(name);
     }
 }
