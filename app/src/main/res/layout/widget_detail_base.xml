@@ -6,6 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     app:cardCornerRadius="8dp"
     app:cardPreventCornerOverlap="true"
     app:cardUseCompatPadding="true">
@@ -75,6 +77,7 @@
                 app:layout_constraintStart_toEndOf="@+id/title"
                 app:layout_constraintTop_toTopOf="@+id/title" />
 
+
             <ImageButton
                 android:id="@+id/update_button"
                 android:layout_width="wrap_content"
@@ -95,11 +98,11 @@
                 android:background="?actionBarItemBackground"
                 android:clickable="true"
                 android:focusable="true"
-                android:tint="@color/colorAccent"
                 app:layout_constraintBottom_toBottomOf="@+id/title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/title"
-                app:srcCompat="@drawable/ic_expand_less_white_24dp" />
+                app:srcCompat="@drawable/ic_expand_less_white_24dp"
+                app:tint="@color/colorAccent" />
 
             <LinearLayout
                 android:id="@+id/detailContend"

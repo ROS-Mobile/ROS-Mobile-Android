@@ -15,20 +15,23 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
 import com.schneewittchen.rosandroid.R;
+import com.schneewittchen.rosandroid.ui.views.SubscriberView;
 import com.schneewittchen.rosandroid.utility.Utils;
-import com.schneewittchen.rosandroid.widgets.base.BaseData;
-import com.schneewittchen.rosandroid.widgets.base.BaseView;
 
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
+import org.osmdroid.views.CustomZoomButtonsController;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.ItemizedIconOverlay;
 import org.osmdroid.views.overlay.ItemizedOverlay;
 import org.osmdroid.views.overlay.OverlayItem;
+import org.ros.internal.message.Message;
 
 import java.util.ArrayList;
+
+import sensor_msgs.NavSatFix;
 
 
 /**
@@ -42,7 +45,8 @@ import java.util.ArrayList;
  */
 
 // TODO: Add maybe a button for getting back to gps position
-public class GpsView extends BaseView {
+public class GpsView extends SubscriberView {
+    
     public static final String TAG = "GpsView";
 
     // Open Street Map (OSM)
@@ -80,6 +84,7 @@ public class GpsView extends BaseView {
     private double moveLat = 0;
     private double moveLon = 0;
 
+    
     public GpsView(Context context) {
         super(context);
         init();
@@ -89,68 +94,83 @@ public class GpsView extends BaseView {
         super(context, attrs);
         init();
     }
+    
 
     private void init() {
         this.cornerWidth = Utils.dpToPx(this.getContext(), 8);
+        
         paint = new Paint();
         paint.setColor(getResources().getColor(R.color.whiteHigh));
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(10);
+        
         // OSM (initialize the map)
         Context ctx = this.getContext();
         Configuration.getInstance().load(ctx, PreferenceManager.getDefaultSharedPreferences(ctx));
+        
         map = new MapView(this.getContext(), null, null);
         map.setTileSource(TileSourceFactory.MAPNIK);
-        requestPermissionsIfNecessary(new String[] {
+        
+        requestPermissionsIfNecessary(new String[]{
                 // WRITE_EXTERNAL_STORAGE is required in order to show the map
                 Manifest.permission.WRITE_EXTERNAL_STORAGE
         });
-        map.setBuiltInZoomControls(true);
+        
+        map.getZoomController().setVisibility(CustomZoomButtonsController.Visibility.ALWAYS);
         map.setMultiTouchControls(true);
         minZoom = map.getMinZoomLevel();
         maxZoom = map.getMaxZoomLevel();
+        
         // Map controller
         mapController = map.getController();
+        
         // Touch
-        detector = new ScaleGestureDetector(getContext(), new GpsView.ScaleListener());
+        detector = new ScaleGestureDetector(getContext(), new ScaleListener());
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         boolean dragged = false;
+        
         switch (event.getAction() & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_DOWN:
                 mode = DRAG;
                 startX = event.getX();
                 startY = event.getY();
                 break;
+                
             case MotionEvent.ACTION_MOVE:
                 translateX = event.getX() - startX;
                 translateY = event.getY() - startY;
                 double distance = Math.sqrt(Math.pow(event.getX() - startX, 2) +
                         Math.pow(event.getY() - startY, 2)
                 );
-                if(distance > 0) {
+                if (distance > 0) {
                     dragged = true;
                 }
                 break;
+                
             case MotionEvent.ACTION_POINTER_DOWN:
                 mode = ZOOM;
                 break;
+                
             case MotionEvent.ACTION_UP:
                 mode = NONE;
                 dragged = false;
                 break;
+                
             case MotionEvent.ACTION_POINTER_UP:
                 mode = DRAG;
                 break;
         }
         // Activate Zoom
         detector.onTouchEvent(event);
+        
         // Redraw the canvas
         if ((mode == DRAG && scaleFactor != 1f && dragged) || mode == ZOOM) {
             this.invalidate();
         }
+        
         return true;
     }
 
@@ -168,14 +188,14 @@ public class GpsView extends BaseView {
 
         // Set overlay item
         OverlayItem overlayItem = new OverlayItem("Position", "Robot", locationGeoPoint);
-        ArrayList<OverlayItem> overlayItemArrayList = new ArrayList<OverlayItem>();
+        ArrayList<OverlayItem> overlayItemArrayList = new ArrayList<>();
         overlayItemArrayList.add(overlayItem);
-        ItemizedOverlay<OverlayItem> locationOverlay = new ItemizedIconOverlay<OverlayItem>(this.getContext(), overlayItemArrayList, null);
+        ItemizedOverlay<OverlayItem> locationOverlay = new ItemizedIconOverlay<>(this.getContext(), overlayItemArrayList, null);
 
         // Move the map to specific location
         zoomScale = (float) Math.pow(2, scaleFactor);
-        moveLat = moveLat + (translateY/zoomScale) * dragSensitivity;
-        moveLon = moveLon - (translateX/zoomScale) * dragSensitivity;
+        moveLat = moveLat + (translateY / zoomScale) * dragSensitivity;
+        moveLon = moveLon - (translateX / zoomScale) * dragSensitivity;
         centerGeoPoint.setLatitude(locationGeoPoint.getLatitude() + moveLat);
         centerGeoPoint.setLongitude(locationGeoPoint.getLongitude() + moveLon);
         mapController.setCenter(centerGeoPoint);
@@ -192,12 +212,14 @@ public class GpsView extends BaseView {
         // Put a rectangle around
         canvas.drawRoundRect(left, right, width, height, cornerWidth, cornerWidth, paint);
     }
-
+    
     @Override
-    public void setData(BaseData data) {
-        this.data = (GpsData) data;
+    public void onNewMessage(Message message) {
+        this.data = new GpsData((NavSatFix) message);
+        
         locationGeoPoint.setLatitude(this.data.getLat());
         locationGeoPoint.setLongitude(this.data.getLon());
+        
         this.invalidate();
     }
 
@@ -213,6 +235,7 @@ public class GpsView extends BaseView {
     }
 
     private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
+        
         @Override
         public boolean onScale(ScaleGestureDetector detector) {
             scaleFactor *= detector.getScaleFactor();

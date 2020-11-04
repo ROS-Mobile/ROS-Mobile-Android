@@ -3,7 +3,6 @@ package com.schneewittchen.rosandroid.viewmodel;
 import android.app.Application;
 import android.content.Context;
 import android.net.wifi.WifiManager;
-import android.os.Handler;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -12,7 +11,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.schneewittchen.rosandroid.domain.RosDomain;
 import com.schneewittchen.rosandroid.model.entities.MasterEntity;
-import com.schneewittchen.rosandroid.model.repositories.ConnectionType;
+import com.schneewittchen.rosandroid.model.repositories.rosRepo.connection.ConnectionType;
 import com.schneewittchen.rosandroid.utility.Utils;
 
 
@@ -29,11 +28,11 @@ public class MasterViewModel extends AndroidViewModel {
 
     private static final String TAG = MasterViewModel.class.getSimpleName();
 
-    private RosDomain rosDomain;
+    private final RosDomain rosDomain;
 
     private MutableLiveData<String> deviceIpLiveData;
     private MutableLiveData<String> networkSSIDLiveData;
-    private LiveData<MasterEntity> currentMaster;
+    private final LiveData<MasterEntity> currentMaster;
 
 
     public MasterViewModel(@NonNull Application application) {

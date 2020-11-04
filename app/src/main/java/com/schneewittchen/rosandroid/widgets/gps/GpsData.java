@@ -1,8 +1,9 @@
 package com.schneewittchen.rosandroid.widgets.gps;
 
-import com.schneewittchen.rosandroid.widgets.base.BaseData;
+import com.schneewittchen.rosandroid.model.repositories.rosRepo.node.BaseData;
 
 import sensor_msgs.NavSatFix;
+
 
 /**
  * TODO: Description
@@ -18,10 +19,12 @@ public class GpsData extends BaseData {
 
     private NavSatFix navSatFix;
 
+
     public GpsData(NavSatFix navSatFix) {
         this.navSatFix = navSatFix;
     }
 
+    
     public double getLat() {
         return navSatFix.getLatitude();
     }

@@ -30,10 +30,10 @@ import java.util.List;
  */
 public class ConfigurationsViewModel extends AndroidViewModel {
 
-    private static String TAG = ConfigurationsViewModel.class.getSimpleName();
+    private static final String TAG = ConfigurationsViewModel.class.getSimpleName();
 
-    private RosDomain rosDomain;
-    private ConfigRepository configRepository;
+    private final RosDomain rosDomain;
+    private final ConfigRepository configRepository;
     private MediatorLiveData<String> currentConfigTitle;
     private LiveData<ConfigEntity> currentConfig;
     private MediatorLiveData<List<String>> lastOpenedConfigNames;
@@ -115,7 +115,7 @@ public class ConfigurationsViewModel extends AndroidViewModel {
     }
 
     public void addConfig() {
-        configRepository.createConfig();
+        configRepository.createConfig(null);
     }
 
     public void chooseConfig(String configName) {

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
 
@@ -27,18 +28,16 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/black16dp"
                 android:minHeight="@dimen/toolbar_height"
                 app:layout_scrollFlags="scroll|enterAlways"
                 app:maxButtonHeight="48dp"
                 app:navigationIcon="@drawable/ic_menu_white_24dp"
-                app:title="Loomo Steuerung">
+                app:title="Title">
 
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tabs"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/black16dp"
                     app:tabGravity="center"
                     app:tabIndicatorColor="#81D4FA"
                     app:tabIndicatorGravity="bottom"
@@ -77,7 +76,7 @@
             android:visibility="gone"
             tools:visibility="visible" />
 
-        <com.schneewittchen.rosandroid.ui.helper.LockableViewPager
+        <com.schneewittchen.rosandroid.ui.fragments.main.LockableViewPager
             android:id="@+id/configViewpager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -105,7 +104,7 @@
 
             <fragment
                 android:id="@+id/fragment"
-                android:name="com.schneewittchen.rosandroid.ui.fragments.ConfigurationsFragment"
+                android:name="com.schneewittchen.rosandroid.ui.fragments.config.ConfigurationsFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:layout="@layout/fragment_configurations" />

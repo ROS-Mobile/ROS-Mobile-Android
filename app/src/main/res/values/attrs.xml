@@ -2,7 +2,7 @@
 
 <resources>
 
-    <declare-styleable name="WidgetGroup">
+    <declare-styleable name="WidgetViewGroup">
         <attr name="crossColor" format="color" />
     </declare-styleable>
 

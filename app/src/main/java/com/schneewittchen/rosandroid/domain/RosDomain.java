@@ -1,7 +1,6 @@
 package com.schneewittchen.rosandroid.domain;
 
 import android.app.Application;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
@@ -10,13 +9,16 @@ import androidx.lifecycle.Transformations;
 import com.schneewittchen.rosandroid.model.entities.MasterEntity;
 import com.schneewittchen.rosandroid.model.repositories.ConfigRepository;
 import com.schneewittchen.rosandroid.model.repositories.ConfigRepositoryImpl;
-import com.schneewittchen.rosandroid.model.repositories.ConnectionType;
-import com.schneewittchen.rosandroid.model.repositories.RosRepository;
-import com.schneewittchen.rosandroid.widgets.base.BaseData;
-import com.schneewittchen.rosandroid.widgets.base.BaseEntity;
+import com.schneewittchen.rosandroid.model.repositories.rosRepo.RosRepository;
+import com.schneewittchen.rosandroid.model.repositories.rosRepo.connection.ConnectionType;
+import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.RosData;
+import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.Topic;
+import com.schneewittchen.rosandroid.utility.LambdaTask;
+import com.schneewittchen.rosandroid.model.repositories.rosRepo.node.BaseData;
+import com.schneewittchen.rosandroid.model.entities.BaseEntity;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+
 
 /**
  * TODO: Description
@@ -28,6 +30,8 @@ import java.util.List;
  * @modified by Nico Studt
  * @updated on 15.05.20
  * @modified by Nico Studt
+ * @updated on 27.07.20
+ * @modified by Nils Rottmann
  */
 public class RosDomain {
 
@@ -37,12 +41,12 @@ public class RosDomain {
     private static RosDomain mInstance;
 
     // Repositories
-    private ConfigRepository configRepository;
-    private RosRepository rosRepo;
+    private final ConfigRepository configRepository;
+    private final RosRepository rosRepo;
 
     // Data objects
-    private LiveData<List<BaseEntity>> currentWidgets;
-    private LiveData<MasterEntity> currentMaster;
+    private final LiveData<List<BaseEntity>> currentWidgets;
+    private final LiveData<MasterEntity> currentMaster;
 
 
     private RosDomain(@NonNull Application application) {
@@ -70,12 +74,12 @@ public class RosDomain {
     }
 
 
-    public void informWidgetDataChange(BaseData data) {
-        rosRepo.informWidgetDataChange(data);
+    public void publishData(BaseData data) {
+        rosRepo.publishData(data);
     }
 
     public void createWidget(String widgetType) {
-        configRepository.createWidget(widgetType);
+        new LambdaTask(() -> configRepository.createWidget(widgetType)).execute();
     }
 
     public void addWidget(BaseEntity widget) {
@@ -94,7 +98,7 @@ public class RosDomain {
         return this.currentWidgets;
     }
 
-    public LiveData<BaseData> getData(){ return this.rosRepo.getData(); }
+    public LiveData<RosData> getData(){ return this.rosRepo.getData(); }
 
 
     public void updateMaster(MasterEntity master) {
@@ -116,4 +120,6 @@ public class RosDomain {
     public LiveData<ConnectionType> getRosConnection() {
         return rosRepo.getRosConnectionStatus();
     }
+
+    public List<Topic> getTopicList() { return rosRepo.getTopicList(); }
 }

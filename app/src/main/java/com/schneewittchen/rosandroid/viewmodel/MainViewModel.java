@@ -11,14 +11,15 @@ import androidx.lifecycle.MediatorLiveData;
 import com.schneewittchen.rosandroid.model.repositories.ConfigRepository;
 import com.schneewittchen.rosandroid.model.repositories.ConfigRepositoryImpl;
 
+
 /**
  * TODO: Description
  *
  * @author Nico Studt
  * @version 1.0.1
  * @created on 10.01.20
- * @updated on 31.01.20
- * @modified by
+ * @updated on 27.07.20
+ * @modified by Nils Rottmann
  */
 public class MainViewModel extends AndroidViewModel {
 
@@ -50,9 +51,12 @@ public class MainViewModel extends AndroidViewModel {
 
                 configTitle.setValue(configuration.name);
             });
-
         }
 
         return configTitle;
+    }
+
+    public void createFirstConfig(String name) {
+        configRepo.createConfig(name);
     }
 }

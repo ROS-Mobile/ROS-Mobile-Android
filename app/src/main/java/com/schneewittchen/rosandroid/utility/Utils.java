@@ -1,19 +1,23 @@
 package com.schneewittchen.rosandroid.utility;
 
-
 import android.content.Context;
 import android.net.wifi.SupplicantState;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
-import android.os.NetworkOnMainThreadException;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+
+import com.schneewittchen.rosandroid.BuildConfig;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -25,16 +29,26 @@ import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
 
+
 /**
  * TODO: Description
  *
  * @author Nico Studt
  * @version 1.0.0
  * @created on 10.01.20
- * @updated on 16.01.20
- * @modified by
+ * @updated on 25.09.20
+ * @modified by Nico Studt
  */
 public class Utils {
+
+    public static void hideSoftKeyboard(View view) {
+        final InputMethodManager imm = (InputMethodManager) view.getContext()
+                .getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        if (imm != null) {
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
 
     public static float pxToCm(Context context, float px) {
         DisplayMetrics dm = context.getResources().getDisplayMetrics();
@@ -55,6 +69,30 @@ public class Utils {
         float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, dm);
 
         return px;
+    }
+
+    public static Object getObjectFromClassName(String relativeClassPath){
+        String classPath = BuildConfig.APPLICATION_ID + relativeClassPath;
+
+        try {
+            Class<?> clazz = Class.forName(classPath);
+            Constructor<?> constructor = clazz.getConstructor();
+            return constructor.newInstance();
+
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public static int getResId(String resName, Class<?> clazz) {
+        try {
+            Field idField = clazz.getDeclaredField(resName);
+            return idField.getInt(idField);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
     }
 
     /**
@@ -221,5 +259,23 @@ public class Utils {
         }
 
         return null;
+    }
+
+    /**
+     * Check if class of an object contains a field by a given field name.
+     * @param object Object to check
+     * @param fieldName Name of the field
+     * @return Object class includes the field
+     */
+    public static boolean doesObjectContainField(Object object, String fieldName) {
+        Class<?> objectClass = object.getClass();
+
+        for (java.lang.reflect.Field field : objectClass.getFields()) {
+            if (field.getName().equals(fieldName)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

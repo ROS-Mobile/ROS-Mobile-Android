@@ -6,9 +6,9 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-import com.schneewittchen.rosandroid.model.repositories.ConfigRepositoryImpl;
-import com.schneewittchen.rosandroid.model.repositories.SshRepository;
+import com.schneewittchen.rosandroid.model.entities.SSHEntity;
 import com.schneewittchen.rosandroid.model.repositories.SshRepositoryImpl;
+
 
 /**
  * TODO: Description
@@ -16,23 +16,57 @@ import com.schneewittchen.rosandroid.model.repositories.SshRepositoryImpl;
  * @author Nils Rottmann
  * @version 1.0.0
  * @created on 18.03.20
- * @updated on
- * @modified by
+ * @updated on 04.06.20
+ * @modified by Nils Rottmann
  */
 
 public class SshViewModel extends AndroidViewModel {
 
     SshRepositoryImpl sshRepositoryImpl;
+    private final LiveData<SSHEntity> currentSSH;
 
 
     public SshViewModel(@NonNull Application application) {
         super(application);
-        sshRepositoryImpl = SshRepositoryImpl.getInstance();
+        sshRepositoryImpl = SshRepositoryImpl.getInstance(application);
+        currentSSH = sshRepositoryImpl.getCurrentSSH();
+    }
+
+    public void setSshIp(String ipString) {
+        SSHEntity ssh = currentSSH.getValue();
+        ssh.ip = ipString;
+        sshRepositoryImpl.updateSSHConfig(ssh);
+    }
+
+    public void setSshPort(String portString) {
+        int port = 22;
+
+        try {
+            port = Integer.parseInt(portString);
+        } catch (NumberFormatException nfe) {
+            nfe.printStackTrace();
+        }
+
+        SSHEntity ssh = currentSSH.getValue();
+        ssh.port = port;
+        sshRepositoryImpl.updateSSHConfig(ssh);
+    }
+
+    public void setSshUsername(String usernameString) {
+        SSHEntity ssh = currentSSH.getValue();
+        ssh.username = usernameString;
+        sshRepositoryImpl.updateSSHConfig(ssh);
+    }
+
+    public void setSshPassword(String passwordString) {
+        SSHEntity ssh = currentSSH.getValue();
+        ssh.password = passwordString;
+        sshRepositoryImpl.updateSSHConfig(ssh);
     }
 
 
-    public void connectViaSSH(String username, String password, String ipAddress, int port) {
-        sshRepositoryImpl.startSession(username, password, ipAddress, port);
+    public void connectViaSSH() {
+        sshRepositoryImpl.startSession();
     }
 
     public void stopSsh() {
@@ -49,6 +83,10 @@ public class SshViewModel extends AndroidViewModel {
 
     public LiveData<String> getOutputData() {
         return sshRepositoryImpl.getOutputData();
+    }
+
+    public LiveData<SSHEntity> getSSH() {
+        return sshRepositoryImpl.getCurrentSSH();
     }
 
 }
