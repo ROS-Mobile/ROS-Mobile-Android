@@ -50,6 +50,14 @@
       <option name="id" value="MavenLocal" />
       <option name="name" value="MavenLocal" />
       <option name="url" value="file:$PROJECT_DIR$/../.m2/repository" />
+<<<<<<< HEAD
+=======
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="MavenLocal" />
+      <option name="name" value="MavenLocal" />
+      <option name="url" value="file:$USER_HOME$/.m2/repository" />
+>>>>>>> master
     </remote-repository>
   </component>
 </project>
