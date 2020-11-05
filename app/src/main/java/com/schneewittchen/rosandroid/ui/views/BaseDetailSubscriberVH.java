@@ -26,8 +26,8 @@ import java.util.List;
  * @author Nils Rottmann
  * @version 1.0.0
  * @created on 17.09.20
- * @updated on
- * @modified by
+ * @updated on 05.11.2020
+ * @modified by Nico Studt
  */
 public abstract class BaseDetailSubscriberVH<T extends SubscriberEntity> extends BaseDetailViewHolder<T> {
 

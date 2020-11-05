@@ -1,6 +1,5 @@
 package com.schneewittchen.rosandroid.ui.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.view.KeyEvent;
@@ -8,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,7 +17,10 @@ import androidx.lifecycle.ViewModelProvider;
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.databinding.FragmentMasterBinding;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.connection.ConnectionType;
+import com.schneewittchen.rosandroid.utility.Utils;
 import com.schneewittchen.rosandroid.viewmodel.MasterViewModel;
+
+import java.util.Objects;
 
 
 /**
@@ -27,20 +28,21 @@ import com.schneewittchen.rosandroid.viewmodel.MasterViewModel;
  *
  * @author Nico Studt
  * @version 1.3.0
- * @created on 10.01.20
- * @updated on 07.04.20
- * @modified by
+ * @created on 10.01.2020
+ * @updated on 05.10.2020
+ * @modified by Nico Studt
  */
 public class MasterFragment extends Fragment implements TextView.OnEditorActionListener {
 
-    private static final String TAG = "MasterConfigFragment";
+    private static final String TAG = MasterFragment.class.getSimpleName();
+
+    private MasterViewModel mViewModel;
+    private FragmentMasterBinding binding;
+
 
     public static MasterFragment newInstance() {
         return new MasterFragment();
     }
-
-    private MasterViewModel mViewModel;
-    private FragmentMasterBinding binding;
 
 
     @Nullable
@@ -63,7 +65,6 @@ public class MasterFragment extends Fragment implements TextView.OnEditorActionL
 
         mViewModel = new ViewModelProvider(this).get(MasterViewModel.class);
 
-
         // View model connection -------------------------------------------------------------------
 
         mViewModel.getMaster().observe(getViewLifecycleOwner(), master -> {
@@ -81,10 +82,6 @@ public class MasterFragment extends Fragment implements TextView.OnEditorActionL
         mViewModel.getRosConnection().observe(getViewLifecycleOwner(), this::setRosConnection);
 
         // User input ------------------------------------------------------------------------------
-
-        binding.affixesCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            mViewModel.useIpWithAffixes(isChecked);
-        });
 
         binding.connectButton.setOnClickListener(v -> mViewModel.connectToMaster());
         binding.disconnectButton.setOnClickListener(v -> mViewModel.disconnectFromMaster());
@@ -115,37 +112,34 @@ public class MasterFragment extends Fragment implements TextView.OnEditorActionL
         binding.pendingBar.setVisibility(pendingVisibility);
     }
 
-    private void hideSoftKeyboard() {
-        final InputMethodManager imm = (InputMethodManager) getActivity()
-                .getSystemService(Context.INPUT_METHOD_SERVICE);
+    private void updateMasterDetails() {
+        // Update master IP
+        Editable masterIp = binding.masterIpEditText.getText();
 
-        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+        if (masterIp != null) {
+            mViewModel.setMasterIp(masterIp.toString());
+        }
+
+        // Update master port
+        Editable masterPort = binding.masterPortEditText.getText();
+
+        if (masterPort != null) {
+            mViewModel.setMasterPort(masterPort.toString());
+        }
     }
 
     @Override
     public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
-        int id = view.getId();
+        switch (actionId) {
+            case EditorInfo.IME_ACTION_DONE:
+            case EditorInfo.IME_ACTION_NEXT:
+            case EditorInfo.IME_ACTION_PREVIOUS:
+                updateMasterDetails();
 
-        if (actionId == EditorInfo.IME_ACTION_DONE) {
-            if (id == R.id.master_ip_editText) {
-                Editable masterIp = binding.masterIpEditText.getText();
+                view.clearFocus();
+                Utils.hideSoftKeyboard(Objects.requireNonNull(getView()));
 
-                if (masterIp != null) {
-                    mViewModel.setMasterIp(masterIp.toString());
-                }
-
-            } else if (id == R.id.master_port_editText) {
-                Editable masterPort = binding.masterPortEditText.getText();
-
-                if (masterPort != null) {
-                    mViewModel.setMasterPort(masterPort.toString());
-                }
-            }
-
-            view.clearFocus();
-            hideSoftKeyboard();
-
-            return true;
+                return true;
         }
 
         return false;

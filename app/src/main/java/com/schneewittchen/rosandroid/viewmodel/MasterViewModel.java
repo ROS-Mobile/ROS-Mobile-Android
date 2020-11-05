@@ -56,9 +56,6 @@ public class MasterViewModel extends AndroidViewModel {
         rosDomain.updateMaster(master);
     }
 
-    public void useIpWithAffixes(boolean useAffixes) {
-
-    }
 
     public void connectToMaster() {
         setWifiSSID();

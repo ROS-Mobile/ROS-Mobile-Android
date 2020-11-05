@@ -1,5 +1,6 @@
 package com.schneewittchen.rosandroid.widgets.joystick;
 
+import android.text.Editable;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -8,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.material.textfield.TextInputEditText;
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.ui.views.BaseDetailViewHolder;
 import com.schneewittchen.rosandroid.ui.fragments.details.WidgetChangeListener;
@@ -23,10 +25,13 @@ import java.util.Locale;
  * @created on 13.02.20
  * @updated on 20.05.20
  * @modified by Nico Studt
+ * @updated on 05.11.2020
+ * @modified by Nico Studt
  */
 public class JoystickDetailVH extends BaseDetailViewHolder<JoystickEntity> {
 
-    private EditText topicNameText;
+    private TextInputEditText topicNameEditText;
+    private TextInputEditText topicTypeEditText;
 
     private Spinner xDirSpinner;
     private Spinner xAxisSpinner;
@@ -53,7 +58,8 @@ public class JoystickDetailVH extends BaseDetailViewHolder<JoystickEntity> {
 
     @Override
     public void initView(View parentView) {
-        topicNameText = parentView.findViewById(R.id.topicNameText);
+        topicNameEditText = parentView.findViewById(R.id.topicNameEditText);
+        topicTypeEditText = parentView.findViewById(R.id.topicTypeEditText);
 
         xDirSpinner = parentView.findViewById(R.id.xDirSpinner);
         xAxisSpinner = parentView.findViewById(R.id.xAxisSpinner);
@@ -85,7 +91,8 @@ public class JoystickDetailVH extends BaseDetailViewHolder<JoystickEntity> {
 
     @Override
     public void bindEntity(JoystickEntity entity) {
-        topicNameText.setText(entity.topic.name);
+        topicNameEditText.setText(entity.topic.name);
+        topicTypeEditText.setText(entity.topic.type);
 
         String[] xAxisMapping = entity.xAxisMapping.split("/");
 
@@ -106,8 +113,25 @@ public class JoystickDetailVH extends BaseDetailViewHolder<JoystickEntity> {
 
     @Override
     public void updateEntity() {
-        entity.topic.type = geometry_msgs.Twist._TYPE;
-        entity.topic.name = topicNameText.getText().toString();
+        // Update Topic name
+        Editable newTopicName = topicNameEditText.getText();
+
+        if(newTopicName != null && newTopicName.length() > 0) {
+            entity.topic.name = newTopicName.toString();
+        } else {
+            topicNameEditText.setText(entity.topic.name);
+        }
+
+        // Update Topic Type
+        Editable newTopicType = topicTypeEditText.getText();
+
+        if(newTopicType != null && newTopicType.length() > 0) {
+            entity.topic.type = newTopicType.toString();
+        }else {
+            topicTypeEditText.setText(entity.topic.type);
+        }
+
+        // Update joystick parameters
         entity.xAxisMapping = xDirSpinner.getSelectedItem() + "/" + xAxisSpinner.getSelectedItem();
         entity.yAxisMapping = yDirSpinner.getSelectedItem() + "/" + yAxisSpinner.getSelectedItem();
 

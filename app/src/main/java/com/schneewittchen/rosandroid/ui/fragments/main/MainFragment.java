@@ -12,7 +12,9 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,6 +22,7 @@ import android.view.ViewGroup;
 
 import com.google.android.material.tabs.TabLayout;
 import com.schneewittchen.rosandroid.R;
+import com.schneewittchen.rosandroid.utility.Utils;
 import com.schneewittchen.rosandroid.viewmodel.MainViewModel;
 
 
@@ -28,11 +31,15 @@ import com.schneewittchen.rosandroid.viewmodel.MainViewModel;
  *
  * @author Nico Studt
  * @version 1.0.1
- * @created on 10.01.20
- * @updated on 27.07.20
+ * @created on 10.01.2020
+ * @updated on 27.07.2020
  * @modified by Nils Rottmann
+ * @updated on 05.11.2020
+ * @modified by Nico Studt
  */
 public class MainFragment extends Fragment implements OnBackPressedListener {
+
+    public static final String TAG = MainFragment.class.getSimpleName();
 
     ConfigTabsPagerAdapter pagerAdapter;
     LockableViewPager viewPager;
@@ -41,6 +48,7 @@ public class MainFragment extends Fragment implements OnBackPressedListener {
     DrawerLayout drawerLayout;
     Toolbar toolbar;
     MainViewModel mViewModel;
+
 
     public static MainFragment newInstance() {
         return new MainFragment();
@@ -76,6 +84,19 @@ public class MainFragment extends Fragment implements OnBackPressedListener {
         viewPager.setCurrentItem(1,false);
 
         tabLayout.setupWithViewPager(viewPager);
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+
+            @Override
+            public void onPageSelected(int position) {}
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                Utils.hideSoftKeyboard(view);
+            }
+        });
     }
 
     @Override
@@ -84,7 +105,6 @@ public class MainFragment extends Fragment implements OnBackPressedListener {
 
         mViewModel = new ViewModelProvider(this).get(MainViewModel.class);
 
-        // TODO: Enable first config name
         if(this.getArguments() != null) {
             mViewModel.createFirstConfig(this.getArguments().getString("configName"));
         }
