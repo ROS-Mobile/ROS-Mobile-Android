@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,12 +16,15 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.android.material.textfield.TextInputEditText;
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.databinding.FragmentMasterBinding;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.connection.ConnectionType;
 import com.schneewittchen.rosandroid.utility.Utils;
 import com.schneewittchen.rosandroid.viewmodel.MasterViewModel;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -39,6 +44,11 @@ public class MasterFragment extends Fragment implements TextView.OnEditorActionL
     private MasterViewModel mViewModel;
     private FragmentMasterBinding binding;
 
+    private ArrayList<String> ipItemList;
+    protected AutoCompleteTextView ipAddressField;
+    private ArrayAdapter<String> ipArrayAdapter;
+
+    protected TextInputEditText networkSsidText;
 
     public static MasterFragment newInstance() {
         return new MasterFragment();
@@ -73,11 +83,20 @@ public class MasterFragment extends Fragment implements TextView.OnEditorActionL
             binding.masterPortEditText.setText(String.valueOf(master.port));
         });
 
-        mViewModel.getCurrentNetworkSSID().observe(getViewLifecycleOwner(),
-                networkSSID -> binding.networkSSIDChoiceText.setText(networkSSID));
+        ipItemList = new ArrayList<>();
+        ipAddressField = binding.ipAddessTextView;
+        ipArrayAdapter = new ArrayAdapter<>(this.getContext(),
+                                    R.layout.dropdown_menu_popup_item, ipItemList);
 
-        mViewModel.getDeviceIp().observe(getViewLifecycleOwner(),
-                deviceIp -> binding.ipAddressChoiceText.setText(deviceIp));
+        ipAddressField.setAdapter(ipArrayAdapter);
+        ipAddressField.setOnClickListener(clickedView -> {
+            updateIpSpinner();
+            ipAddressField.showDropDown();
+        });
+
+        mViewModel.getCurrentNetworkSSID().observe(getViewLifecycleOwner(),
+                networkSSID -> binding.NetworkSSIDText.setText(networkSSID));
+        // networkSsidText = binding.NetworkSSIDText;
 
         mViewModel.getRosConnection().observe(getViewLifecycleOwner(), this::setRosConnection);
 
@@ -87,6 +106,13 @@ public class MasterFragment extends Fragment implements TextView.OnEditorActionL
         binding.disconnectButton.setOnClickListener(v -> mViewModel.disconnectFromMaster());
         binding.masterIpEditText.setOnEditorActionListener(this);
         binding.masterPortEditText.setOnEditorActionListener(this);
+    }
+
+    private void updateIpSpinner() {
+        ipItemList = new ArrayList<>();
+        ipItemList = mViewModel.getIPAddressList();
+        ipArrayAdapter.clear();
+        ipArrayAdapter.addAll(ipItemList);
     }
 
     private void setRosConnection(ConnectionType connectionType) {

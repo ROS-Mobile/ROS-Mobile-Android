@@ -14,6 +14,8 @@ import com.schneewittchen.rosandroid.model.entities.MasterEntity;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.connection.ConnectionType;
 import com.schneewittchen.rosandroid.utility.Utils;
 
+import java.util.ArrayList;
+
 
 /**
  * TODO: Description
@@ -99,6 +101,10 @@ public class MasterViewModel extends AndroidViewModel {
         String ssid = Utils.getIPAddress(true);
 
         deviceIpLiveData.postValue(ssid);
+    }
+
+    public ArrayList<String> getIPAddressList() {
+        return Utils.getIPAddressList(true);
     }
 
     private void setWifiSSID() {

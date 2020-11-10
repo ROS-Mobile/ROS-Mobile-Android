@@ -131,58 +131,42 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/NetworkSSIDText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
-                android:text="Network SSID"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                app:layout_constraintStart_toEndOf="@+id/wifiImageView"
-                app:layout_constraintTop_toBottomOf="@+id/WifiText" />
-
-            <TextView
-                android:id="@+id/network_SSID_choice_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="wifi name"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textColor="@android:color/secondary_text_dark"
-                app:layout_constraintStart_toEndOf="@+id/wifiImageView"
-                app:layout_constraintTop_toBottomOf="@+id/NetworkSSIDText" />
-
             <ImageView
                 android:id="@+id/wifiImageView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="@+id/network_SSID_choice_text"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/NetworkSSIDText"
+                app:layout_constraintTop_toTopOf="@+id/network_SSID_choice_text"
                 app:srcCompat="@drawable/ic_rss_feed_black_24dp" />
 
-            <TextView
-                android:id="@+id/IpAddressText"
-                android:layout_width="wrap_content"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/network_SSID_choice_text"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:text="Device IP address"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                app:layout_constraintStart_toEndOf="@+id/ipImageView"
-                app:layout_constraintTop_toBottomOf="@+id/network_SSID_choice_text" />
-
-            <TextView
-                android:id="@+id/ip_address_choice_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:hint="Network SSID"
+                app:boxBackgroundMode="outline"
+                app:endIconCheckable="false"
+                app:endIconMode="none"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 android:layout_marginStart="8dp"
-                android:text="00.00.00.00"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textColor="@android:color/secondary_text_dark"
-                app:layout_constraintStart_toEndOf="@+id/ipImageView"
-                app:layout_constraintTop_toBottomOf="@+id/IpAddressText" />
+                app:layout_constraintStart_toEndOf="@+id/wifiImageView"
+                app:layout_constraintTop_toBottomOf="@id/WifiText">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/NetworkSSIDText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:imeOptions="actionDone"
+                    android:inputType="text"
+                    android:singleLine="true"
+                    android:text="My Robot Network" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <ImageView
                 android:id="@+id/ipImageView"
@@ -190,8 +174,30 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="@+id/ip_address_choice_text"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/IpAddressText"
+                app:layout_constraintTop_toTopOf="@+id/ip_address_choice_text"
                 app:srcCompat="@drawable/ic_place_white_24dp" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/ip_address_choice_text"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:hint="Device IP address"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/ipImageView"
+                app:layout_constraintTop_toBottomOf="@+id/network_SSID_choice_text">
+
+                <AutoCompleteTextView
+                    android:id="@+id/ipAddessTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    app:layout_constraintTop_toBottomOf="@+id/textView6"
+                    tools:layout_editor_absoluteX="30dp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

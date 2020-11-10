@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <include
-        layout="@layout/detail_publisher"
+        layout="@layout/widget_detail_base_publisher"
         android:id="@+id/layout_publisher"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

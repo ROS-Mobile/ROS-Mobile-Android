@@ -16,6 +16,7 @@ import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.net.ConnectException;
@@ -26,6 +27,7 @@ import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -213,6 +215,47 @@ public class Utils {
         } catch (Exception ignored) { } // for now eat exceptions
 
         return "";
+    }
+
+    /**
+     * Get IP address from first non-localhost interface
+     * @param useIPv4   true=return ipv4, false=return ipv6
+     * @return  address or empty string
+     */
+    public static ArrayList<String> getIPAddressList(boolean useIPv4) {
+
+        ArrayList<String> ipAddresses = new ArrayList<>();
+
+        try {
+            List<NetworkInterface> interfaces = Collections.list(NetworkInterface.getNetworkInterfaces());
+
+            for (NetworkInterface intf : interfaces) {
+                List<InetAddress> addrs = Collections.list(intf.getInetAddresses());
+
+                for (InetAddress addr : addrs) {
+                    if (!addr.isLoopbackAddress()) {
+                        String sAddr = addr.getHostAddress();
+
+                        //boolean isIPv4 = InetAddressUtils.isIPv4Address(sAddr);
+                        boolean isIPv4 = sAddr.indexOf(':') < 0;
+
+                        if (useIPv4) {
+                            if (isIPv4)
+                                ipAddresses.add(sAddr);
+
+                        } else {
+
+                            if (!isIPv4) {
+                                int delim = sAddr.indexOf('%'); // drop ip6 zone suffix
+                                ipAddresses.add(delim<0 ? sAddr.toUpperCase() : sAddr.substring(0, delim).toUpperCase());
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (Exception ignored) { } // for now eat exceptions
+
+        return ipAddresses;
     }
 
     /**

@@ -4,6 +4,19 @@ ROS-Mobile is an [Android](https://www.android.com/) application designed for dy
 
 - Current stable Version: 1.1.0
 
+## Cite
+
+If you use ROS-Mobile for your research, please cite
+
+```
+@article{rottmann2020ros,
+  title={ROS-Mobile: An Android application for the Robot Operating System},
+  author={Rottmann, Nils and Studt, Nico and Ernst, Floris and Rueckert, Elmar},
+  journal={arXiv preprint arXiv:2011.02781},
+  year={2020}
+}
+```
+
 ## Requirements
 
 - Mobile Android Device with Android Version 5.0 (Lollipop) or higher
