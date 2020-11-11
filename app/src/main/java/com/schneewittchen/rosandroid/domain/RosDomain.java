@@ -48,7 +48,6 @@ public class RosDomain {
     private final LiveData<List<BaseEntity>> currentWidgets;
     private final LiveData<MasterEntity> currentMaster;
 
-
     private RosDomain(@NonNull Application application) {
         this.rosRepo = RosRepository.getInstance(application);
         this.configRepository = ConfigRepositoryImpl.getInstance(application);

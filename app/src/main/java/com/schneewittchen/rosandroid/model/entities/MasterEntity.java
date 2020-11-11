@@ -22,4 +22,5 @@ public class MasterEntity {
     public long configId;
     public String ip = "192.168.0.0";
     public int port = 11311;
+    public String deviceIp = "192.168.0.1";
 }

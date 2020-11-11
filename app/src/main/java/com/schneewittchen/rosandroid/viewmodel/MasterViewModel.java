@@ -58,10 +58,14 @@ public class MasterViewModel extends AndroidViewModel {
         rosDomain.updateMaster(master);
     }
 
+    public void setMasterDeviceIp(String deviceIpString) {
+        MasterEntity master = currentMaster.getValue();
+        master.deviceIp = deviceIpString;
+        rosDomain.updateMaster(master);
+    }
 
     public void connectToMaster() {
         setWifiSSID();
-        setIpText();
         rosDomain.connectToMaster();
     }
 
@@ -77,14 +81,8 @@ public class MasterViewModel extends AndroidViewModel {
         return rosDomain.getRosConnection();
     }
 
-    public LiveData<String> getDeviceIp(){
-        if (deviceIpLiveData == null) {
-            deviceIpLiveData = new MutableLiveData<>();
-        }
-
-        setIpText();
-
-        return deviceIpLiveData;
+    public String setDeviceIp(String deviceIp){
+        return deviceIp;
     }
 
     public LiveData<String> getCurrentNetworkSSID(){
@@ -97,15 +95,11 @@ public class MasterViewModel extends AndroidViewModel {
         return networkSSIDLiveData;
     }
 
-    private void setIpText() {
-        String ssid = Utils.getIPAddress(true);
-
-        deviceIpLiveData.postValue(ssid);
-    }
-
     public ArrayList<String> getIPAddressList() {
         return Utils.getIPAddressList(true);
     }
+
+    public String getIPAddress() {return Utils.getIPAddress(true); }
 
     private void setWifiSSID() {
         WifiManager wifiManager = (WifiManager) getApplication().getApplicationContext()

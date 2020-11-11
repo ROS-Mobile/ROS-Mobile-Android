@@ -167,8 +167,7 @@ public class RosRepository implements SubNode.NodeListener {
 
         this.master = master;
 
-        String deviceIp = this.getDeviceIp();
-        nodeConfiguration = NodeConfiguration.newPublic(deviceIp, getMasterURI());
+        nodeConfiguration = NodeConfiguration.newPublic(master.deviceIp, getMasterURI());
     }
 
 
@@ -358,10 +357,6 @@ public class RosRepository implements SubNode.NodeListener {
     private URI getMasterURI() {
         String masterString = String.format("http://%s:%s/", master.ip, master.port);
         return URI.create(masterString);
-    }
-
-    private String getDeviceIp(){
-        return Utils.getIPAddress(true);
     }
 
     private String getDefaultHostAddress() {
