@@ -39,6 +39,8 @@ import java.util.Observer;
  * @created on 10.01.2020
  * @updated on 05.10.2020
  * @modified by Nico Studt
+ * @updated on 16.11.2020
+ * @modified by Nils Rottmann
  */
 public class MasterFragment extends Fragment implements TextView.OnEditorActionListener {
 
@@ -49,6 +51,7 @@ public class MasterFragment extends Fragment implements TextView.OnEditorActionL
 
     private ArrayList<String> ipItemList;
     protected AutoCompleteTextView ipAddressField;
+    protected TextInputLayout ipAddressLayout;
     private ArrayAdapter<String> ipArrayAdapter;
 
     public static MasterFragment newInstance() {
@@ -61,6 +64,7 @@ public class MasterFragment extends Fragment implements TextView.OnEditorActionL
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         binding = FragmentMasterBinding.inflate(inflater, container, false);
+
         return binding.getRoot();
     }
 
@@ -76,6 +80,32 @@ public class MasterFragment extends Fragment implements TextView.OnEditorActionL
 
         mViewModel = new ViewModelProvider(this).get(MasterViewModel.class);
 
+        // Define Views --------------------------------------------------------------
+        ipAddressField = getView().findViewById(R.id.ipAddessTextView);
+        // ipAddressLayout = getView().findViewById(R.id.ipAddessLayout);
+
+        ipItemList = new ArrayList<>();
+        ipArrayAdapter = new ArrayAdapter<>(this.getContext(),
+                R.layout.dropdown_menu_popup_item, ipItemList);
+        ipAddressField.setAdapter(ipArrayAdapter);
+
+        String firstDeviceIp = mViewModel.getIPAddress();
+        if (firstDeviceIp != null) {
+            ipAddressField.setText(firstDeviceIp, false);
+        }
+
+        ipAddressField.setOnClickListener(clickedView -> {
+            updateIpSpinner();
+            ipAddressField.showDropDown();
+        });
+
+        /* ipAddressLayout.setEndIconOnClickListener(v -> {
+        }); */
+
+        ipAddressField.setOnItemClickListener((parent, view, position, id) -> {
+            ipAddressField.clearFocus();
+        });
+
         // View model connection -------------------------------------------------------------------
 
         mViewModel.getMaster().observe(getViewLifecycleOwner(), master -> {
@@ -83,22 +113,6 @@ public class MasterFragment extends Fragment implements TextView.OnEditorActionL
             binding.masterIpEditText.setText(master.ip);
             binding.masterPortEditText.setText(String.valueOf(master.port));
         });
-
-
-        ipAddressField = binding.ipAddessTextView;
-
-        ipItemList = new ArrayList<>();
-        ipArrayAdapter = new ArrayAdapter<>(this.getContext(),
-                                    R.layout.dropdown_menu_popup_item, ipItemList);
-
-        ipAddressField.setAdapter(ipArrayAdapter);
-        ipAddressField.setOnClickListener(clickedView -> {
-            updateIpSpinner();
-            ipAddressField.showDropDown();
-        });
-
-        ipAddressField.setOnItemClickListener((parent, view, position, id)
-                                                        -> selectDeviceIpItem(position));
 
         mViewModel.getCurrentNetworkSSID().observe(getViewLifecycleOwner(),
                 networkSSID -> binding.NetworkSSIDText.setText(networkSSID));
@@ -108,7 +122,10 @@ public class MasterFragment extends Fragment implements TextView.OnEditorActionL
 
         // User input ------------------------------------------------------------------------------
 
-        binding.connectButton.setOnClickListener(v -> mViewModel.connectToMaster());
+        binding.connectButton.setOnClickListener(v -> {
+                mViewModel.setMasterDeviceIp(ipAddressField.toString());
+                mViewModel.connectToMaster();
+        });
         binding.disconnectButton.setOnClickListener(v -> mViewModel.disconnectFromMaster());
         binding.masterIpEditText.setOnEditorActionListener(this);
         binding.masterPortEditText.setOnEditorActionListener(this);
@@ -119,14 +136,6 @@ public class MasterFragment extends Fragment implements TextView.OnEditorActionL
         ipItemList = mViewModel.getIPAddressList();
         ipArrayAdapter.clear();
         ipArrayAdapter.addAll(ipItemList);
-    }
-
-    private void selectDeviceIpItem(int position) {
-        String selectedIP = ipItemList.get(position);
-
-        if (selectedIP != null) {
-            mViewModel.setMasterDeviceIp(selectedIP);
-        }
     }
 
     private void setRosConnection(ConnectionType connectionType) {

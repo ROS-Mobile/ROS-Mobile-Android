@@ -52,6 +52,8 @@ import java.util.List;
  * @modified by Nico Studt
  * @updated on 24.09.20
  * @modified by Nico Studt
+ * @updated on 16.11.2020
+ * @modified by Nils Rottmann
  */
 public class RosRepository implements SubNode.NodeListener {
 
@@ -167,8 +169,16 @@ public class RosRepository implements SubNode.NodeListener {
 
         this.master = master;
 
-        nodeConfiguration = NodeConfiguration.newPublic(master.deviceIp, getMasterURI());
+        // nodeConfiguration = NodeConfiguration.newPublic(master.deviceIp, getMasterURI());
     }
+
+    /**
+     * Set the master device IP in the Nodeconfiguration
+     */
+    public void setMasterDeviceIp(String deviceIp) {
+        nodeConfiguration = NodeConfiguration.newPublic(deviceIp, getMasterURI());
+    }
+
 
 
     /**

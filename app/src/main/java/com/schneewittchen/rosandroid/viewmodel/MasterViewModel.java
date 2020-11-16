@@ -25,6 +25,8 @@ import java.util.ArrayList;
  * @created on 10.01.20
  * @updated on 11.04.20
  * @modified by Nico Studt
+ * @updated on 16.11.2020
+ * @modified by Nils Rottmann
  */
 public class MasterViewModel extends AndroidViewModel {
 
@@ -32,7 +34,6 @@ public class MasterViewModel extends AndroidViewModel {
 
     private final RosDomain rosDomain;
 
-    private MutableLiveData<String> deviceIpLiveData;
     private MutableLiveData<String> networkSSIDLiveData;
     private final LiveData<MasterEntity> currentMaster;
 
@@ -59,9 +60,7 @@ public class MasterViewModel extends AndroidViewModel {
     }
 
     public void setMasterDeviceIp(String deviceIpString) {
-        MasterEntity master = currentMaster.getValue();
-        master.deviceIp = deviceIpString;
-        rosDomain.updateMaster(master);
+        rosDomain.setMasterDeviceIp(deviceIpString);
     }
 
     public void connectToMaster() {

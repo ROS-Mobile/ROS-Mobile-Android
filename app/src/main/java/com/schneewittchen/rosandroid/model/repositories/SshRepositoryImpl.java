@@ -1,6 +1,8 @@
 package com.schneewittchen.rosandroid.model.repositories;
 
 import android.app.Application;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -33,6 +35,8 @@ import java.io.PrintStream;
  * @modified by Nico Studt
  * @updated on 04.06.20
  * @modified by Nils Rottmann
+ * @updated on 16.11.2020
+ * @modified by Nils Rottmann
  */
 public class SshRepositoryImpl implements SshRepository {
 
@@ -53,6 +57,8 @@ public class SshRepositoryImpl implements SshRepository {
     private final ConfigRepository configRepository;
     private final LiveData<SSHEntity> currentSSH;
 
+    // Generate Handler
+    Handler mainHandler;
 
     private SshRepositoryImpl(@NonNull Application application) {
         connected = new MutableLiveData<>();
@@ -65,6 +71,9 @@ public class SshRepositoryImpl implements SshRepository {
                 configId -> configRepository.getSSH(configId));
 
         currentSSH.observeForever(this::updateSSH);
+
+        mainHandler = new Handler(Looper.getMainLooper());
+
     }
 
 
@@ -147,7 +156,14 @@ public class SshRepositoryImpl implements SshRepository {
             final String finalLine = line;
 
             // Publish lineData to LiveData
-            outputData.postValue(finalLine);
+            mainHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    outputData.setValue(finalLine);
+                }
+            });
+            // outputData.setValue(finalLine);
+            // outputData.postValue(finalLine);
         }
     }
 

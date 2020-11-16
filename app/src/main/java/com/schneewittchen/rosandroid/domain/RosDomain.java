@@ -32,6 +32,8 @@ import java.util.List;
  * @modified by Nico Studt
  * @updated on 27.07.20
  * @modified by Nils Rottmann
+ * @updated on 16.11.20
+ * @modified by Nils Rottmann
  */
 public class RosDomain {
 
@@ -103,6 +105,8 @@ public class RosDomain {
     public void updateMaster(MasterEntity master) {
         configRepository.updateMaster(master);
     }
+
+    public void setMasterDeviceIp(String deviceIp) {rosRepo.setMasterDeviceIp(deviceIp); }
 
     public void connectToMaster() {
         rosRepo.connectToMaster();

@@ -172,13 +172,13 @@
                 android:id="@+id/ipImageView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="@+id/ip_address_choice_text"
+                app:layout_constraintBottom_toBottomOf="@+id/ipAddessLayout"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/ip_address_choice_text"
+                app:layout_constraintTop_toTopOf="@+id/ipAddessLayout"
                 app:srcCompat="@drawable/ic_place_white_24dp" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/ip_address_choice_text"
+                android:id="@+id/ipAddessLayout"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
