@@ -82,7 +82,7 @@ public class MasterFragment extends Fragment implements TextView.OnEditorActionL
 
         // Define Views --------------------------------------------------------------
         ipAddressField = getView().findViewById(R.id.ipAddessTextView);
-        // ipAddressLayout = getView().findViewById(R.id.ipAddessLayout);
+        ipAddressLayout = getView().findViewById(R.id.ipAddessLayout);
 
         ipItemList = new ArrayList<>();
         ipArrayAdapter = new ArrayAdapter<>(this.getContext(),
@@ -99,8 +99,10 @@ public class MasterFragment extends Fragment implements TextView.OnEditorActionL
             ipAddressField.showDropDown();
         });
 
-        /* ipAddressLayout.setEndIconOnClickListener(v -> {
-        }); */
+        ipAddressLayout.setEndIconOnClickListener(v -> {
+            ipAddressField.requestFocus();
+            ipAddressField.callOnClick();
+        });
 
         ipAddressField.setOnItemClickListener((parent, view, position, id) -> {
             ipAddressField.clearFocus();
