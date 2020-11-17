@@ -5,7 +5,6 @@ import android.text.InputType;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -33,8 +32,11 @@ import com.schneewittchen.rosandroid.viewmodel.DetailsViewModel;
  * @modified by Nico Studt
  * @updated on 27.07.20
  * @modified by Nils Rottmann
+ * @updated on 05.11.2020
+ * @modified by Nico Studt
  */
-public abstract class BaseDetailViewHolder<T extends BaseEntity> extends RecyclerView.ViewHolder implements TextView.OnEditorActionListener {
+public abstract class BaseDetailViewHolder<T extends BaseEntity> extends RecyclerView.ViewHolder
+        implements TextView.OnEditorActionListener {
 
     public View viewBackground, viewForeground;
     public LinearLayout detailContend;
@@ -116,6 +118,7 @@ public abstract class BaseDetailViewHolder<T extends BaseEntity> extends Recycle
         renameButton.setOnClickListener(v -> showRenameDialog());
 
         parentView.setOnClickListener(v -> parentView.requestFocus());
+        parentView.setOnFocusChangeListener((v, hasFocus) -> Utils.hideSoftKeyboard(itemView));
     }
 
     protected void baseBindEntity(T entity) {
@@ -142,7 +145,6 @@ public abstract class BaseDetailViewHolder<T extends BaseEntity> extends Recycle
             case EditorInfo.IME_ACTION_DONE:
             case EditorInfo.IME_ACTION_NEXT:
             case EditorInfo.IME_ACTION_PREVIOUS:
-                Utils.hideSoftKeyboard(itemView);
                 itemView.requestFocus();
                 return true;
         }
@@ -158,6 +160,7 @@ public abstract class BaseDetailViewHolder<T extends BaseEntity> extends Recycle
 
         // Set up the input
         final EditText input = new EditText(context);
+        input.setText(entity.name);
         input.setInputType(InputType.TYPE_CLASS_TEXT);
 
         AlertDialog dialog =  new AlertDialog.Builder(context)

@@ -2,7 +2,20 @@
 
 ROS-Mobile is an [Android](https://www.android.com/) application designed for dynamic control and visualization of mobile robotic system operated by the Robot Operating System ([ROS](http://wiki.ros.org/)). The application uses ROS nodes initializing publisher and subscriber with standard ROS messages. The overall code architecture pattern is Model View ViewModel ([MVVM]([https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93viewmodel](https://en.wikipedia.org/wiki/Model–view–viewmodel))), which stabilizes the application and makes it highly customizable. For a detailed overview of the functionality, we refer to our [wiki](https://github.com/ROS-Mobile/ROS-Mobile-Android/wiki).
 
-- Current stable Version: 1.1.0
+- Current stable Version: 1.1.1
+
+## Cite
+
+If you use ROS-Mobile for your research, please cite
+
+```
+@article{rottmann2020ros,
+  title={ROS-Mobile: An Android application for the Robot Operating System},
+  author={Rottmann, Nils and Studt, Nico and Ernst, Floris and Rueckert, Elmar},
+  journal={arXiv preprint arXiv:2011.02781},
+  year={2020}
+}
+```
 
 ## Requirements
 

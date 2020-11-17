@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/subscriber_headline"
+        android:id="@+id/publisher_headline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -36,7 +36,7 @@
         android:hint="Topic Name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/subscriber_headline">
+        app:layout_constraintTop_toBottomOf="@id/publisher_headline">
 
         <AutoCompleteTextView
             android:id="@+id/topicNameTextView"

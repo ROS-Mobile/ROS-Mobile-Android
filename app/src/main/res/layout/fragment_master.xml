@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <androidx.core.widget.NestedScrollView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:fillViewport="true"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:fillViewport="true">
+
+<androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="8dp">
@@ -18,6 +19,9 @@
         android:id="@+id/masterCard"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         app:cardBackgroundColor="@color/black04dp"
         app:cardCornerRadius="8dp"
         app:cardElevation="0dp"
@@ -62,10 +66,11 @@
                     android:id="@+id/master_ip_editText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:digits="0123456789/."
                     android:imeOptions="actionDone"
                     android:inputType="number|numberDecimal|phone"
                     android:singleLine="true"
-                    android:text="http://168.0.0.1.21112" />
+                    android:text="168.0.0.1" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -74,6 +79,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:hint="@string/master_port_hint"
                 app:boxBackgroundMode="outline"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -87,39 +93,10 @@
                     android:imeOptions="actionDone"
                     android:inputType="number"
                     android:singleLine="true"
-                    android:text="21112" />
+                    android:text="11311" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
-
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="Affixes"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/master_port_inputLayout" />
-
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Ip with prefix and suffix"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textColor="@android:color/secondary_text_dark"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView2" />
-
-            <CheckBox
-                android:id="@+id/affixes_checkbox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="true"
-                app:layout_constraintBottom_toBottomOf="@+id/textView3"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/textView2" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
@@ -156,67 +133,73 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/NetworkSSIDText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
-                android:text="Network SSID"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                app:layout_constraintStart_toEndOf="@+id/wifiImageView"
-                app:layout_constraintTop_toBottomOf="@+id/WifiText" />
-
-            <TextView
-                android:id="@+id/network_SSID_choice_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="wifi name"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textColor="@android:color/secondary_text_dark"
-                app:layout_constraintStart_toEndOf="@+id/wifiImageView"
-                app:layout_constraintTop_toBottomOf="@+id/NetworkSSIDText" />
-
             <ImageView
                 android:id="@+id/wifiImageView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="@+id/network_SSID_choice_text"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/NetworkSSIDText"
+                app:layout_constraintTop_toTopOf="@+id/network_SSID_choice_text"
                 app:srcCompat="@drawable/ic_rss_feed_black_24dp" />
 
-            <TextView
-                android:id="@+id/IpAddressText"
-                android:layout_width="wrap_content"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/network_SSID_choice_text"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:text="Device IP address"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                app:layout_constraintStart_toEndOf="@+id/ipImageView"
-                app:layout_constraintTop_toBottomOf="@+id/network_SSID_choice_text" />
-
-            <TextView
-                android:id="@+id/ip_address_choice_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:hint="Network SSID"
+                app:boxBackgroundMode="outline"
+                app:endIconCheckable="false"
+                app:endIconMode="none"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 android:layout_marginStart="8dp"
-                android:text="00.00.00.00"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textColor="@android:color/secondary_text_dark"
-                app:layout_constraintStart_toEndOf="@+id/ipImageView"
-                app:layout_constraintTop_toBottomOf="@+id/IpAddressText" />
+                app:layout_constraintStart_toEndOf="@+id/wifiImageView"
+                app:layout_constraintTop_toBottomOf="@id/WifiText">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/NetworkSSIDText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:imeOptions="actionDone"
+                    android:inputType="text"
+                    android:singleLine="true"
+                    android:text="My Robot Network" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <ImageView
                 android:id="@+id/ipImageView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="@+id/ip_address_choice_text"
+                app:layout_constraintBottom_toBottomOf="@+id/ipAddessLayout"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/IpAddressText"
+                app:layout_constraintTop_toTopOf="@+id/ipAddessLayout"
                 app:srcCompat="@drawable/ic_place_white_24dp" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/ipAddessLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:hint="Device IP address"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/ipImageView"
+                app:layout_constraintTop_toBottomOf="@+id/network_SSID_choice_text">
+
+                <AutoCompleteTextView
+                    android:id="@+id/ipAddessTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    app:layout_constraintTop_toBottomOf="@+id/textView6"
+                    tools:layout_editor_absoluteX="30dp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

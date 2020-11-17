@@ -1,6 +1,5 @@
 package com.schneewittchen.rosandroid.ui.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.view.KeyEvent;
@@ -8,7 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,10 +16,19 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.databinding.FragmentMasterBinding;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.connection.ConnectionType;
+import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.Topic;
+import com.schneewittchen.rosandroid.utility.Utils;
 import com.schneewittchen.rosandroid.viewmodel.MasterViewModel;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Observer;
 
 
 /**
@@ -27,20 +36,27 @@ import com.schneewittchen.rosandroid.viewmodel.MasterViewModel;
  *
  * @author Nico Studt
  * @version 1.3.0
- * @created on 10.01.20
- * @updated on 07.04.20
- * @modified by
+ * @created on 10.01.2020
+ * @updated on 05.10.2020
+ * @modified by Nico Studt
+ * @updated on 16.11.2020
+ * @modified by Nils Rottmann
  */
 public class MasterFragment extends Fragment implements TextView.OnEditorActionListener {
 
-    private static final String TAG = "MasterConfigFragment";
+    private static final String TAG = MasterFragment.class.getSimpleName();
+
+    private MasterViewModel mViewModel;
+    private FragmentMasterBinding binding;
+
+    private ArrayList<String> ipItemList;
+    protected AutoCompleteTextView ipAddressField;
+    protected TextInputLayout ipAddressLayout;
+    private ArrayAdapter<String> ipArrayAdapter;
 
     public static MasterFragment newInstance() {
         return new MasterFragment();
     }
-
-    private MasterViewModel mViewModel;
-    private FragmentMasterBinding binding;
 
 
     @Nullable
@@ -48,6 +64,7 @@ public class MasterFragment extends Fragment implements TextView.OnEditorActionL
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         binding = FragmentMasterBinding.inflate(inflater, container, false);
+
         return binding.getRoot();
     }
 
@@ -63,6 +80,33 @@ public class MasterFragment extends Fragment implements TextView.OnEditorActionL
 
         mViewModel = new ViewModelProvider(this).get(MasterViewModel.class);
 
+        // Define Views --------------------------------------------------------------
+        ipAddressField = getView().findViewById(R.id.ipAddessTextView);
+        ipAddressLayout = getView().findViewById(R.id.ipAddessLayout);
+
+        ipItemList = new ArrayList<>();
+        ipArrayAdapter = new ArrayAdapter<>(this.getContext(),
+                R.layout.dropdown_menu_popup_item, ipItemList);
+        ipAddressField.setAdapter(ipArrayAdapter);
+
+        String firstDeviceIp = mViewModel.getIPAddress();
+        if (firstDeviceIp != null) {
+            ipAddressField.setText(firstDeviceIp, false);
+        }
+
+        ipAddressField.setOnClickListener(clickedView -> {
+            updateIpSpinner();
+            ipAddressField.showDropDown();
+        });
+
+        ipAddressLayout.setEndIconOnClickListener(v -> {
+            ipAddressField.requestFocus();
+            ipAddressField.callOnClick();
+        });
+
+        ipAddressField.setOnItemClickListener((parent, view, position, id) -> {
+            ipAddressField.clearFocus();
+        });
 
         // View model connection -------------------------------------------------------------------
 
@@ -73,23 +117,26 @@ public class MasterFragment extends Fragment implements TextView.OnEditorActionL
         });
 
         mViewModel.getCurrentNetworkSSID().observe(getViewLifecycleOwner(),
-                networkSSID -> binding.networkSSIDChoiceText.setText(networkSSID));
-
-        mViewModel.getDeviceIp().observe(getViewLifecycleOwner(),
-                deviceIp -> binding.ipAddressChoiceText.setText(deviceIp));
+                networkSSID -> binding.NetworkSSIDText.setText(networkSSID));
 
         mViewModel.getRosConnection().observe(getViewLifecycleOwner(), this::setRosConnection);
 
         // User input ------------------------------------------------------------------------------
 
-        binding.affixesCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            mViewModel.useIpWithAffixes(isChecked);
+        binding.connectButton.setOnClickListener(v -> {
+                mViewModel.setMasterDeviceIp(ipAddressField.getText().toString());
+                mViewModel.connectToMaster();
         });
-
-        binding.connectButton.setOnClickListener(v -> mViewModel.connectToMaster());
         binding.disconnectButton.setOnClickListener(v -> mViewModel.disconnectFromMaster());
         binding.masterIpEditText.setOnEditorActionListener(this);
         binding.masterPortEditText.setOnEditorActionListener(this);
+    }
+
+    private void updateIpSpinner() {
+        ipItemList = new ArrayList<>();
+        ipItemList = mViewModel.getIPAddressList();
+        ipArrayAdapter.clear();
+        ipArrayAdapter.addAll(ipItemList);
     }
 
     private void setRosConnection(ConnectionType connectionType) {
@@ -115,37 +162,34 @@ public class MasterFragment extends Fragment implements TextView.OnEditorActionL
         binding.pendingBar.setVisibility(pendingVisibility);
     }
 
-    private void hideSoftKeyboard() {
-        final InputMethodManager imm = (InputMethodManager) getActivity()
-                .getSystemService(Context.INPUT_METHOD_SERVICE);
+    private void updateMasterDetails() {
+        // Update master IP
+        Editable masterIp = binding.masterIpEditText.getText();
 
-        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+        if (masterIp != null) {
+            mViewModel.setMasterIp(masterIp.toString());
+        }
+
+        // Update master port
+        Editable masterPort = binding.masterPortEditText.getText();
+
+        if (masterPort != null) {
+            mViewModel.setMasterPort(masterPort.toString());
+        }
     }
 
     @Override
     public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
-        int id = view.getId();
+        switch (actionId) {
+            case EditorInfo.IME_ACTION_DONE:
+            case EditorInfo.IME_ACTION_NEXT:
+            case EditorInfo.IME_ACTION_PREVIOUS:
+                updateMasterDetails();
 
-        if (actionId == EditorInfo.IME_ACTION_DONE) {
-            if (id == R.id.master_ip_editText) {
-                Editable masterIp = binding.masterIpEditText.getText();
+                view.clearFocus();
+                Utils.hideSoftKeyboard(Objects.requireNonNull(getView()));
 
-                if (masterIp != null) {
-                    mViewModel.setMasterIp(masterIp.toString());
-                }
-
-            } else if (id == R.id.master_port_editText) {
-                Editable masterPort = binding.masterPortEditText.getText();
-
-                if (masterPort != null) {
-                    mViewModel.setMasterPort(masterPort.toString());
-                }
-            }
-
-            view.clearFocus();
-            hideSoftKeyboard();
-
-            return true;
+                return true;
         }
 
         return false;

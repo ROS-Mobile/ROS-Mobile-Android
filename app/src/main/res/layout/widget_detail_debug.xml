@@ -15,7 +15,7 @@
 
     <include
         android:id="@+id/includeId"
-        layout="@layout/subscriber"
+        layout="@layout/widget_detail_base_subscriber"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

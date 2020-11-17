@@ -14,6 +14,8 @@ import com.schneewittchen.rosandroid.model.entities.MasterEntity;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.connection.ConnectionType;
 import com.schneewittchen.rosandroid.utility.Utils;
 
+import java.util.ArrayList;
+
 
 /**
  * TODO: Description
@@ -23,6 +25,8 @@ import com.schneewittchen.rosandroid.utility.Utils;
  * @created on 10.01.20
  * @updated on 11.04.20
  * @modified by Nico Studt
+ * @updated on 16.11.2020
+ * @modified by Nils Rottmann
  */
 public class MasterViewModel extends AndroidViewModel {
 
@@ -30,7 +34,6 @@ public class MasterViewModel extends AndroidViewModel {
 
     private final RosDomain rosDomain;
 
-    private MutableLiveData<String> deviceIpLiveData;
     private MutableLiveData<String> networkSSIDLiveData;
     private final LiveData<MasterEntity> currentMaster;
 
@@ -56,13 +59,12 @@ public class MasterViewModel extends AndroidViewModel {
         rosDomain.updateMaster(master);
     }
 
-    public void useIpWithAffixes(boolean useAffixes) {
-
+    public void setMasterDeviceIp(String deviceIpString) {
+        rosDomain.setMasterDeviceIp(deviceIpString);
     }
 
     public void connectToMaster() {
         setWifiSSID();
-        setIpText();
         rosDomain.connectToMaster();
     }
 
@@ -78,14 +80,8 @@ public class MasterViewModel extends AndroidViewModel {
         return rosDomain.getRosConnection();
     }
 
-    public LiveData<String> getDeviceIp(){
-        if (deviceIpLiveData == null) {
-            deviceIpLiveData = new MutableLiveData<>();
-        }
-
-        setIpText();
-
-        return deviceIpLiveData;
+    public String setDeviceIp(String deviceIp){
+        return deviceIp;
     }
 
     public LiveData<String> getCurrentNetworkSSID(){
@@ -98,11 +94,11 @@ public class MasterViewModel extends AndroidViewModel {
         return networkSSIDLiveData;
     }
 
-    private void setIpText() {
-        String ssid = Utils.getIPAddress(true);
-
-        deviceIpLiveData.postValue(ssid);
+    public ArrayList<String> getIPAddressList() {
+        return Utils.getIPAddressList(true);
     }
+
+    public String getIPAddress() {return Utils.getIPAddress(true); }
 
     private void setWifiSSID() {
         WifiManager wifiManager = (WifiManager) getApplication().getApplicationContext()
