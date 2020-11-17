@@ -118,14 +118,13 @@ public class MasterFragment extends Fragment implements TextView.OnEditorActionL
 
         mViewModel.getCurrentNetworkSSID().observe(getViewLifecycleOwner(),
                 networkSSID -> binding.NetworkSSIDText.setText(networkSSID));
-        // networkSsidText = binding.NetworkSSIDText;
 
         mViewModel.getRosConnection().observe(getViewLifecycleOwner(), this::setRosConnection);
 
         // User input ------------------------------------------------------------------------------
 
         binding.connectButton.setOnClickListener(v -> {
-                mViewModel.setMasterDeviceIp(ipAddressField.toString());
+                mViewModel.setMasterDeviceIp(ipAddressField.getText().toString());
                 mViewModel.connectToMaster();
         });
         binding.disconnectButton.setOnClickListener(v -> mViewModel.disconnectFromMaster());
