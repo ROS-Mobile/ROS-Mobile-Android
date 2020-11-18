@@ -1,10 +1,8 @@
 package com.schneewittchen.rosandroid.widgets.joystick;
 
-import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
@@ -12,7 +10,7 @@ import androidx.annotation.Nullable;
 
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.utility.Utils;
-import com.schneewittchen.rosandroid.widgets.base.BaseView;
+import com.schneewittchen.rosandroid.ui.views.PublisherView;
 
 
 /**
@@ -21,14 +19,10 @@ import com.schneewittchen.rosandroid.widgets.base.BaseView;
  * @author Nico Studt
  * @version 1.1.0
  * @created on 18.10.19
- * @updated on 10.01.20
- * @modified by
  */
-public class JoystickView extends BaseView {
+public class JoystickView extends PublisherView {
 
-    public static final String TAG = "JoystickView";
-
-    UpdateListener updateListener;
+    public static final String TAG = JoystickView.class.getSimpleName();
 
     Paint outerPaint;
     Paint linePaint;
@@ -37,6 +31,7 @@ public class JoystickView extends BaseView {
     float joystickRadius;
     float posX;
     float posY;
+
 
     public JoystickView(Context context) {
         super(context);
@@ -47,6 +42,7 @@ public class JoystickView extends BaseView {
         super(context, attrs);
         init();
     }
+
 
     private void init(){
         joystickRadius = Utils.cmToPx(getContext(), 1)/2;
@@ -59,8 +55,9 @@ public class JoystickView extends BaseView {
         outerPaint.setStrokeWidth(Utils.dpToPx(getContext(), 3));
 
         linePaint = new Paint();
-        linePaint.setColor(getResources().getColor(R.color.colorPrimaryDark));
+        linePaint.setColor(getResources().getColor(R.color.colorPrimary));
         linePaint.setStyle(Paint.Style.STROKE);
+        linePaint.setAlpha(50);
         linePaint.setStrokeWidth(Utils.dpToPx(getContext(), 2));
     }
 
@@ -68,11 +65,12 @@ public class JoystickView extends BaseView {
     private void moveTo(float x, float y){
         posX = x;
         posY = y;
-        this.informDataChange(new JoystickData(posX, posY));
+        this.publishViewData(new JoystickData(posX, posY));
 
         // Redraw
         invalidate();
     }
+
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -109,7 +107,8 @@ public class JoystickView extends BaseView {
         // Inner drawings
         canvas.drawCircle(width/2, height/2, width/4-joystickRadius/2, linePaint);
         canvas.drawLine(joystickRadius, height/2, width-joystickRadius, height/2,  linePaint);
-        canvas.drawLine(width/2, joystickRadius , width/2, height-joystickRadius,  linePaint);
+        canvas.drawLine(width/2, height/2 - width/2 + joystickRadius ,
+                        width/2, height/2 + width/2 - joystickRadius,  linePaint);
 
         // Stick
         canvas.drawCircle(px[0], px[1], joystickRadius, joystickPaint);
@@ -146,11 +145,5 @@ public class JoystickView extends BaseView {
         px[1] = middleY - y*r;
 
         return px;
-    }
-
-
-    public interface UpdateListener {
-
-        void onUpdate(float x, float y);
     }
 }

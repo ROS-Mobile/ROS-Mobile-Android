@@ -1,24 +1,26 @@
 package com.schneewittchen.rosandroid.widgets.gridmap;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import android.icu.text.SymbolTable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
-import android.view.ScaleGestureDetector;
+import android.view.View;
 
 import androidx.annotation.Nullable;
 
 import com.schneewittchen.rosandroid.R;
-import com.schneewittchen.rosandroid.ui.helper.RecyclerItemTouchHelper;
+import com.schneewittchen.rosandroid.ui.general.MatrixGestureDetector;
+import com.schneewittchen.rosandroid.ui.views.SubscriberView;
 import com.schneewittchen.rosandroid.utility.Utils;
-import com.schneewittchen.rosandroid.widgets.base.BaseData;
-import com.schneewittchen.rosandroid.widgets.base.BaseView;
+
+import org.ros.internal.message.Message;
+
+import nav_msgs.OccupancyGrid;
+
 
 /**
  * TODO: Description
@@ -29,38 +31,21 @@ import com.schneewittchen.rosandroid.widgets.base.BaseView;
  * @updated on 13.05.20
  * @modified by Nico Studt
  */
-public class GridMapView extends BaseView {
+public class GridMapView extends SubscriberView implements View.OnTouchListener {
 
     public static final String TAG = "GridmapView";
 
-    // Rectangle Surrounding
-    Paint paint;
-    float cornerWidth;
-
     // Grid Map Information
-    GridMapData data;
+    private GridMapData data;
 
-    // Zoom Parameters, TODO: Add the parameters to details?
-    private static float MIN_ZOOM = 1f;         // min. and max. zoom
-    private static float MAX_ZOOM = 20f;
-    private float scaleFactor = 1.f;
-    private int posX = 0;
-    private int posY = 0;
-    private float dragSensitivity = 0.1f;
-    private ScaleGestureDetector detector;
-
-    private static int NONE = 0;                // mode
-    private static int DRAG = 1;
-    private static int ZOOM = 2;
-    private int mode;
-
-    private float startX = 0f;                  // finger position tracker
-    private float startY = 0f;
-
-    private float translateX = 0f;              // Amount of translation
-    private float translateY = 0f;
-
+    // Rectangle Surrounding
+    private Paint borderPaint;
+    private Paint gridPaint;
+    private Paint paintBackground;
+    private float cornerWidth;
     private RectF drawRect;
+    private Matrix matrix;
+    private MatrixGestureDetector gestureDetector;
 
 
     public GridMapView(Context context) {
@@ -73,115 +58,72 @@ public class GridMapView extends BaseView {
         init();
     }
 
+
     private void init() {
-        this.cornerWidth = Utils.dpToPx(getContext(), 8);
-        paint = new Paint();
-        paint.setColor(getResources().getColor(R.color.whiteHigh));
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(10);
-        // Initialize the rectangular for drawing
-        drawRect = new RectF(0, 0, 0, 0);
-        // Initialize thee gesture detector for zooming in and out
-        detector = new ScaleGestureDetector(getContext(), new ScaleListener());
-    }
+        this.matrix = new Matrix();
+        this.matrix.setScale(1, -1);
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-
-        boolean dragged = false;
-
-        switch (event.getAction() & MotionEvent.ACTION_MASK) {
-            // Activated if the user first touches the screen
-            case MotionEvent.ACTION_DOWN:
-                mode = DRAG;
-                startX = event.getX();
-                startY = event.getY();
-                break;
-            // If finger moved
-            case MotionEvent.ACTION_MOVE:
-                translateX = event.getX() - startX;
-                translateY = event.getY() - startY;
-                double distance = Math.sqrt(Math.pow(event.getX() - startX, 2) +
-                                            Math.pow(event.getY() - startY, 2)
-                );
-                if(distance > 0) {
-                    dragged = true;
-                }
-                break;
-            // Zooming
-            case MotionEvent.ACTION_POINTER_DOWN:
-                mode = ZOOM;
-                break;
-
-            case MotionEvent.ACTION_UP:
-                mode = NONE;
-                dragged = false;
-                break;
-        }
-        // Activate the gesture detector (for zoom)
-        detector.onTouchEvent(event);
-        // We draw the canvas if required
-        if ((mode == DRAG && scaleFactor != 1f && dragged) || mode == ZOOM) {
+        this.gestureDetector = new MatrixGestureDetector(matrix, matrix -> {
             this.invalidate();
-        }
+        });
 
-        return true;
+        this.cornerWidth = Utils.dpToPx(getContext(), 8);
+
+        this.borderPaint = new Paint();
+        this.borderPaint.setColor(getResources().getColor(R.color.whiteHigh));
+        this.borderPaint.setStyle(Paint.Style.STROKE);
+        this.borderPaint.setStrokeWidth(10);
+
+        this.gridPaint = new Paint();
+        this.gridPaint.setColor(getResources().getColor(R.color.whiteHigh));
+        this.gridPaint.setAntiAlias(false);
+        this.gridPaint.setFilterBitmap(false);
+
+        // Background color
+        this.paintBackground = new Paint();
+        this.paintBackground.setColor(Color.argb(100, 0, 0, 0));
+        this.paintBackground.setStyle(Paint.Style.FILL);
+
+        this.drawRect = new RectF(0, 0, 0, 0);
+
+        this.setOnTouchListener(this);
     }
 
     @Override
     public void onDraw(Canvas canvas) {
-        Log.i(TAG, "On Draw");
         super.onDraw(canvas);
-        // Get vizualization size
-        float left = 0F;
-        float top = 0F;
+
+        canvas.drawPaint(paintBackground);
+
+        if (data != null && data.map != null) {
+            //canvas.drawBitmap(data.map, 0, 0, gridPaint);
+            canvas.drawBitmap(data.map, matrix, gridPaint);
+        }
+
+        // Border the view
         float width = getWidth();
         float height = getHeight();
+
         // Do the canvas drawing
-        drawRect.set(left, top, width, height);
-        int scaledWidth;
-        int scaledHeight;
-        if (data != null) {
-            // Zoom
-            scaledWidth = (int) (data.map.getWidth()/scaleFactor);
-            scaledHeight = (int) (data.map.getHeight()/scaleFactor);
-            // Translate
-            posX = posX - (int) ((translateX / scaleFactor) * dragSensitivity);
-            posY = posY - (int) ((translateY / scaleFactor) * dragSensitivity);
-            if (posX + scaledWidth > data.map.getWidth()) {
-                posX = data.map.getWidth() - scaledWidth;
-            } else if (posX < 0) {
-                posX = 0;
-            }
-            if (posY + scaledHeight > data.map.getHeight()) {
-                posY = data.map.getHeight() - scaledHeight;
-            } else if (posY < 0) {
-                posY = 0;
-            }
-            // Get the Submap from the Bitmap
-            Bitmap subMap = Bitmap.createBitmap(data.map, posX, posY,
-                                                scaledWidth, scaledHeight);
-            // Scale the Submap to the Viz size for optimal displaying
-            Bitmap scaledBitmap = Bitmap.createScaledBitmap(subMap, (int) width, (int) height, true);
-            canvas.drawBitmap(scaledBitmap, 0, 0, null);
-        }
-        // Put a rectangle around
-        canvas.drawRoundRect(drawRect, cornerWidth, cornerWidth, paint);
+        drawRect.set(0, 0, width, height);
+
+        canvas.drawRoundRect(drawRect, cornerWidth, cornerWidth, borderPaint);
     }
 
     @Override
-    public void setData(BaseData data) {
-        this.data = (GridMapData) data;
+    public boolean onTouch(View v, MotionEvent event) {
+        gestureDetector.onTouchEvent(event);
+        return true;
+    }
+
+    @Override
+    public boolean performClick() {
+        return super.performClick();
+    }
+
+    @Override
+    public void onNewMessage(Message message) {
+        this.data = new GridMapData((OccupancyGrid) message);
         this.invalidate();
     }
-
-    private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
-        @Override
-        public boolean onScale(ScaleGestureDetector detector) {
-            scaleFactor *= detector.getScaleFactor();
-            scaleFactor = Math.max(MIN_ZOOM, Math.min(scaleFactor, MAX_ZOOM));
-            return true;
-        }
-    }
-
 }

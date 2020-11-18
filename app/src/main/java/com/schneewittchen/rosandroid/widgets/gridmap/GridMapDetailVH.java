@@ -1,13 +1,16 @@
 package com.schneewittchen.rosandroid.widgets.gridmap;
 
 import android.view.View;
-import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 
-import com.schneewittchen.rosandroid.R;
-import com.schneewittchen.rosandroid.widgets.base.BaseDetailViewHolder;
-import com.schneewittchen.rosandroid.widgets.base.DetailListener;
+import com.schneewittchen.rosandroid.ui.fragments.details.WidgetChangeListener;
+import com.schneewittchen.rosandroid.ui.views.BaseDetailSubscriberVH;
+
+import java.util.Arrays;
+import java.util.List;
+
+import nav_msgs.OccupancyGrid;
 
 
 /**
@@ -18,33 +21,34 @@ import com.schneewittchen.rosandroid.widgets.base.DetailListener;
  * @created on 13.02.20
  * @updated on 13.05.20
  * @modified by Nico Studt
+ * @updated on 17.09.20
+ * @modified by Nils Rottmann
  */
-public class GridMapDetailVH extends BaseDetailViewHolder<WidgetGridMapEntity> {
+public class GridMapDetailVH extends BaseDetailSubscriberVH<GridMapEntity> {
 
-    EditText topicNameText;
-    EditText topicTypeText;
-
-
-    public GridMapDetailVH(@NonNull View view, DetailListener updateListener) {
+    public GridMapDetailVH(@NonNull View view, WidgetChangeListener updateListener) {
         super(view, updateListener);
     }
 
 
+
     @Override
-    public void init(View view) {
-        topicNameText = view.findViewById(R.id.topicNameText);
-        topicTypeText = view.findViewById(R.id.topicTypeText);
+    protected void initView(View parentView) {
+
     }
 
     @Override
-    public void bind(WidgetGridMapEntity entity) {
-        topicNameText.setText(entity.subPubNoteEntity.topic);
-        topicTypeText.setText(entity.subPubNoteEntity.messageType);
+    protected void bindEntity(GridMapEntity entity) {
+
     }
 
     @Override
-    public void updateEntity() {
-        entity.subPubNoteEntity.messageType = topicTypeText.getText().toString();
-        entity.subPubNoteEntity.topic = topicNameText.getText().toString();
+    protected void updateEntity() {
+
+    }
+
+    @Override
+    public List<String> getTopicTypes() {
+        return Arrays.asList(OccupancyGrid._TYPE);
     }
 }

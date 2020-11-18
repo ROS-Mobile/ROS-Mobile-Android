@@ -2,9 +2,7 @@ package com.schneewittchen.rosandroid.viewmodel;
 
 import android.app.Application;
 import android.content.Context;
-import android.icu.util.ICUUncheckedIOException;
 import android.net.wifi.WifiManager;
-import android.os.Handler;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -13,8 +11,10 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.schneewittchen.rosandroid.domain.RosDomain;
 import com.schneewittchen.rosandroid.model.entities.MasterEntity;
-import com.schneewittchen.rosandroid.model.repositories.ConnectionType;
+import com.schneewittchen.rosandroid.model.repositories.rosRepo.connection.ConnectionType;
 import com.schneewittchen.rosandroid.utility.Utils;
+
+import java.util.ArrayList;
 
 
 /**
@@ -25,16 +25,17 @@ import com.schneewittchen.rosandroid.utility.Utils;
  * @created on 10.01.20
  * @updated on 11.04.20
  * @modified by Nico Studt
+ * @updated on 16.11.2020
+ * @modified by Nils Rottmann
  */
 public class MasterViewModel extends AndroidViewModel {
 
     private static final String TAG = MasterViewModel.class.getSimpleName();
 
-    private RosDomain rosDomain;
+    private final RosDomain rosDomain;
 
-    private MutableLiveData<String> deviceIpLiveData;
     private MutableLiveData<String> networkSSIDLiveData;
-    private LiveData<MasterEntity> currentMaster;
+    private final LiveData<MasterEntity> currentMaster;
 
 
     public MasterViewModel(@NonNull Application application) {
@@ -58,13 +59,12 @@ public class MasterViewModel extends AndroidViewModel {
         rosDomain.updateMaster(master);
     }
 
-    public void useIpWithAffixes(boolean useAffixes) {
-
+    public void setMasterDeviceIp(String deviceIpString) {
+        rosDomain.setMasterDeviceIp(deviceIpString);
     }
 
     public void connectToMaster() {
         setWifiSSID();
-        setIpText();
         rosDomain.connectToMaster();
     }
 
@@ -80,14 +80,8 @@ public class MasterViewModel extends AndroidViewModel {
         return rosDomain.getRosConnection();
     }
 
-    public LiveData<String> getDeviceIp(){
-        if (deviceIpLiveData == null) {
-            deviceIpLiveData = new MutableLiveData<>();
-        }
-
-        setIpText();
-
-        return deviceIpLiveData;
+    public String setDeviceIp(String deviceIp){
+        return deviceIp;
     }
 
     public LiveData<String> getCurrentNetworkSSID(){
@@ -100,11 +94,11 @@ public class MasterViewModel extends AndroidViewModel {
         return networkSSIDLiveData;
     }
 
-    private void setIpText() {
-        String ssid = Utils.getIPAddress(true);
-
-        deviceIpLiveData.postValue(ssid);
+    public ArrayList<String> getIPAddressList() {
+        return Utils.getIPAddressList(true);
     }
+
+    public String getIPAddress() {return Utils.getIPAddress(true); }
 
     private void setWifiSSID() {
         WifiManager wifiManager = (WifiManager) getApplication().getApplicationContext()

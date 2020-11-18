@@ -45,6 +45,7 @@
     <string name="yes">YES</string>
     <string name="no">NO</string>
     <string name="rename_config">Rename Config</string>
-    <string name="rename_widget">Rename Node</string>
+    <string name="rename_widget">Rename Widget</string>
+    <string name="no_config">No config</string>
 
 </resources>
