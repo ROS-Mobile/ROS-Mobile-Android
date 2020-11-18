@@ -9,16 +9,31 @@ import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.util.AttributeSet;
-import android.util.Log;
 
-import com.schneewittchen.rosandroid.widgets.base.BaseData;
-import com.schneewittchen.rosandroid.widgets.base.BaseView;
+import com.schneewittchen.rosandroid.model.repositories.rosRepo.node.BaseData;
+import com.schneewittchen.rosandroid.ui.views.SubscriberView;
+import com.schneewittchen.rosandroid.widgets.gps.GpsData;
+
+import org.ros.internal.message.Message;
 
 import javax.annotation.Nullable;
 
-public class LoggerView extends BaseView {
-    public  static final String TAG = "LoggerView";
+import sensor_msgs.NavSatFix;
+import std_msgs.String;
 
+/**
+ * TODO: Description
+ *
+ * @author Dragos Circa
+ * @version 1.0.0
+ * @created on 02.11.2020
+ * @updated on 18.11.2020
+ * @modified by Nils Rottmann
+ */
+
+public class LoggerView extends SubscriberView {
+
+    LoggerData data;
     TextPaint textPaint;
     Paint backgroundPaint;
     StaticLayout staticLayout;
@@ -34,6 +49,12 @@ public class LoggerView extends BaseView {
         init();
     }
 
+    @Override
+    public void onNewMessage(Message message) {
+        this.data = new LoggerData((String) message);
+        this.invalidate();
+    }
+
     private void init() {
         backgroundPaint = new Paint();
         backgroundPaint.setColor(Color.BLACK);
@@ -45,21 +66,21 @@ public class LoggerView extends BaseView {
         textPaint.setTextSize(20 * getResources().getDisplayMetrics().density);
     }
 
-
-
     @Override
     protected void onDraw(Canvas canvas) {
         float width = getWidth();
         float height = getHeight();
         float textLayoutWidth = width;
 
-        if (widgetEntity.rotation == 90 || widgetEntity.rotation == 270) {
+        LoggerEntity entity = (LoggerEntity) widgetEntity;
+
+        if (entity.rotation == 90 || entity.rotation == 270) {
             textLayoutWidth = height;
         }
 
         canvas.drawRect(new Rect(0,0,(int)width,(int)height),backgroundPaint);
 
-        staticLayout = new StaticLayout(widgetEntity.text,
+        staticLayout = new StaticLayout(entity.text,
                 textPaint,
                 (int) textLayoutWidth,
                 Layout.Alignment.ALIGN_CENTER,
@@ -67,17 +88,9 @@ public class LoggerView extends BaseView {
                 0,
                 false);
         canvas.save();
-        canvas.rotate(widgetEntity.rotation,width / 2,height / 2);
+        canvas.rotate(entity.rotation,width / 2,height / 2);
         canvas.translate( ((width / 2)-staticLayout.getWidth()/2), height / 2 - staticLayout.getHeight() / 2);
         staticLayout.draw(canvas);
         canvas.restore();
     }
-
-    @Override
-    public void setData(BaseData data) {
-        widgetEntity.text = ((LoggerData)data).Data;
-        this.invalidate();
-    }
-
-
 }

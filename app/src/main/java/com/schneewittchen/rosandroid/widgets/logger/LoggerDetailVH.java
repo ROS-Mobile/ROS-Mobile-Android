@@ -6,43 +6,54 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.schneewittchen.rosandroid.R;
+import com.schneewittchen.rosandroid.ui.fragments.details.WidgetChangeListener;
+import com.schneewittchen.rosandroid.ui.views.BaseDetailSubscriberVH;
 import com.schneewittchen.rosandroid.utility.Utils;
-import com.schneewittchen.rosandroid.widgets.base.BaseDetailViewHolder;
-import com.schneewittchen.rosandroid.widgets.base.DetailListener;
 
 import androidx.annotation.NonNull;
 
-public class LoggerDetailVH extends BaseDetailViewHolder<WidgetLoggerEntity> {
-    private EditText topicNameText;
-    private Spinner labelTextRotationSpinner;
+import java.util.List;
 
+/**
+ * TODO: Description
+ *
+ * @author Dragos Circa
+ * @version 1.0.0
+ * @created on 02.11.2020
+ * @updated on 18.11.2020
+ * @modified by Nils Rottmann
+ */
+
+public class LoggerDetailVH extends BaseDetailSubscriberVH<LoggerEntity> {
+
+    private Spinner labelTextRotationSpinner;
     private ArrayAdapter<CharSequence> rotationAdapter;
 
-    public LoggerDetailVH(@NonNull View view, DetailListener updateListener) {
+    public LoggerDetailVH(@NonNull View view, WidgetChangeListener updateListener) {
         super(view, updateListener);
     }
 
     @Override
-    public void init(View view) {
-        topicNameText = view.findViewById(R.id.loggerTopicNameText);
+    public void initView(View view) {
         labelTextRotationSpinner = view.findViewById(R.id.loggerTextRotation);
-
-        // Init spinner
         rotationAdapter = ArrayAdapter.createFromResource(view.getContext(),
                 R.array.rotation, android.R.layout.simple_spinner_dropdown_item);
-
         labelTextRotationSpinner.setAdapter(rotationAdapter);
     }
 
     @Override
-    protected void bind(WidgetLoggerEntity entity) {
-        topicNameText.setText(entity.subPubNoteEntity.topic);
+    protected void bindEntity(LoggerEntity entity) {
         labelTextRotationSpinner.setSelection(rotationAdapter.getPosition(Utils.numberToDegrees(entity.rotation)));
     }
 
+
     @Override
     protected void updateEntity() {
-        entity.subPubNoteEntity.topic = topicNameText.getText().toString();
         entity.rotation = Utils.degreesToNumber(labelTextRotationSpinner.getSelectedItem().toString());
+    }
+
+    @Override
+    public List<String> getTopicTypes() {
+        return null;
     }
 }

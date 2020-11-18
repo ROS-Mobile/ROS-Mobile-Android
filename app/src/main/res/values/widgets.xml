@@ -33,7 +33,9 @@
             It will then display the received position onto the map visualized in the Viz Tab.
             The map will be thereby centered at the position.
             You can zoom in and out by pinching 2 or more fingers together or apart.</item>
-        <item>Nicos Internship.</item>
+        <item>A Button Node which, when pressed, publishes on a topic chosen by the usr "True" and when released "False".</item>
+        <item>A Label which does not interact with ROS but helps to organize your screen.</item>
+        <item>A Logger message which simply printed String messages.</item>
     </string-array>
 
 

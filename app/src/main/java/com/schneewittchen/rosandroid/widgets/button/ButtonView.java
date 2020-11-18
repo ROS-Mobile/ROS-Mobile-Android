@@ -9,21 +9,28 @@ import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 
 import com.schneewittchen.rosandroid.R;
-import com.schneewittchen.rosandroid.widgets.base.BaseView;
-import com.schneewittchen.rosandroid.widgets.joystick.JoystickView;
+import com.schneewittchen.rosandroid.ui.views.PublisherView;
 
 import androidx.annotation.Nullable;
 
-public class ButtonView extends BaseView {
+/**
+ * TODO: Description
+ *
+ * @author Dragos Circa
+ * @version 1.0.0
+ * @created on 02.11.2020
+ * @updated on 18.11.2020
+ * @modified by Nils Rottmann
+ */
+
+public class ButtonView extends PublisherView {
     public static final String TAG = "ButtonView";
 
     Paint buttonPaint;
     TextPaint textPaint;
-    ButtonState state;
     StaticLayout staticLayout;
 
     public ButtonView(Context context) {
@@ -47,9 +54,8 @@ public class ButtonView extends BaseView {
         textPaint.setTextSize(26 * getResources().getDisplayMetrics().density);
     }
 
-    private  void changeState(ButtonState state) {
-        this.informDataChange(new ButtonData(state));
-        this.state = state;
+    private void changeState(boolean pressed) {
+        this.publishViewData(new ButtonData(pressed));
         invalidate();
     }
 
@@ -58,11 +64,11 @@ public class ButtonView extends BaseView {
         switch(event.getActionMasked()) {
             case MotionEvent.ACTION_UP:
                 buttonPaint.setColor(getResources().getColor(R.color.colorPrimary));
-                changeState(ButtonState.Idle);
+                changeState(false);
                 break;
             case MotionEvent.ACTION_DOWN:
                 buttonPaint.setColor(getResources().getColor(R.color.color_attention));
-                changeState(ButtonState.Pressed);
+                changeState(true);
                 break;
             default:
                 return false;
@@ -78,13 +84,15 @@ public class ButtonView extends BaseView {
         float height = getHeight();
         float textLayoutWidth = width;
 
-        if (widgetEntity.rotation == 90 || widgetEntity.rotation == 270) {
+        ButtonEntity entity = (ButtonEntity) widgetEntity;
+
+        if (entity.rotation == 90 || entity.rotation == 270) {
             textLayoutWidth = height;
         }
 
         canvas.drawRect(new Rect(0,0,(int)width,(int)height),buttonPaint);
 
-        staticLayout = new StaticLayout(widgetEntity.text,
+        staticLayout = new StaticLayout(entity.text,
                 textPaint,
                 (int) textLayoutWidth,
                 Layout.Alignment.ALIGN_CENTER,
@@ -92,7 +100,7 @@ public class ButtonView extends BaseView {
                 0,
                 false);
         canvas.save();
-        canvas.rotate(widgetEntity.rotation,width / 2,height / 2);
+        canvas.rotate(entity.rotation,width / 2,height / 2);
         canvas.translate( ((width / 2)-staticLayout.getWidth()/2), height / 2 - staticLayout.getHeight() / 2);
         staticLayout.draw(canvas);
         canvas.restore();

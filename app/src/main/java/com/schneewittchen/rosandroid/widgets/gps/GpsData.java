@@ -19,12 +19,10 @@ public class GpsData extends BaseData {
 
     private NavSatFix navSatFix;
 
-
     public GpsData(NavSatFix navSatFix) {
         this.navSatFix = navSatFix;
     }
 
-    
     public double getLat() {
         return navSatFix.getLatitude();
     }

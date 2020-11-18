@@ -31,11 +31,9 @@ public class DebugDetailVH extends BaseDetailSubscriberVH<DebugEntity> {
 
     protected EditText messageNumberEdittext;
 
-
     public DebugDetailVH(@NonNull View view, WidgetChangeListener changeListener) {
         super(view, changeListener);
     }
-
 
     @Override
     protected void initView(View parentView) {

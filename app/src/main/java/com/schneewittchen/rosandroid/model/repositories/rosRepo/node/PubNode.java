@@ -88,6 +88,9 @@ public class PubNode extends AbstractNode {
     }
 
     private void publish() {
+        if (publisher == null) {
+            return;
+        }
         if (lastData == null || !publisher.hasSubscribers()) {
             return;
         }
