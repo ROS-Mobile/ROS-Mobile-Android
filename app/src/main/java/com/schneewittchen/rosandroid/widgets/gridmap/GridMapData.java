@@ -1,61 +1,86 @@
 package com.schneewittchen.rosandroid.widgets.gridmap;
 
 import android.graphics.Bitmap;
-import android.graphics.Matrix;
+import android.graphics.Color;
 
-import com.schneewittchen.rosandroid.widgets.base.BaseData;
+import com.schneewittchen.rosandroid.model.repositories.rosRepo.node.BaseData;
 
 import org.jboss.netty.buffer.ChannelBuffer;
 
+import nav_msgs.MapMetaData;
 import nav_msgs.OccupancyGrid;
 
 
+/**
+ * TODO: Description
+ *
+ * @author Nico Studt
+ * @version 1.0.1
+ * @created on 18.10.19
+ * @updated on 10.09.20
+ * @modified by Nico Studt
+ */
 public class GridMapData extends BaseData {
 
-    // Color of occupied cells in the map, it A = 255, R = G = B = 255
-    private static final int COLOR_FREE = 0xdfffffff;
-    // Color of free cells in the map, it is A = 255, R = G = B = 0
-    private static final int COLOR_OCCUPIED = 0xff000000;
-    // Color of unknown cells in the map, it is A = 127, R = G = B = 100
-    private static final int COLOR_UNKNOWN = 0x7F646464;
-
-    private OccupancyGrid occupancyGrid;
+    public static final String TAG = GridMapData.class.getSimpleName();
+    public static final int[] gradient = getGradient();
 
     public Bitmap map;
 
-    public GridMapData(OccupancyGrid occupancyGrid) {
-        this.occupancyGrid = occupancyGrid;
-        this.map = getBitMap();
+
+    public GridMapData(OccupancyGrid grid) {
+        map = createGrayMap(grid);
     }
 
-    private Bitmap getBitMap() {
-        // Get the data from the occupancy grid message
-        ChannelBuffer buffer = occupancyGrid.getData();
-        byte[] dataAll = buffer.array();
-        int dataOffset = buffer.arrayOffset();
-        int dataLength = buffer.readableBytes();
-        byte[] data = new byte[dataLength];
-        for (int i=0; i<dataLength; i++) {
-            data[i] = dataAll[dataOffset + i];
-        }
-        // Get the pixel color, TODO: Maybe different grayscales depending on thee occupancy value
-        int[] pixels = new int[dataLength];
-        for (int i = 0; i < dataLength; i++) {
-            // Pixels are ARGB packed ints.
-            if (data[i] == -1) {
-                pixels[i] = COLOR_UNKNOWN;
-            } else if (data[i] < 50) {
-                pixels[i] = COLOR_FREE;
-            } else {
-                pixels[i] = COLOR_OCCUPIED;
+
+    private Bitmap createGrayMap(OccupancyGrid grid) {
+        MapMetaData info = grid.getInfo();
+        ChannelBuffer buffer = grid.getData();
+        int width = info.getWidth();
+        int height = info.getHeight();
+        int offset = buffer.arrayOffset();
+
+        Bitmap newMap = Bitmap.createBitmap(info.getWidth(), info.getHeight(), Bitmap.Config.ALPHA_8);
+
+        int[] pixels;
+        byte bytePixel;
+
+        for (int y = 0; y < height; y++) {
+            pixels = new int[info.getWidth()];
+
+            for (int x = 0; x < width; x++) {
+                // Pixels are ARGB packed ints.
+                bytePixel = buffer.readByte();
+
+                if (bytePixel == -1) {
+                    pixels[x] = gradient[101];
+                } else {
+                    pixels[x] = gradient[bytePixel];
+                }
             }
+
+            newMap.setPixels(pixels, 0, width, 0, y, width, 1);
         }
-        // Generate Bitmap
-        Bitmap mapFlipped = Bitmap.createBitmap(pixels, occupancyGrid.getInfo().getWidth(),
-                            occupancyGrid.getInfo().getHeight(), Bitmap.Config.ARGB_8888);
-        // Flip Bitmap
-        Matrix matrix = new Matrix();
-        matrix.preScale(1.0f, -1.0f);
-        return Bitmap.createBitmap(mapFlipped, 0, 0, mapFlipped.getWidth(), mapFlipped.getHeight(), matrix, true);
+
+        return newMap;
+    }
+
+
+    private static int[] getGradient() {
+        int[] grad = new int[102];
+
+        for (int i = 0; i <= 101; i++) {
+            int color;
+
+            if (i == 101) {
+                color = Color.argb(128, 0, 0, 0);
+            }else{
+                color = Color.argb((int)(255/100f * (100 - i)), 0, 0, 0);
+            }
+
+            grad[i] = color;
+        }
+
+        return grad;
     }
 }

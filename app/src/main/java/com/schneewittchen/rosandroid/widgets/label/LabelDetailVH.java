@@ -6,24 +6,33 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.schneewittchen.rosandroid.R;
+import com.schneewittchen.rosandroid.ui.fragments.details.WidgetChangeListener;
+import com.schneewittchen.rosandroid.ui.views.BaseDetailViewHolder;
 import com.schneewittchen.rosandroid.utility.Utils;
-import com.schneewittchen.rosandroid.widgets.base.BaseDetailViewHolder;
-import com.schneewittchen.rosandroid.widgets.base.DetailListener;
-
 import androidx.annotation.NonNull;
 
-public class LabelDetailVH extends BaseDetailViewHolder<WidgetLabelEntity> {
+/**
+ * TODO: Description
+ *
+ * @author Dragos Circa
+ * @version 1.0.0
+ * @created on 02.11.2020
+ * @updated on 18.11.2020
+ * @modified by Nils Rottmann
+ */
+
+public class LabelDetailVH extends BaseDetailViewHolder<LabelEntity> {
     private EditText labelTextText;
     private Spinner labelTextRotationSpinner;
 
     private ArrayAdapter<CharSequence> rotationAdapter;
 
-    public LabelDetailVH(@NonNull View view, DetailListener updateListener) {
+    public LabelDetailVH(@NonNull View view, WidgetChangeListener updateListener) {
         super(view, updateListener);
     }
 
     @Override
-    public void init(View view) {
+    public void initView(View view) {
         labelTextText = view.findViewById(R.id.labelText);
         labelTextRotationSpinner = view.findViewById(R.id.labelTextRotation);
 
@@ -35,7 +44,7 @@ public class LabelDetailVH extends BaseDetailViewHolder<WidgetLabelEntity> {
     }
 
     @Override
-    protected void bind(WidgetLabelEntity entity) {
+    protected void bindEntity(LabelEntity entity) {
         labelTextText.setText(entity.text);
         labelTextRotationSpinner.setSelection(rotationAdapter.getPosition(Utils.numberToDegrees(entity.rotation)));
     }

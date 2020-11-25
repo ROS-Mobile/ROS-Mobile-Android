@@ -1,6 +1,8 @@
 package com.schneewittchen.rosandroid.model.repositories;
 
 import android.app.Application;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -33,10 +35,10 @@ import java.io.PrintStream;
  * @modified by Nico Studt
  * @updated on 04.06.20
  * @modified by Nils Rottmann
+ * @updated on 16.11.2020
+ * @modified by Nils Rottmann
  */
 public class SshRepositoryImpl implements SshRepository {
-
-    private SSHEntity ssh;
 
     public static final String TAG = SshRepositoryImpl.class.getSimpleName();
     private static SshRepositoryImpl mInstance;
@@ -52,21 +54,26 @@ public class SshRepositoryImpl implements SshRepository {
     MutableLiveData<String> outputData;
     MutableLiveData<Boolean> connected;
 
-    private ConfigRepository configRepository;
-    private LiveData<SSHEntity> currentSSH;
+    private final ConfigRepository configRepository;
+    private final LiveData<SSHEntity> currentSSH;
+
+    // Generate Handler
+    Handler mainHandler;
 
     private SshRepositoryImpl(@NonNull Application application) {
         connected = new MutableLiveData<>();
         outputData = new MutableLiveData<>();
 
-
-        connected.equals(false);
+        this.configRepository = ConfigRepositoryImpl.getInstance(application);
 
         // React on Config Changes
-        this.configRepository = ConfigRepositoryImpl.getInstance(application);
         currentSSH = Transformations.switchMap(configRepository.getCurrentConfigId(),
                 configId -> configRepository.getSSH(configId));
-        currentSSH.observeForever(ssh -> this.updateSSH(ssh));
+
+        currentSSH.observeForever(this::updateSSH);
+
+        mainHandler = new Handler(Looper.getMainLooper());
+
     }
 
 
@@ -81,10 +88,13 @@ public class SshRepositoryImpl implements SshRepository {
 
     @Override
     public void startSession() {
-        SSHEntity ssh = currentSSH.getValue();
+        final SSHEntity ssh = currentSSH.getValue();
+
         new Thread(() -> {
             try {
+                assert ssh != null;
                 startSessionTask(ssh.username, ssh.password, ssh.ip, ssh.port);
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -140,11 +150,20 @@ public class SshRepositoryImpl implements SshRepository {
         while ((line = br.readLine()) != null && channelssh.isConnected()) {
             // TODO: Check if every line will be displayed
             Log.i(TAG, "looper session");
+
             // Remove ANSI control chars (Terminal VT 100)
             line = line.replaceAll("\u001B\\[[\\d;]*[^\\d;]","");
             final String finalLine = line;
+
             // Publish lineData to LiveData
-            outputData.postValue(finalLine);
+            mainHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    outputData.setValue(finalLine);
+                }
+            });
+            // outputData.setValue(finalLine);
+            // outputData.postValue(finalLine);
         }
     }
 
@@ -159,24 +178,16 @@ public class SshRepositoryImpl implements SshRepository {
 
     @Override
     public LiveData<Boolean> isConnected() {
-        if(session != null && session.isConnected()){
-            Log.i(TAG, "Session is running already");
-            return connected;
-        } else {
-            return connected;
-        }
+        return connected;
     }
 
     @Override
     public void sendMessage(String message) {
-        new Thread((new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    commander.println(message);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        new Thread((() -> {
+            try {
+                commander.println(message);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         })).start();
     }
@@ -192,10 +203,8 @@ public class SshRepositoryImpl implements SshRepository {
 
         if(ssh == null) {
             Log.i(TAG, "SSH is null");
-            return;
         }
 
-        this.ssh = ssh;
     }
 
     public void updateSSHConfig(SSHEntity ssh) {
@@ -204,5 +213,5 @@ public class SshRepositoryImpl implements SshRepository {
 
     public LiveData<SSHEntity> getCurrentSSH() {
         return this.currentSSH;
-    };
+    }
 }

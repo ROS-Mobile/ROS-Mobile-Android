@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#81D4FA</color>
-    <color name="colorPrimaryDark">#121212</color>
+    <color name="colorPrimaryDark">@color/black01dp</color>
     <color name="colorAccent">#81D4FA</color>
 
     <color name="delete_red">#EF5350</color>
@@ -26,4 +26,6 @@
     <color name="drawerFadeColor">#BB121212</color>
     <color name="drawerHeaderBGColor">#BB121212</color>
     <color name="mtrl_textinput_default_box_stroke_color">@color/whiteMedium</color>
+
+
 </resources>

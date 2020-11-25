@@ -5,13 +5,11 @@ import android.content.res.TypedArray;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.LiveData;
 
 import com.schneewittchen.rosandroid.R;
-import com.schneewittchen.rosandroid.model.entities.ConfigEntity;
 import com.schneewittchen.rosandroid.model.repositories.ConfigRepository;
 import com.schneewittchen.rosandroid.model.repositories.ConfigRepositoryImpl;
-import com.schneewittchen.rosandroid.ui.helper.ScreenItem;
+import com.schneewittchen.rosandroid.ui.fragments.intro.ScreenItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +29,6 @@ public class IntroViewModel extends AndroidViewModel {
     private static final String TAG = IntroViewModel.class.getSimpleName();
 
     ConfigRepository configRepo;
-    private LiveData<ConfigEntity> currentConfig;
 
 
     public IntroViewModel(@NonNull Application application) {
@@ -49,6 +46,8 @@ public class IntroViewModel extends AndroidViewModel {
         for (int i = 0; i < titleArray.length; i++) {
             mList.add(new ScreenItem(titleArray[i], descrArray[i], imgArray.getResourceId(i, -1)));
         }
+
+        imgArray.recycle();
 
         return mList;
     }
