@@ -23,7 +23,7 @@
             When thee button is released, it will automatically go back to center.</item>
         <item>The Occupancy Grid Node is designed for displaying an occupancy grid map of the environment.
             Therefore, it subscribes to the topic specified in the details and receives a nav_msgs/OccupancyGrid message.
-            It will then display the received occuapancy grid onto the window visualized in the Viz Tab.
+            It will then display the received occupancy grid onto the window visualized in the Viz Tab.
             You can shift the displayed grid to any direction by moving a finger in the same direction and you can zoom in and out by pinching 2 or more fingers together or apart.</item>
         <item>The Camera Node is designed for displaying camera recordings.
             Therefore, it subscribes to the topic specified in the details and receives a sensor_msgs/Image message.
@@ -33,9 +33,9 @@
             It will then display the received position onto the map visualized in the Viz Tab.
             The map will be thereby centered at the position.
             You can zoom in and out by pinching 2 or more fingers together or apart.</item>
-        <item>A Button Node which, when pressed, publishes on a topic chosen by the usr "True" and when released "False".</item>
+        <item>A Button Node which, when pressed, publishes on a topic chosen by the user "True" and when released "False".</item>
         <item>A Label which does not interact with ROS but helps to organize your screen.</item>
-        <item>A Logger message which simply printed String messages.</item>
+        <item>A Logger message which simply prints String messages published to set topic</item>
     </string-array>
 
 
