@@ -79,9 +79,15 @@ public class WidgetViewGroup extends ViewGroup {
         float width = getWidth() - getPaddingLeft() - getPaddingRight();
         float height = getHeight() - getPaddingBottom() - getPaddingTop();
 
-        tilesX = TILES_X;
-        tileWidth = width/tilesX;
-        tilesY = (int)(height/tileWidth);
+        if (width < height) { // Portrait
+            tilesX = TILES_X;
+            tileWidth = width / tilesX;
+            tilesY = (int) (height / tileWidth);
+        } else { // Landscape
+            tilesY = TILES_X;
+            tileWidth = height / tilesY;
+            tilesX = (int) ( width / tileWidth);
+        }
     }
 
     /**
@@ -120,8 +126,8 @@ public class WidgetViewGroup extends ViewGroup {
 
     @Override
     public void onDraw(Canvas canvas) {
-        float startX = getPaddingTop();
-        float endX = getHeight() - this.getPaddingBottom();
+        float startX = getPaddingLeft();
+        float endX = getWidth() - this.getPaddingRight();
         float startY = getPaddingTop();
         float endY = getHeight() - this.getPaddingBottom();
 
