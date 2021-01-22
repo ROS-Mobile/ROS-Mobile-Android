@@ -18,7 +18,6 @@ import sensor_msgs.NavSatFix;
 
 public class GpsEntity extends SubscriberEntity {
 
-
     public GpsEntity() {
         this.width = 8;
         this.height = 8;

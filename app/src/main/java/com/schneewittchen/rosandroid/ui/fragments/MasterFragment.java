@@ -71,6 +71,7 @@ public class MasterFragment extends Fragment implements TextView.OnEditorActionL
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        updateMasterDetails();
         binding = null;
     }
 
@@ -124,6 +125,7 @@ public class MasterFragment extends Fragment implements TextView.OnEditorActionL
         // User input ------------------------------------------------------------------------------
 
         binding.connectButton.setOnClickListener(v -> {
+                updateMasterDetails();
                 mViewModel.setMasterDeviceIp(ipAddressField.getText().toString());
                 mViewModel.connectToMaster();
         });

@@ -305,6 +305,16 @@ public class Utils {
         return null;
     }
 
+
+
+    public static String numberToDegrees(int number){
+        return new Integer(number).toString() + "°";
+    }
+
+    public static int degreesToNumber(String degrees) {
+        return Integer.parseInt(degrees.substring(0, degrees.length() - 1));
+    }
+
     /**
      * Check if class of an object contains a field by a given field name.
      * @param object Object to check

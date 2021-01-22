@@ -64,6 +64,14 @@ public class SshFragment extends Fragment implements TextView.OnEditorActionList
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        setConnectionData();
+        binding = null;
+    }
+
+
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
@@ -106,6 +114,7 @@ public class SshFragment extends Fragment implements TextView.OnEditorActionList
             if (connected) {
                 mViewModel.stopSsh();
             } else {
+                setConnectionData();
                 connectSsh();
             }
         });
@@ -154,36 +163,9 @@ public class SshFragment extends Fragment implements TextView.OnEditorActionList
 
     @Override
     public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
-        int id = view.getId();
 
         if (actionId == EditorInfo.IME_ACTION_DONE) {
-            if (id == R.id.ip_address_editText) {
-                Editable sshIp = binding.ipAddressEditText.getText();
-
-                if (sshIp != null) {
-                    mViewModel.setSshIp(sshIp.toString());
-                }
-
-            } else if (id == R.id.port_editText) {
-                Editable sshPort = binding.portEditText.getText();
-
-                if (sshPort != null) {
-                    mViewModel.setSshPort(sshPort.toString());
-                }
-
-            } else if (id == R.id.password_editText) {
-                Editable sshPassword = binding.passwordEditText.getText();
-
-                if (sshPassword != null) {
-                    mViewModel.setSshPassword(sshPassword.toString());
-                }
-
-            } else if (id == R.id.username_editText) {
-                Editable sshUsername = binding.usernameEditText.getText();
-                if (sshUsername != null) {
-                    mViewModel.setSshUsername(sshUsername.toString());
-                }
-            }
+            setConnectionData();
 
             view.clearFocus();
             hideSoftKeyboard();
@@ -192,6 +174,32 @@ public class SshFragment extends Fragment implements TextView.OnEditorActionList
         }
 
         return false;
+    }
+
+    public void setConnectionData() {
+        Editable sshIp = binding.ipAddressEditText.getText();
+
+        if (sshIp != null) {
+            mViewModel.setSshIp(sshIp.toString());
+        }
+
+        Editable sshPort = binding.portEditText.getText();
+
+        if (sshPort != null) {
+            mViewModel.setSshPort(sshPort.toString());
+        }
+
+        Editable sshPassword = binding.passwordEditText.getText();
+
+        if (sshPassword != null) {
+            mViewModel.setSshPassword(sshPassword.toString());
+        }
+
+        Editable sshUsername = binding.usernameEditText.getText();
+
+        if (sshUsername != null) {
+            mViewModel.setSshUsername(sshUsername.toString());
+        }
     }
 
 }
