@@ -10,6 +10,7 @@
         <item>Button</item>
         <item>Label</item>
         <item>Logger</item>
+        <item>GLTest</item>
     </string-array>
 
     <string-array name="widget_descr">
@@ -36,6 +37,7 @@
         <item>A Button Node which, when pressed, publishes on a topic chosen by the user "True" and when released "False".</item>
         <item>A Label which does not interact with ROS but helps to organize your screen.</item>
         <item>A Logger message which simply prints String messages published to set topic</item>
+        <item>A test view for opengl</item>
     </string-array>
 
 

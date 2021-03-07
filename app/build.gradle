@@ -34,10 +34,10 @@ dependencies {
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.2'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
 
-    implementation 'com.google.android.material:material:1.2.1'
+    implementation 'com.google.android.material:material:1.3.0'
     implementation "androidx.viewpager2:viewpager2:1.0.0"
 
     implementation 'androidx.legacy:legacy-support-core-utils:1.0.0'
@@ -50,12 +50,13 @@ dependencies {
     implementation 'org.ros.rosjava_messages:std_msgs:0.5.11'
     implementation 'org.ros.rosjava_messages:map_msgs:1.13.0'
     implementation 'org.ros.rosjava_messages:sensor_msgs:1.12.7'
+    implementation 'org.ros.rosjava_messages:tf2_msgs:0.5.20'
     implementation 'org.ros.rosjava_bootstrap:message_generation:0.3.3'
     implementation 'org.ros.android_core:android_core_components:0.4.0'
 
     // Room
-    implementation "androidx.room:room-runtime:2.2.5"
-    annotationProcessor "androidx.room:room-compiler:2.2.5"
+    implementation "androidx.room:room-runtime:2.2.6"
+    annotationProcessor "androidx.room:room-compiler:2.2.6"
 
     // Parsing
     implementation 'com.google.code.gson:gson:2.8.6'

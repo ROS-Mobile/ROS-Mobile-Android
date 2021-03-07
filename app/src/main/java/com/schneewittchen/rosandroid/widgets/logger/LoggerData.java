@@ -16,9 +16,10 @@ import std_msgs.String;
 
 public class LoggerData extends BaseData {
 
-    private String Data;
+    private String data;
+
 
     public LoggerData(String data) {
-        Data = data;
+        this.data = data;
     }
 }

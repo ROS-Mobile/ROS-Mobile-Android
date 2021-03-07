@@ -134,8 +134,8 @@ public class WidgetViewGroup extends ViewGroup {
         // Draw x's
         float lineLen = Utils.dpToPx(getContext(), 5)/2;
 
-        for(float drawY = endY; drawY > startY; drawY -= tileWidth){
-            for(float drawX = startX; drawX < endX; drawX += tileWidth){
+        for(float drawY = startY; drawY <= endY; drawY += tileWidth){
+            for(float drawX = startX; drawX <= endX; drawX += tileWidth){
                 canvas.drawLine(drawX-lineLen, drawY, drawX+lineLen, drawY, crossPaint);
                 canvas.drawLine(drawX, drawY-lineLen, drawX, drawY+lineLen, crossPaint);
             }

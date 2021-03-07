@@ -29,9 +29,11 @@ public class LoggerDetailVH extends BaseDetailSubscriberVH<LoggerEntity> {
     private Spinner labelTextRotationSpinner;
     private ArrayAdapter<CharSequence> rotationAdapter;
 
+
     public LoggerDetailVH(@NonNull View view, WidgetChangeListener updateListener) {
         super(view, updateListener);
     }
+
 
     @Override
     public void initView(View view) {
