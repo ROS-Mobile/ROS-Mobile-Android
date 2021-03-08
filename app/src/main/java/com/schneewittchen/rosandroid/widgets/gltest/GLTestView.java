@@ -6,14 +6,28 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.opengl.GLSurfaceView;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.annotation.Nullable;
 
+import com.google.common.collect.Lists;
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.ui.views.SubscriberView;
 import com.schneewittchen.rosandroid.utility.Utils;
+import com.schneewittchen.rosandroid.widgets.gltest.layer.LaserScanLayer;
+import com.schneewittchen.rosandroid.widgets.gltest.layer.Layer;
+import com.schneewittchen.rosandroid.widgets.gltest.layer.OccupancyGridLayer;
+import com.schneewittchen.rosandroid.widgets.gltest.layer.PoseSubscriberLayer;
+import com.schneewittchen.rosandroid.widgets.gltest.visualisation.VisualizationView;
 
 import org.ros.internal.message.Message;
+
+import geometry_msgs.PoseStamped;
+import geometry_msgs.PoseWithCovarianceStamped;
 
 
 /**
@@ -27,10 +41,11 @@ public class GLTestView extends SubscriberView {
 
     public static final String TAG = GLTestView.class.getSimpleName();
 
+    private Button button;
     private Paint borderPaint;
     private Paint paintBackground;
     private float cornerWidth;
-    private GLSurfaceView glSurfaceView;
+    private VisualizationView layerView;
 
 
     public GLTestView(Context context) {
@@ -42,8 +57,14 @@ public class GLTestView extends SubscriberView {
         super(context, attrs);
         init();
     }
-    
-    
+
+    @Override
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        super.onLayout(changed, l, t, r, b);
+        layerView.layout(0, 0, getWidth(), getHeight());
+    }
+
+
     private void init() {
         this.cornerWidth = Utils.dpToPx(getContext(), 4);
 
@@ -57,11 +78,23 @@ public class GLTestView extends SubscriberView {
         paintBackground.setColor(Color.argb(100, 0, 0, 0));
         paintBackground.setStyle(Paint.Style.FILL);
 
-        glSurfaceView = new GLSurfaceView(getContext());
+
+        layerView = new VisualizationView(getContext());
+
+        layerView.onCreate(Lists.newArrayList(
+                new OccupancyGridLayer("map")
+                ));
+        this.addView(layerView);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return layerView.onTouchEvent(event);
     }
 
     @Override
     public void onDraw(Canvas canvas) {
+        Log.i(TAG, "OnDraw");
         super.onDraw(canvas);
 
         canvas.drawPaint(paintBackground);
@@ -72,14 +105,17 @@ public class GLTestView extends SubscriberView {
         float widthViz = getWidth();
         float heightViz = getHeight();
 
+        //button.draw(canvas);
+        layerView.requestRender();
 
         // Draw Border
         canvas.drawRoundRect(leftViz, topViz, widthViz, heightViz, cornerWidth, cornerWidth, borderPaint);
     }
 
+
     @Override
     public void onNewMessage(Message message) {
-        this.invalidate();
+        layerView.onNewMessage(message);
     }
-    
+
 }

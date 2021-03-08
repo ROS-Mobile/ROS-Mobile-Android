@@ -22,6 +22,7 @@ import com.schneewittchen.rosandroid.widgets.gltest.visualisation.Vertices;
 import com.schneewittchen.rosandroid.widgets.gltest.visualisation.VisualizationView;
 
 import org.jboss.netty.buffer.ChannelBuffer;
+import org.ros.internal.message.Message;
 import org.ros.message.MessageListener;
 import org.ros.namespace.GraphName;
 import org.ros.node.ConnectedNode;
@@ -133,5 +134,10 @@ public class PointCloud2DLayer extends SubscriberLayer<PointCloud2> implements T
     @Override
     public GraphName getFrame() {
         return frame;
+    }
+
+    @Override
+    public boolean reactOnMessage(VisualizationView view, Message message) {
+        return false;
     }
 }

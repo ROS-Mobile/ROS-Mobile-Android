@@ -20,6 +20,7 @@ import com.schneewittchen.rosandroid.widgets.gltest.visualisation.ROSColor;
 import com.schneewittchen.rosandroid.widgets.gltest.visualisation.Vertices;
 import com.schneewittchen.rosandroid.widgets.gltest.visualisation.VisualizationView;
 
+import org.ros.internal.message.Message;
 import org.ros.message.MessageListener;
 import org.ros.namespace.GraphName;
 import org.ros.node.ConnectedNode;
@@ -131,5 +132,10 @@ public class LaserScanLayer extends SubscriberLayer<LaserScan> implements TfLaye
     @Override
     public GraphName getFrame() {
         return frame;
+    }
+
+    @Override
+    public boolean reactOnMessage(VisualizationView view, Message message) {
+        return false;
     }
 }

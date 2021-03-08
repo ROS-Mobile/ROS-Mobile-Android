@@ -34,6 +34,7 @@ public class RobotLayer extends DefaultLayer implements TfLayer {
 
     private Shape shape;
 
+
     public RobotLayer(GraphName frame) {
         this.frame = frame;
     }
@@ -41,6 +42,7 @@ public class RobotLayer extends DefaultLayer implements TfLayer {
     public RobotLayer(String frame) {
         this(GraphName.of(frame));
     }
+
 
     @Override
     public void draw(VisualizationView view, GL10 gl) {

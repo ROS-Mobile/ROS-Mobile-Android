@@ -22,13 +22,9 @@ import android.view.ScaleGestureDetector;
 
 import androidx.core.view.GestureDetectorCompat;
 
-import com.google.common.base.Preconditions;
 import com.schneewittchen.rosandroid.widgets.gltest.visualisation.RotateGestureDetector;
+import com.schneewittchen.rosandroid.widgets.gltest.visualisation.VisualizationView;
 
-import org.ros.android.view.visualization.VisualizationView;
-import org.ros.concurrent.ListenerGroup;
-import org.ros.node.ConnectedNode;
-import org.ros.node.NodeMainExecutor;
 
 /**
  * Provides gesture control of the camera for translate, rotate, and zoom.
@@ -36,44 +32,23 @@ import org.ros.node.NodeMainExecutor;
  * @author damonkohler@google.com (Damon Kohler)
  * @author moesenle@google.com (Lorenz Moesenlechner)
  */
-public class CameraControlLayer extends DefaultLayer {
+public class CameraControl {
 
-
-    private ListenerGroup<CameraControlListener> listeners;
+    private final VisualizationView vizView;
     private GestureDetectorCompat translateGestureDetector;
     private RotateGestureDetector rotateGestureDetector;
     private ScaleGestureDetector zoomGestureDetector;
 
-    @Override
-    public void init(NodeMainExecutor nodeMainExecutor) {
-        listeners =
-                new ListenerGroup<>(nodeMainExecutor.getScheduledExecutorService());
+
+    public CameraControl(VisualizationView vizView) {
+        this.vizView = vizView;
     }
 
-    public void addListener(CameraControlListener listener) {
-        Preconditions.checkNotNull(listeners);
-        listeners.add(listener);
-    }
 
-    @Override
-    public boolean onTouchEvent(VisualizationView view, MotionEvent event) {
-        if (translateGestureDetector == null || rotateGestureDetector == null
-                || zoomGestureDetector == null) {
-            return false;
-        }
-        final boolean translateGestureHandled = translateGestureDetector.onTouchEvent(event);
-        final boolean rotateGestureHandled = rotateGestureDetector.onTouchEvent(event);
-        final boolean zoomGestureHandled = zoomGestureDetector.onTouchEvent(event);
-        return translateGestureHandled || rotateGestureHandled || zoomGestureHandled
-                || super.onTouchEvent(view, event);
-    }
-
-    @Override
-    public void onStart(final VisualizationView view, ConnectedNode connectedNode) {
-        view.post(() -> {
-
+    public void init(boolean translate, boolean rotate, boolean scale) {
+        if(translate) {
             translateGestureDetector =
-                    new GestureDetectorCompat(view.getContext(), new GestureDetector.SimpleOnGestureListener() {
+                    new GestureDetectorCompat(vizView.getContext(), new GestureDetector.SimpleOnGestureListener() {
                         @Override
                         public boolean onDown(MotionEvent e) {
                             // This must return true in order for onScroll() to trigger.
@@ -83,29 +58,29 @@ public class CameraControlLayer extends DefaultLayer {
                         @Override
                         public boolean onScroll(MotionEvent event1, MotionEvent event2,
                                                 final float distanceX, final float distanceY) {
-                            view.getCamera().translate(-distanceX, distanceY);
-                            listeners.signal(listener -> listener.onTranslate(-distanceX, distanceY));
+                            vizView.getCamera().translate(-distanceX, distanceY);
                             return true;
                         }
 
                         @Override
                         public boolean onDoubleTap(final MotionEvent e) {
-                            listeners.signal(listener -> listener.onDoubleTap(e.getX(), e.getY()));
                             return true;
                         }
                     });
-
+        }
+        if(rotate) {
             rotateGestureDetector =
                     new RotateGestureDetector((event1, event2, deltaAngle) -> {
                         final float focusX = (event1.getX(0) + event1.getX(1)) / 2;
                         final float focusY = (event1.getY(0) + event1.getY(1)) / 2;
-                        view.getCamera().rotate(focusX, focusY, deltaAngle);
-                        listeners.signal(listener -> listener.onRotate(focusX, focusY, deltaAngle));
+                        vizView.getCamera().rotate(focusX, focusY, deltaAngle);
                         return true;
                     });
+        }
 
+        if(scale) {
             zoomGestureDetector =
-                    new ScaleGestureDetector(view.getContext(),
+                    new ScaleGestureDetector(vizView.getContext(),
                             new ScaleGestureDetector.SimpleOnScaleGestureListener() {
                                 @Override
                                 public boolean onScale(ScaleGestureDetector detector) {
@@ -115,11 +90,21 @@ public class CameraControlLayer extends DefaultLayer {
                                     final float focusX = detector.getFocusX();
                                     final float focusY = detector.getFocusY();
                                     final float factor = detector.getScaleFactor();
-                                    view.getCamera().zoom(focusX, focusY, factor);
-                                    listeners.signal(listener -> listener.onZoom(focusX, focusY, factor));
+                                    vizView.getCamera().zoom(focusX, focusY, factor);
                                     return true;
                                 }
                             });
-        });
+        }
+    }
+
+    public boolean onTouchEvent(MotionEvent event) {
+        if (translateGestureDetector == null || rotateGestureDetector == null
+                || zoomGestureDetector == null) {
+            return false;
+        }
+        final boolean translateGestureHandled = translateGestureDetector.onTouchEvent(event);
+        final boolean rotateGestureHandled = rotateGestureDetector.onTouchEvent(event);
+        final boolean zoomGestureHandled = zoomGestureDetector.onTouchEvent(event);
+        return translateGestureHandled || rotateGestureHandled || zoomGestureHandled;
     }
 }

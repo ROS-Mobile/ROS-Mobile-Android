@@ -152,6 +152,8 @@ public class ConfigRepositoryImpl implements ConfigRepository {
         }
 
         BaseEntity widget = (BaseEntity) object;
+
+        Log.i(TAG, "Widget" + widget);
         long configId = mCurrentConfigId.getValue();
 
         String widgetName = "";

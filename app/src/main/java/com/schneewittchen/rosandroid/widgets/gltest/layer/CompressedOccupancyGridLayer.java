@@ -17,14 +17,15 @@
 package com.schneewittchen.rosandroid.widgets.gltest.layer;
 
 import com.google.common.base.Preconditions;
-
-import org.ros.android.view.visualization.TextureBitmap;
-import org.ros.android.view.visualization.VisualizationView;
+import com.schneewittchen.rosandroid.widgets.gltest.visualisation.TextureBitmap;
+import com.schneewittchen.rosandroid.widgets.gltest.visualisation.VisualizationView;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 
 import org.jboss.netty.buffer.ChannelBuffer;
+import org.ros.internal.message.Message;
 import org.ros.message.MessageListener;
 import org.ros.namespace.GraphName;
 import org.ros.node.ConnectedNode;
@@ -120,5 +121,10 @@ public class CompressedOccupancyGridLayer extends SubscriberLayer<OccupancyGrid>
         textureBitmap.updateFromPixelArray(pixels, stride, resolution, origin, COLOR_UNKNOWN);
         frame = GraphName.of(message.getHeader().getFrameId());
         ready = true;
+    }
+
+    @Override
+    public boolean reactOnMessage(VisualizationView view, Message message) {
+        return false;
     }
 }

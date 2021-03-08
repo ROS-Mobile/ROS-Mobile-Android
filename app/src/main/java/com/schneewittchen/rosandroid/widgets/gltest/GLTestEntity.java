@@ -3,6 +3,9 @@ package com.schneewittchen.rosandroid.widgets.gltest;
 import com.schneewittchen.rosandroid.model.entities.SubscriberEntity;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.Topic;
 
+import geometry_msgs.PointStamped;
+import geometry_msgs.PoseStamped;
+import geometry_msgs.PoseWithCovarianceStamped;
 import sensor_msgs.Image;
 
 
@@ -19,7 +22,7 @@ public class GLTestEntity extends SubscriberEntity {
     public GLTestEntity() {
         this.width = 8;
         this.height = 8;
-        this.topic = new Topic("camera/image_raw", Image._TYPE);
+        this.topic = new Topic("initialpose", PoseWithCovarianceStamped._TYPE);
     }
 }
 

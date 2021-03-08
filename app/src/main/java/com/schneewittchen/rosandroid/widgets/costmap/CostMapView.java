@@ -32,7 +32,7 @@ import nav_msgs.OccupancyGrid;
  */
 public class CostMapView extends SubscriberView implements View.OnTouchListener {
 
-    public static final String TAG = "CostMapView";
+    public static final String TAG = CostMapView.class.getSimpleName();
 
     // Grid Map Information
     private CostMapData data;
@@ -50,11 +50,6 @@ public class CostMapView extends SubscriberView implements View.OnTouchListener 
 
     public CostMapView(Context context) {
         super(context);
-        init();
-    }
-
-    public CostMapView(Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
         init();
     }
 

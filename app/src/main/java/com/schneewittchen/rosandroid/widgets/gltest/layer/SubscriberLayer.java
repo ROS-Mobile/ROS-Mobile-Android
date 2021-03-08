@@ -20,6 +20,7 @@ import com.google.common.base.Preconditions;
 
 import com.schneewittchen.rosandroid.widgets.gltest.visualisation.VisualizationView;
 
+import org.ros.internal.message.Message;
 import org.ros.namespace.GraphName;
 import org.ros.node.ConnectedNode;
 import org.ros.node.Node;
@@ -28,7 +29,7 @@ import org.ros.node.topic.Subscriber;
 /**
  * @author damonkohler@google.com (Damon Kohler)
  */
-public class SubscriberLayer<T> extends DefaultLayer {
+public abstract class SubscriberLayer<T> extends DefaultLayer {
 
     private final GraphName topicName;
     private final String messageType;
@@ -40,11 +41,8 @@ public class SubscriberLayer<T> extends DefaultLayer {
         this.messageType = messageType;
     }
 
-    @Override
-    public void onStart(VisualizationView view, ConnectedNode connectedNode) {
-        super.onStart(view, connectedNode);
-        subscriber = connectedNode.newSubscriber(topicName, messageType);
-    }
+    public abstract boolean reactOnMessage(VisualizationView view, Message message);
+
 
     @Override
     public void onShutdown(VisualizationView view, Node node) {

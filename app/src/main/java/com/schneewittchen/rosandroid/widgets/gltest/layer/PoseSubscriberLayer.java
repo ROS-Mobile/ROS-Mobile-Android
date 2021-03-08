@@ -16,11 +16,13 @@
 
 package com.schneewittchen.rosandroid.widgets.gltest.layer;
 
+import android.util.Log;
+
 import com.schneewittchen.rosandroid.widgets.gltest.shape.GoalShape;
 import com.schneewittchen.rosandroid.widgets.gltest.shape.Shape;
 import com.schneewittchen.rosandroid.widgets.gltest.visualisation.VisualizationView;
 
-import org.ros.message.MessageListener;
+import org.ros.internal.message.Message;
 import org.ros.namespace.GraphName;
 import org.ros.node.ConnectedNode;
 import org.ros.rosjava_geometry.FrameTransform;
@@ -29,16 +31,20 @@ import org.ros.rosjava_geometry.Transform;
 import javax.microedition.khronos.opengles.GL10;
 
 import geometry_msgs.PoseStamped;
+import geometry_msgs.PoseWithCovarianceStamped;
+
 
 /**
  * @author moesenle@google.com (Lorenz Moesenlechner)
  */
 public class PoseSubscriberLayer extends SubscriberLayer<PoseStamped> implements TfLayer {
 
+    public static String TAG = PoseSubscriberLayer.class.getSimpleName();
     private final GraphName targetFrame;
 
     private Shape shape;
     private boolean ready;
+
 
     public PoseSubscriberLayer(String topic) {
         this(GraphName.of(topic));
@@ -48,7 +54,9 @@ public class PoseSubscriberLayer extends SubscriberLayer<PoseStamped> implements
         super(topic, PoseStamped._TYPE);
         targetFrame = GraphName.of("map");
         ready = false;
+        shape = new GoalShape();
     }
+
 
     @Override
     public void draw(VisualizationView view, GL10 gl) {
@@ -58,21 +66,21 @@ public class PoseSubscriberLayer extends SubscriberLayer<PoseStamped> implements
     }
 
     @Override
-    public void onStart(final VisualizationView view, ConnectedNode connectedNode) {
-        super.onStart(view, connectedNode);
-        shape = new GoalShape();
-        getSubscriber().addMessageListener(new MessageListener<PoseStamped>() {
-            @Override
-            public void onNewMessage(PoseStamped pose) {
-                GraphName source = GraphName.of(pose.getHeader().getFrameId());
-                FrameTransform frameTransform = view.getFrameTransformTree().transform(source, targetFrame);
-                if (frameTransform != null) {
-                    Transform poseTransform = Transform.fromPoseMessage(pose.getPose());
-                    shape.setTransform(frameTransform.getTransform().multiply(poseTransform));
-                    ready = true;
-                }
-            }
-        });
+    public boolean reactOnMessage(VisualizationView view, Message message) {
+        if (!(message instanceof PoseStamped)) return false;
+
+        PoseStamped pose = (PoseStamped)message;
+
+        GraphName source = GraphName.of(pose.getHeader().getFrameId());
+        FrameTransform frameTransform = view.getFrameTransformTree().transform(source, targetFrame);
+
+        if (frameTransform == null) return true;
+
+        Transform poseTransform = Transform.fromPoseMessage(pose.getPose());
+        shape.setTransform(frameTransform.getTransform().multiply(poseTransform));
+        ready = true;
+
+        return true;
     }
 
     @Override

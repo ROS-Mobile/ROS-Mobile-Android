@@ -18,9 +18,10 @@ package com.schneewittchen.rosandroid.widgets.gltest.layer;
 
 import com.schneewittchen.rosandroid.widgets.gltest.visualisation.ROSColor;
 import com.schneewittchen.rosandroid.widgets.gltest.visualisation.Vertices;
+import com.schneewittchen.rosandroid.widgets.gltest.visualisation.VisualizationView;
 import com.schneewittchen.rosandroid.widgets.gltest.visualisation.XYOrthographicCamera;
 
-import org.ros.android.view.visualization.VisualizationView;
+import org.ros.internal.message.Message;
 import org.ros.message.MessageListener;
 import org.ros.namespace.GraphName;
 import org.ros.node.ConnectedNode;
@@ -31,6 +32,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import javax.microedition.khronos.opengles.GL10;
 
 import nav_msgs.GridCells;
+
 
 /**
  * @author damonkohler@google.com (Damon Kohler)
@@ -86,16 +88,14 @@ public class GridCellsLayer extends SubscriberLayer<GridCells> implements TfLaye
     @Override
     public void onStart(final VisualizationView view, ConnectedNode connectedNode) {
         super.onStart(view, connectedNode);
-        getSubscriber().addMessageListener(new MessageListener<GridCells>() {
-            @Override
-            public void onNewMessage(GridCells data) {
-                frame = GraphName.of(data.getHeader().getFrameId());
-                if (view.getFrameTransformTree().lookUp(frame) != null) {
-                    if (lock.tryLock()) {
-                        message = data;
-                        ready = true;
-                        lock.unlock();
-                    }
+        getSubscriber().addMessageListener(data -> {
+            frame = GraphName.of(data.getHeader().getFrameId());
+
+            if (view.getFrameTransformTree().lookUp(frame) != null) {
+                if (lock.tryLock()) {
+                    message = data;
+                    ready = true;
+                    lock.unlock();
                 }
             }
         });
@@ -104,5 +104,10 @@ public class GridCellsLayer extends SubscriberLayer<GridCells> implements TfLaye
     @Override
     public GraphName getFrame() {
         return frame;
+    }
+
+    @Override
+    public boolean reactOnMessage(VisualizationView view, Message message) {
+        return false;
     }
 }

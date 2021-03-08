@@ -21,6 +21,7 @@ import com.schneewittchen.rosandroid.ui.general.DataListener;
 import com.schneewittchen.rosandroid.ui.general.Position;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.node.BaseData;
 import com.schneewittchen.rosandroid.model.entities.BaseEntity;
+import com.schneewittchen.rosandroid.widgets.gltest.GLTestView;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
@@ -90,6 +91,26 @@ public class WidgetViewGroup extends ViewGroup {
         }
     }
 
+    @Override
+    protected void onMeasure(int widthMeasureSpec,
+                             int heightMeasureSpec) {
+        int width = MeasureSpec.getSize(widthMeasureSpec);
+        int height = MeasureSpec.getSize(heightMeasureSpec);
+        widthMeasureSpec = MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY);
+        heightMeasureSpec = MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY);
+
+        final int count = getChildCount();
+        for (int i = 0; i < count; i++) {
+            final View v = getChildAt(i);
+            // this works because you set the dimensions of the ImageView to FILL_PARENT
+            v.measure(MeasureSpec.makeMeasureSpec(getMeasuredWidth(),
+                    MeasureSpec.EXACTLY), MeasureSpec.makeMeasureSpec(
+                    getMeasuredHeight(), MeasureSpec.EXACTLY));
+        }
+
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    }
+
     /**
      * Position all children within this layout.
      */
@@ -104,13 +125,11 @@ public class WidgetViewGroup extends ViewGroup {
     }
 
     private void positionChild(int i) {
-        float lowestPos = getHeight() - getPaddingBottom(); //- tilesY * tileWidth;
         final View child = getChildAt(i);
 
         // Check if view is visible
         if(child.getVisibility() == GONE)
             return;
-
 
         Position position = ((BaseView) child).getPosition();
 
@@ -118,7 +137,7 @@ public class WidgetViewGroup extends ViewGroup {
         int w = (int) (position.width * tileWidth);
         int h = (int) (position.height * tileWidth);
         int x = (int) (getPaddingLeft() + position.x * tileWidth);
-        int y = (int) (lowestPos - position.y * tileWidth - h);
+        int y = (int) (getPaddingTop() + (tilesY - (position.height + position.y)) * tileWidth);
 
         // Place the child.
         child.layout(x, y, x + w, y + h);
@@ -156,7 +175,9 @@ public class WidgetViewGroup extends ViewGroup {
             if (view instanceof SubscriberView) {
                 SubscriberView subView = (SubscriberView) view;
 
-                if (subView.getTopic().equals(message.getTopic())){
+                if (subView instanceof GLTestView) {
+                    subView.onNewMessage(message.getMessage());
+                } else if (subView.getTopic().equals(message.getTopic())){
                     subView.onNewMessage(message.getMessage());
                 }
             }

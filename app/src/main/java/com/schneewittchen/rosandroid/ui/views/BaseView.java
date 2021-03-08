@@ -2,7 +2,9 @@ package com.schneewittchen.rosandroid.ui.views;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
 
@@ -22,7 +24,9 @@ import com.schneewittchen.rosandroid.ui.general.Position;
  * @updated on 02.10.20
  * @modified by Nico Studt
  */
-public abstract class BaseView extends View {
+public abstract class BaseView extends ViewGroup {
+
+    public static String TAG = BaseView.class.getSimpleName();
 
     protected Position position;
     protected BaseEntity widgetEntity;
@@ -30,14 +34,25 @@ public abstract class BaseView extends View {
 
     public BaseView(Context context) {
         super(context);
+        baseInit();
     }
 
     public BaseView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+        baseInit();
     }
 
     public BaseView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        baseInit();
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int l, int t, int r, int b) { }
+
+
+    private void baseInit() {
+        setWillNotDraw(false);
     }
 
 

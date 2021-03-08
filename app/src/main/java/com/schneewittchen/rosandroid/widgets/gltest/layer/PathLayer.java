@@ -23,6 +23,7 @@ import com.schneewittchen.rosandroid.widgets.gltest.visualisation.VisualizationV
 import geometry_msgs.PoseStamped;
 import nav_msgs.Path;
 
+import org.ros.internal.message.Message;
 import org.ros.message.MessageListener;
 import org.ros.namespace.GraphName;
 import org.ros.node.ConnectedNode;
@@ -71,15 +72,13 @@ public class PathLayer extends SubscriberLayer<Path> implements TfLayer {
         }
     }
 
+
     @Override
     public void onStart(VisualizationView view, ConnectedNode connectedNode) {
         super.onStart(view, connectedNode);
-        getSubscriber().addMessageListener(new MessageListener<Path>() {
-            @Override
-            public void onNewMessage(Path path) {
-                updateVertexBuffer(path);
-                ready = true;
-            }
+        getSubscriber().addMessageListener(path -> {
+            updateVertexBuffer(path);
+            ready = true;
         });
     }
 
@@ -89,6 +88,7 @@ public class PathLayer extends SubscriberLayer<Path> implements TfLayer {
         goalVertexByteBuffer.order(ByteOrder.nativeOrder());
         vertexBuffer = goalVertexByteBuffer.asFloatBuffer();
         int i = 0;
+
         if (path.getPoses().size() > 0) {
             frame = GraphName.of(path.getPoses().get(0).getHeader().getFrameId());
             for (PoseStamped pose : path.getPoses()) {
@@ -98,6 +98,7 @@ public class PathLayer extends SubscriberLayer<Path> implements TfLayer {
                 i++;
             }
         }
+
         vertexBuffer.position(0);
         numPoints = i;
     }
@@ -105,5 +106,10 @@ public class PathLayer extends SubscriberLayer<Path> implements TfLayer {
     @Override
     public GraphName getFrame() {
         return frame;
+    }
+
+    @Override
+    public boolean reactOnMessage(VisualizationView view, Message message) {
+        return false;
     }
 }

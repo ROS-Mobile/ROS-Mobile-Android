@@ -17,6 +17,7 @@
 package com.schneewittchen.rosandroid.widgets.gltest.visualisation;
 
 import android.opengl.GLSurfaceView;
+import android.util.Log;
 
 import com.schneewittchen.rosandroid.widgets.gltest.layer.Layer;
 import com.schneewittchen.rosandroid.widgets.gltest.layer.TfLayer;
@@ -35,17 +36,19 @@ import javax.microedition.khronos.opengles.GL10;
  */
 public class XYOrthographicRenderer implements GLSurfaceView.Renderer {
 
-
-    private static final ROSColor BACKGROUND_COLOR = new ROSColor(0.87f, 0.87f, 0.87f, 1.f);
+    public static String TAG = XYOrthographicRenderer.class.getSimpleName();
 
     private final VisualizationView view;
+
 
     public XYOrthographicRenderer(VisualizationView view) {
         this.view = view;
     }
 
+
     @Override
     public void onSurfaceChanged(GL10 gl, int width, int height) {
+        Log.i(TAG, "On SurfaceChanged");
         Viewport viewport = new Viewport(width, height);
         viewport.apply(gl);
         view.getCamera().setViewport(viewport);
@@ -53,8 +56,10 @@ public class XYOrthographicRenderer implements GLSurfaceView.Renderer {
         gl.glEnable(GL10.GL_BLEND);
         gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
         gl.glDisable(GL10.GL_DEPTH_TEST);
-        gl.glClearColor(BACKGROUND_COLOR.getRed(), BACKGROUND_COLOR.getGreen(),
-                BACKGROUND_COLOR.getBlue(), BACKGROUND_COLOR.getAlpha());
+
+        gl.glClearColor(0, 0, 0, 0);
+        gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+
         for (Layer layer : view.getLayers()) {
             layer.onSurfaceChanged(view, gl, width, height);
         }
@@ -62,8 +67,10 @@ public class XYOrthographicRenderer implements GLSurfaceView.Renderer {
 
     @Override
     public void onDrawFrame(GL10 gl) {
+        gl.glClearColor(0, 0, 0, 0);
         gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
         gl.glLoadIdentity();
+
         view.getCamera().apply(gl);
         drawLayers(gl);
     }

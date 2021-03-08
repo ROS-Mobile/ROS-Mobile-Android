@@ -10,8 +10,8 @@ import com.schneewittchen.rosandroid.ui.views.BaseDetailSubscriberVH;
 import java.util.Arrays;
 import java.util.List;
 
-import sensor_msgs.CompressedImage;
-import sensor_msgs.Image;
+import geometry_msgs.PoseStamped;
+import geometry_msgs.PoseWithCovarianceStamped;
 
 
 /**
@@ -48,7 +48,7 @@ public class GLTestDetailVH extends BaseDetailSubscriberVH<GLTestEntity> {
 
     @Override
     public List<String> getTopicTypes() {
-        return Arrays.asList(Image._TYPE);
+        return Arrays.asList(PoseWithCovarianceStamped._TYPE);
     }
 
 }

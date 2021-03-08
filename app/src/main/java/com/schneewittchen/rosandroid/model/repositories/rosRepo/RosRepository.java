@@ -79,6 +79,7 @@ public class RosRepository implements SubNode.NodeListener {
         this.currentNodes = new HashMap<>();
         this.rosConnected = new MutableLiveData<>(ConnectionType.DISCONNECTED);
         this.receivedData = new MutableLiveData<>();
+
     }
 
 

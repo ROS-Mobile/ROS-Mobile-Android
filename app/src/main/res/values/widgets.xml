@@ -11,6 +11,7 @@
         <item>Label</item>
         <item>Logger</item>
         <item>GLTest</item>
+        <item>TF</item>
     </string-array>
 
     <string-array name="widget_descr">
@@ -38,6 +39,7 @@
         <item>A Label which does not interact with ROS but helps to organize your screen.</item>
         <item>A Logger message which simply prints String messages published to set topic</item>
         <item>A test view for opengl</item>
+        <item>TF test</item>
     </string-array>
 
 

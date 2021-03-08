@@ -20,41 +20,41 @@ import android.content.Context;
 import android.graphics.PixelFormat;
 import android.opengl.GLSurfaceView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 
-import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
+import com.schneewittchen.rosandroid.widgets.gltest.layer.CameraControl;
 import com.schneewittchen.rosandroid.widgets.gltest.layer.Layer;
+import com.schneewittchen.rosandroid.widgets.gltest.layer.SubscriberLayer;
 
-import org.ros.namespace.GraphName;
-import org.ros.node.ConnectedNode;
-import org.ros.node.Node;
-import org.ros.node.NodeMain;
-import org.ros.node.NodeMainExecutor;
-import org.ros.node.topic.Subscriber;
+import org.ros.internal.message.Message;
 import org.ros.rosjava_geometry.FrameTransformTree;
 
 import java.util.Collections;
 import java.util.List;
 
+import geometry_msgs.TransformStamped;
 import tf2_msgs.TFMessage;
 
 
 /**
  * @author damonkohler@google.com (Damon Kohler)
  * @author moesenle@google.com (Lorenz Moesenlechner)
+ * @version 1.0.0
+ * @updated on 08.07.2021
+ * @modified by Nico Studt
  */
-public class VisualizationView extends GLSurfaceView implements NodeMain {
+public class VisualizationView extends GLSurfaceView {
 
-    private static final boolean DEBUG = false;
+    public static String TAG = VisualizationView.class.getSimpleName();
+    private static final boolean DEBUG = true;
 
-    private final Object mutex = new Object();
     private final FrameTransformTree frameTransformTree = new FrameTransformTree();
     private final XYOrthographicCamera camera = new XYOrthographicCamera(frameTransformTree);
-
+    private CameraControl cameraControl;
     private List<Layer> layers;
     private XYOrthographicRenderer renderer;
-    private ConnectedNode connectedNode;
 
 
     public VisualizationView(Context context) {
@@ -75,27 +75,25 @@ public class VisualizationView extends GLSurfaceView implements NodeMain {
             setDebugFlags(getDebugFlags() | DEBUG_LOG_GL_CALLS);
         }
 
-        setEGLConfigChooser(8, 8, 8, 8, 0, 0);
+        setEGLConfigChooser(8, 8, 8, 8, 16, 0);
+        setZOrderOnTop(true);
         getHolder().setFormat(PixelFormat.TRANSLUCENT);
         renderer = new XYOrthographicRenderer(this);
         setRenderer(renderer);
-    }
+        setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
 
-    public void init(NodeMainExecutor nodeMainExecutor) {
-        Preconditions.checkNotNull(layers);
-
-        for (Layer layer : layers) {
-            layer.init(nodeMainExecutor);
-        }
-    }
-
-    @Override
-    public GraphName getDefaultNodeName() {
-        return GraphName.of("android_15/visualization_view");
+        cameraControl = new CameraControl(this);
+        cameraControl.init(true, true, true);
+        camera.jumpToFrame("map");
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        if(cameraControl.onTouchEvent(event)) {
+            this.requestRender();
+            return true;
+        }
+
         for (Layer layer : Lists.reverse(layers)) {
             if (layer.onTouchEvent(this, event)) {
                 return true;
@@ -120,57 +118,34 @@ public class VisualizationView extends GLSurfaceView implements NodeMain {
         return Collections.unmodifiableList(layers);
     }
 
-    @Override
-    public void onStart(ConnectedNode connectedNode) {
-        this.connectedNode = connectedNode;
-        startTransformListener();
-        startLayers();
-    }
-
-    private void startTransformListener() {
-        final Subscriber<TFMessage> tfSubscriber =
-                connectedNode.newSubscriber("tf", tf2_msgs.TFMessage._TYPE);
-        tfSubscriber.addMessageListener(message -> {
-            synchronized (mutex) {
-                for (geometry_msgs.TransformStamped transform : message.getTransforms()) {
-                    frameTransformTree.update(transform);
-                }
-            }
-        });
-        final Subscriber<tf2_msgs.TFMessage> tfStaticSubscriber =
-                connectedNode.newSubscriber("tf_static", tf2_msgs.TFMessage._TYPE);
-        tfStaticSubscriber.addMessageListener(message -> {
-            synchronized (mutex) {
-                for (geometry_msgs.TransformStamped transform : message.getTransforms()) {
-                    frameTransformTree.update(transform);
-                }
-            }
-        });
-    }
-
-    private void startLayers() {
-        for (Layer layer : layers) {
-            layer.onStart(this, connectedNode);
-        }
-    }
 
     public void addLayer(Layer layer) {
         layers.add(layer);
     }
 
-    @Override
-    public void onShutdown(Node node) {
-        for (Layer layer : layers) {
-            layer.onShutdown(this, node);
+    public void onNewMessage(Message message) {
+        boolean dirtyView = false;
+
+        if (message instanceof TFMessage) {
+            TFMessage tf = (TFMessage) message;
+
+            for (TransformStamped transform: tf.getTransforms()) {
+                frameTransformTree.update(transform);
+            }
+
+            dirtyView = false;
         }
-        this.connectedNode = null;
-    }
 
-    @Override
-    public void onShutdownComplete(Node node) {
-    }
+        for(Layer layer: getLayers()) {
+            if (layer instanceof SubscriberLayer) {
+                if (((SubscriberLayer<?>)layer).reactOnMessage(this, message)) {
+                    dirtyView = true;
+                }
+            }
+        }
 
-    @Override
-    public void onError(Node node, Throwable throwable) {
+        if (dirtyView) {
+            this.requestRender();
+        }
     }
 }
