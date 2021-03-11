@@ -1,6 +1,6 @@
 package com.schneewittchen.rosandroid.widgets.gps;
 
-import com.schneewittchen.rosandroid.model.entities.SubscriberEntity;
+import com.schneewittchen.rosandroid.model.entities.widgets.SubscriberWidgetEntity;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.Topic;
 
 import sensor_msgs.NavSatFix;
@@ -16,7 +16,7 @@ import sensor_msgs.NavSatFix;
  * @modified by Nico Studt
  */
 
-public class GpsEntity extends SubscriberEntity {
+public class GpsEntity extends SubscriberWidgetEntity {
 
     public GpsEntity() {
         this.width = 8;

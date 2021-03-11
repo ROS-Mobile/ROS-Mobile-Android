@@ -11,17 +11,22 @@ import android.view.ViewGroup;
 
 import com.schneewittchen.rosandroid.BuildConfig;
 import com.schneewittchen.rosandroid.R;
+import com.schneewittchen.rosandroid.ui.views.widgets.WidgetGroupView;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.RosData;
-import com.schneewittchen.rosandroid.ui.views.BaseView;
-import com.schneewittchen.rosandroid.ui.views.PublisherView;
-import com.schneewittchen.rosandroid.ui.views.SubscriberView;
+import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.Topic;
+import com.schneewittchen.rosandroid.ui.views.widgets.IBaseView;
+import com.schneewittchen.rosandroid.ui.views.widgets.IPublisherView;
+import com.schneewittchen.rosandroid.ui.views.widgets.ISubscriberView;
+import com.schneewittchen.rosandroid.ui.views.widgets.LayerView;
+import com.schneewittchen.rosandroid.ui.views.widgets.WidgetView;
 import com.schneewittchen.rosandroid.utility.Constants;
 import com.schneewittchen.rosandroid.utility.Utils;
 import com.schneewittchen.rosandroid.ui.general.DataListener;
 import com.schneewittchen.rosandroid.ui.general.Position;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.node.BaseData;
-import com.schneewittchen.rosandroid.model.entities.BaseEntity;
-import com.schneewittchen.rosandroid.widgets.gltest.GLTestView;
+import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
+
+import org.ros.internal.message.Message;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
@@ -131,7 +136,9 @@ public class WidgetViewGroup extends ViewGroup {
         if(child.getVisibility() == GONE)
             return;
 
-        Position position = ((BaseView) child).getPosition();
+        Log.i(TAG, "Lol?: " + ((WidgetView)child));
+        Log.i(TAG, "Lol?: " + ((WidgetView)child).getWidgetEntity());
+        Position position = ((WidgetView) child).getPosition();
 
         // Y pos from bottom up
         int w = (int) (position.width * tileWidth);
@@ -168,17 +175,23 @@ public class WidgetViewGroup extends ViewGroup {
         }
     }
 
-    public void onNewData(RosData message) {
+    public void onNewData(RosData data) {
+        Message message = data.getMessage();
+        Topic topic = data.getTopic();
+
         for(int i = 0; i < this.getChildCount(); i++) {
-            Object view = this.getChildAt(i);
+            View view = this.getChildAt(i);
 
-            if (view instanceof SubscriberView) {
-                SubscriberView subView = (SubscriberView) view;
+            if(!(view instanceof ISubscriberView)) continue;
 
-                if (subView instanceof GLTestView) {
-                    subView.onNewMessage(message.getMessage());
-                } else if (subView.getTopic().equals(message.getTopic())){
-                    subView.onNewMessage(message.getMessage());
+            if(view instanceof WidgetGroupView) {
+                ((WidgetGroupView)view).onNewData(data);
+
+            } else {
+                IBaseView baseView = (IBaseView) view;
+
+                if (baseView.getWidgetEntity().topic.equals(topic)){
+                    ((ISubscriberView)view).onNewMessage(data.getMessage());
                 }
             }
         }
@@ -204,13 +217,11 @@ public class WidgetViewGroup extends ViewGroup {
                 BaseEntity oldWidget = widgetEntryMap.get(newWidget.id);
 
                 if (!oldWidget.equals(newWidget)){
-                    Log.i(TAG, "Update widget " + oldWidget.id);
                     changeViewFor(newWidget);
                     changes = true;
                 }
 
             } else{
-                Log.i(TAG, "Add widget " + newWidget.id);
                 addViewFor(newWidget);
                 changes = true;
             }
@@ -219,7 +230,6 @@ public class WidgetViewGroup extends ViewGroup {
         // Delete unused widgets
         for (Long id: widgetCheckMap.keySet()) {
             if (!widgetCheckMap.get(id)) {
-                Log.i(TAG, "Remove widget " + id);
                 removeViewFor(widgetEntryMap.get(id));
                 changes = true;
             }
@@ -236,6 +246,43 @@ public class WidgetViewGroup extends ViewGroup {
 
 
     private void addViewFor(BaseEntity entity) {
+        Log.i(TAG, "Add view for " + entity.name);
+
+        IBaseView baseView = createViewFrom(entity);
+
+        if (baseView == null) return;
+
+        baseView.setWidgetEntity(entity);
+
+        // Check if view is a group view and register the sub layers
+        if (baseView instanceof WidgetGroupView) {
+            WidgetGroupView groupView = (WidgetGroupView) baseView;
+
+            for (BaseEntity subEntity: entity.childEntities)  {
+                IBaseView subView = createViewFrom(subEntity);
+                subView.setWidgetEntity(subEntity);
+
+                if (!(subView instanceof LayerView))
+                    return;
+
+                groupView.addLayer((LayerView)subView);
+            }
+
+        }
+
+        // Set data listener if view is a pulisher
+        if (baseView instanceof IPublisherView) {
+            ((IPublisherView)baseView).setDataListener(this::informDataChange);
+        }
+
+        // Add as subview if the view is a widget view
+        if (baseView instanceof WidgetView) {
+            this.addView((WidgetView)baseView);
+        }
+
+    }
+
+    private IBaseView createViewFrom(BaseEntity entity) {
         // Create actual widget view object
         String classPath = BuildConfig.APPLICATION_ID
                 + String.format(Constants.VIEW_FORMAT, entity.type.toLowerCase(), entity.type);
@@ -246,45 +293,42 @@ public class WidgetViewGroup extends ViewGroup {
             Constructor<?> constructor = clazz.getConstructor(Context.class);
             object = constructor.newInstance(this.getContext());
 
-            if (!(object instanceof BaseView)) {
-                Log.i(TAG, "View can not be created from: " + classPath);
-                return;
-            }
-
         } catch (Exception e) {
-            return;
+            return null;
         }
 
-        // Init widget view
-        BaseView widgetView = (BaseView) object;
-        widgetView.setWidgetEntity(entity);
-        widgetView.updatePosition();
+        Log.i(TAG, "object is a : " + object.getClass().getCanonicalName());
 
-        if (widgetView instanceof PublisherView){
-            ((PublisherView)widgetView).setDataListener(this::informDataChange);
+
+        if (!(object instanceof IBaseView)) {
+            Log.i(TAG, "View can not be created from: " + classPath);
+            return null;
         }
 
-        this.addView(widgetView);
+        return (IBaseView) object;
     }
 
     private void changeViewFor(BaseEntity entity) {
-        for(int i = 0; i < this.getChildCount(); i++) {
-            BaseView view = (BaseView) this.getChildAt(i);
+        Log.i(TAG, "Change view for " + entity.name);
 
-            if (view.sameWidget(entity)) {
+        for(int i = 0; i < this.getChildCount(); i++) {
+            IBaseView view = (IBaseView) this.getChildAt(i);
+
+            if (view.sameWidgetEntity(entity)) {
                 view.setWidgetEntity(entity);
-                view.updatePosition();
                 return;
             }
         }
     }
 
     private void removeViewFor(BaseEntity entity) {
-        for(int i = 0; i < this.getChildCount(); i++) {
-            BaseView view = (BaseView) this.getChildAt(i);
+        Log.i(TAG, "Remove view for " + entity.name);
 
-            if (view.sameWidget(entity)) {
-                this.removeView(view);
+        for(int i = 0; i < this.getChildCount(); i++) {
+            IBaseView view = (IBaseView) this.getChildAt(i);
+
+            if (view.sameWidgetEntity(entity)) {
+                this.removeView((WidgetView)view);
                 return;
             }
         }

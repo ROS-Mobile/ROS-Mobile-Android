@@ -5,7 +5,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 
 import com.schneewittchen.rosandroid.ui.fragments.details.WidgetChangeListener;
-import com.schneewittchen.rosandroid.ui.views.BaseDetailSubscriberVH;
+import com.schneewittchen.rosandroid.ui.views.details.BaseDetailSubscriberVH;
 
 import java.util.Arrays;
 import java.util.List;

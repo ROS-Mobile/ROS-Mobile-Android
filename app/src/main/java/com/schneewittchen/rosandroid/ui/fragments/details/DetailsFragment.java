@@ -1,6 +1,5 @@
 package com.schneewittchen.rosandroid.ui.fragments.details;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,8 +22,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.viewmodel.DetailsViewModel;
-import com.schneewittchen.rosandroid.ui.views.BaseDetailViewHolder;
-import com.schneewittchen.rosandroid.model.entities.BaseEntity;
+import com.schneewittchen.rosandroid.ui.views.details.BaseDetailViewHolder;
+import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
 
 
 /**
@@ -38,7 +37,7 @@ import com.schneewittchen.rosandroid.model.entities.BaseEntity;
  */
 public class DetailsFragment extends Fragment implements RecyclerItemTouchHelper.TouchListener, WidgetChangeListener {
 
-    static final String TAG = "WidgetDetailsFragment";
+    static final String TAG = DetailsFragment.class.getSimpleName();
 
     private DetailsViewModel mViewModel;
     private CoordinatorLayout coordinatorLayout;
@@ -172,7 +171,6 @@ public class DetailsFragment extends Fragment implements RecyclerItemTouchHelper
 
     @Override
     public void onWidgetDetailsChanged(BaseEntity widgetEntity) {
-        Log.i(TAG, "Changed: " + widgetEntity.name + " " + widgetEntity.posX);
         mViewModel.updateWidget(widgetEntity);
     }
 }

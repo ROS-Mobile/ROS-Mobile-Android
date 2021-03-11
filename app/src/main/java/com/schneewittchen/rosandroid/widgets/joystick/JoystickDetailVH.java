@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.schneewittchen.rosandroid.R;
-import com.schneewittchen.rosandroid.ui.views.BaseDetailViewHolder;
+import com.schneewittchen.rosandroid.ui.views.details.BaseDetailViewHolder;
 import com.schneewittchen.rosandroid.ui.fragments.details.WidgetChangeListener;
 
 import java.util.Locale;

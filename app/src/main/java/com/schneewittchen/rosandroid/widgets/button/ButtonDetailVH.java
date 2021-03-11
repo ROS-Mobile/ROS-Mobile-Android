@@ -7,8 +7,11 @@ import android.widget.Spinner;
 
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.ui.fragments.details.WidgetChangeListener;
-import com.schneewittchen.rosandroid.ui.views.BaseDetailViewHolder;
+import com.schneewittchen.rosandroid.ui.views.details.BaseDetailViewHolder;
 import com.schneewittchen.rosandroid.utility.Utils;
+
+import androidx.annotation.NonNull;
+
 
 /**
  * TODO: Description
@@ -19,21 +22,18 @@ import com.schneewittchen.rosandroid.utility.Utils;
  * @updated on 18.11.2020
  * @modified by Nils Rottmann
  */
-
-
-import androidx.annotation.NonNull;
-
 public class ButtonDetailVH extends BaseDetailViewHolder<ButtonEntity> {
-    private EditText topicNameText;
 
+    private EditText topicNameText;
     private EditText textText;
     private Spinner rotationSpinner;
-
     private ArrayAdapter<CharSequence> rotationAdapter;
+
 
     public ButtonDetailVH(@NonNull View view, WidgetChangeListener updateListener) {
         super(view, updateListener);
     }
+
 
     @Override
     public void initView(View view) {

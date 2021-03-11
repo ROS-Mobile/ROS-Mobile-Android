@@ -8,15 +8,15 @@ import android.graphics.Paint;
 import android.preference.PreferenceManager;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
-import android.view.GestureDetector;
 
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
 import com.schneewittchen.rosandroid.R;
-import com.schneewittchen.rosandroid.ui.views.SubscriberView;
+import com.schneewittchen.rosandroid.ui.views.widgets.SubscriberWidgetView;
 import com.schneewittchen.rosandroid.utility.Utils;
 
 import org.osmdroid.api.IMapController;
@@ -46,9 +46,9 @@ import sensor_msgs.NavSatFix;
  */
 
 // TODO: Add maybe a button for getting back to gps position
-public class GpsView extends SubscriberView {
+public class GpsView extends SubscriberWidgetView {
     
-    public static final String TAG = "GpsView";
+    public static final String TAG = GpsView.class.getSimpleName();
 
     // Open Street Map (OSM)
     private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;

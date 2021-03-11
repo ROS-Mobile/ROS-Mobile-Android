@@ -12,9 +12,10 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 
 import com.schneewittchen.rosandroid.R;
-import com.schneewittchen.rosandroid.ui.views.PublisherView;
+import com.schneewittchen.rosandroid.ui.views.widgets.PublisherWidgetView;
 
 import androidx.annotation.Nullable;
+
 
 /**
  * TODO: Description
@@ -24,14 +25,18 @@ import androidx.annotation.Nullable;
  * @created on 02.11.2020
  * @updated on 18.11.2020
  * @modified by Nils Rottmann
+ * @updated on 10.03.2021
+ * @modified by Nico Studt
  */
 
-public class ButtonView extends PublisherView {
-    public static final String TAG = "ButtonView";
+public class ButtonView extends PublisherWidgetView {
+
+    public static final String TAG = ButtonView.class.getSimpleName();
 
     Paint buttonPaint;
     TextPaint textPaint;
     StaticLayout staticLayout;
+
 
     public ButtonView(Context context) {
         super(context);
@@ -42,6 +47,7 @@ public class ButtonView extends PublisherView {
         super(context, attrs);
         init();
     }
+
 
     private void init() {
         buttonPaint = new Paint();
@@ -61,7 +67,7 @@ public class ButtonView extends PublisherView {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        switch(event.getActionMasked()) {
+        switch (event.getActionMasked()) {
             case MotionEvent.ACTION_UP:
                 buttonPaint.setColor(getResources().getColor(R.color.colorPrimary));
                 changeState(false);
@@ -90,7 +96,7 @@ public class ButtonView extends PublisherView {
             textLayoutWidth = height;
         }
 
-        canvas.drawRect(new Rect(0,0,(int)width,(int)height),buttonPaint);
+        canvas.drawRect(new Rect(0, 0, (int) width, (int) height), buttonPaint);
 
         staticLayout = new StaticLayout(entity.text,
                 textPaint,
@@ -100,8 +106,8 @@ public class ButtonView extends PublisherView {
                 0,
                 false);
         canvas.save();
-        canvas.rotate(entity.rotation,width / 2,height / 2);
-        canvas.translate( ((width / 2)-staticLayout.getWidth()/2), height / 2 - staticLayout.getHeight() / 2);
+        canvas.rotate(entity.rotation, width / 2, height / 2);
+        canvas.translate(((width / 2) - staticLayout.getWidth() / 2), height / 2 - staticLayout.getHeight() / 2);
         staticLayout.draw(canvas);
         canvas.restore();
     }

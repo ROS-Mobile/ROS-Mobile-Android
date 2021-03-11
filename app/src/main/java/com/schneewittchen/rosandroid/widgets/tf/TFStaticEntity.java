@@ -1,6 +1,6 @@
 package com.schneewittchen.rosandroid.widgets.tf;
 
-import com.schneewittchen.rosandroid.model.entities.SubscriberEntity;
+import com.schneewittchen.rosandroid.model.entities.widgets.SubscriberLayerEntity;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.Topic;
 
 import tf2_msgs.TFMessage;
@@ -15,7 +15,7 @@ import tf2_msgs.TFMessage;
  * @updated on
  * @modified by
  */
-public class TFStaticEntity extends SubscriberEntity {
+public class TFStaticEntity extends SubscriberLayerEntity {
 
 
     public TFStaticEntity() {

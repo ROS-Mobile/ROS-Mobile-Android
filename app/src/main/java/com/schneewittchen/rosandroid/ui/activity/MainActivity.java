@@ -3,6 +3,7 @@ package com.schneewittchen.rosandroid.ui.activity;
 import android.Manifest;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -10,9 +11,14 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import com.schneewittchen.rosandroid.R;
+import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
+import com.schneewittchen.rosandroid.model.entities.WidgetStorageData;
+import com.schneewittchen.rosandroid.model.general.GsonWidgetParser;
 import com.schneewittchen.rosandroid.ui.fragments.intro.IntroFragment;
 import com.schneewittchen.rosandroid.ui.fragments.main.MainFragment;
 import com.schneewittchen.rosandroid.ui.fragments.main.OnBackPressedListener;
+import com.schneewittchen.rosandroid.widgets.path.PathEntity;
+import com.schneewittchen.rosandroid.widgets.viz2d.Viz2DEntity;
 
 
 /**
@@ -28,6 +34,7 @@ import com.schneewittchen.rosandroid.ui.fragments.main.OnBackPressedListener;
  */
 public class MainActivity extends AppCompatActivity {
 
+    public static String TAG = MainActivity.class.getSimpleName();
     private static final int LOCATION_PERM = 101;
 
 

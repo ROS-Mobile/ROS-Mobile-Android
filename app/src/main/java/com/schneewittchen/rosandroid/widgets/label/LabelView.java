@@ -10,7 +10,7 @@ import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 
-import com.schneewittchen.rosandroid.ui.views.BaseView;
+import com.schneewittchen.rosandroid.ui.views.widgets.SubscriberWidgetView;
 
 import javax.annotation.Nullable;
 
@@ -24,8 +24,9 @@ import javax.annotation.Nullable;
  * @modified by Nils Rottmann
  */
 
-public class LabelView extends BaseView {
-    public  static final String TAG = "LabelView";
+public class LabelView extends SubscriberWidgetView {
+
+    public  static final String TAG = LabelView.class.getSimpleName();
 
     TextPaint textPaint;
     Paint backgroundPaint;

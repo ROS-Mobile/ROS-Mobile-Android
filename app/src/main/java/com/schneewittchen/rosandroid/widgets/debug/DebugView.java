@@ -5,7 +5,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -16,7 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.core.view.GestureDetectorCompat;
 
 import com.schneewittchen.rosandroid.R;
-import com.schneewittchen.rosandroid.ui.views.SubscriberView;
+import com.schneewittchen.rosandroid.ui.views.widgets.SubscriberWidgetView;
 import com.schneewittchen.rosandroid.utility.Utils;
 
 import org.ros.internal.message.Message;
@@ -33,9 +32,9 @@ import java.util.ArrayList;
  * @updated on 17.09.20
  * @modified by Nils Rottmann
  */
-public class DebugView extends SubscriberView {
+public class DebugView extends SubscriberWidgetView {
 
-    public static final String TAG = "DebugView";
+    public static final String TAG = DebugView.class.getSimpleName();
 
     // Canvas parameter
     private Paint paint;

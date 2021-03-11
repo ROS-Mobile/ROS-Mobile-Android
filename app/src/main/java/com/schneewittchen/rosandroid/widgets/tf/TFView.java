@@ -1,26 +1,14 @@
 package com.schneewittchen.rosandroid.widgets.tf;
 
 import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Rect;
-import android.text.Layout;
-import android.text.StaticLayout;
-import android.text.TextPaint;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.MotionEvent;
 
 import androidx.annotation.Nullable;
 
-import com.schneewittchen.rosandroid.R;
-import com.schneewittchen.rosandroid.ui.views.PublisherView;
-import com.schneewittchen.rosandroid.ui.views.SubscriberView;
+import com.schneewittchen.rosandroid.ui.views.widgets.SubscriberWidgetView;
 
 import org.ros.internal.message.Message;
 
-import geometry_msgs.TransformStamped;
 import tf2_msgs.TFMessage;
 
 /**
@@ -33,7 +21,7 @@ import tf2_msgs.TFMessage;
  * @modified by Nils Rottmann
  */
 
-public class TFView extends SubscriberView {
+public class TFView extends SubscriberWidgetView {
 
     public static final String TAG = TFView.class.getSimpleName();
 

@@ -5,7 +5,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.schneewittchen.rosandroid.model.entities.WidgetStorageData;
-import com.schneewittchen.rosandroid.model.entities.BaseEntity;
+import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;

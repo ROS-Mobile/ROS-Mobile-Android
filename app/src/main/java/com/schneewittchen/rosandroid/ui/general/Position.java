@@ -17,6 +17,10 @@ public class Position {
     public int height;
 
 
+    public Position() {
+        this(0, 0, 0, 0);
+    }
+
     public Position(int x, int y, int width, int height) {
         this.x = x;
         this.y = y;

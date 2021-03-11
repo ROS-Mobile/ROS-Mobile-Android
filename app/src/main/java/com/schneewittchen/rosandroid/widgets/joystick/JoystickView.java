@@ -3,16 +3,14 @@ package com.schneewittchen.rosandroid.widgets.joystick;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 
 import androidx.annotation.Nullable;
 
 import com.schneewittchen.rosandroid.R;
+import com.schneewittchen.rosandroid.ui.views.widgets.PublisherWidgetView;
 import com.schneewittchen.rosandroid.utility.Utils;
-import com.schneewittchen.rosandroid.ui.views.PublisherView;
 
 
 /**
@@ -22,7 +20,7 @@ import com.schneewittchen.rosandroid.ui.views.PublisherView;
  * @version 1.1.0
  * @created on 18.10.19
  */
-public class JoystickView extends PublisherView {
+public class JoystickView extends PublisherWidgetView {
 
     public static final String TAG = JoystickView.class.getSimpleName();
 
@@ -103,7 +101,6 @@ public class JoystickView extends PublisherView {
 
         float[] px = convertFromPolarToPx(posX, posY);
 
-        canvas.drawRect(5, 5, getRight()-5, getBottom()-5, outerPaint);
         // Outer ring
         canvas.drawCircle(width/2, height/2, width/2-joystickRadius, outerPaint);
 

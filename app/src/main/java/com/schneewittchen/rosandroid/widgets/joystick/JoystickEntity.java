@@ -1,7 +1,7 @@
 package com.schneewittchen.rosandroid.widgets.joystick;
 
+import com.schneewittchen.rosandroid.model.entities.widgets.PublisherWidgetEntity;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.Topic;
-import com.schneewittchen.rosandroid.model.entities.PublisherEntity;
 
 import geometry_msgs.Twist;
 
@@ -15,7 +15,7 @@ import geometry_msgs.Twist;
  * @updated on 10.05.20
  * @modified by Nico Studt
  */
-public class JoystickEntity extends PublisherEntity {
+public class JoystickEntity extends PublisherWidgetEntity {
 
     public String xAxisMapping;
     public String yAxisMapping;

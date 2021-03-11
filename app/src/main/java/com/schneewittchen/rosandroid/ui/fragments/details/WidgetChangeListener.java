@@ -1,6 +1,6 @@
 package com.schneewittchen.rosandroid.ui.fragments.details;
 
-import com.schneewittchen.rosandroid.model.entities.BaseEntity;
+import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
 
 
 /**

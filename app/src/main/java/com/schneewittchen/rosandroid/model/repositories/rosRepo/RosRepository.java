@@ -2,6 +2,7 @@ package com.schneewittchen.rosandroid.model.repositories.rosRepo;
 
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.Entity;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
@@ -11,6 +12,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.schneewittchen.rosandroid.model.entities.MasterEntity;
+import com.schneewittchen.rosandroid.model.entities.widgets.IPublisherEntity;
+import com.schneewittchen.rosandroid.model.entities.widgets.ISubscriberEntity;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.connection.ConnectionCheckTask;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.connection.ConnectionListener;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.connection.ConnectionType;
@@ -21,11 +24,10 @@ import com.schneewittchen.rosandroid.model.repositories.rosRepo.node.NodeMainExe
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.node.PubNode;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.node.SubNode;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.Topic;
-import com.schneewittchen.rosandroid.utility.Utils;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.node.BaseData;
-import com.schneewittchen.rosandroid.model.entities.BaseEntity;
-import com.schneewittchen.rosandroid.model.entities.PublisherEntity;
-import com.schneewittchen.rosandroid.model.entities.SubscriberEntity;
+import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
+import com.schneewittchen.rosandroid.model.entities.widgets.PublisherLayerEntity;
+import com.schneewittchen.rosandroid.model.entities.widgets.SubscriberLayerEntity;
 
 import org.ros.address.InetAddressFactory;
 import org.ros.internal.node.client.MasterClient;
@@ -54,6 +56,8 @@ import java.util.List;
  * @modified by Nico Studt
  * @updated on 16.11.2020
  * @modified by Nils Rottmann
+ * @updated on 10.03.2021
+ * @modified by Nico Studt
  */
 public class RosRepository implements SubNode.NodeListener {
 
@@ -188,6 +192,16 @@ public class RosRepository implements SubNode.NodeListener {
      * @param newWidgets Current list of widgets
      */
     public void updateWidgets(List<BaseEntity> newWidgets) {
+        // Unpack widgets as a widget can contain child widgets
+        List<BaseEntity> newEntities = new ArrayList<>();
+        for(BaseEntity baseEntity: newWidgets) {
+            if (baseEntity.childEntities.isEmpty()) {
+                newEntities.add(baseEntity);
+            } else{
+                newEntities.addAll(baseEntity.childEntities);
+            }
+        }
+
         // Compare old and new widget lists
 
         // Create widget check with ids
@@ -199,7 +213,7 @@ public class RosRepository implements SubNode.NodeListener {
             widgetEntryMap.put(oldWidget.id, oldWidget);
         }
 
-        for (BaseEntity newWidget: newWidgets) {
+        for (BaseEntity newWidget: newEntities) {
             if (widgetCheckMap.containsKey(newWidget.id)) {
                 // Node included in old and new list
 
@@ -225,7 +239,6 @@ public class RosRepository implements SubNode.NodeListener {
 
         this.currentWidgets.clear();
         this.currentWidgets.addAll(newWidgets);
-
     }
 
     /**
@@ -263,10 +276,10 @@ public class RosRepository implements SubNode.NodeListener {
         // Create a new node from widget
         AbstractNode node;
 
-        if (widget instanceof PublisherEntity) {
+        if (widget instanceof IPublisherEntity) {
             node = new PubNode();
 
-        } else if (widget instanceof SubscriberEntity) {
+        } else if (widget instanceof ISubscriberEntity) {
             node = new SubNode(this);
 
         }else {

@@ -15,7 +15,7 @@ import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.RosData;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.Topic;
 import com.schneewittchen.rosandroid.utility.LambdaTask;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.node.BaseData;
-import com.schneewittchen.rosandroid.model.entities.BaseEntity;
+import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
 
 import java.util.List;
 
@@ -34,6 +34,8 @@ import java.util.List;
  * @modified by Nils Rottmann
  * @updated on 16.11.20
  * @modified by Nils Rottmann
+ * @updated on 10.03.21
+ * @modified by Nico Studt
  */
 public class RosDomain {
 
@@ -79,8 +81,9 @@ public class RosDomain {
         rosRepo.publishData(data);
     }
 
-    public void createWidget(String widgetType) {
-        new LambdaTask(() -> configRepository.createWidget(widgetType)).execute();
+
+    public void createWidget(String parent, String widgetType) {
+        new LambdaTask(() -> configRepository.createWidget(parent, widgetType)).execute();
     }
 
     public void addWidget(BaseEntity widget) {

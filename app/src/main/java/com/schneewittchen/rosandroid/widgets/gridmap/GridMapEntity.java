@@ -1,7 +1,6 @@
 package com.schneewittchen.rosandroid.widgets.gridmap;
 
-
-import com.schneewittchen.rosandroid.model.entities.SubscriberEntity;
+import com.schneewittchen.rosandroid.model.entities.widgets.SubscriberWidgetEntity;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.Topic;
 
 
@@ -16,7 +15,7 @@ import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.Topic;
  * @updated on 27.10.2020
  * @modified by Nico Studt
  */
-public class GridMapEntity extends SubscriberEntity {
+public class GridMapEntity extends SubscriberWidgetEntity {
 
     public GridMapEntity() {
         this.width = 6;

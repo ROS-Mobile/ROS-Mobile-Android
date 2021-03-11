@@ -1,6 +1,6 @@
 package com.schneewittchen.rosandroid.widgets.tf;
 
-import com.schneewittchen.rosandroid.model.entities.BaseEntity;
+import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.node.BaseData;
 
 import org.ros.internal.message.Message;

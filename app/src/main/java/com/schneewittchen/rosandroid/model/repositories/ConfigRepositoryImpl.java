@@ -11,10 +11,11 @@ import com.schneewittchen.rosandroid.model.db.DataStorage;
 import com.schneewittchen.rosandroid.model.entities.ConfigEntity;
 import com.schneewittchen.rosandroid.model.entities.MasterEntity;
 import com.schneewittchen.rosandroid.model.entities.SSHEntity;
+import com.schneewittchen.rosandroid.model.entities.widgets.I2DLayerEntity;
 import com.schneewittchen.rosandroid.utility.Constants;
 import com.schneewittchen.rosandroid.utility.LambdaTask;
 import com.schneewittchen.rosandroid.utility.Utils;
-import com.schneewittchen.rosandroid.model.entities.BaseEntity;
+import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
 
 import java.util.List;
 import java.util.Locale;
@@ -43,6 +44,7 @@ public class ConfigRepositoryImpl implements ConfigRepository {
 
     private final DataStorage mDataStorage;
     private final MediatorLiveData<Long> mCurrentConfigId;
+    private LiveData<List<BaseEntity>> currentWidgets;
 
 
     private ConfigRepositoryImpl(Application application){
@@ -141,19 +143,42 @@ public class ConfigRepositoryImpl implements ConfigRepository {
     // WIDGETS -------------------------------------------------------------------------------------
 
     @Override
-    public void createWidget(String widgetType) {
+    public void createWidget(String parent, String widgetType) {
+        BaseEntity widget = getWidgetFromType(widgetType);
+        if (widget == null) return;
+
+        else if(widget instanceof I2DLayerEntity) {
+            // Check for parent
+            if (parent != null) {
+                BaseEntity parentEntity = mDataStorage.getWidget(widget.configId, parent);
+                parentEntity.childEntities.add(widget);
+                mDataStorage.updateWidget(parentEntity);
+
+            } else{
+                BaseEntity parentEntity = getWidgetFromType("Viz2D");
+                parentEntity.childEntities.add(widget);
+                mDataStorage.addWidget(parentEntity);
+            }
+
+        } else {
+            mDataStorage.addWidget(widget);
+        }
+
+        Log.i(TAG, "Widget added to database: " + widget.type);
+    }
+
+    private BaseEntity getWidgetFromType(String widgetType) {
         // Create actual widget object
         String classPath = String.format(Constants.ENTITY_FORMAT, widgetType.toLowerCase(), widgetType);
+
         Object object = Utils.getObjectFromClassName(classPath);
 
         if (!(object instanceof BaseEntity)) {
             Log.i(TAG, "Widget can not be created from: " + classPath);
-            return;
+            return null;
         }
 
         BaseEntity widget = (BaseEntity) object;
-
-        Log.i(TAG, "Widget" + widget);
         long configId = mCurrentConfigId.getValue();
 
         String widgetName = "";
@@ -170,9 +195,7 @@ public class ConfigRepositoryImpl implements ConfigRepository {
         widget.name = widgetName;
         widget.type = widgetType;
 
-        mDataStorage.addWidget(widget);
-        Log.i(TAG, "Widget added to database: " + widget);
-
+        return widget;
     }
 
     @Override
@@ -194,6 +217,7 @@ public class ConfigRepositoryImpl implements ConfigRepository {
 
     @Override
     public LiveData<List<BaseEntity>> getWidgets(long id) {
+        currentWidgets = mDataStorage.getWidgets(id);
         return mDataStorage.getWidgets(id);
     }
 

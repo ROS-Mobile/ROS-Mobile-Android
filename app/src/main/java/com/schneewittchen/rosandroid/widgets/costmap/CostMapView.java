@@ -5,16 +5,13 @@ import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
-import androidx.annotation.Nullable;
-
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.ui.general.MatrixGestureDetector;
+import com.schneewittchen.rosandroid.ui.views.widgets.SubscriberWidgetView;
 import com.schneewittchen.rosandroid.utility.Utils;
-import com.schneewittchen.rosandroid.ui.views.SubscriberView;
 
 import org.ros.internal.message.Message;
 
@@ -30,7 +27,7 @@ import nav_msgs.OccupancyGrid;
  * @updated on 22.10.2020
  * @modified by Nico Studt
  */
-public class CostMapView extends SubscriberView implements View.OnTouchListener {
+public class CostMapView extends SubscriberWidgetView implements View.OnTouchListener {
 
     public static final String TAG = CostMapView.class.getSimpleName();
 

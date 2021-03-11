@@ -9,7 +9,7 @@ import androidx.lifecycle.MediatorLiveData;
 
 import com.schneewittchen.rosandroid.domain.RosDomain;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.Topic;
-import com.schneewittchen.rosandroid.model.entities.BaseEntity;
+import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
 
 import java.util.List;
 
@@ -43,7 +43,8 @@ public class DetailsViewModel extends AndroidViewModel {
 
 
     public void createWidget(String selectedText) {
-        rosDomain.createWidget(selectedText);
+        //rosDomain.createWidget(null, selectedText);
+        rosDomain.createWidget("Viz2D 1", selectedText);
     }
 
     public void updateWidget(BaseEntity widget) {

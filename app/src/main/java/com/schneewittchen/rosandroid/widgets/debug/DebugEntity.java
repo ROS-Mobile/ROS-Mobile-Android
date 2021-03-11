@@ -1,6 +1,6 @@
 package com.schneewittchen.rosandroid.widgets.debug;
 
-import com.schneewittchen.rosandroid.model.entities.SubscriberEntity;
+import com.schneewittchen.rosandroid.model.entities.widgets.SubscriberWidgetEntity;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.Topic;
 
 import org.ros.node.topic.Subscriber;
@@ -15,7 +15,7 @@ import org.ros.node.topic.Subscriber;
  * @updated on 17.09.20
  * @modified by Nils Rottmann
  */
-public class DebugEntity extends SubscriberEntity {
+public class DebugEntity extends SubscriberWidgetEntity {
 
     public int numberMessages;
 

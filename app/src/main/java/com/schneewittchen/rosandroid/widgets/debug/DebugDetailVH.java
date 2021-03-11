@@ -8,10 +8,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
-import com.google.android.material.textfield.TextInputEditText;
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.ui.fragments.details.WidgetChangeListener;
-import com.schneewittchen.rosandroid.ui.views.BaseDetailSubscriberVH;
+import com.schneewittchen.rosandroid.ui.views.details.BaseDetailSubscriberVH;
 import com.schneewittchen.rosandroid.utility.Utils;
 
 import java.util.ArrayList;

@@ -2,12 +2,11 @@ package com.schneewittchen.rosandroid.widgets.logger;
 
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.ui.fragments.details.WidgetChangeListener;
-import com.schneewittchen.rosandroid.ui.views.BaseDetailSubscriberVH;
+import com.schneewittchen.rosandroid.ui.views.details.BaseDetailSubscriberVH;
 import com.schneewittchen.rosandroid.utility.Utils;
 
 import androidx.annotation.NonNull;

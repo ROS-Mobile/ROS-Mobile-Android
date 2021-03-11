@@ -1,7 +1,7 @@
 package com.schneewittchen.rosandroid.widgets.costmap;
 
+import com.schneewittchen.rosandroid.model.entities.widgets.SubscriberWidgetEntity;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.Topic;
-import com.schneewittchen.rosandroid.model.entities.SubscriberEntity;
 
 import nav_msgs.OccupancyGrid;
 
@@ -15,7 +15,7 @@ import nav_msgs.OccupancyGrid;
  * @updated on 23.10.2020
  * @modified by Nico Studt
  */
-public class CostMapEntity extends SubscriberEntity {
+public class CostMapEntity extends SubscriberWidgetEntity {
     
     public CostMapEntity() {
         this.width = 6;

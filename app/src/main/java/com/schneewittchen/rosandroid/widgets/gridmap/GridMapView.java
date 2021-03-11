@@ -14,7 +14,7 @@ import androidx.annotation.Nullable;
 
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.ui.general.MatrixGestureDetector;
-import com.schneewittchen.rosandroid.ui.views.SubscriberView;
+import com.schneewittchen.rosandroid.ui.views.widgets.SubscriberWidgetView;
 import com.schneewittchen.rosandroid.utility.Utils;
 
 import org.ros.internal.message.Message;
@@ -31,9 +31,9 @@ import nav_msgs.OccupancyGrid;
  * @updated on 13.05.20
  * @modified by Nico Studt
  */
-public class GridMapView extends SubscriberView implements View.OnTouchListener {
+public class GridMapView extends SubscriberWidgetView implements View.OnTouchListener {
 
-    public static final String TAG = "GridmapView";
+    public static final String TAG = GridMapView.class.getSimpleName();
 
     // Grid Map Information
     private GridMapData data;

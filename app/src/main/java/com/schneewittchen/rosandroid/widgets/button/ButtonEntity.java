@@ -1,10 +1,10 @@
 package com.schneewittchen.rosandroid.widgets.button;
 
-import com.schneewittchen.rosandroid.model.entities.PublisherEntity;
-
+import com.schneewittchen.rosandroid.model.entities.widgets.PublisherWidgetEntity;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.Topic;
 
 import std_msgs.Bool;
+
 
 /**
  * TODO: Description
@@ -16,17 +16,17 @@ import std_msgs.Bool;
  * @modified by Nils Rottmann
  */
 
-public class ButtonEntity extends PublisherEntity {
+public class ButtonEntity extends PublisherWidgetEntity {
 
     public String text;
     public int rotation;
 
-    public ButtonEntity(){
-        this.width=3;
-        this.height=4;
+
+    public ButtonEntity() {
+        this.width = 3;
+        this.height = 4;
         this.topic = new Topic("btn_press", Bool._TYPE);
         this.immediatePublish = true;
-        this.publishRate = 20f;
         this.text = "A button";
         this.rotation = 0;
     }

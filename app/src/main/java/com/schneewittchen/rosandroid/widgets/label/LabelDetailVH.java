@@ -7,7 +7,7 @@ import android.widget.Spinner;
 
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.ui.fragments.details.WidgetChangeListener;
-import com.schneewittchen.rosandroid.ui.views.BaseDetailViewHolder;
+import com.schneewittchen.rosandroid.ui.views.details.BaseDetailViewHolder;
 import com.schneewittchen.rosandroid.utility.Utils;
 import androidx.annotation.NonNull;
 

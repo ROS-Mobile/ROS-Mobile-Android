@@ -12,6 +12,10 @@
         <item>Logger</item>
         <item>GLTest</item>
         <item>TF</item>
+        <item>Path</item>
+        <item>CostMap2D</item>
+        <item>Viz2D</item>
+        <item>Pose</item>
     </string-array>
 
     <string-array name="widget_descr">
@@ -40,6 +44,10 @@
         <item>A Logger message which simply prints String messages published to set topic</item>
         <item>A test view for opengl</item>
         <item>TF test</item>
+        <item>Path view</item>
+        <item>Costmap 2d View</item>
+        <item>2D View of multiple layers</item>
+        <item>Pose view</item>
     </string-array>
 
 
