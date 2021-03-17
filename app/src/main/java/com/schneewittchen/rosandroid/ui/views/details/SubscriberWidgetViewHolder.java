@@ -20,8 +20,9 @@ public abstract class SubscriberWidgetViewHolder extends DetailViewHolder {
 
 
     public SubscriberWidgetViewHolder() {
-        widgetViewHolder = new WidgetViewHolder();
-        subscriberViewHolder = new SubscriberViewHolder();
+        this.widgetViewHolder = new WidgetViewHolder();
+        this.subscriberViewHolder = new SubscriberViewHolder();
+        this.subscriberViewHolder.topicTypes = this.getTopicTypes();
     }
 
 

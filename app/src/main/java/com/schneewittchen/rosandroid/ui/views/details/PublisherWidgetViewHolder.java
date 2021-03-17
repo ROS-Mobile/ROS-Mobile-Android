@@ -1,11 +1,12 @@
 package com.schneewittchen.rosandroid.ui.views.details;
 
-import android.util.Log;
 import android.view.View;
 
 import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
+import com.schneewittchen.rosandroid.viewmodel.DetailsViewModel;
 
-import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * TODO: Description
@@ -21,10 +22,20 @@ public abstract class PublisherWidgetViewHolder extends DetailViewHolder {
 
 
     public PublisherWidgetViewHolder() {
-        widgetViewHolder = new WidgetViewHolder();
-        publisherViewHolder = new PublisherViewHolder(viewModel, new ArrayList<>());
+        this.widgetViewHolder = new WidgetViewHolder();
+        this.publisherViewHolder = new PublisherViewHolder();
+        this.publisherViewHolder.topicTypes = this.getTopicTypes();
     }
 
+
+    public abstract List<String> getTopicTypes();
+
+
+    @Override
+    public void setViewModel(DetailsViewModel viewModel) {
+        super.setViewModel(viewModel);
+        publisherViewHolder.viewModel = viewModel;
+    }
 
     public void baseInitView(View view) {
         widgetViewHolder.baseInitView(view);

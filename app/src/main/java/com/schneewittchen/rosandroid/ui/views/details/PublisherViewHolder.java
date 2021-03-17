@@ -1,23 +1,19 @@
 package com.schneewittchen.rosandroid.ui.views.details;
 
-import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
+import android.view.inputmethod.EditorInfo;
+import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.Topic;
+import com.schneewittchen.rosandroid.utility.Utils;
 import com.schneewittchen.rosandroid.viewmodel.DetailsViewModel;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-
-import nav_msgs.OccupancyGrid;
 
 /**
  * TODO: Description
@@ -26,7 +22,7 @@ import nav_msgs.OccupancyGrid;
  * @version 1.0.0
  * @created on 17.03.21
  */
-public class PublisherViewHolder implements IBaseViewHolder {
+public class PublisherViewHolder implements IBaseViewHolder, TextView.OnEditorActionListener{
 
     public static final String TAG = PublisherViewHolder.class.getSimpleName();
 
@@ -38,17 +34,14 @@ public class PublisherViewHolder implements IBaseViewHolder {
     public DetailsViewModel viewModel;
 
 
-    public PublisherViewHolder(DetailsViewModel viewModel, List<String> topicTypes) {
-        this.viewModel = viewModel;
-        this.topicTypes = topicTypes;
-    }
-
     @Override
     public void baseInitView(View widgetView) {
-
         // Initialize Topic Edittext
-        topicTypeEditText = widgetView.findViewById(R.id.topicTypeEditText);
         topicNameEditText = widgetView.findViewById(R.id.topicNameEditText);
+        topicTypeEditText = widgetView.findViewById(R.id.topicTypeEditText);
+
+        topicNameEditText.setOnEditorActionListener(this);
+        topicTypeEditText.setOnEditorActionListener(this);
 
         // Initialize Topic Name Spinner
         topicNameItemList = new ArrayList<>();
@@ -75,9 +68,6 @@ public class PublisherViewHolder implements IBaseViewHolder {
 
     @Override
     public void baseBindEntity(BaseEntity entity) {
-        Log.i(TAG, "Base bind " + entity);
-        Log.i(TAG, "Topic " + entity.topic);
-        Log.i(TAG, "Name " + entity.topic.name);
         String topicName = entity.topic.name;
         String messageType = entity.topic.type;
 
@@ -104,31 +94,18 @@ public class PublisherViewHolder implements IBaseViewHolder {
         //itemView.requestFocus();
     }
 
-    private void updateTopicNameSpinner() {
-        // Get the list with all suitable topics
-        topicNameItemList = new ArrayList<>();
 
-        availableTopics = viewModel.getTopicList();
-
-        for (Topic rosTopic: availableTopics) {
-            if (topicTypes.isEmpty()) {
-                topicNameItemList.add(rosTopic.name);
-            }
-
-            for (String topicType: topicTypes) {
-                if (rosTopic.type.equals(topicType)) {
-                    topicNameItemList.add(rosTopic.name);
-                    break;
-                }
-            }
+    @Override
+    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+        switch (actionId){
+            case EditorInfo.IME_ACTION_DONE:
+            case EditorInfo.IME_ACTION_NEXT:
+            case EditorInfo.IME_ACTION_PREVIOUS:
+                Utils.hideSoftKeyboard(v);
+                v.clearFocus();
+                return true;
         }
 
-        // Ros has no topics -> Default name
-        if (topicNameItemList.isEmpty()) {
-            //TODO: topicNameItemList.add(entity.topic.name);
-        } else{
-            Collections.sort(topicNameItemList);
-        }
-
+        return false;
     }
 }

@@ -94,4 +94,15 @@ public class DetailsViewModel extends AndroidViewModel {
         selectedPath.add(widgetName);
         Log.i(TAG, selectedPath.size() + " ");
     }
+
+    public void popPath(int steps) {
+        for (int i = 0; i < steps; i++) {
+            if (selectedPath.isEmpty()) return;
+            selectedPath.remove(selectedPath.size()-1);
+        }
+    }
+
+    public List<String> getWidgetPath() {
+        return selectedPath;
+    }
 }

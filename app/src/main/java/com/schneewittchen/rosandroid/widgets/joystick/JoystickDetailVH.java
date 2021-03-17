@@ -15,7 +15,14 @@ import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
 import com.schneewittchen.rosandroid.ui.fragments.details.WidgetChangeListener;
 import com.schneewittchen.rosandroid.ui.views.details.PublisherWidgetViewHolder;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
+
+import geometry_msgs.Twist;
+import sensor_msgs.Image;
 
 
 /**
@@ -112,28 +119,29 @@ public class JoystickDetailVH extends PublisherWidgetViewHolder {
 
     @Override
     public void updateEntity(BaseEntity entity) {
-        /*
+        JoystickEntity widget = (JoystickEntity) entity;
+
         // Update Topic name
         Editable newTopicName = topicNameEditText.getText();
 
         if(newTopicName != null && newTopicName.length() > 0) {
-            entity.topic.name = newTopicName.toString();
+            widget.topic.name = newTopicName.toString();
         } else {
-            topicNameEditText.setText(entity.topic.name);
+            topicNameEditText.setText(widget.topic.name);
         }
 
         // Update Topic Type
         Editable newTopicType = topicTypeEditText.getText();
 
         if(newTopicType != null && newTopicType.length() > 0) {
-            entity.topic.type = newTopicType.toString();
+            widget.topic.type = newTopicType.toString();
         }else {
-            topicTypeEditText.setText(entity.topic.type);
+            topicTypeEditText.setText(widget.type);
         }
 
         // Update joystick parameters
-        entity.xAxisMapping = xDirSpinner.getSelectedItem() + "/" + xAxisSpinner.getSelectedItem();
-        entity.yAxisMapping = yDirSpinner.getSelectedItem() + "/" + yAxisSpinner.getSelectedItem();
+        widget.xAxisMapping = xDirSpinner.getSelectedItem() + "/" + xAxisSpinner.getSelectedItem();
+        widget.yAxisMapping = yDirSpinner.getSelectedItem() + "/" + yAxisSpinner.getSelectedItem();
 
         for (String str: new String[]{"xScaleLeft", "xScaleRight", "yScaleLeft", "yScaleRight"}) {
             try {
@@ -142,11 +150,15 @@ public class JoystickDetailVH extends PublisherWidgetViewHolder {
                 assert editText != null;
                 float value = Float.parseFloat(editText.getText().toString());
 
-                entity.getClass().getField(str).set(entity, value);
+                widget.getClass().getField(str).set(entity, value);
 
             } catch (Exception ignored) {
             }
         }
-         */
+    }
+
+    @Override
+    public List<String> getTopicTypes() {
+        return Arrays.asList(Twist._TYPE);
     }
 }
