@@ -121,7 +121,6 @@ public class WidgetViewGroup extends ViewGroup {
      */
     @Override
     public void onLayout(boolean changed, int left, int top, int right, int bottom) {
-        Log.i(TAG, "On Layout");
         calculateTiles();
 
         for (int i = 0; i < getChildCount(); i++) {
@@ -136,8 +135,6 @@ public class WidgetViewGroup extends ViewGroup {
         if(child.getVisibility() == GONE)
             return;
 
-        Log.i(TAG, "Lol?: " + ((WidgetView)child));
-        Log.i(TAG, "Lol?: " + ((WidgetView)child).getWidgetEntity());
         Position position = ((WidgetView) child).getPosition();
 
         // Y pos from bottom up
@@ -191,7 +188,7 @@ public class WidgetViewGroup extends ViewGroup {
                 IBaseView baseView = (IBaseView) view;
 
                 if (baseView.getWidgetEntity().topic.equals(topic)){
-                    ((ISubscriberView)view).onNewMessage(data.getMessage());
+                    ((ISubscriberView)view).onNewMessage(message);
                 }
             }
         }

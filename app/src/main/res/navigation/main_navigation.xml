@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_navigation"
+    app:startDestination="@id/vizFragment">
+
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.schneewittchen.rosandroid.ui.fragments.main.MainFragment"
+        android:label="MainFragment" />
+
+
+    <fragment
+        android:id="@+id/sshFragment"
+        android:name="com.schneewittchen.rosandroid.ui.fragments.ssh.SshFragment"
+        android:label="SshFragment"
+        tools:layout="@layout/fragment_ssh"/>
+
+    <action
+        android:id="@+id/action_to_sshFragment"
+        app:destination="@id/sshFragment"
+        app:popUpTo="@id/main_navigation"
+        app:popUpToInclusive="true" />
+
+
+    <fragment
+        android:id="@+id/detailOverviewFragment"
+        android:name="com.schneewittchen.rosandroid.ui.fragments.details.DetailOverviewFragment"
+        android:label="DetailOverviewFragment"
+        tools:layout="@layout/fragment_detail_overview" >
+        <action
+            android:id="@+id/action_detailOverview_to_widget"
+            app:destination="@id/detailWidget" />
+    </fragment>
+
+    <action
+        android:id="@+id/action_to_detailFragment"
+        app:destination="@id/detailOverviewFragment"
+        app:popUpTo="@id/main_navigation"
+        app:popUpToInclusive="true" />
+
+
+    <fragment
+        android:id="@+id/masterFragment"
+        android:name="com.schneewittchen.rosandroid.ui.fragments.MasterFragment"
+        android:label="MasterFragment"
+        tools:layout="@layout/fragment_master" />
+
+    <action
+        android:id="@+id/action_to_masterFragment"
+        app:destination="@id/masterFragment"
+        app:popUpTo="@id/main_navigation"
+        app:popUpToInclusive="true" />
+
+
+    <fragment
+        android:id="@+id/vizFragment"
+        android:name="com.schneewittchen.rosandroid.ui.fragments.viz.VizFragment"
+        android:label="VizFragment"
+        tools:layout="@layout/fragment_viz" />
+
+    <action
+        android:id="@+id/action_to_vizFragment"
+        app:destination="@id/vizFragment"
+        app:popUpTo="@id/main_navigation"
+        app:popUpToInclusive="true" />
+
+    <fragment
+        android:id="@+id/detailWidget"
+        android:name="com.schneewittchen.rosandroid.ui.fragments.details.DetailWidgetFragment"
+        android:label="DetailGroupOverviewFragment"
+        tools:layout="@layout/fragment_detail_widget"/>
+
+</navigation>

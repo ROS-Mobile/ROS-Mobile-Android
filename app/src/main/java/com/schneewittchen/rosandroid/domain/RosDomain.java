@@ -98,12 +98,15 @@ public class RosDomain {
         configRepository.deleteWidget(widget);
     }
 
+    public LiveData<BaseEntity> findWidget(String name) {
+        return configRepository.findWidget(name);
+    }
+
     public LiveData<List<BaseEntity>> getCurrentWidgets() {
         return this.currentWidgets;
     }
 
     public LiveData<RosData> getData(){ return this.rosRepo.getData(); }
-
 
     public void updateMaster(MasterEntity master) {
         configRepository.updateMaster(master);

@@ -12,6 +12,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.schneewittchen.rosandroid.model.entities.MasterEntity;
+import com.schneewittchen.rosandroid.model.entities.widgets.GroupEntity;
 import com.schneewittchen.rosandroid.model.entities.widgets.IPublisherEntity;
 import com.schneewittchen.rosandroid.model.entities.widgets.ISubscriberEntity;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.connection.ConnectionCheckTask;
@@ -195,10 +196,10 @@ public class RosRepository implements SubNode.NodeListener {
         // Unpack widgets as a widget can contain child widgets
         List<BaseEntity> newEntities = new ArrayList<>();
         for(BaseEntity baseEntity: newWidgets) {
-            if (baseEntity.childEntities.isEmpty()) {
-                newEntities.add(baseEntity);
-            } else{
+            if (baseEntity instanceof GroupEntity) {
                 newEntities.addAll(baseEntity.childEntities);
+            } else{
+                newEntities.add(baseEntity);
             }
         }
 
@@ -305,6 +306,11 @@ public class RosRepository implements SubNode.NodeListener {
 
         if (oldWidget.equalRosState(widget)){
             AbstractNode node = this.currentNodes.get(widget.topic);
+            if (node == null) {
+                addNode(widget);
+                return;
+            }
+
             node.setWidget(widget);
 
         } else{

@@ -90,16 +90,18 @@ public class IntroFragment extends Fragment {
         tabIndicator.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                if(tab.getPosition() == screenItems.size()) {
+                if (tab.getPosition() == screenItems.size()) {
                     loadVideoScreen();
                 }
             }
 
             @Override
-            public void onTabUnselected(TabLayout.Tab tab) {}
+            public void onTabUnselected(TabLayout.Tab tab) {
+            }
 
             @Override
-            public void onTabReselected(TabLayout.Tab tab) {}
+            public void onTabReselected(TabLayout.Tab tab) {
+            }
         });
 
         // next button click listener
@@ -115,7 +117,7 @@ public class IntroFragment extends Fragment {
     private void loadMainFragment() {
         // Get string for first config name
         Bundle bundle = new Bundle();
-        bundle.putString("configName",editTextConfigName.getText().toString());
+        bundle.putString("configName", editTextConfigName.getText().toString());
 
         // Save the Prefs
         savePrefsData();
@@ -137,7 +139,7 @@ public class IntroFragment extends Fragment {
         itemPosition = screenPager.getCurrentItem();
         itemPosition++;
 
-        if(itemPosition < screenItems.size()) {
+        if (itemPosition < screenItems.size()) {
             screenPager.setCurrentItem(itemPosition);
 
         } else {
@@ -176,7 +178,7 @@ public class IntroFragment extends Fragment {
 
         SharedPreferences pref = getContext().getSharedPreferences("onboardingPrefs", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
-        editor.putBoolean("CheckedIn",true);
+        editor.putBoolean("CheckedIn", true);
         editor.apply();
     }
 

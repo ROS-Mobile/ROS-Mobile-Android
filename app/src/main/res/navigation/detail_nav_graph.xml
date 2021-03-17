@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/detailOverviewFragment">
+
+    <fragment
+        android:id="@+id/detailOverviewFragment"
+        android:name="com.schneewittchen.rosandroid.ui.fragments.details.DetailOverviewFragment"
+        android:label="DetailOverviewFragment"
+        tools:layout="@layout/fragment_detail_overview">
+        <action
+            android:id="@+id/action_detail_to_group"
+            app:destination="@id/detailGroupOverviewFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/detailGroupOverviewFragment"
+        android:name="com.schneewittchen.rosandroid.ui.fragments.details.DetailGroupOverviewFragment"
+        android:label="DetailGroupOverviewFragment"
+        tools:layout="@layout/fragment_detail_group" />
+</navigation>

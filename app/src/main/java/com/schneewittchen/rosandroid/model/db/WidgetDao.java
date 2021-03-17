@@ -1,5 +1,7 @@
 package com.schneewittchen.rosandroid.model.db;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.room.Dao;
@@ -26,6 +28,9 @@ import java.util.List;
 @Dao
 public abstract class WidgetDao implements BaseDao<WidgetStorageData>{
 
+    public static String TAG = WidgetDao.class.getSimpleName();
+
+
     //TODO: Update test to real classes
     @Query("SELECT * FROM widget_table WHERE widget_config_id = :configId")
     protected abstract LiveData<List<WidgetStorageData>> getWidgetsFor(long configId);
@@ -43,11 +48,17 @@ public abstract class WidgetDao implements BaseDao<WidgetStorageData>{
     public abstract boolean exists(long configId, String name);
 
     @Query("SELECT * FROM widget_table WHERE widget_config_id = :configId AND name = :name")
-    abstract WidgetStorageData getWidgetIntern(long configId, String name);
+    abstract LiveData<WidgetStorageData> getWidgetIntern(long configId, String name);
 
-    public BaseEntity getWidget(long configId, String name) {
-        WidgetStorageData data = getWidgetIntern(configId, name);
-        return GsonWidgetParser.getInstance().convert(data);
+
+    public LiveData<BaseEntity> getWidget(long configId, String name) {
+        MediatorLiveData<BaseEntity> widget = new MediatorLiveData<>();
+
+        widget.addSource(getWidgetIntern(configId, name), data -> {
+            widget.postValue(GsonWidgetParser.getInstance().convert(data));
+        });
+
+        return widget;
     }
 
     public LiveData<List<BaseEntity>> getWidgets(long configId) {

@@ -9,9 +9,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.schneewittchen.rosandroid.R;
+import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
 import com.schneewittchen.rosandroid.ui.fragments.details.WidgetChangeListener;
 import com.schneewittchen.rosandroid.ui.views.details.BaseDetailSubscriberVH;
+import com.schneewittchen.rosandroid.ui.views.details.SubscriberWidgetViewHolder;
 import com.schneewittchen.rosandroid.utility.Utils;
+import com.schneewittchen.rosandroid.widgets.joystick.JoystickEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,18 +24,17 @@ import java.util.List;
  * TODO: Description
  *
  * @author Nils Rottmann
- * @version 1.0.0
+ * @version 1.1.0
  * @created on 17.08.20
  * @updated on 17.09.20
  * @modified by Nils Rottmann
+ * @updated on 17.03.21
+ * @modified by Nico Studt
  */
-public class DebugDetailVH extends BaseDetailSubscriberVH<DebugEntity> {
+public class DebugDetailVH extends SubscriberWidgetViewHolder implements TextView.OnEditorActionListener {
 
     protected EditText messageNumberEdittext;
 
-    public DebugDetailVH(@NonNull View view, WidgetChangeListener changeListener) {
-        super(view, changeListener);
-    }
 
     @Override
     protected void initView(View parentView) {
@@ -41,14 +43,18 @@ public class DebugDetailVH extends BaseDetailSubscriberVH<DebugEntity> {
     }
 
     @Override
-    protected void bindEntity(DebugEntity entity) {
+    protected void bindEntity(BaseEntity widget) {
+        DebugEntity entity = (DebugEntity) widget;
         messageNumberEdittext.setText(String.valueOf(entity.numberMessages));
+
     }
 
     @Override
-    protected void updateEntity() {
+    protected void updateEntity(BaseEntity widget) {
+        DebugEntity entity = (DebugEntity) widget;
         entity.numberMessages = Integer.parseInt(messageNumberEdittext.getText().toString());
     }
+
 
     @Override
     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {

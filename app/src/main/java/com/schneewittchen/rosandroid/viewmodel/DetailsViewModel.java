@@ -1,6 +1,7 @@
 package com.schneewittchen.rosandroid.viewmodel;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -11,6 +12,7 @@ import com.schneewittchen.rosandroid.domain.RosDomain;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.Topic;
 import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -29,8 +31,9 @@ public class DetailsViewModel extends AndroidViewModel {
 
     private static final String TAG = DetailsViewModel.class.getSimpleName();
 
-    private final RosDomain rosDomain;
+    private static final List<String> selectedPath = new ArrayList<>();
 
+    private final RosDomain rosDomain;
     private MediatorLiveData<Boolean> widgetsEmpty;
     private BaseEntity lastDeletedWidget;
 
@@ -77,4 +80,18 @@ public class DetailsViewModel extends AndroidViewModel {
 
     public List<Topic> getTopicList() {
         return rosDomain.getTopicList(); }
+
+    public LiveData<BaseEntity> getWidget() {
+        return rosDomain.findWidget(selectedPath.get(0));
+    }
+
+    public void select(String widgetName) {
+        if (widgetName == null) {
+            selectedPath.clear();
+            return;
+        }
+
+        selectedPath.add(widgetName);
+        Log.i(TAG, selectedPath.size() + " ");
+    }
 }

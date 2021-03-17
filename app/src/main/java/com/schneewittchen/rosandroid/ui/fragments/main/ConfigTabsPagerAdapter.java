@@ -4,7 +4,13 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.NavigationUI;
 
+import com.schneewittchen.rosandroid.R;
+import com.schneewittchen.rosandroid.ui.fragments.details.DetailGroupOverviewFragment;
+import com.schneewittchen.rosandroid.ui.fragments.details.DetailOverviewFragment;
 import com.schneewittchen.rosandroid.ui.fragments.ssh.SshFragment;
 import com.schneewittchen.rosandroid.ui.fragments.details.DetailsFragment;
 import com.schneewittchen.rosandroid.ui.fragments.viz.VizFragment;
@@ -23,7 +29,12 @@ import com.schneewittchen.rosandroid.ui.fragments.MasterFragment;
 public class ConfigTabsPagerAdapter extends FragmentPagerAdapter {
 
     private final String[] tabTitles = new String[]{"Master", "Viz", "Details", "SSH"};
-
+    private final Fragment[] fragments = new Fragment[]{
+            MasterFragment.newInstance(),
+            VizFragment.newInstance(),
+            DetailOverviewFragment.newInstance(),
+            SshFragment.newInstance()
+    };
 
     public ConfigTabsPagerAdapter(@NonNull FragmentManager fm) {
         super(fm, FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
@@ -33,24 +44,12 @@ public class ConfigTabsPagerAdapter extends FragmentPagerAdapter {
     @NonNull
     @Override
     public Fragment getItem(int position) {
-        switch (position){
-            case 0:
-                return MasterFragment.newInstance();
-            case 1:
-                return VizFragment.newInstance();
-            case 2:
-                return DetailsFragment.newInstance();
-            case 3:
-                return SshFragment.newInstance();
-
-        }
-
-        return new Fragment();
+        return fragments[position];
     }
 
     @Override
     public int getCount() {
-        return 4;
+        return fragments.length;
     }
 
     @Override

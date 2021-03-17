@@ -1,5 +1,7 @@
 package com.schneewittchen.rosandroid.model.repositories.rosRepo.node;
 
+import android.util.Log;
+
 import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
 import com.schneewittchen.rosandroid.model.entities.widgets.PublisherLayerEntity;
 

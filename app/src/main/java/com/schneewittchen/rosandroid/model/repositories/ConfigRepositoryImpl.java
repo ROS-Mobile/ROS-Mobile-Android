@@ -5,6 +5,7 @@ import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.Transformations;
 
 import com.schneewittchen.rosandroid.model.db.DataStorage;
@@ -150,9 +151,15 @@ public class ConfigRepositoryImpl implements ConfigRepository {
         else if(widget instanceof I2DLayerEntity) {
             // Check for parent
             if (parent != null) {
-                BaseEntity parentEntity = mDataStorage.getWidget(widget.configId, parent);
-                parentEntity.childEntities.add(widget);
-                mDataStorage.updateWidget(parentEntity);
+                LiveData<BaseEntity> liveParent = mDataStorage.getWidget(widget.configId, parent);
+                liveParent.observeForever(new Observer<BaseEntity>() {
+                    @Override
+                    public void onChanged(BaseEntity parentEntity) {
+                        parentEntity.childEntities.add(widget);
+                        mDataStorage.updateWidget(parentEntity);
+                        liveParent.removeObserver(this);
+                    }
+                });
 
             } else{
                 BaseEntity parentEntity = getWidgetFromType("Viz2D");
@@ -196,6 +203,11 @@ public class ConfigRepositoryImpl implements ConfigRepository {
         widget.type = widgetType;
 
         return widget;
+    }
+
+    @Override
+    public LiveData<BaseEntity> findWidget(String name) {
+        return mDataStorage.getWidget(mCurrentConfigId.getValue(), name);
     }
 
     @Override

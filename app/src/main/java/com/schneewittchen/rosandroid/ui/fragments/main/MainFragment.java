@@ -12,6 +12,9 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.viewpager.widget.ViewPager;
 
 import android.util.Log;
@@ -41,10 +44,8 @@ public class MainFragment extends Fragment implements OnBackPressedListener {
 
     public static final String TAG = MainFragment.class.getSimpleName();
 
-    ConfigTabsPagerAdapter pagerAdapter;
-    LockableViewPager viewPager;
     TabLayout tabLayout;
-
+    NavController navController;
     DrawerLayout drawerLayout;
     Toolbar toolbar;
     MainViewModel mViewModel;
@@ -57,10 +58,11 @@ public class MainFragment extends Fragment implements OnBackPressedListener {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        viewPager = view.findViewById(R.id.configViewpager);
         tabLayout = view.findViewById(R.id.tabs);
         toolbar = view.findViewById(R.id.toolbar);
         drawerLayout = view.findViewById(R.id.drawer_layout);
+        navController = Navigation.findNavController(requireActivity(), R.id.fragment_container);
+
 
         drawerLayout.setScrimColor(getResources().getColor(R.color.drawerFadeColor));
 
@@ -78,23 +80,38 @@ public class MainFragment extends Fragment implements OnBackPressedListener {
             toggle.syncState();
         }
 
+        // Select Viz tab as home
+        tabLayout.selectTab(tabLayout.getTabAt(1));
+
         // Setup tabs for navigation
-        pagerAdapter = new ConfigTabsPagerAdapter(this.getChildFragmentManager());
-        viewPager.setAdapter(pagerAdapter);
-        viewPager.setCurrentItem(1,false);
-
-        tabLayout.setupWithViewPager(viewPager);
-
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+            public void onTabSelected(TabLayout.Tab tab) {
+                Log.i(TAG, "On Tab selected: " + tab.getText());
+
+                switch (tab.getText().toString()) {
+                    case "Master":
+                        navController.navigate(R.id.action_to_masterFragment);
+                        break;
+                    case "Details":
+                        navController.navigate(R.id.action_to_detailFragment);
+                        break;
+                    case "SSH":
+                        navController.navigate(R.id.action_to_sshFragment);
+                        break;
+                    default:
+                        navController.navigate(R.id.action_to_vizFragment);
+                }
+            }
 
             @Override
-            public void onPageSelected(int position) {}
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
 
             @Override
-            public void onPageScrollStateChanged(int state) {
-                Utils.hideSoftKeyboard(view);
+            public void onTabReselected(TabLayout.Tab tab) {
+
             }
         });
     }
@@ -126,12 +143,7 @@ public class MainFragment extends Fragment implements OnBackPressedListener {
             return true;
         }
 
-        if (viewPager.getCurrentItem() != 1) {
-            viewPager.setCurrentItem(1,true);
-            return true;
-        }
-
-        return false;
+        return navController.popBackStack();
     }
 
     @Override
@@ -150,6 +162,7 @@ public class MainFragment extends Fragment implements OnBackPressedListener {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+
         return inflater.inflate(R.layout.fragment_main, container, false);
     }
 }

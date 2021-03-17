@@ -7,7 +7,7 @@
     android:layout_height="wrap_content">
 
     <include
-        layout="@layout/widget_detail_base_subscriber"
+        layout="@layout/detail_widget_subscriber"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

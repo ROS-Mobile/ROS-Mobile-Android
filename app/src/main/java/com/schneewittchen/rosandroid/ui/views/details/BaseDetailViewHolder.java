@@ -57,7 +57,7 @@ public abstract class BaseDetailViewHolder<T extends BaseEntity> extends Recycle
         super(view);
 
         this.changeListener = changeListener;
-        this.detailContend = view.findViewById(R.id.detailContend);
+        this.detailContend = view.findViewById(R.id.detailContent);
     }
 
 

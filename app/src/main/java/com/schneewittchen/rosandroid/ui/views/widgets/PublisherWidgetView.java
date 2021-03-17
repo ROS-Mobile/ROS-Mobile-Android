@@ -2,6 +2,7 @@ package com.schneewittchen.rosandroid.ui.views.widgets;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -18,6 +19,8 @@ import com.schneewittchen.rosandroid.widgets.button.ButtonData;
  * @created on 10.03.21
  */
 public abstract class PublisherWidgetView extends WidgetView implements IPublisherView{
+
+    public static String TAG = PublisherWidgetView.class.getSimpleName();
 
     private DataListener dataListener;
 

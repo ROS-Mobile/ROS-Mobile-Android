@@ -55,6 +55,8 @@ public interface ConfigRepository {
 
     void updateWidget(BaseEntity widget);
 
+    LiveData<BaseEntity> findWidget(String name);
+
     LiveData<List<BaseEntity>> getWidgets(long id);
 
 

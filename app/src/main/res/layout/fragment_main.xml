@@ -31,8 +31,7 @@
                 android:minHeight="@dimen/toolbar_height"
                 app:layout_scrollFlags="scroll|enterAlways"
                 app:maxButtonHeight="48dp"
-                app:navigationIcon="@drawable/ic_menu_white_24dp"
-                app:title="Title">
+                app:navigationIcon="@drawable/ic_menu_white_24dp">
 
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tabs"
@@ -53,34 +52,31 @@
                     <com.google.android.material.tabs.TabItem
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Layout" />
+                        android:text="Viz" />
 
                     <com.google.android.material.tabs.TabItem
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Details" />
+
+                    <com.google.android.material.tabs.TabItem
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="SSH" />
                 </com.google.android.material.tabs.TabLayout>
 
             </androidx.appcompat.widget.Toolbar>
 
 
-
-
         </com.google.android.material.appbar.AppBarLayout>
 
-        <!-- include only fpr design purpose -->
-        <include
-            layout="@layout/fragment_master"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            tools:visibility="visible" />
-
-        <com.schneewittchen.rosandroid.ui.fragments.main.LockableViewPager
-            android:id="@+id/configViewpager"
+        <fragment
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            />
+            android:id="@+id/fragment_container"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            app:defaultNavHost="true"
+            app:navGraph="@navigation/main_navigation"/>
 
 
     </LinearLayout>

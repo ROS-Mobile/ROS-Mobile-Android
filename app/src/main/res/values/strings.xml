@@ -48,4 +48,7 @@
     <string name="rename_widget">Rename Widget</string>
     <string name="no_config">No config</string>
 
+    <!-- Details -->
+    <string name="widget_list_type">(%s)</string>
+
 </resources>
