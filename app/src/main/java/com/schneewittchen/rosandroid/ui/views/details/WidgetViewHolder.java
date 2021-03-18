@@ -19,49 +19,59 @@ import com.schneewittchen.rosandroid.utility.Utils;
  * @version 1.0.0
  * @created on 17.03.21
  */
-class WidgetViewHolder implements IBaseViewHolder, TextView.OnEditorActionListener{
+class WidgetViewHolder implements IBaseViewHolder, TextView.OnEditorActionListener {
 
-    protected EditText xEdittext, yEdittext, widthEditText, heightEdittext;
+    private EditText xEdittext;
+    private EditText yEdittext;
+    private EditText widthEdittext;
+    private EditText heightEdittext;
+    private EditText nameEdittext;
 
 
     @Override
     public void baseInitView(View view) {
 
-        xEdittext       = view.findViewById(R.id.x_edit_text);
-        yEdittext       = view.findViewById(R.id.y_edit_text);
-        widthEditText   = view.findViewById(R.id.width_edit_text);
-        heightEdittext  = view.findViewById(R.id.height_edit_text);
+        xEdittext = view.findViewById(R.id.x_edit_text);
+        yEdittext = view.findViewById(R.id.y_edit_text);
+        widthEdittext = view.findViewById(R.id.width_edit_text);
+        heightEdittext = view.findViewById(R.id.height_edit_text);
+        nameEdittext = view.findViewById(R.id.name_edit_text);
 
         xEdittext.setOnEditorActionListener(this);
         yEdittext.setOnEditorActionListener(this);
-        widthEditText.setOnEditorActionListener(this);
+        widthEdittext.setOnEditorActionListener(this);
         heightEdittext.setOnEditorActionListener(this);
+        nameEdittext.setOnEditorActionListener(this);
     }
 
     @Override
     public void baseBindEntity(BaseEntity entity) {
-        Position position = ((IPositionEntity)entity).getPosition();
+        nameEdittext.setText(entity.name);
+
+        Position position = ((IPositionEntity) entity).getPosition();
 
         xEdittext.setText(String.valueOf(position.x));
         yEdittext.setText(String.valueOf(position.y));
-        widthEditText.setText(String.valueOf(position.width));
+        widthEdittext.setText(String.valueOf(position.width));
         heightEdittext.setText(String.valueOf(position.height));
     }
 
     @Override
     public void baseUpdateEntity(BaseEntity entity) {
+        entity.name = nameEdittext.getText().toString();
+
         Position position = new Position();
         position.x = Integer.parseInt(xEdittext.getText().toString());
         position.y = Integer.parseInt(yEdittext.getText().toString());
-        position.width = Integer.parseInt(widthEditText.getText().toString());
+        position.width = Integer.parseInt(widthEdittext.getText().toString());
         position.height = Integer.parseInt(heightEdittext.getText().toString());
 
-        ((IPositionEntity)entity).setPosition(position);
+        ((IPositionEntity) entity).setPosition(position);
     }
 
     @Override
     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-        switch (actionId){
+        switch (actionId) {
             case EditorInfo.IME_ACTION_DONE:
             case EditorInfo.IME_ACTION_NEXT:
             case EditorInfo.IME_ACTION_PREVIOUS:

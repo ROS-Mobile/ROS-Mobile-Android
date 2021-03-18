@@ -3,6 +3,7 @@ package com.schneewittchen.rosandroid.ui.views.details;
 import android.view.View;
 
 import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
+import com.schneewittchen.rosandroid.viewmodel.DetailsViewModel;
 
 import java.util.List;
 
@@ -28,6 +29,11 @@ public abstract class SubscriberWidgetViewHolder extends DetailViewHolder {
 
     public abstract List<String> getTopicTypes();
 
+    @Override
+    public void setViewModel(DetailsViewModel viewModel) {
+        super.setViewModel(viewModel);
+        subscriberViewHolder.viewModel = viewModel;
+    }
 
     public void baseInitView(View view) {
         widgetViewHolder.baseInitView(view);

@@ -66,6 +66,7 @@ class SubscriberViewHolder implements IBaseViewHolder {
 
     @Override
     public void baseBindEntity(BaseEntity entity) {
+        this.entity = entity;
         String topicName = entity.topic.name;
         String messageType = entity.topic.type;
 

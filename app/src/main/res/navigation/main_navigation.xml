@@ -71,6 +71,10 @@
         android:id="@+id/detailWidget"
         android:name="com.schneewittchen.rosandroid.ui.fragments.details.DetailWidgetFragment"
         android:label="DetailGroupOverviewFragment"
-        tools:layout="@layout/fragment_detail_widget"/>
+        tools:layout="@layout/fragment_detail_widget">
+        <action
+            android:id="@+id/action_detailWidget_self"
+            app:destination="@id/detailWidget" />
+    </fragment>
 
 </navigation>

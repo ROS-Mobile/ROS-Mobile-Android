@@ -1,6 +1,8 @@
 package com.schneewittchen.rosandroid.model.repositories;
 
 import android.app.Application;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
@@ -151,13 +153,19 @@ public class ConfigRepositoryImpl implements ConfigRepository {
         else if(widget instanceof I2DLayerEntity) {
             // Check for parent
             if (parent != null) {
-                LiveData<BaseEntity> liveParent = mDataStorage.getWidget(widget.configId, parent);
-                liveParent.observeForever(new Observer<BaseEntity>() {
-                    @Override
-                    public void onChanged(BaseEntity parentEntity) {
-                        parentEntity.childEntities.add(widget);
-                        mDataStorage.updateWidget(parentEntity);
-                        liveParent.removeObserver(this);
+                final LiveData<BaseEntity> liveParent = mDataStorage.getWidget(widget.configId, parent);
+
+                Handler handler = new Handler(Looper.getMainLooper());
+                handler.post(new Runnable() {
+                    public void run() {
+                        liveParent.observeForever(new Observer<BaseEntity>() {
+                            @Override
+                            public void onChanged(BaseEntity parentEntity) {
+                                parentEntity.childEntities.add(widget);
+                                mDataStorage.updateWidget(parentEntity);
+                                liveParent.removeObserver(this);
+                            }
+                        });
                     }
                 });
 

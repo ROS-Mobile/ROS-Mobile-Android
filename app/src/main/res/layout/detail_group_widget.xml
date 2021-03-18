@@ -31,16 +31,16 @@
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layer_textview">
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/add_widget_card"
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/add_layer_card"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:layout_margin="8dp"
             app:cardBackgroundColor="@android:color/transparent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -49,20 +49,17 @@
                 android:background="@drawable/card_bg_onlyborder">
 
                 <TextView
-                    android:id="@+id/textView2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:text="Add layer"
-                    android:textColor="@color/whiteMedium"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                     android:textSize="18sp"
-                    android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
-                    android:id="@+id/button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
@@ -73,12 +70,13 @@
                     app:tint="@color/colorAccent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingTop="@dimen/widget_list_spacing"
             tools:itemCount="5"
             tools:listitem="@layout/item_widget_card_list" />
     </LinearLayout>

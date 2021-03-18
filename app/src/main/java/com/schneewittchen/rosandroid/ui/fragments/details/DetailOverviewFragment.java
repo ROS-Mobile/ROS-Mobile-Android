@@ -74,7 +74,7 @@ public class DetailOverviewFragment extends Fragment
 
         navController = Navigation.findNavController(view);
 
-        // React on new widget clickaction
+        // React on new widget click action
         addWidgetCard.setOnClickListener(v -> showDialogWithWidgetNames());
 
         // Setup recyclerview
@@ -100,7 +100,7 @@ public class DetailOverviewFragment extends Fragment
                 noWidgetTextView.setVisibility(empty ? View.VISIBLE : View.GONE));
     }
 
-    public void onWidgetClicked(BaseEntity entity) {
+    private void onWidgetClicked(BaseEntity entity) {
         Log.i(TAG, "Clicked " + entity.name);
 
         viewModel.select(entity.name);
