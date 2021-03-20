@@ -146,14 +146,14 @@ public class ConfigRepositoryImpl implements ConfigRepository {
     // WIDGETS -------------------------------------------------------------------------------------
 
     @Override
-    public void createWidget(String parent, String widgetType) {
+    public void createWidget(Long parentId, String widgetType) {
         BaseEntity widget = getWidgetFromType(widgetType);
         if (widget == null) return;
 
         else if(widget instanceof I2DLayerEntity) {
             // Check for parent
-            if (parent != null) {
-                final LiveData<BaseEntity> liveParent = mDataStorage.getWidget(widget.configId, parent);
+            if (parentId != null) {
+                final LiveData<BaseEntity> liveParent = mDataStorage.getWidget(widget.configId, parentId);
 
                 Handler handler = new Handler(Looper.getMainLooper());
                 handler.post(new Runnable() {
@@ -161,7 +161,7 @@ public class ConfigRepositoryImpl implements ConfigRepository {
                         liveParent.observeForever(new Observer<BaseEntity>() {
                             @Override
                             public void onChanged(BaseEntity parentEntity) {
-                                parentEntity.childEntities.add(widget);
+                                parentEntity.addEntity(widget);
                                 mDataStorage.updateWidget(parentEntity);
                                 liveParent.removeObserver(this);
                             }
@@ -171,7 +171,7 @@ public class ConfigRepositoryImpl implements ConfigRepository {
 
             } else{
                 BaseEntity parentEntity = getWidgetFromType("Viz2D");
-                parentEntity.childEntities.add(widget);
+                parentEntity.addEntity(widget);
                 mDataStorage.addWidget(parentEntity);
             }
 
@@ -214,8 +214,8 @@ public class ConfigRepositoryImpl implements ConfigRepository {
     }
 
     @Override
-    public LiveData<BaseEntity> findWidget(String name) {
-        return mDataStorage.getWidget(mCurrentConfigId.getValue(), name);
+    public LiveData<BaseEntity> findWidget(long widgetId) {
+        return mDataStorage.getWidget(mCurrentConfigId.getValue(), widgetId);
     }
 
     @Override

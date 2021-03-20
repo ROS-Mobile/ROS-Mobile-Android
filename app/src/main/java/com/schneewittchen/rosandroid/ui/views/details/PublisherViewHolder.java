@@ -32,6 +32,12 @@ public class PublisherViewHolder implements IBaseViewHolder, TextView.OnEditorAc
     private List<String> topicNameItemList;
     public List<String> topicTypes;
     public DetailsViewModel viewModel;
+    private DetailViewHolder parentViewHolder;
+
+
+    public PublisherViewHolder(DetailViewHolder parentViewHolder) {
+        this.parentViewHolder = parentViewHolder;
+    }
 
 
     @Override

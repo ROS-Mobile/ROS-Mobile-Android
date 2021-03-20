@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.View;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -36,7 +37,7 @@ public abstract class WidgetGroupViewHolder extends DetailViewHolder
 
 
     public WidgetGroupViewHolder() {
-        this.widgetViewHolder = new WidgetViewHolder();
+        this.widgetViewHolder = new WidgetViewHolder(this);
     }
 
 
@@ -74,10 +75,9 @@ public abstract class WidgetGroupViewHolder extends DetailViewHolder
     }
 
     private void onLayerClicked(BaseEntity entity) {
-        Log.i(TAG, "Clicked " + entity.name);
-
-        viewModel.select(entity.name);
-        //navController.navigate(R.id.action_detailOverview_to_widget);
+        viewModel.select(entity.id);
+        Navigation.findNavController(itemView)
+                .navigate(R.id.action_depth1_to_depth2);
     }
 
     @Override
@@ -93,8 +93,8 @@ public abstract class WidgetGroupViewHolder extends DetailViewHolder
             return;
         }
 
-        String[] widgetNames = context.getResources().getStringArray(R.array.widget_names);
-        String[] widgetDescr = context.getResources().getStringArray(R.array.widget_descr);
+        String[] widgetNames = context.getResources().getStringArray(R.array.layer_names);
+        String[] widgetDescr = context.getResources().getStringArray(R.array.layer_description);
 
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
 

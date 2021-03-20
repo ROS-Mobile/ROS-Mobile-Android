@@ -3,10 +3,8 @@ package com.schneewittchen.rosandroid.ui.views.details;
 import android.view.View;
 
 import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
-import com.schneewittchen.rosandroid.ui.fragments.details.DetailWidgetFragment;
 import com.schneewittchen.rosandroid.ui.fragments.details.WidgetChangeListener;
 import com.schneewittchen.rosandroid.viewmodel.DetailsViewModel;
-import com.schneewittchen.rosandroid.widgets.joystick.JoystickEntity;
 
 /**
  * TODO: Description
@@ -31,14 +29,24 @@ public abstract class DetailViewHolder implements IBaseViewHolder{
     public abstract void baseUpdateEntity(BaseEntity entity);
 
 
+    /**
+     * Call this method internally to update the bound widget info
+     * and subsequently force an update of the widget list.
+     */
+    protected void forceWidgetUpdate() {
+        baseUpdateEntity(entity);
+        updateEntity(entity);
+        widgetChangeListener.onWidgetDetailsChanged(entity);
+    }
+
     public void setViewModel(DetailsViewModel viewModel) {
         this.viewModel = viewModel;
     }
 
     public void setEntity(BaseEntity entity) {
-        this.entity = entity;
-        baseBindEntity(entity);
-        bindEntity(entity);
+        this.entity = entity.copy();
+        baseBindEntity(this.entity);
+        bindEntity(this.entity);
     }
 
     public void setView(View view) {

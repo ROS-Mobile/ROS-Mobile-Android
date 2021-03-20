@@ -1,4 +1,4 @@
-package com.schneewittchen.rosandroid.widgets.costmap2d;
+package com.schneewittchen.rosandroid.widgets.path;
 
 import android.view.View;
 
@@ -8,7 +8,6 @@ import com.schneewittchen.rosandroid.ui.views.details.SubscriberLayerViewHolder;
 import java.util.Collections;
 import java.util.List;
 
-import nav_msgs.OccupancyGrid;
 import nav_msgs.Path;
 
 
@@ -19,7 +18,7 @@ import nav_msgs.Path;
  * @version 1.0.0
  * @created on 08.03.21
  */
-public class CostMap2DDetailVH extends SubscriberLayerViewHolder {
+public class PathDetailVH extends SubscriberLayerViewHolder {
 
 
     @Override
@@ -39,6 +38,6 @@ public class CostMap2DDetailVH extends SubscriberLayerViewHolder {
 
     @Override
     public List<String> getTopicTypes() {
-        return Collections.singletonList(OccupancyGrid._TYPE);
+        return Collections.singletonList(Path._TYPE);
     }
 }

@@ -26,11 +26,16 @@ class WidgetViewHolder implements IBaseViewHolder, TextView.OnEditorActionListen
     private EditText widthEdittext;
     private EditText heightEdittext;
     private EditText nameEdittext;
+    private DetailViewHolder parentViewHolder;
+
+
+    public WidgetViewHolder(DetailViewHolder parentViewHolder) {
+        this.parentViewHolder = parentViewHolder;
+    }
 
 
     @Override
     public void baseInitView(View view) {
-
         xEdittext = view.findViewById(R.id.x_edit_text);
         yEdittext = view.findViewById(R.id.y_edit_text);
         widthEdittext = view.findViewById(R.id.width_edit_text);
@@ -77,6 +82,7 @@ class WidgetViewHolder implements IBaseViewHolder, TextView.OnEditorActionListen
             case EditorInfo.IME_ACTION_PREVIOUS:
                 Utils.hideSoftKeyboard(v);
                 v.clearFocus();
+                parentViewHolder.forceWidgetUpdate();
                 return true;
         }
 

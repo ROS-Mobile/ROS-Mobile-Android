@@ -164,8 +164,8 @@ public abstract class DataStorage extends RoomDatabase {
                 .execute();
     }
 
-    public LiveData<BaseEntity> getWidget(long configId, String name) {
-        return widgetDao().getWidget(configId, name);
+    public LiveData<BaseEntity> getWidget(long configId, long widgetId) {
+        return widgetDao().getWidget(configId, widgetId);
     }
 
 

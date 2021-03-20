@@ -7,6 +7,8 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 
 import com.schneewittchen.rosandroid.domain.RosDomain;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.Topic;
@@ -31,8 +33,7 @@ public class DetailsViewModel extends AndroidViewModel {
 
     private static final String TAG = DetailsViewModel.class.getSimpleName();
 
-    private static final List<String> selectedPath = new ArrayList<>();
-
+    public static MutableLiveData<List<Long>> selectedPath;
     private final RosDomain rosDomain;
     private MediatorLiveData<Boolean> widgetsEmpty;
     private BaseEntity lastDeletedWidget;
@@ -42,12 +43,16 @@ public class DetailsViewModel extends AndroidViewModel {
         super(application);
 
         rosDomain = RosDomain.getInstance(application);
+
+        if(selectedPath == null) {
+            selectedPath = new MutableLiveData<>();
+            selectedPath.setValue(new ArrayList<>());
+        }
     }
 
 
     public void createWidget(String selectedText) {
-        //rosDomain.createWidget(null, selectedText);
-        rosDomain.createWidget("Viz2D 1", selectedText);
+        rosDomain.createWidget(null, selectedText);
     }
 
     public void updateWidget(BaseEntity widget) {
@@ -82,27 +87,55 @@ public class DetailsViewModel extends AndroidViewModel {
         return rosDomain.getTopicList(); }
 
     public LiveData<BaseEntity> getWidget() {
-        return rosDomain.findWidget(selectedPath.get(0));
+        List<Long> path = selectedPath.getValue();
+        return rosDomain.findWidget(path.get(0));
+        /*
+        MediatorLiveData<BaseEntity> widgetData = new MediatorLiveData<>();
+        List<String> path = selectedPath.getValue();
+
+        widgetData.addSource(rosDomain.findWidget(path.get(0)), entity -> {
+            if (path.size() > 1) {
+                for (BaseEntity child: entity.childEntities) {
+                    if (child.name.equals(path.get(1)))
+                        widgetData.setValue(child);
+                }
+            } else {
+                widgetData.setValue(entity);
+            }
+        });
+
+        return widgetData;
+        */
+
     }
 
-    public void select(String widgetName) {
-        if (widgetName == null) {
-            selectedPath.clear();
+    public void select(Long widgetId) {
+        if (widgetId == null) {
+            selectedPath.setValue(new ArrayList<>());
             return;
         }
 
-        selectedPath.add(widgetName);
-        Log.i(TAG, selectedPath.size() + " ");
+        List<Long> path = selectedPath.getValue();
+        assert path != null;
+
+        path.add(widgetId);
+        selectedPath.setValue(path);
+        Log.i(TAG, "Selected path: " + path);
     }
 
     public void popPath(int steps) {
+        List<Long> path = selectedPath.getValue();
+        assert path != null;
+
         for (int i = 0; i < steps; i++) {
-            if (selectedPath.isEmpty()) return;
-            selectedPath.remove(selectedPath.size()-1);
+            if (path.isEmpty()) return;
+            path.remove(path.size()-1);
         }
+
+        selectedPath.setValue(path);
     }
 
-    public List<String> getWidgetPath() {
+    public LiveData<List<Long>> getWidgetPath() {
         return selectedPath;
     }
 }

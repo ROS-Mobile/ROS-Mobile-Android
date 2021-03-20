@@ -22,8 +22,8 @@ public abstract class PublisherWidgetViewHolder extends DetailViewHolder {
 
 
     public PublisherWidgetViewHolder() {
-        this.widgetViewHolder = new WidgetViewHolder();
-        this.publisherViewHolder = new PublisherViewHolder();
+        this.widgetViewHolder = new WidgetViewHolder(this);
+        this.publisherViewHolder = new PublisherViewHolder(this);
         this.publisherViewHolder.topicTypes = this.getTopicTypes();
     }
 

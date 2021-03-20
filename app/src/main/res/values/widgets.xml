@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string-array name="layer_names">
+        <item>Path</item>
+        <item>CostMap2D</item>
+        <item>Pose</item>
+    </string-array>
+
+    <string-array name="layer_description">
+        <item>Path view</item>
+        <item>Costmap 2d View</item>
+        <item>Pose view</item>
+    </string-array>
+
     <string-array name="widget_names">
         <item>Debug</item>
         <item>Joystick</item>
@@ -10,12 +22,7 @@
         <item>Button</item>
         <item>Label</item>
         <item>Logger</item>
-        <item>GLTest</item>
-        <item>TF</item>
-        <item>Path</item>
-        <item>CostMap2D</item>
         <item>Viz2D</item>
-        <item>Pose</item>
     </string-array>
 
     <string-array name="widget_descr">
@@ -42,12 +49,7 @@
         <item>A Button Node which, when pressed, publishes on a topic chosen by the user "True" and when released "False".</item>
         <item>A Label which does not interact with ROS but helps to organize your screen.</item>
         <item>A Logger message which simply prints String messages published to set topic</item>
-        <item>A test view for opengl</item>
-        <item>TF test</item>
-        <item>Path view</item>
-        <item>Costmap 2d View</item>
         <item>2D View of multiple layers</item>
-        <item>Pose view</item>
     </string-array>
 
 

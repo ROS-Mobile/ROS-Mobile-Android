@@ -1,31 +1,26 @@
 package com.schneewittchen.rosandroid.ui.fragments.main;
 
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
-import androidx.viewpager.widget.ViewPager;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+
 import com.google.android.material.tabs.TabLayout;
 import com.schneewittchen.rosandroid.R;
-import com.schneewittchen.rosandroid.utility.Utils;
 import com.schneewittchen.rosandroid.viewmodel.MainViewModel;
 
 
@@ -61,13 +56,13 @@ public class MainFragment extends Fragment implements OnBackPressedListener {
         tabLayout = view.findViewById(R.id.tabs);
         toolbar = view.findViewById(R.id.toolbar);
         drawerLayout = view.findViewById(R.id.drawer_layout);
-        navController = Navigation.findNavController(requireActivity(), R.id.fragment_container);
 
+        navController = Navigation.findNavController(requireActivity(), R.id.fragment_container);
 
         drawerLayout.setScrimColor(getResources().getColor(R.color.drawerFadeColor));
 
         // Connect toolbar to application
-        if(getActivity() instanceof AppCompatActivity){
+        if (getActivity() instanceof AppCompatActivity) {
 
             AppCompatActivity activity = (AppCompatActivity) getActivity();
             activity.setSupportActionBar(toolbar);
@@ -106,12 +101,10 @@ public class MainFragment extends Fragment implements OnBackPressedListener {
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-
             }
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
             }
         });
     }
@@ -122,7 +115,7 @@ public class MainFragment extends Fragment implements OnBackPressedListener {
 
         mViewModel = new ViewModelProvider(this).get(MainViewModel.class);
 
-        if(this.getArguments() != null) {
+        if (this.getArguments() != null) {
             mViewModel.createFirstConfig(this.getArguments().getString("configName"));
         }
 
@@ -137,8 +130,8 @@ public class MainFragment extends Fragment implements OnBackPressedListener {
         toolbar.setTitle(newTitle);
     }
 
-    public boolean onBackPressed(){
-        if(drawerLayout.isDrawerOpen(GravityCompat.START)){
+    public boolean onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
             return true;
         }
@@ -150,19 +143,17 @@ public class MainFragment extends Fragment implements OnBackPressedListener {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int itemId = item.getItemId();
 
-        if (itemId == android.R.id.home){
-                drawerLayout.openDrawer(GravityCompat.START);
+        if (itemId == android.R.id.home) {
+            drawerLayout.openDrawer(GravityCompat.START);
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-
         return inflater.inflate(R.layout.fragment_main, container, false);
     }
 }

@@ -1,254 +1,252 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:fillViewport="true"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-
-<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:fillViewport="true">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView2"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        app:cardBackgroundColor="@color/black04dp"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="0dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:orientation="vertical">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginBottom="8dp"
-            android:layout_weight="1"
-            android:visibility="visible">
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            app:cardBackgroundColor="@color/black04dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/ssh_connection_textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/ssh_connection"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:textColor="@color/colorAccent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <Button
-                android:id="@+id/sshConnectButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/button_connect"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/ip_address_inputLayout"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:hint="@string/ip_address_hint"
-                app:layout_constraintEnd_toStartOf="@+id/username_inputLayout"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/sshConnectButton">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/ip_address_editText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:imeOptions="actionDone"
-                    android:inputType="number|numberDecimal|phone"
-                    android:singleLine="true"
-                    android:text="@string/default_ip_address" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/username_inputLayout"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:hint="@string/username_hint"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/ip_address_inputLayout"
-                app:layout_constraintTop_toBottomOf="@+id/sshConnectButton">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/username_editText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:imeOptions="actionDone"
-                    android:inputType="textNoSuggestions"
-                    android:singleLine="true"
-                    android:text="@string/default_username" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/port_inputLayout"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:hint="@string/port_hint"
-                app:layout_constraintEnd_toStartOf="@+id/password_inputLayout"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ip_address_inputLayout">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/port_editText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:imeOptions="actionDone"
-                    android:inputType="number"
-                    android:singleLine="true"
-                    android:text="@string/default_port" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/password_inputLayout"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:hint="@string/password_hint"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/port_inputLayout"
-
-                app:layout_constraintTop_toBottomOf="@+id/ip_address_inputLayout"
-                app:passwordToggleEnabled="true">
-                app:layout_constraintTop_toBottomOf="@+id/ip_address_inputLayout">
-
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/password_editText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:imeOptions="actionDone"
-                    android:inputType="textPassword"
-                    android:singleLine="true"
-                    android:text="@string/default_password" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="16dp"
-        android:layout_weight="1"
-        app:cardBackgroundColor="@color/black04dp"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/terminal_inputLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView2">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginBottom="8dp"
-            android:layout_weight="1"
-            android:visibility="visible">
-
-            <TextView
-                android:id="@+id/terminal_headline_textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/ssh_terminal"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:textColor="@color/colorAccent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/outputRV"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
-                android:layout_weight="0.5"
-                android:scrollbars="vertical"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/terminal_headline_textView"
-                tools:listitem="@layout/ssh_text_view" />
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="8dp"
+                android:layout_weight="1"
+                android:visibility="visible">
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <TextView
+                    android:id="@+id/ssh_connection_textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/ssh_connection"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textColor="@color/colorAccent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-    </androidx.cardview.widget.CardView>
+                <Button
+                    android:id="@+id/sshConnectButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/button_connect"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/terminal_inputLayout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-        android:layout_width="0dp"
-        android:layout_height="55dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="16dp"
-        android:hint="@string/terminal_hint"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/sshSendButton"
-        app:layout_constraintStart_toStartOf="parent">
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/ip_address_inputLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:hint="@string/ip_address_hint"
+                    app:layout_constraintEnd_toStartOf="@+id/username_inputLayout"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/sshConnectButton">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/terminal_editText"
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/ip_address_editText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:imeOptions="actionDone"
+                        android:inputType="number|numberDecimal|phone"
+                        android:singleLine="true"
+                        android:text="@string/default_ip_address" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/username_inputLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/username_hint"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/ip_address_inputLayout"
+                    app:layout_constraintTop_toBottomOf="@+id/sshConnectButton">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/username_editText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:imeOptions="actionDone"
+                        android:inputType="textNoSuggestions"
+                        android:singleLine="true"
+                        android:text="@string/default_username" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/port_inputLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:hint="@string/port_hint"
+                    app:layout_constraintEnd_toStartOf="@+id/password_inputLayout"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/ip_address_inputLayout">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/port_editText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:imeOptions="actionDone"
+                        android:inputType="number"
+                        android:singleLine="true"
+                        android:text="@string/default_port" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/password_inputLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/password_hint"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/port_inputLayout"
+
+                    app:layout_constraintTop_toBottomOf="@+id/ip_address_inputLayout"
+                    app:passwordToggleEnabled="true">
+                    app:layout_constraintTop_toBottomOf="@+id/ip_address_inputLayout">
+
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/password_editText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:imeOptions="actionDone"
+                        android:inputType="textPassword"
+                        android:singleLine="true"
+                        android:text="@string/default_password" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="16dp"
             android:layout_weight="1"
-            android:imeOptions="actionSend"
-            android:inputType="textNoSuggestions" />
-    </com.google.android.material.textfield.TextInputLayout>
+            app:cardBackgroundColor="@color/black04dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/terminal_inputLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardView2">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="8dp"
+                android:layout_weight="1"
+                android:visibility="visible">
+
+                <TextView
+                    android:id="@+id/terminal_headline_textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/ssh_terminal"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textColor="@color/colorAccent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/outputRV"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_weight="0.5"
+                    android:scrollbars="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/terminal_headline_textView"
+                    tools:listitem="@layout/ssh_text_view" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/terminal_inputLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="16dp"
+            android:hint="@string/terminal_hint"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/sshSendButton"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/terminal_editText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:imeOptions="actionSend"
+                android:inputType="textNoSuggestions" />
+        </com.google.android.material.textfield.TextInputLayout>
 
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/sshSendButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:backgroundTint="@color/colorAccent"
-        app:fabSize="mini"
-        app:layout_constraintBottom_toBottomOf="@+id/terminal_inputLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/terminal_inputLayout"
-        app:srcCompat="@drawable/ic_send" />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/sshSendButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:backgroundTint="@color/colorAccent"
+            app:fabSize="mini"
+            app:layout_constraintBottom_toBottomOf="@+id/terminal_inputLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/terminal_inputLayout"
+            app:srcCompat="@drawable/ic_send" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-</androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

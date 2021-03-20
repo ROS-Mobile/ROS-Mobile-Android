@@ -35,6 +35,12 @@ class SubscriberViewHolder implements IBaseViewHolder {
     private BaseEntity entity;
     public List<String> topicTypes;
     public DetailsViewModel viewModel;
+    private DetailViewHolder parentViewHolder;
+
+
+    public SubscriberViewHolder(DetailViewHolder parentViewHolder) {
+        this.parentViewHolder = parentViewHolder;
+    }
 
 
     @Override

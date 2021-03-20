@@ -14,14 +14,14 @@ import java.util.List;
  * @version 1.0.0
  * @created on 17.03.21
  */
-public abstract class SubscriberWidgetViewHolder extends DetailViewHolder {
+public abstract class SubscriberLayerViewHolder extends DetailViewHolder {
 
-    private WidgetViewHolder widgetViewHolder;
+    private LayerViewHolder layerViewHolder;
     private SubscriberViewHolder subscriberViewHolder;
 
 
-    public SubscriberWidgetViewHolder() {
-        this.widgetViewHolder = new WidgetViewHolder(this);
+    public SubscriberLayerViewHolder() {
+        this.layerViewHolder = new LayerViewHolder(this);
         this.subscriberViewHolder = new SubscriberViewHolder(this);
         this.subscriberViewHolder.topicTypes = this.getTopicTypes();
     }
@@ -36,17 +36,17 @@ public abstract class SubscriberWidgetViewHolder extends DetailViewHolder {
     }
 
     public void baseInitView(View view) {
-        widgetViewHolder.baseInitView(view);
+        layerViewHolder.baseInitView(view);
         subscriberViewHolder.baseInitView(view);
     }
 
     public void baseBindEntity(BaseEntity entity) {
-        widgetViewHolder.baseBindEntity(entity);
+        layerViewHolder.baseBindEntity(entity);
         subscriberViewHolder.baseBindEntity(entity);
     }
 
     public void baseUpdateEntity(BaseEntity entity) {
-        widgetViewHolder.baseUpdateEntity(entity);
+        layerViewHolder.baseUpdateEntity(entity);
         subscriberViewHolder.baseUpdateEntity(entity);
     }
 }

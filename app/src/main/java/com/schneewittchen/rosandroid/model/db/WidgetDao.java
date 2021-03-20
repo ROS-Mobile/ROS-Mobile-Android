@@ -47,14 +47,14 @@ public abstract class WidgetDao implements BaseDao<WidgetStorageData>{
     @Query("SELECT EXISTS (SELECT 1 FROM widget_table WHERE widget_config_id = :configId AND name = :name)")
     public abstract boolean exists(long configId, String name);
 
-    @Query("SELECT * FROM widget_table WHERE widget_config_id = :configId AND name = :name")
-    abstract LiveData<WidgetStorageData> getWidgetIntern(long configId, String name);
+    @Query("SELECT * FROM widget_table WHERE widget_config_id = :configId AND id = :widgetId")
+    abstract LiveData<WidgetStorageData> getWidgetIntern(long configId, long widgetId);
 
 
-    public LiveData<BaseEntity> getWidget(long configId, String name) {
+    public LiveData<BaseEntity> getWidget(long configId, long widgetId) {
         MediatorLiveData<BaseEntity> widget = new MediatorLiveData<>();
 
-        widget.addSource(getWidgetIntern(configId, name), data -> {
+        widget.addSource(getWidgetIntern(configId, widgetId), data -> {
             widget.postValue(GsonWidgetParser.getInstance().convert(data));
         });
 

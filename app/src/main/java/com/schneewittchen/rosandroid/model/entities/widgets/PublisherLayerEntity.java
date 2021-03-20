@@ -8,8 +8,7 @@ package com.schneewittchen.rosandroid.model.entities.widgets;
  * @version 1.0.0
  * @created on 24.09.20
  */
-public abstract class PublisherLayerEntity
-        extends BaseEntity
+public abstract class PublisherLayerEntity extends BaseEntity
         implements I2DLayerEntity, IPublisherEntity {
 
     public float publishRate = 1f;

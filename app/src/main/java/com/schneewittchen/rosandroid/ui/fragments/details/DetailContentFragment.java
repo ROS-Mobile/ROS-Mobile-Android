@@ -5,7 +5,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ScrollView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,9 +32,9 @@ import java.util.List;
  * @version 1.0.0
  * @created on 15.03.21
  */
-public class DetailWidgetFragment extends Fragment implements WidgetChangeListener {
+public class DetailContentFragment extends Fragment implements WidgetChangeListener {
 
-    public static String TAG = DetailWidgetFragment.class.getSimpleName();
+    public static String TAG = DetailContentFragment.class.getSimpleName();
 
     private NavController navController;
     private DetailsViewModel viewModel;
@@ -43,16 +42,21 @@ public class DetailWidgetFragment extends Fragment implements WidgetChangeListen
     private MaterialButton backButtonOverview;
     private MaterialButton backButtonGroup;
 
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_detail_widget, container, false);
+        return inflater.inflate(R.layout.fragment_detail_content, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        if(viewModel != null) {
+            viewModel.popPath(1);
+        }
 
         navController = Navigation.findNavController(view);
         viewModel = new ViewModelProvider(this).get(DetailsViewModel.class);
@@ -65,26 +69,40 @@ public class DetailWidgetFragment extends Fragment implements WidgetChangeListen
 
         // Construct back buttons
         backButtonOverview.setOnClickListener(v -> {
-            viewModel.select(null);
-            navController.navigate(R.id.action_to_detailFragment);
+            navController.popBackStack(R.id.detailOverviewFragment, false);
         });
 
         backButtonGroup.setOnClickListener(v -> {
-            viewModel.popPath(1);
             navController.popBackStack();
         });
 
-        List<String> widgetPath = viewModel.getWidgetPath();
+        /*
+        List<String> widgetPath = viewModel.getWidgetPath().getValue();
 
         if(widgetPath.size() > 1) {
-            backButtonGroup.setText(widgetPath.get(1));
+            backButtonGroup.setText(widgetPath.get(0));
             backButtonGroup.setVisibility(View.VISIBLE);
         } else {
             backButtonGroup.setVisibility(View.INVISIBLE);
-        }
+        }*/
     }
 
-    private void initView(BaseEntity entity) {
+    private void initView(BaseEntity baseEntity) {
+        BaseEntity entity = null;
+        List<Long> widgetPath = viewModel.getWidgetPath().getValue();
+
+        if (widgetPath.size() == 1) {
+            backButtonGroup.setVisibility(View.INVISIBLE);
+            entity = baseEntity;
+
+        } else if(widgetPath.size() == 2){
+            backButtonGroup.setText(baseEntity.name);
+            backButtonGroup.setVisibility(View.VISIBLE);
+            entity = baseEntity.getChildById(widgetPath.get(1));
+        }
+
+        Log.i(TAG, "Init view : " + entity);
+
         try {
             // create and init widget view
             String layoutStr = String.format(Constants.DETAIL_LAYOUT_FORMAT, entity.type.toLowerCase());
@@ -116,6 +134,6 @@ public class DetailWidgetFragment extends Fragment implements WidgetChangeListen
 
     @Override
     public void onWidgetDetailsChanged(BaseEntity widgetEntity) {
-
+        viewModel.updateWidget(widgetEntity);
     }
 }

@@ -35,6 +35,7 @@
             android:layout_marginTop="2dp"
             android:text="Group"
             android:textStyle="bold"
+            android:visibility="invisible"
             app:icon="@drawable/ic_back_24"
             app:layout_constraintStart_toEndOf="@+id/back_button_overview"
             app:layout_constraintTop_toTopOf="parent" />

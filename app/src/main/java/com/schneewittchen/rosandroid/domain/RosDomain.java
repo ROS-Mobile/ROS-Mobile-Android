@@ -82,8 +82,8 @@ public class RosDomain {
     }
 
 
-    public void createWidget(String parent, String widgetType) {
-        new LambdaTask(() -> configRepository.createWidget(parent, widgetType)).execute();
+    public void createWidget(Long parentId, String widgetType) {
+        new LambdaTask(() -> configRepository.createWidget(parentId, widgetType)).execute();
     }
 
     public void addWidget(BaseEntity widget) {
@@ -98,8 +98,8 @@ public class RosDomain {
         configRepository.deleteWidget(widget);
     }
 
-    public LiveData<BaseEntity> findWidget(String name) {
-        return configRepository.findWidget(name);
+    public LiveData<BaseEntity> findWidget(long widgetId) {
+        return configRepository.findWidget(widgetId);
     }
 
     public LiveData<List<BaseEntity>> getCurrentWidgets() {

@@ -47,6 +47,22 @@ public abstract class BaseEntity {
         childEntities.remove(entity);
     }
 
+    public BaseEntity getChildByName(String name) {
+        for (BaseEntity child: childEntities) {
+            if (child.name.equals(name)) return child;
+        }
+
+        return null;
+    }
+
+    public BaseEntity getChildById(long id) {
+        for (BaseEntity child: childEntities) {
+            if (child.id == id) return child;
+        }
+
+        return null;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null)

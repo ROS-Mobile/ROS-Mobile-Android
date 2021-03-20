@@ -2,6 +2,7 @@ package com.schneewittchen.rosandroid.ui.fragments.details;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,9 +11,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -22,7 +25,11 @@ import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.snackbar.Snackbar;
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
+import com.schneewittchen.rosandroid.ui.fragments.main.OnBackPressedListener;
 import com.schneewittchen.rosandroid.viewmodel.DetailsViewModel;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -32,41 +39,46 @@ import com.schneewittchen.rosandroid.viewmodel.DetailsViewModel;
  * @version 1.0.0
  * @created on 13.03.21
  */
-public class DetailGroupOverviewFragment extends Fragment
-        implements RecyclerWidgetItemTouchHelper.TouchListener, WidgetChangeListener{
+public class DetailMainFragment extends Fragment
+        implements RecyclerWidgetItemTouchHelper.TouchListener, WidgetChangeListener {
 
-    public static String TAG = DetailGroupOverviewFragment.class.getSimpleName();
+    public static String TAG = DetailMainFragment.class.getSimpleName();
 
-    public static DetailGroupOverviewFragment newInstance() {
-        return new DetailGroupOverviewFragment();
-    }
-
-
+    private NavController navController;
     private DetailsViewModel viewModel;
-    private CardView addWidgetCard;
+    private MaterialCardView addWidgetCard;
+    private TextView noWidgetTextView;
     private RecyclerView recyclerView;
     private WidgetListAdapter mAdapter;
+    private List<String> currentWidgetPath;
 
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        Log.i(TAG, "On create view");
-        return inflater.inflate(R.layout.fragment_detail_group, container, false);
+        return inflater.inflate(R.layout.fragment_detail_main, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+
         viewModel = new ViewModelProvider(this).get(DetailsViewModel.class);
+        viewModel.select(null);
+
+
+        currentWidgetPath = new ArrayList<>();
 
         // Find views
+        noWidgetTextView = view.findViewById(R.id.no_widget_text);
         recyclerView = view.findViewById(R.id.recyclerview);
         addWidgetCard = view.findViewById(R.id.add_widget_card);
 
-        // React on new widget clickaction
+        navController = Navigation.findNavController(view);
+
+        // React on new widget click action
         addWidgetCard.setOnClickListener(v -> showDialogWithWidgetNames());
 
         // Setup recyclerview
@@ -86,10 +98,21 @@ public class DetailGroupOverviewFragment extends Fragment
         viewModel.getCurrentWidgets().observe(getViewLifecycleOwner(), newWidgets -> {
             mAdapter.setWidgets(newWidgets);
         });
+
+        viewModel.widgetsEmpty().observe(getViewLifecycleOwner(), empty ->
+                noWidgetTextView.setVisibility(empty ? View.VISIBLE : View.GONE));
     }
 
-    public void onWidgetClicked(BaseEntity entity) {
+    private void navigateToWidget(List<String> strings) {
+        Log.i(TAG, "Navigation to widget  " + strings);
+    }
+
+
+    private void onWidgetClicked(BaseEntity entity) {
         Log.i(TAG, "Clicked " + entity.name);
+
+        viewModel.select(entity.id);
+        navController.navigate(R.id.action_detailOverview_to_depth1);
     }
 
     private void showDialogWithWidgetNames() {
@@ -160,4 +183,5 @@ public class DetailGroupOverviewFragment extends Fragment
     public void onWidgetDetailsChanged(BaseEntity widgetEntity) {
         viewModel.updateWidget(widgetEntity);
     }
+
 }

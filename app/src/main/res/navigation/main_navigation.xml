@@ -6,11 +6,6 @@
     android:id="@+id/main_navigation"
     app:startDestination="@id/vizFragment">
 
-    <fragment
-        android:id="@+id/mainFragment"
-        android:name="com.schneewittchen.rosandroid.ui.fragments.main.MainFragment"
-        android:label="MainFragment" />
-
 
     <fragment
         android:id="@+id/sshFragment"
@@ -27,12 +22,12 @@
 
     <fragment
         android:id="@+id/detailOverviewFragment"
-        android:name="com.schneewittchen.rosandroid.ui.fragments.details.DetailOverviewFragment"
+        android:name="com.schneewittchen.rosandroid.ui.fragments.details.DetailMainFragment"
         android:label="DetailOverviewFragment"
-        tools:layout="@layout/fragment_detail_overview" >
+        tools:layout="@layout/fragment_detail_main" >
         <action
-            android:id="@+id/action_detailOverview_to_widget"
-            app:destination="@id/detailWidget" />
+            android:id="@+id/action_detailOverview_to_depth1"
+            app:destination="@id/detailWidgetDepth1" />
     </fragment>
 
     <action
@@ -68,13 +63,19 @@
         app:popUpToInclusive="true" />
 
     <fragment
-        android:id="@+id/detailWidget"
-        android:name="com.schneewittchen.rosandroid.ui.fragments.details.DetailWidgetFragment"
+        android:id="@+id/detailWidgetDepth1"
+        android:name="com.schneewittchen.rosandroid.ui.fragments.details.DetailContentFragment"
         android:label="DetailGroupOverviewFragment"
-        tools:layout="@layout/fragment_detail_widget">
+        tools:layout="@layout/fragment_detail_content">
         <action
-            android:id="@+id/action_detailWidget_self"
-            app:destination="@id/detailWidget" />
+            android:id="@+id/action_depth1_to_depth2"
+            app:destination="@id/detailWidgetDepth2" />
     </fragment>
+
+    <fragment
+        android:id="@+id/detailWidgetDepth2"
+        android:name="com.schneewittchen.rosandroid.ui.fragments.details.DetailContentFragment"
+        android:label="DetailGroupOverviewFragment"
+        tools:layout="@layout/fragment_detail_content"/>
 
 </navigation>

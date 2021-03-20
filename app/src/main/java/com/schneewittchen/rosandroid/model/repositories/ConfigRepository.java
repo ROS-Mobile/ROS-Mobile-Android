@@ -47,7 +47,7 @@ public interface ConfigRepository {
     LiveData<MasterEntity> getMaster(long configId);
 
 
-    void createWidget(String parent, String widgetType);
+    void createWidget(Long parentId, String widgetType);
 
     void deleteWidget(BaseEntity widget);
 
@@ -55,7 +55,7 @@ public interface ConfigRepository {
 
     void updateWidget(BaseEntity widget);
 
-    LiveData<BaseEntity> findWidget(String name);
+    LiveData<BaseEntity> findWidget(long widgetId);
 
     LiveData<List<BaseEntity>> getWidgets(long id);
 
