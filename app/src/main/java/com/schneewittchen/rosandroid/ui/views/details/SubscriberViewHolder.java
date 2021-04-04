@@ -97,6 +97,7 @@ class SubscriberViewHolder implements IBaseViewHolder {
         }
 
         topicTypeEditText.clearFocus();
+        parentViewHolder.forceWidgetUpdate();
     }
 
     private void updateTopicNameSpinner() {

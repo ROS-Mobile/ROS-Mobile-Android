@@ -1,28 +1,25 @@
-package com.schneewittchen.rosandroid.widgets.gps;
+package com.schneewittchen.rosandroid.widgets.pose;
 
 import android.view.View;
 
 import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
-import com.schneewittchen.rosandroid.ui.views.details.SubscriberWidgetViewHolder;
+import com.schneewittchen.rosandroid.ui.views.details.SubscriberLayerViewHolder;
 
 import java.util.Collections;
 import java.util.List;
 
-import sensor_msgs.NavSatFix;
+import geometry_msgs.PoseWithCovarianceStamped;
+import nav_msgs.Path;
 
 
 /**
  * TODO: Description
  *
- * @author Nils Rottmann
+ * @author Nico Studt
  * @version 1.0.0
- * @created on 05.05.20
- * @updated on 17.09.20
- * @modified by Nils Rottmann
- * @updated on 20.03.21
- * @modified by Nico Studt
+ * @created on 21.03.21
  */
-public class GpsDetailVH extends SubscriberWidgetViewHolder {
+public class PoseDetailVH extends SubscriberLayerViewHolder {
 
 
     @Override
@@ -42,6 +39,6 @@ public class GpsDetailVH extends SubscriberWidgetViewHolder {
 
     @Override
     public List<String> getTopicTypes() {
-        return Collections.singletonList(NavSatFix._TYPE);
+        return Collections.singletonList(PoseWithCovarianceStamped._TYPE);
     }
 }

@@ -1,5 +1,6 @@
 package com.schneewittchen.rosandroid.ui.fragments.details;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -26,6 +27,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
 import com.schneewittchen.rosandroid.ui.fragments.main.OnBackPressedListener;
+import com.schneewittchen.rosandroid.utility.Utils;
 import com.schneewittchen.rosandroid.viewmodel.DetailsViewModel;
 
 import java.util.ArrayList;
@@ -103,11 +105,6 @@ public class DetailMainFragment extends Fragment
                 noWidgetTextView.setVisibility(empty ? View.VISIBLE : View.GONE));
     }
 
-    private void navigateToWidget(List<String> strings) {
-        Log.i(TAG, "Navigation to widget  " + strings);
-    }
-
-
     private void onWidgetClicked(BaseEntity entity) {
         Log.i(TAG, "Clicked " + entity.name);
 
@@ -116,27 +113,28 @@ public class DetailMainFragment extends Fragment
     }
 
     private void showDialogWithWidgetNames() {
-        if (getContext() == null) {
+        Context context = getContext();
+
+        if (context == null) {
             return;
         }
 
         String[] widgetNames = getResources().getStringArray(R.array.widget_names);
-        String[] widgetDescr = getResources().getStringArray(R.array.widget_descr);
 
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
-
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
         dialogBuilder.setTitle("Create Widget");
 
         dialogBuilder.setItems(widgetNames, (dialog, item) -> {
+            String title = widgetNames[item];
+            String descName = title + "_description";
+            String description = Utils.getStringByName(context, descName);
+
             AlertDialog.Builder dialogChecker = new AlertDialog.Builder(getContext());
+            dialogChecker.setTitle(title);
+            dialogChecker.setMessage(description);
 
-            dialogChecker.setTitle(widgetNames[item]);
-            dialogChecker.setMessage(widgetDescr[item]);
-
-            dialogChecker.setPositiveButton("Create", (dialog1, which) -> {
-                viewModel.createWidget(widgetNames[item]);
-                Log.i(TAG, "Selected Text: " + widgetNames[item]);
-            });
+            dialogChecker.setPositiveButton("Create", (dialog1, which) ->
+                    viewModel.createWidget(title));
 
             dialogChecker.setNegativeButton("Cancel", null);
 
@@ -163,7 +161,6 @@ public class DetailMainFragment extends Fragment
         final BaseEntity deletedWidget = mAdapter.getItem(index);
 
         // remove the item from recycler view
-        //mAdapter.removeItem(viewHolder.getAdapterPosition());
         viewModel.deleteWidget(deletedWidget);
 
         // showing snack bar with Undo option

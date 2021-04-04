@@ -29,7 +29,9 @@ public class SubNode extends AbstractNode {
         super.onStart(parentNode);
 
         try {
-            this.widget.validMessage = true;
+            if (this.widget != null) {
+                this.widget.validMessage = true;
+            }
 
             Subscriber<? extends Message> subscriber = parentNode.newSubscriber(topic.name, topic.type);
 
@@ -38,7 +40,9 @@ public class SubNode extends AbstractNode {
             });
 
         } catch(Exception e) {
-            this.widget.validMessage = false;
+            if (this.widget != null) {
+                this.widget.validMessage = false;
+            }
             e.printStackTrace();
         }
 

@@ -47,13 +47,13 @@ public interface ConfigRepository {
     LiveData<MasterEntity> getMaster(long configId);
 
 
+    void addWidget(Long parentId, BaseEntity widget);
+
     void createWidget(Long parentId, String widgetType);
 
-    void deleteWidget(BaseEntity widget);
+    void deleteWidget(Long parentId, BaseEntity widget);
 
-    void addWidget(BaseEntity widget);
-
-    void updateWidget(BaseEntity widget);
+    void updateWidget(Long parentId, BaseEntity widget);
 
     LiveData<BaseEntity> findWidget(long widgetId);
 

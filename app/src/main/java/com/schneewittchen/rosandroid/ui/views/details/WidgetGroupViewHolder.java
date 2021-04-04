@@ -12,10 +12,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.snackbar.Snackbar;
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
 import com.schneewittchen.rosandroid.ui.fragments.details.RecyclerWidgetItemTouchHelper;
 import com.schneewittchen.rosandroid.ui.fragments.details.WidgetListAdapter;
+import com.schneewittchen.rosandroid.utility.Utils;
+
+import java.util.Arrays;
+import java.util.Collections;
 
 
 /**
@@ -75,6 +80,7 @@ public abstract class WidgetGroupViewHolder extends DetailViewHolder
     }
 
     private void onLayerClicked(BaseEntity entity) {
+        Log.i(TAG, "Clicked layer: " + entity.id);
         viewModel.select(entity.id);
         Navigation.findNavController(itemView)
                 .navigate(R.id.action_depth1_to_depth2);
@@ -83,8 +89,29 @@ public abstract class WidgetGroupViewHolder extends DetailViewHolder
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
         if (viewHolder instanceof WidgetListAdapter.ViewHolder) {
-            //deleteWidget(viewHolder.getAdapterPosition());
+            deleteWidget(viewHolder.getAdapterPosition());
         }
+    }
+
+    private void deleteWidget(int index) {
+        Context context = this.itemView.getContext();
+
+        if (context == null)
+            return;
+
+        // get the removed item name to display it in snack bar
+        final BaseEntity deletedWidget = mAdapter.getItem(index);
+
+        // remove the item from recycler view
+        viewModel.deleteWidget(deletedWidget);
+
+        // showing snack bar with Undo option
+        String undoText = context.getString(R.string.widget_undo, deletedWidget.name);
+        Snackbar snackbar = Snackbar.make(this.itemView, undoText, Snackbar.LENGTH_LONG);
+
+        snackbar.setAction("UNDO", view -> viewModel.restoreWidget());
+        snackbar.setActionTextColor(context.getResources().getColor(R.color.color_attention));
+        snackbar.show();
     }
 
     private void showDialogWithLayerNames() {
@@ -93,23 +120,22 @@ public abstract class WidgetGroupViewHolder extends DetailViewHolder
             return;
         }
 
-        String[] widgetNames = context.getResources().getStringArray(R.array.layer_names);
-        String[] widgetDescr = context.getResources().getStringArray(R.array.layer_description);
+        String[] layerNames = context.getResources().getStringArray(R.array.layer_names);
 
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
-
         dialogBuilder.setTitle("Create Layer");
 
-        dialogBuilder.setItems(widgetNames, (dialog, item) -> {
+        dialogBuilder.setItems(layerNames, (dialog, item) -> {
+            String title = layerNames[item];
+            String descName = title + "_description";
+            String description = Utils.getStringByName(context, descName);
+
             AlertDialog.Builder dialogChecker = new AlertDialog.Builder(context);
+            dialogChecker.setTitle(title);
+            dialogChecker.setMessage(description);
 
-            dialogChecker.setTitle(widgetNames[item]);
-            dialogChecker.setMessage(widgetDescr[item]);
-
-            dialogChecker.setPositiveButton("Create", (dialog1, which) -> {
-                viewModel.createWidget(widgetNames[item]);
-                Log.i(TAG, "Selected Text: " + widgetNames[item]);
-            });
+            dialogChecker.setPositiveButton("Create", (dialog1, which) ->
+                viewModel.createWidget(title));
 
             dialogChecker.setNegativeButton("Cancel", null);
 

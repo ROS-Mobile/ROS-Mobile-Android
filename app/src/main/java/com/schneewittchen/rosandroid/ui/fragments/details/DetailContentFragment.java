@@ -41,6 +41,7 @@ public class DetailContentFragment extends Fragment implements WidgetChangeListe
     private ViewGroup widgetContainer;
     private MaterialButton backButtonOverview;
     private MaterialButton backButtonGroup;
+    private DetailViewHolder widgetHolder;
 
 
     @Nullable
@@ -48,6 +49,15 @@ public class DetailContentFragment extends Fragment implements WidgetChangeListe
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_detail_content, container, false);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+
+        if (widgetHolder != null) {
+            widgetHolder.forceWidgetUpdate();
+        }
     }
 
     @Override
@@ -68,23 +78,11 @@ public class DetailContentFragment extends Fragment implements WidgetChangeListe
         viewModel.getWidget().observe(getViewLifecycleOwner(), this::initView);
 
         // Construct back buttons
-        backButtonOverview.setOnClickListener(v -> {
-            navController.popBackStack(R.id.detailOverviewFragment, false);
-        });
+        backButtonOverview.setOnClickListener(v ->
+            navController.popBackStack(R.id.detailOverviewFragment, false));
 
-        backButtonGroup.setOnClickListener(v -> {
-            navController.popBackStack();
-        });
-
-        /*
-        List<String> widgetPath = viewModel.getWidgetPath().getValue();
-
-        if(widgetPath.size() > 1) {
-            backButtonGroup.setText(widgetPath.get(0));
-            backButtonGroup.setVisibility(View.VISIBLE);
-        } else {
-            backButtonGroup.setVisibility(View.INVISIBLE);
-        }*/
+        backButtonGroup.setOnClickListener(v ->
+            navController.popBackStack());
     }
 
     private void initView(BaseEntity baseEntity) {
@@ -101,8 +99,6 @@ public class DetailContentFragment extends Fragment implements WidgetChangeListe
             entity = baseEntity.getChildById(widgetPath.get(1));
         }
 
-        Log.i(TAG, "Init view : " + entity);
-
         try {
             // create and init widget view
             String layoutStr = String.format(Constants.DETAIL_LAYOUT_FORMAT, entity.type.toLowerCase());
@@ -117,11 +113,11 @@ public class DetailContentFragment extends Fragment implements WidgetChangeListe
                     (Class<DetailViewHolder>) Class.forName(viewholderClassPath);
             Constructor<DetailViewHolder> cons = clazzObject.getConstructor();
 
-            DetailViewHolder viewHolder = cons.newInstance();
-            viewHolder.setWidgetChangeListener(this);
-            viewHolder.setViewModel(viewModel);
-            viewHolder.setView(itemView);
-            viewHolder.setEntity(entity);
+            widgetHolder = cons.newInstance();
+            widgetHolder.setWidgetChangeListener(this);
+            widgetHolder.setViewModel(viewModel);
+            widgetHolder.setView(itemView);
+            widgetHolder.setEntity(entity);
 
             // Add view
             widgetContainer.removeAllViews();

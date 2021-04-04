@@ -1,11 +1,14 @@
 package com.schneewittchen.rosandroid.model.entities.widgets;
 
+import android.util.Log;
+
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.Topic;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Objects;
 
 
@@ -43,24 +46,29 @@ public abstract class BaseEntity {
         childEntities.add(entity);
     }
 
-    public void removeEntity(BaseEntity entity) {
-        childEntities.remove(entity);
-    }
-
-    public BaseEntity getChildByName(String name) {
-        for (BaseEntity child: childEntities) {
-            if (child.name.equals(name)) return child;
-        }
-
-        return null;
-    }
-
     public BaseEntity getChildById(long id) {
-        for (BaseEntity child: childEntities) {
+        for (BaseEntity child : childEntities) {
             if (child.id == id) return child;
         }
 
         return null;
+    }
+
+    public void removeChild(BaseEntity entity) {
+        ListIterator<BaseEntity> iter = childEntities.listIterator();
+        while (iter.hasNext()) {
+            if (iter.next().id == entity.id) {
+                iter.remove();
+            }
+        }
+    }
+
+    public void replaceChild(BaseEntity entity) {
+        for (int i = 0; i < childEntities.size(); i++) {
+            if (childEntities.get(i).id == entity.id) {
+                childEntities.set(i, entity);
+            }
+        }
     }
 
     @Override
@@ -73,7 +81,6 @@ public abstract class BaseEntity {
 
         else if (o.getClass() != this.getClass())
             return false;
-
 
         // Check if other object has equal field values
         for (Field f : this.getClass().getFields()) {

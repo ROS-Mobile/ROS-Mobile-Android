@@ -7,22 +7,17 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-
 import com.google.android.material.textfield.TextInputEditText;
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
-import com.schneewittchen.rosandroid.ui.fragments.details.WidgetChangeListener;
 import com.schneewittchen.rosandroid.ui.views.details.PublisherWidgetViewHolder;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
 import geometry_msgs.Twist;
-import sensor_msgs.Image;
 
 
 /**
@@ -37,9 +32,6 @@ import sensor_msgs.Image;
  * @modified by Nico Studt
  */
 public class JoystickDetailVH extends PublisherWidgetViewHolder {
-
-    private TextInputEditText topicNameEditText;
-    private TextInputEditText topicTypeEditText;
 
     private Spinner xDirSpinner;
     private Spinner xAxisSpinner;
@@ -61,9 +53,6 @@ public class JoystickDetailVH extends PublisherWidgetViewHolder {
 
     @Override
     public void initView(View view) {
-        topicNameEditText = view.findViewById(R.id.topicNameEditText);
-        topicTypeEditText = view.findViewById(R.id.topicTypeEditText);
-
         xDirSpinner = view.findViewById(R.id.xDirSpinner);
         xAxisSpinner = view.findViewById(R.id.xAxisSpinner);
         xScaleLeft = view.findViewById(R.id.xScaleLeft);
@@ -78,13 +67,13 @@ public class JoystickDetailVH extends PublisherWidgetViewHolder {
 
         // Init spinner
         xDirAdapter = ArrayAdapter.createFromResource(view.getContext(),
-                R.array.geometry_msg_twist_dir, android.R.layout.simple_spinner_dropdown_item);
+                R.array.joystick_twist_dir, android.R.layout.simple_spinner_dropdown_item);
         xAxisAdapter = ArrayAdapter.createFromResource(view.getContext(),
-                R.array.geometry_msg_twist_axis, android.R.layout.simple_spinner_dropdown_item);
+                R.array.joystick_twist_axis, android.R.layout.simple_spinner_dropdown_item);
         yDirAdapter = ArrayAdapter.createFromResource(view.getContext(),
-                R.array.geometry_msg_twist_dir, android.R.layout.simple_spinner_dropdown_item);
+                R.array.joystick_twist_dir, android.R.layout.simple_spinner_dropdown_item);
         yAxisAdapter = ArrayAdapter.createFromResource(view.getContext(),
-                R.array.geometry_msg_twist_axis, android.R.layout.simple_spinner_dropdown_item);
+                R.array.joystick_twist_axis, android.R.layout.simple_spinner_dropdown_item);
 
         xDirSpinner.setAdapter(xDirAdapter);
         xAxisSpinner.setAdapter(xAxisAdapter);
@@ -95,9 +84,6 @@ public class JoystickDetailVH extends PublisherWidgetViewHolder {
     @Override
     public void bindEntity(BaseEntity entity) {
         JoystickEntity widget = (JoystickEntity) entity;
-
-        topicNameEditText.setText(entity.topic.name);
-        topicTypeEditText.setText(entity.topic.type);
 
         String[] xAxisMapping = widget.xAxisMapping.split("/");
 
@@ -121,24 +107,6 @@ public class JoystickDetailVH extends PublisherWidgetViewHolder {
     public void updateEntity(BaseEntity entity) {
         JoystickEntity widget = (JoystickEntity) entity;
 
-        // Update Topic name
-        Editable newTopicName = topicNameEditText.getText();
-
-        if(newTopicName != null && newTopicName.length() > 0) {
-            widget.topic.name = newTopicName.toString();
-        } else {
-            topicNameEditText.setText(widget.topic.name);
-        }
-
-        // Update Topic Type
-        Editable newTopicType = topicTypeEditText.getText();
-
-        if(newTopicType != null && newTopicType.length() > 0) {
-            widget.topic.type = newTopicType.toString();
-        }else {
-            topicTypeEditText.setText(widget.type);
-        }
-
         // Update joystick parameters
         widget.xAxisMapping = xDirSpinner.getSelectedItem() + "/" + xAxisSpinner.getSelectedItem();
         widget.yAxisMapping = yDirSpinner.getSelectedItem() + "/" + yAxisSpinner.getSelectedItem();
@@ -159,6 +127,6 @@ public class JoystickDetailVH extends PublisherWidgetViewHolder {
 
     @Override
     public List<String> getTopicTypes() {
-        return Arrays.asList(Twist._TYPE);
+        return Collections.singletonList(Twist._TYPE);
     }
 }

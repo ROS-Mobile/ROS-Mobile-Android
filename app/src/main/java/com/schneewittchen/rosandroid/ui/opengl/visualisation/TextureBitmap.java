@@ -40,12 +40,12 @@ public class TextureBitmap implements OpenGlDrawable {
     /**
      * The maximum height of a texture.
      */
-    public final static int HEIGHT = 512;
+    public final static int HEIGHT = 128;
 
     /**
      * The maximum width of a texture.
      */
-    public final static int STRIDE = 512;
+    public final static int STRIDE = 128;
 
     private final int[] pixels;
     private final FloatBuffer surfaceVertices;
@@ -178,7 +178,7 @@ public class TextureBitmap implements OpenGlDrawable {
         OpenGlTransform.apply(gl, origin);
 
         gl.glScalef((float) scaledWidth, (float) scaledHeight, 1.0f);
-        gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+        gl.glColor4f(1.0f, 1.0f, 1.0f, 1f);
         gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
         gl.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
         gl.glVertexPointer(3, GL10.GL_FLOAT, 0, surfaceVertices);

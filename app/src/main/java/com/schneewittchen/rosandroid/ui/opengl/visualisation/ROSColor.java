@@ -32,6 +32,15 @@ public class ROSColor {
     private float blue;
     private float alpha;
 
+
+    public ROSColor(float red, float green, float blue, float alpha) {
+        this.red = red;
+        this.green = green;
+        this.blue = blue;
+        this.alpha = alpha;
+    }
+
+
     public static ROSColor copyOf(ROSColor color) {
         return new ROSColor(color.red, color.green, color.blue, color.alpha);
     }
@@ -52,9 +61,8 @@ public class ROSColor {
             float blue = Integer.parseInt(hex.substring(6), 16) / 255.0f;
             return new ROSColor(red, green, blue, alpha);
         } else {
-            return null;
+            return new ROSColor(0, 0, 0, 0);
         }
-
     }
 
     public static ROSColor fromHexAndAlpha(String hex, float alpha) {
@@ -65,15 +73,27 @@ public class ROSColor {
         return new ROSColor(red, green, blue, alpha);
     }
 
-    public ROSColor(float red, float green, float blue, float alpha) {
-        Preconditions.checkArgument(0.0f <= red && red <= 1.0f);
-        Preconditions.checkArgument(0.0f <= green && green <= 1.0f);
-        Preconditions.checkArgument(0.0f <= blue && blue <= 1.0f);
-        Preconditions.checkArgument(0.0f <= alpha && alpha <= 1.0f);
-        this.red = red;
-        this.green = green;
-        this.blue = blue;
-        this.alpha = alpha;
+    public ROSColor interpolate(ROSColor other, float fraction) {
+        return new ROSColor(
+                (other.red - red) * fraction + red,
+                (other.green - green) * fraction + green,
+                (other.blue - blue) * fraction + blue,
+                (other.alpha - alpha) * fraction + alpha
+        );
+    }
+
+    public int toInt() {
+        int A = (int)(255 * alpha);
+        int R = (int)(255 * red);
+        int G = (int)(255 * green);
+        int B = (int)(255 * blue);
+
+        A = (A << 24) & 0xFF000000;
+        R = (R << 16) & 0x00FF0000;
+        G = (G << 8) & 0x0000FF00;
+        B = B & 0x000000FF;
+
+        return A | R | G | B;
     }
 
     public void apply(GL10 gl) {

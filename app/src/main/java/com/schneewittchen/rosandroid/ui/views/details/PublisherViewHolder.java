@@ -8,12 +8,11 @@ import android.widget.TextView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
-import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.Topic;
 import com.schneewittchen.rosandroid.utility.Utils;
 import com.schneewittchen.rosandroid.viewmodel.DetailsViewModel;
 
-import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  * TODO: Description
@@ -28,8 +27,6 @@ public class PublisherViewHolder implements IBaseViewHolder, TextView.OnEditorAc
 
     private TextInputEditText topicNameEditText;
     private TextInputEditText topicTypeEditText;
-    private List<Topic> availableTopics;
-    private List<String> topicNameItemList;
     public List<String> topicTypes;
     public DetailsViewModel viewModel;
     private DetailViewHolder parentViewHolder;
@@ -48,28 +45,6 @@ public class PublisherViewHolder implements IBaseViewHolder, TextView.OnEditorAc
 
         topicNameEditText.setOnEditorActionListener(this);
         topicTypeEditText.setOnEditorActionListener(this);
-
-        // Initialize Topic Name Spinner
-        topicNameItemList = new ArrayList<>();
-
-        /*
-        topicNameTextView = widgetView.findViewById(R.id.topicNameEditText);
-        topicNameAdapter = new ArrayAdapter<>(widgetView.getContext(),
-                R.layout.dropdown_menu_popup_item, topicNameItemList);
-
-        topicNameTextView.setAdapter(topicNameAdapter);
-        topicNameTextView.setOnClickListener(clickedView -> {
-            updateTopicNameSpinner();
-            topicNameTextView.showDropDown();
-        });
-
-        topicNameInputLayout.setEndIconOnClickListener(v -> {
-            topicNameTextView.requestFocus();
-            topicNameTextView.callOnClick();
-        });
-
-        topicNameTextView.setOnItemClickListener((parent, view, position, id) -> selectNameItem(position));
-         */
     }
 
     @Override
@@ -87,19 +62,6 @@ public class PublisherViewHolder implements IBaseViewHolder, TextView.OnEditorAc
         entity.topic.type = topicTypeEditText.getText().toString();
     }
 
-    private void selectNameItem(int position) {
-        String selectedName = topicNameItemList.get(position);
-
-        // Search for topic type required for selected name
-        for (Topic rosTopic: availableTopics) {
-            if (rosTopic.name.equals(selectedName)) {
-                topicTypeEditText.setText(rosTopic.type);
-            }
-        }
-
-        //itemView.requestFocus();
-    }
-
 
     @Override
     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -109,6 +71,7 @@ public class PublisherViewHolder implements IBaseViewHolder, TextView.OnEditorAc
             case EditorInfo.IME_ACTION_PREVIOUS:
                 Utils.hideSoftKeyboard(v);
                 v.clearFocus();
+                parentViewHolder.forceWidgetUpdate();
                 return true;
         }
 

@@ -3,8 +3,6 @@ package com.schneewittchen.rosandroid.widgets.logger;
 import com.schneewittchen.rosandroid.model.entities.widgets.SubscriberWidgetEntity;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.Topic;
 
-import std_msgs.String;
-
 
 /**
  * TODO: Description
@@ -18,14 +16,14 @@ import std_msgs.String;
 
 public class LoggerEntity extends SubscriberWidgetEntity {
 
-    public java.lang.String text;
+    public String text;
     public int rotation;
 
 
     public LoggerEntity() {
         this.width = 3;
         this.height = 1;
-        this.topic = new Topic("log", String._TYPE);
+        this.topic = new Topic("log", std_msgs.String._TYPE);
         this.text = "A logger";
         this.rotation = 0;
     }

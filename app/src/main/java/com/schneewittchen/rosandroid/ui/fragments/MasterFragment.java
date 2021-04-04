@@ -16,19 +16,14 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.databinding.FragmentMasterBinding;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.connection.ConnectionType;
-import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.Topic;
 import com.schneewittchen.rosandroid.utility.Utils;
 import com.schneewittchen.rosandroid.viewmodel.MasterViewModel;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Observer;
 
 
 /**
@@ -112,7 +107,12 @@ public class MasterFragment extends Fragment implements TextView.OnEditorActionL
         // View model connection -------------------------------------------------------------------
 
         mViewModel.getMaster().observe(getViewLifecycleOwner(), master -> {
-            if (master == null) return;
+            if (master == null) {
+                binding.masterIpEditText.getText().clear();
+                binding.masterPortEditText.getText().clear();
+                return;
+            }
+
             binding.masterIpEditText.setText(master.ip);
             binding.masterPortEditText.setText(String.valueOf(master.port));
         });
@@ -175,7 +175,7 @@ public class MasterFragment extends Fragment implements TextView.OnEditorActionL
         // Update master port
         Editable masterPort = binding.masterPortEditText.getText();
 
-        if (masterPort != null) {
+        if (masterPort != null && masterPort.length() > 0) {
             mViewModel.setMasterPort(masterPort.toString());
         }
     }
@@ -189,7 +189,7 @@ public class MasterFragment extends Fragment implements TextView.OnEditorActionL
                 updateMasterDetails();
 
                 view.clearFocus();
-                Utils.hideSoftKeyboard(Objects.requireNonNull(getView()));
+                Utils.hideSoftKeyboard(view);
 
                 return true;
         }

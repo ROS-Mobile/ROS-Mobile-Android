@@ -43,7 +43,6 @@ public class DebugView extends SubscriberWidgetView {
 
     // GestureDetector for doubleClick
     private GestureDetectorCompat gestureDetector;
-    private GestureDetector.SimpleOnGestureListener doubleTapListener;
 
     // Views
     private ScrollView scrollView;
@@ -55,8 +54,7 @@ public class DebugView extends SubscriberWidgetView {
     private ArrayList<String> dataList;
 
     // Finger position tracker
-    private float startX = 0.0f;
-    private float startY = 0.0f;
+    private float lastY = 0.0f;
 
     // Mode
     private static int NONE = 0;
@@ -64,13 +62,11 @@ public class DebugView extends SubscriberWidgetView {
     private int mode;
 
     // Amount of translation
-    private float translateX = 0f;
     private float translateY = 0f;
 
     // Drag parameters
-    private int posX = 0;
     private int posY = 0;
-    private float dragSensitivity = 0.05f;
+    private float dragSensitivity = 1; //0.05f;
 
 
     public DebugView(Context context) {
@@ -100,22 +96,22 @@ public class DebugView extends SubscriberWidgetView {
         textView.setVisibility(View.VISIBLE);
 
         // Define action for onDoubleTap
-        doubleTapListener = new GestureDetector.SimpleOnGestureListener() {
-            @Override
-            public boolean onDoubleTap(MotionEvent e) {
-                stopUpdate = !stopUpdate;
-                if(stopUpdate) {
-                    output = "";
-                    for (String string : dataList) {
-                        output = output.concat(string);
-                        output = output.concat("\n\n");
+        gestureDetector = new GestureDetectorCompat(getContext(),
+                new GestureDetector.SimpleOnGestureListener() {
+                    @Override
+                    public boolean onDoubleTap(MotionEvent e) {
+                        stopUpdate = !stopUpdate;
+                        if (stopUpdate) {
+                            output = "";
+                            for (String string : dataList) {
+                                output = output.concat(string);
+                                output = output.concat("\n\n");
+                            }
+                            updateView();
+                        }
+                        return true;
                     }
-                    updateView();
-                }
-                return true;
-            }
-        };
-        gestureDetector = new GestureDetectorCompat(getContext(), doubleTapListener);
+                });
 
         // Initialize variables
         stopUpdate = false;
@@ -143,14 +139,14 @@ public class DebugView extends SubscriberWidgetView {
         // Draw background and rectangle
         canvas.drawPaint(paintDark);
         canvas.drawRoundRect(leftViz, topViz, widthViz, heightViz, cornerWidth, cornerWidth, paint);
-        canvas.translate(this.cornerWidth,this.cornerWidth);
+        canvas.translate(this.cornerWidth, this.cornerWidth);
 
         // Calculate the drag
-        posY = posY - (int) (translateY * dragSensitivity);
-        posY = Math.max(posY, 0);
+        //posY = posY - (int) (translateY * dragSensitivity);
+        //posY = Math.max(posY, 0);
 
         // Draw data
-        textView.scrollTo(posX,posY);
+        textView.scrollTo(0, posY);
         scrollView.measure(getWidth(), getHeight());
         scrollView.layout(0, 0, getWidth(), getHeight());
         scrollView.draw(canvas);
@@ -165,7 +161,7 @@ public class DebugView extends SubscriberWidgetView {
         DebugEntity entity = (DebugEntity) widgetEntity;
 
         dataList.add(debugData.value);
-        while(dataList.size() > entity.numberMessages) {
+        while (dataList.size() > entity.numberMessages) {
             dataList.remove(0);
         }
 
@@ -181,24 +177,25 @@ public class DebugView extends SubscriberWidgetView {
         gestureDetector.onTouchEvent(event);
 
         // Handle scrolling
-        if(stopUpdate) {
+        if (stopUpdate) {
             boolean dragged = false;
             switch (event.getAction() & MotionEvent.ACTION_MASK) {
                 case MotionEvent.ACTION_DOWN:
                     mode = DRAG;
-                    startX = event.getX();
-                    startY = event.getY();
+                    lastY = event.getY();
                     break;
 
                 case MotionEvent.ACTION_MOVE:
-                    translateX = event.getX() - startX;
-                    translateY = event.getY() - startY;
 
-                    double distance = Math.sqrt(Math.pow(translateX, 2) + Math.pow(translateY, 2));
+                    translateY = event.getY() - lastY;
+                    lastY = event.getY();
+                    posY = posY - (int) (translateY * dragSensitivity);
+                    posY = Math.max(posY, 0);
 
-                    if (distance > 0) {
+                    if (translateY != 0) {
                         dragged = true;
                     }
+
                     break;
 
                 case MotionEvent.ACTION_UP:
@@ -219,10 +216,11 @@ public class DebugView extends SubscriberWidgetView {
     }
 
     private void updateView() {
+        int width = getWidth() - (int) (this.cornerWidth * 2);
         textView.setText(this.output);
-        textView.measure(getWidth()- (int)(this.cornerWidth*2), 0);
+        textView.measure(width, 0);
         scrollView.removeView(textView);
-        scrollView.addView(textView, getWidth()- (int)(this.cornerWidth*2), textView.getMeasuredHeight());
+        scrollView.addView(textView, width, textView.getMeasuredHeight());
         this.invalidate();
     }
 }

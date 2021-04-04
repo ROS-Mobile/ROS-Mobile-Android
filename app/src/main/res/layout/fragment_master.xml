@@ -44,8 +44,7 @@
                 android:digits="0123456789/."
                 android:imeOptions="actionDone"
                 android:inputType="number|numberDecimal|phone"
-                android:singleLine="true"
-                android:text="168.0.0.1" />
+                android:singleLine="true" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -67,8 +66,7 @@
                 android:layout_height="wrap_content"
                 android:imeOptions="actionDone"
                 android:inputType="number"
-                android:singleLine="true"
-                android:text="11311" />
+                android:singleLine="true"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -116,8 +114,7 @@
                 android:enabled="false"
                 android:imeOptions="actionDone"
                 android:inputType="text"
-                android:singleLine="true"
-                android:text="My Robot Network" />
+                android:singleLine="true" />
 
         </com.google.android.material.textfield.TextInputLayout>
 

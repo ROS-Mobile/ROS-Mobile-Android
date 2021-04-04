@@ -53,6 +53,7 @@ class LayerViewHolder implements IBaseViewHolder, TextView.OnEditorActionListene
             case EditorInfo.IME_ACTION_PREVIOUS:
                 Utils.hideSoftKeyboard(v);
                 v.clearFocus();
+                parentViewHolder.forceWidgetUpdate();
                 return true;
         }
 

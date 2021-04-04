@@ -15,7 +15,6 @@ import sensor_msgs.NavSatFix;
  * @updated on 27.10.2020
  * @modified by Nico Studt
  */
-
 public class GpsEntity extends SubscriberWidgetEntity {
 
     public GpsEntity() {

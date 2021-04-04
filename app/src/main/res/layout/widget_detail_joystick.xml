@@ -13,7 +13,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView8"
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="X-Axis"
@@ -33,14 +33,14 @@
         android:text="Mapping"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <Spinner
         android:id="@+id/xDirSpinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
-        android:entries="@array/geometry_msg_twist_dir"
+        android:entries="@array/joystick_twist_dir"
         android:foregroundTintMode="add"
         app:layout_constraintBottom_toBottomOf="@+id/textView11"
         app:layout_constraintEnd_toStartOf="@+id/xAxisSpinner"
@@ -50,7 +50,7 @@
         android:id="@+id/xAxisSpinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:entries="@array/geometry_msg_twist_axis"
+        android:entries="@array/joystick_twist_axis"
         app:layout_constraintBottom_toBottomOf="@+id/textView11"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textView11" />
@@ -142,7 +142,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
         android:layout_weight="1"
-        android:entries="@array/geometry_msg_twist_dir"
+        android:entries="@array/joystick_twist_dir"
         app:layout_constraintBottom_toBottomOf="@+id/textView14"
         app:layout_constraintEnd_toStartOf="@+id/yAxisSpinner"
         app:layout_constraintTop_toTopOf="@+id/textView14" />
@@ -152,7 +152,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:entries="@array/geometry_msg_twist_axis"
+        android:entries="@array/joystick_twist_axis"
         app:layout_constraintBottom_toBottomOf="@+id/yDirSpinner"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/yDirSpinner" />

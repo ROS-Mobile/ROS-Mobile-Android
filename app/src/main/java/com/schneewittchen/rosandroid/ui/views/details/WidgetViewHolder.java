@@ -19,7 +19,7 @@ import com.schneewittchen.rosandroid.utility.Utils;
  * @version 1.0.0
  * @created on 17.03.21
  */
-class WidgetViewHolder implements IBaseViewHolder, TextView.OnEditorActionListener {
+public class WidgetViewHolder implements IBaseViewHolder, TextView.OnEditorActionListener {
 
     private EditText xEdittext;
     private EditText yEdittext;
@@ -65,13 +65,34 @@ class WidgetViewHolder implements IBaseViewHolder, TextView.OnEditorActionListen
     public void baseUpdateEntity(BaseEntity entity) {
         entity.name = nameEdittext.getText().toString();
 
+        IPositionEntity posEntity = (IPositionEntity) entity;
         Position position = new Position();
-        position.x = Integer.parseInt(xEdittext.getText().toString());
-        position.y = Integer.parseInt(yEdittext.getText().toString());
-        position.width = Integer.parseInt(widthEdittext.getText().toString());
-        position.height = Integer.parseInt(heightEdittext.getText().toString());
 
-        ((IPositionEntity) entity).setPosition(position);
+        if (xEdittext.getText().length() == 0) {
+            position.x = posEntity.getPosition().x;
+        } else {
+            position.x = Integer.parseInt(xEdittext.getText().toString());
+        }
+
+        if (yEdittext.getText().length() == 0) {
+            position.y = posEntity.getPosition().y;
+        } else {
+            position.y = Integer.parseInt(yEdittext.getText().toString());
+        }
+
+        if (widthEdittext.getText().length() == 0) {
+            position.width = posEntity.getPosition().width;
+        } else {
+            position.width = Integer.parseInt(widthEdittext.getText().toString());
+        }
+
+        if (heightEdittext.getText().length() == 0) {
+            position.height = posEntity.getPosition().height;
+        } else {
+            position.height = Integer.parseInt(heightEdittext.getText().toString());
+        }
+
+        posEntity.setPosition(position);
     }
 
     @Override

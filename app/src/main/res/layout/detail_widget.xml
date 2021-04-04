@@ -36,7 +36,7 @@
             android:imeOptions="actionDone"
             android:inputType="text"
             android:singleLine="true"
-            android:text="Widget name" />
+            android:text = "Name" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
@@ -73,7 +73,7 @@
             android:imeOptions="actionDone"
             android:inputType="number"
             android:singleLine="true"
-            android:text="3" />
+            android:text = "0" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -97,7 +97,7 @@
             android:imeOptions="actionDone"
             android:inputType="number"
             android:singleLine="true"
-            android:text="3" />
+            android:text = "0"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -121,7 +121,7 @@
             android:imeOptions="actionDone"
             android:inputType="number"
             android:singleLine="true"
-            android:text="8" />
+            android:text = "0" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -144,7 +144,7 @@
             android:imeOptions="actionDone"
             android:inputType="number"
             android:singleLine="true"
-            android:text="4" />
+            android:text = "0" />
     </com.google.android.material.textfield.TextInputLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

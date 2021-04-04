@@ -44,7 +44,7 @@ public class DetailsViewModel extends AndroidViewModel {
 
         rosDomain = RosDomain.getInstance(application);
 
-        if(selectedPath == null) {
+        if (selectedPath == null) {
             selectedPath = new MutableLiveData<>();
             selectedPath.setValue(new ArrayList<>());
         }
@@ -52,21 +52,34 @@ public class DetailsViewModel extends AndroidViewModel {
 
 
     public void createWidget(String selectedText) {
-        rosDomain.createWidget(null, selectedText);
+        rosDomain.createWidget(getParentId(0), selectedText);
     }
 
     public void updateWidget(BaseEntity widget) {
-        rosDomain.updateWidget(widget);
+        rosDomain.updateWidget(getParentId(1), widget);
     }
 
     public void deleteWidget(BaseEntity widget) {
         lastDeletedWidget = widget;
-        rosDomain.deleteWidget(widget);
+        rosDomain.deleteWidget(getParentId(0), widget);
     }
 
     public void restoreWidget() {
-        rosDomain.addWidget(lastDeletedWidget);
+        if (lastDeletedWidget == null) return;
+        rosDomain.addWidget(getParentId(0), lastDeletedWidget);
     }
+
+    private Long getParentId(int branch) {
+        Long parentId = null;
+        List<Long> path = selectedPath.getValue();
+
+        if (path.size() > branch) {
+            parentId = path.get(0);
+        }
+
+        return parentId;
+    }
+
 
     public LiveData<List<BaseEntity>> getCurrentWidgets() {
         return rosDomain.getCurrentWidgets();
@@ -84,32 +97,19 @@ public class DetailsViewModel extends AndroidViewModel {
     }
 
     public List<Topic> getTopicList() {
-        return rosDomain.getTopicList(); }
+        return rosDomain.getTopicList();
+    }
 
     public LiveData<BaseEntity> getWidget() {
         List<Long> path = selectedPath.getValue();
         return rosDomain.findWidget(path.get(0));
-        /*
-        MediatorLiveData<BaseEntity> widgetData = new MediatorLiveData<>();
-        List<String> path = selectedPath.getValue();
-
-        widgetData.addSource(rosDomain.findWidget(path.get(0)), entity -> {
-            if (path.size() > 1) {
-                for (BaseEntity child: entity.childEntities) {
-                    if (child.name.equals(path.get(1)))
-                        widgetData.setValue(child);
-                }
-            } else {
-                widgetData.setValue(entity);
-            }
-        });
-
-        return widgetData;
-        */
-
     }
 
     public void select(Long widgetId) {
+        // Delete restore item
+        lastDeletedWidget = null;
+
+        // Nothing selected? Has to be root path.
         if (widgetId == null) {
             selectedPath.setValue(new ArrayList<>());
             return;
@@ -120,7 +120,6 @@ public class DetailsViewModel extends AndroidViewModel {
 
         path.add(widgetId);
         selectedPath.setValue(path);
-        Log.i(TAG, "Selected path: " + path);
     }
 
     public void popPath(int steps) {
@@ -129,7 +128,7 @@ public class DetailsViewModel extends AndroidViewModel {
 
         for (int i = 0; i < steps; i++) {
             if (path.isEmpty()) return;
-            path.remove(path.size()-1);
+            path.remove(path.size() - 1);
         }
 
         selectedPath.setValue(path);

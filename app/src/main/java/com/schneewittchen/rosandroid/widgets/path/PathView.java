@@ -65,7 +65,6 @@ public class PathView extends SubscriberLayerView {
 
     @Override
     public void onNewMessage(Message message) {
-        Log.i(TAG, "New Message");
         Path path = (Path)message;
 
         ByteBuffer pufferBuffer = ByteBuffer.allocateDirect(path.getPoses().size() * 3 * Float.SIZE);

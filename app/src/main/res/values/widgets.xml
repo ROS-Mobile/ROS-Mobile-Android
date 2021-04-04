@@ -1,96 +1,146 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string-array name="layer_names">
-        <item>Path</item>
-        <item>CostMap2D</item>
-        <item>Pose</item>
-    </string-array>
-
-    <string-array name="layer_description">
-        <item>Path view</item>
-        <item>Costmap 2d View</item>
-        <item>Pose view</item>
-    </string-array>
-
     <string-array name="widget_names">
-        <item>Debug</item>
-        <item>Joystick</item>
-        <item>GridMap</item>
-        <item>Camera</item>
-        <item>Gps</item>
         <item>Button</item>
+        <item>Camera</item>
+        <item>Debug</item>
+        <item>Gps</item>
+        <item>Joystick</item>
         <item>Label</item>
         <item>Logger</item>
         <item>Viz2D</item>
     </string-array>
 
-    <string-array name="widget_descr">
-        <item>A Debug Node which can show all topics similar to rostopic info.</item>
-        <item>The Joystick node is designed for teleoperational control of robotic systems.
-            It will map the joystick position from the visualization tab to the topic specified in the details.
-            The inherited message is thereby the geometry_msgs/Twist.
-            In the details section of the joystick, you can specify to which variables of the Twist message the joystick position should be mapped.
-            Further, the mapping dimensions can be set.
-            To change the location of the joystick for control, simply touch the joystick button in the Viz Tab and push it around to the desired location.
-            When thee button is released, it will automatically go back to center.</item>
-        <item>The Occupancy Grid Node is designed for displaying an occupancy grid map of the environment.
-            Therefore, it subscribes to the topic specified in the details and receives a nav_msgs/OccupancyGrid message.
-            It will then display the received occupancy grid onto the window visualized in the Viz Tab.
-            You can shift the displayed grid to any direction by moving a finger in the same direction and you can zoom in and out by pinching 2 or more fingers together or apart.</item>
-        <item>The Camera Node is designed for displaying camera recordings.
-            Therefore, it subscribes to the topic specified in the details and receives a sensor_msgs/Image message.
-            It will then display the received Image in the Viz Tab.</item>
-        <item>The GPS node is designed for displaying the GPS position of the connected robot onto a map.
-            Therefore, it subscribes to the topic specified in the details and receives a sensor_msgs/NavSatFix message.
-            It will then display the received position onto the map visualized in the Viz Tab.
-            The map will be thereby centered at the position.
-            You can zoom in and out by pinching 2 or more fingers together or apart.</item>
-        <item>A Button Node which, when pressed, publishes on a topic chosen by the user "True" and when released "False".</item>
-        <item>A Label which does not interact with ROS but helps to organize your screen.</item>
-        <item>A Logger message which simply prints String messages published to set topic</item>
-        <item>2D View of multiple layers</item>
+    <string-array name="layer_names">
+        <item>CostMap2D</item>
+        <item>Path</item>
+        <item>Pose</item>
     </string-array>
 
 
-    <!-- Joystick -->
-    <string-array name="geometry_msg_twist_dir">
-        <item>Linear</item>
-        <item>Angular</item>
-    </string-array>
+    <!--___________________________Layers____________________________-->
 
-    <string-array name="geometry_msg_twist_axis">
-        <item>X</item>
-        <item>Y</item>
-        <item>Z</item>
+    <!-- CostMap2D -->
+    <string name="CostMap2D_description">
+        A costmap layer.
+    </string>
+
+
+    <!-- Path -->
+    <string name="Path_description">
+        A path layer.
+    </string>
+
+
+    <!-- Pose -->
+    <string name="Pose_description">
+        A pose layer.
+    </string>
+
+
+    <!--___________________________Layers____________________________-->
+
+    <!-- Button -->
+    <string name="Button_description">
+        A Button Node which, when pressed, publishes on a topic chosen
+        by the user "True" and when released "False".
+    </string>
+
+    <string-array name="button_rotation">
+        <item>0°</item>
+        <item>90°</item>
+        <item>180°</item>
+        <item>270°</item>
     </string-array>
 
 
     <!-- Camera -->
+    <string name="Camera_description">
+        The Camera Node is designed for displaying camera recordings. Therefore, it subscribes to
+        the topic specified in the details and receives a sensor_msgs/Image message.
+        It will then display the received Image in the Viz Tab.
+    </string>
+
     <string-array name="camera_msg_types">
         <item>sensor_msgs/Image</item>
         <item>sensor_msgs/CompressedImage</item>
     </string-array>
 
 
+    <!-- Debug -->
+    <string name="Debug_description">
+        A Debug Node which can show all topics similar to rostopic info.
+    </string>
+
+
     <!-- GPS -->
+    <string name="Gps_description">The GPS node is designed for displaying the GPS position of the
+        connected robot onto a map. Therefore, it subscribes to the topic specified in the details
+        and receives a sensor_msgs/NavSatFix message. It will then display the received position
+        onto the map visualized in the Viz Tab. The map will be thereby centered at the position.
+        You can zoom in and out by pinching 2 or more fingers together or apart.
+    </string>
+
     <string-array name="gps_msg_types">
         <item>sensor_msgs/NavSatFix</item>
     </string-array>
 
 
     <!-- GridMap -->
+    <string name="GridMap_description">
+        The Occupancy Grid Node is designed for displaying an occupancy grid map of the environment.
+        Therefore, it subscribes to the topic specified in the details and receives a
+        nav_msgs/OccupancyGrid message. It will then display the received occupancy grid onto the
+        window visualized in the Viz Tab. You can shift the displayed grid to any direction by
+        moving a finger in the same direction and you can zoom in and out by pinching 2 or more
+        fingers together or apart.
+    </string>
+
     <string-array name="gridmap_msg_types">
         <item>nav_msgs/OccupancyGrid</item>
     </string-array>
 
 
-    <!-- Button -->
-    <string-array name="rotation">
-        <item>0°</item>
-        <item>90°</item>
-        <item>180°</item>
-        <item>270°</item>
+    <!-- Joystick -->
+    <string name="Joystick_description">
+        The Joystick node is designed for teleoperational control of robotic systems.
+        It will map the joystick position from the visualization tab to the topic
+        specified in the details. The inherited message is thereby the geometry_msgs/Twist. In the
+        details section of the joystick, you can specify to which variables of the Twist message
+        the joystick position should be mapped. Further, the mapping dimensions can be set. To change
+        the location of the joystick for control, simply touch the joystick button in the Viz Tab
+        and push it around to the desired location. When thee button is released, it will
+        automatically go back to center.
+    </string>
+
+    <string-array name="joystick_twist_dir">
+        <item>Linear</item>
+        <item>Angular</item>
     </string-array>
+
+    <string-array name="joystick_twist_axis">
+        <item>X</item>
+        <item>Y</item>
+        <item>Z</item>
+    </string-array>
+
+
+    <!-- Label -->
+    <string name="Label_description">
+        A Label which does not interact with ROS but helps to organize your screen.
+    </string>
+
+
+    <!-- Logger -->
+    <string name="Logger_description">
+        A Logger message which simply prints String messages published to set topic.
+    </string>
+
+
+    <!-- Viz2D -->
+    <string name="Viz2D_description">
+        2D View of multiple layers.
+    </string>
 
 </resources>

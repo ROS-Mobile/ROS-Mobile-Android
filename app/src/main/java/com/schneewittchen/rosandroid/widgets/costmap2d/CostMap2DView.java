@@ -1,8 +1,10 @@
 package com.schneewittchen.rosandroid.widgets.costmap2d;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.google.common.base.Preconditions;
+import com.schneewittchen.rosandroid.ui.opengl.visualisation.ROSColor;
 import com.schneewittchen.rosandroid.ui.opengl.visualisation.TextureBitmap;
 import com.schneewittchen.rosandroid.ui.opengl.visualisation.Tile;
 import com.schneewittchen.rosandroid.ui.opengl.visualisation.VisualizationView;
@@ -34,20 +36,29 @@ public class CostMap2DView extends SubscriberLayerView {
 
     public static final String TAG = CostMap2DView.class.getSimpleName();
 
-    private static final int COLOR_OCCUPIED = 0xff111111;
-    private static final int COLOR_FREE = 0xddffffff;
-    private static final int COLOR_UNKNOWN = 0x88ffffff;
-    private static final int COLOR_TRANSPARENT = 0x00000000;
+    private static final int COLOR_UNKNOWN = 0xff888888;
 
     private List<Tile> tiles;
     private GL10 previousGl;
+    private int[] colorMap;
 
 
     public CostMap2DView(Context context) {
         super(context);
         tiles = new ArrayList<>();
+        createColorMap();
     }
 
+    private void createColorMap() {
+        ROSColor colorLow = new ROSColor(1, 1, 1, 1);
+        ROSColor colorHigh = new ROSColor(0, 0, 0, 1);
+
+        colorMap = new int[101];
+        for (int i = 0; i < 101; i++) {
+            float fraction = (float)i/101;
+            colorMap[i] = colorLow.interpolate(colorHigh, fraction).toInt();
+        }
+    }
 
     @Override
     public void draw(VisualizationView view, GL10 gl) {
@@ -74,6 +85,7 @@ public class CostMap2DView extends SubscriberLayerView {
         final int numTilesHigh = (int) Math.ceil(height / (float) TextureBitmap.STRIDE);
 
         final int numTiles = numTilesWide * numTilesHigh;
+        Log.i(TAG, "Num Tiles: " + numTiles);
         final Transform origin = Transform.fromPoseMessage(grid.getInfo().getOrigin());
 
         while (tiles.size() < numTiles) {
@@ -84,8 +96,8 @@ public class CostMap2DView extends SubscriberLayerView {
             for (int x = 0; x < numTilesWide; ++x) {
                 final int tileIndex = y * numTilesWide + x;
                 tiles.get(tileIndex).setOrigin(origin.multiply(new Transform(new Vector3(
-                        x * resolution * width,
-                        y * resolution * height,
+                        x * resolution * TextureBitmap.STRIDE,
+                        y * resolution * TextureBitmap.HEIGHT,
                         0.),
                         Quaternion.identity())));
                 tiles.get(tileIndex).setStride(width);
@@ -101,10 +113,8 @@ public class CostMap2DView extends SubscriberLayerView {
             final byte pixel = buffer.readByte();
             if (pixel == -1) {
                 tiles.get(tileIndex).writeInt(COLOR_UNKNOWN);
-            } else if (pixel < 50) {
-                tiles.get(tileIndex).writeInt(COLOR_FREE);
             } else {
-                tiles.get(tileIndex).writeInt(COLOR_OCCUPIED);
+                tiles.get(tileIndex).writeInt(colorMap[pixel]);
             }
 
             ++x;

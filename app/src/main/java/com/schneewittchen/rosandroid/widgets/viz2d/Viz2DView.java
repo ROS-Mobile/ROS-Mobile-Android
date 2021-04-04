@@ -10,14 +10,13 @@ import android.view.MotionEvent;
 
 import androidx.annotation.Nullable;
 
-import com.schneewittchen.rosandroid.R;
+import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.RosData;
-import com.schneewittchen.rosandroid.ui.views.widgets.WidgetGroupView;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.node.BaseData;
 import com.schneewittchen.rosandroid.ui.general.DataListener;
 import com.schneewittchen.rosandroid.ui.opengl.visualisation.VisualizationView;
 import com.schneewittchen.rosandroid.ui.views.widgets.LayerView;
-import com.schneewittchen.rosandroid.utility.Utils;
+import com.schneewittchen.rosandroid.ui.views.widgets.WidgetGroupView;
 
 
 /**
@@ -66,8 +65,14 @@ public class Viz2DView extends WidgetGroupView {
         paintBackground.setStyle(Paint.Style.FILL);
 
         layerView = new VisualizationView(getContext());
-
         this.addView(layerView);
+    }
+
+    @Override
+    public void setWidgetEntity(BaseEntity widgetEntity) {
+        super.setWidgetEntity(widgetEntity);
+
+        layerView.getCamera().jumpToFrame(((Viz2DEntity)widgetEntity).frame);
     }
 
     @Override
@@ -77,9 +82,6 @@ public class Viz2DView extends WidgetGroupView {
 
     @Override
     public void onDraw(Canvas canvas) {
-        Log.i(TAG, "OnDraw");
-        super.onDraw(canvas);
-
         canvas.drawPaint(paintBackground);
 
         // Define image size based on the Bitmap width and height
@@ -88,11 +90,10 @@ public class Viz2DView extends WidgetGroupView {
         float widthViz = getWidth();
         float heightViz = getHeight();
 
-        //button.draw(canvas);
-        //layerView.requestRender();
-
         // Draw Border
         canvas.drawRect(leftViz, topViz, widthViz, heightViz, borderPaint);
+
+        super.onDraw(canvas);
     }
 
 

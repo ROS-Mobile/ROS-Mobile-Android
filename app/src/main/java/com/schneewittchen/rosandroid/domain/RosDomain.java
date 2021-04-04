@@ -52,19 +52,20 @@ public class RosDomain {
     private final LiveData<List<BaseEntity>> currentWidgets;
     private final LiveData<MasterEntity> currentMaster;
 
+
     private RosDomain(@NonNull Application application) {
         this.rosRepo = RosRepository.getInstance(application);
         this.configRepository = ConfigRepositoryImpl.getInstance(application);
 
         // React on config change and get the new data
         currentWidgets = Transformations.switchMap(configRepository.getCurrentConfigId(),
-                configId -> configRepository.getWidgets(configId));
+                configRepository::getWidgets);
 
         currentMaster = Transformations.switchMap(configRepository.getCurrentConfigId(),
-                configId -> configRepository.getMaster(configId));
+                configRepository::getMaster);
 
-        currentWidgets.observeForever(widgets -> rosRepo.updateWidgets(widgets));
-        currentMaster.observeForever(master -> rosRepo.updateMaster(master));
+        currentWidgets.observeForever(rosRepo::updateWidgets);
+        currentMaster.observeForever(rosRepo::updateMaster);
     }
 
 
@@ -81,21 +82,20 @@ public class RosDomain {
         rosRepo.publishData(data);
     }
 
-
     public void createWidget(Long parentId, String widgetType) {
         new LambdaTask(() -> configRepository.createWidget(parentId, widgetType)).execute();
     }
 
-    public void addWidget(BaseEntity widget) {
-        configRepository.addWidget(widget);
+    public void addWidget(Long parentId, BaseEntity widget) {
+        configRepository.addWidget(parentId, widget);
     }
 
-    public void updateWidget(BaseEntity widget) {
-        configRepository.updateWidget(widget);
+    public void updateWidget(Long parentId, BaseEntity widget) {
+        configRepository.updateWidget(parentId, widget);
     }
 
-    public void deleteWidget(BaseEntity widget) {
-        configRepository.deleteWidget(widget);
+    public void deleteWidget(Long parentId, BaseEntity widget) {
+        configRepository.deleteWidget(parentId, widget);
     }
 
     public LiveData<BaseEntity> findWidget(long widgetId) {

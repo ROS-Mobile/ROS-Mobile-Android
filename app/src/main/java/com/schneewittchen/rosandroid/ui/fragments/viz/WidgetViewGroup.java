@@ -291,6 +291,7 @@ public class WidgetViewGroup extends ViewGroup {
             object = constructor.newInstance(this.getContext());
 
         } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
 

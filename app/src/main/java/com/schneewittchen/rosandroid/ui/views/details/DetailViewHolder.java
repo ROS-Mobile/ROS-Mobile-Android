@@ -33,7 +33,7 @@ public abstract class DetailViewHolder implements IBaseViewHolder{
      * Call this method internally to update the bound widget info
      * and subsequently force an update of the widget list.
      */
-    protected void forceWidgetUpdate() {
+    public void forceWidgetUpdate() {
         baseUpdateEntity(entity);
         updateEntity(entity);
         widgetChangeListener.onWidgetDetailsChanged(entity);
@@ -47,6 +47,10 @@ public abstract class DetailViewHolder implements IBaseViewHolder{
         this.entity = entity.copy();
         baseBindEntity(this.entity);
         bindEntity(this.entity);
+    }
+
+    public BaseEntity getEntity() {
+        return this.entity;
     }
 
     public void setView(View view) {

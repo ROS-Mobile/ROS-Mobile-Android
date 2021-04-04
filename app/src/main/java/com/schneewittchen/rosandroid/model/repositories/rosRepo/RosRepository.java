@@ -2,7 +2,6 @@ package com.schneewittchen.rosandroid.model.repositories.rosRepo;
 
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.Entity;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
@@ -12,23 +11,22 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.schneewittchen.rosandroid.model.entities.MasterEntity;
+import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
 import com.schneewittchen.rosandroid.model.entities.widgets.GroupEntity;
 import com.schneewittchen.rosandroid.model.entities.widgets.IPublisherEntity;
+import com.schneewittchen.rosandroid.model.entities.widgets.ISilentEntity;
 import com.schneewittchen.rosandroid.model.entities.widgets.ISubscriberEntity;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.connection.ConnectionCheckTask;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.connection.ConnectionListener;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.connection.ConnectionType;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.RosData;
+import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.Topic;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.node.AbstractNode;
+import com.schneewittchen.rosandroid.model.repositories.rosRepo.node.BaseData;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.node.NodeMainExecutorService;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.node.NodeMainExecutorServiceListener;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.node.PubNode;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.node.SubNode;
-import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.Topic;
-import com.schneewittchen.rosandroid.model.repositories.rosRepo.node.BaseData;
-import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
-import com.schneewittchen.rosandroid.model.entities.widgets.PublisherLayerEntity;
-import com.schneewittchen.rosandroid.model.entities.widgets.SubscriberLayerEntity;
 
 import org.ros.address.InetAddressFactory;
 import org.ros.internal.node.client.MasterClient;
@@ -42,6 +40,8 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import tf2_msgs.TFMessage;
 
 
 /**
@@ -85,6 +85,7 @@ public class RosRepository implements SubNode.NodeListener {
         this.rosConnected = new MutableLiveData<>(ConnectionType.DISCONNECTED);
         this.receivedData = new MutableLiveData<>();
 
+        this.initStaticNodes();
     }
 
 
@@ -98,6 +99,22 @@ public class RosRepository implements SubNode.NodeListener {
         }
 
         return instance;
+    }
+
+
+    /**
+     * Initialize static nodes eg. tf and tf_static.
+     */
+    private void initStaticNodes() {
+        Topic tfTopic = new Topic("/tf", TFMessage._TYPE);
+        SubNode tfNode = new SubNode(this);
+        tfNode.setTopic(tfTopic);
+        currentNodes.put(tfTopic, tfNode);
+
+        Topic tfStaticTopic = new Topic("/tf_static", TFMessage._TYPE);
+        SubNode tfStaticNode = new SubNode(this);
+        tfStaticNode.setTopic(tfStaticTopic);
+        currentNodes.put(tfStaticTopic, tfStaticNode);
     }
 
 
@@ -193,6 +210,8 @@ public class RosRepository implements SubNode.NodeListener {
      * @param newWidgets Current list of widgets
      */
     public void updateWidgets(List<BaseEntity> newWidgets) {
+        Log.i(TAG, "Update widgets");
+
         // Unpack widgets as a widget can contain child widgets
         List<BaseEntity> newEntities = new ArrayList<>();
         for(BaseEntity baseEntity: newWidgets) {
@@ -203,8 +222,11 @@ public class RosRepository implements SubNode.NodeListener {
             }
         }
 
-        // Compare old and new widget lists
+        for(BaseEntity baseEntity: newEntities) {
+            Log.i(TAG, "Entity: " + baseEntity.name);
+        }
 
+        // Compare old and new widget lists
         // Create widget check with ids
         HashMap<Long, Boolean> widgetCheckMap = new HashMap<>();
         HashMap<Long, BaseEntity> widgetEntryMap = new HashMap<>();
@@ -239,7 +261,7 @@ public class RosRepository implements SubNode.NodeListener {
         }
 
         this.currentWidgets.clear();
-        this.currentWidgets.addAll(newWidgets);
+        this.currentWidgets.addAll(newEntities);
     }
 
     /**
@@ -274,9 +296,11 @@ public class RosRepository implements SubNode.NodeListener {
      * @param widget Widget to be added
      */
     private AbstractNode addNode(BaseEntity widget) {
+        if (widget instanceof ISilentEntity) return null;
+        Log.i(TAG, "Add node: " + widget.name);
+
         // Create a new node from widget
         AbstractNode node;
-
         if (widget instanceof IPublisherEntity) {
             node = new PubNode();
 
@@ -291,6 +315,7 @@ public class RosRepository implements SubNode.NodeListener {
         // Set node topic, add to node list and register it
         node.setWidget(widget);
         currentNodes.put(node.getTopic(), node);
+        this.registerNode(node);
 
         return node;
     }
@@ -302,7 +327,8 @@ public class RosRepository implements SubNode.NodeListener {
      * @param widget Widget to update
      */
     private void updateNode(BaseEntity oldWidget, BaseEntity widget) {
-        Log.i(TAG, "Update Widget: " + oldWidget.name);
+        if (widget instanceof ISilentEntity) return;
+        Log.i(TAG, "Update Node: " + oldWidget.name);
 
         if (oldWidget.equalRosState(widget)){
             AbstractNode node = this.currentNodes.get(widget.topic);
@@ -315,10 +341,8 @@ public class RosRepository implements SubNode.NodeListener {
 
         } else{
             this.removeNode(oldWidget);
-            AbstractNode node = this.addNode(widget);
-            this.registerNode(node);
+            this.addNode(widget);
         }
-
     }
 
     /**
@@ -326,6 +350,9 @@ public class RosRepository implements SubNode.NodeListener {
      * @param widget Widget to remove
      */
     private void removeNode(BaseEntity widget) {
+        if (widget instanceof ISilentEntity) return;
+        Log.i(TAG, "Remove Node: " + widget.name);
+
         AbstractNode node = this.currentNodes.remove(widget.topic);
         this.unregisterNode(node);
     }
@@ -335,7 +362,7 @@ public class RosRepository implements SubNode.NodeListener {
      * @param node Node to connect
      */
     private void registerNode(AbstractNode node) {
-        Log.i(TAG, "register Node");
+        Log.i(TAG, "Register Node: " + node.getTopic().name);
 
         if (rosConnected.getValue() != ConnectionType.CONNECTED) {
             Log.w(TAG, "Not connected with master");
@@ -350,7 +377,9 @@ public class RosRepository implements SubNode.NodeListener {
      * @param node Node to disconnect
      */
     private void unregisterNode(AbstractNode node) {
-        Log.i(TAG, "unregister Node");
+        if (node == null) return;
+
+        Log.i(TAG, "Unregister Node: " + node.getTopic().name);
 
         if (rosConnected.getValue() != ConnectionType.CONNECTED) {
             Log.w(TAG, "Not connected with master");
@@ -358,18 +387,6 @@ public class RosRepository implements SubNode.NodeListener {
         }
 
         nodeMainExecutorService.shutdownNodeMain(node);
-    }
-
-    private void registerAllNodes() {
-        for (AbstractNode node: currentNodes.values()) {
-            this.registerNode(node);
-        }
-    }
-
-    private void unregisterAllNodes() {
-        for (AbstractNode node: currentNodes.values()) {
-            this.unregisterNode(node);
-        }
     }
 
     /**
@@ -382,6 +399,18 @@ public class RosRepository implements SubNode.NodeListener {
 
         unregisterNode(node);
         registerNode(node);
+    }
+
+    private void registerAllNodes() {
+        for (AbstractNode node: currentNodes.values()) {
+            this.registerNode(node);
+        }
+    }
+
+    private void unregisterAllNodes() {
+        for (AbstractNode node: currentNodes.values()) {
+            this.unregisterNode(node);
+        }
     }
 
     private URI getMasterURI() {
@@ -421,6 +450,7 @@ public class RosRepository implements SubNode.NodeListener {
 
         return topicList;
     }
+
 
 
     private final class RosServiceConnection implements ServiceConnection {
