@@ -142,23 +142,27 @@ public class MasterFragment extends Fragment implements TextView.OnEditorActionL
     }
 
     private void setRosConnection(ConnectionType connectionType) {
-        int connectVisibility = View.GONE;
-        int disconnectVisibility = View.GONE;
-        int pendingVisibility = View.GONE;
+        int connectVisibility = View.INVISIBLE;
+        int disconnectVisibility = View.INVISIBLE;
+        int pendingVisibility = View.INVISIBLE;
+        String statustext = getContext().getString(R.string.connected);
 
         if (connectionType == ConnectionType.DISCONNECTED
                 || connectionType == ConnectionType.FAILED) {
             connectVisibility = View.VISIBLE;
-            binding.disconnectButton.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            statustext = getContext().getString(R.string.disconnected);
 
         } else if (connectionType == ConnectionType.CONNECTED) {
             disconnectVisibility = View.VISIBLE;
-            binding.disconnectButton.setBackgroundColor(getResources().getColor(R.color.delete_red));
 
         } else if (connectionType == ConnectionType.PENDING) {
             pendingVisibility = View.VISIBLE;
+            statustext = getContext().getString(R.string.pending);
         }
 
+        binding.statusText.setText(statustext);
+        binding.connectedImage.setVisibility(disconnectVisibility);
+        binding.disconnectedImage.setVisibility(connectVisibility);
         binding.connectButton.setVisibility(connectVisibility);
         binding.disconnectButton.setVisibility(disconnectVisibility);
         binding.pendingBar.setVisibility(pendingVisibility);

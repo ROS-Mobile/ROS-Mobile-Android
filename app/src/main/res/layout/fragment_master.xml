@@ -66,7 +66,7 @@
                 android:layout_height="wrap_content"
                 android:imeOptions="actionDone"
                 android:inputType="number"
-                android:singleLine="true"/>
+                android:singleLine="true" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -81,6 +81,18 @@
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/master_port_inputLayout" />
+
+        <TextView
+            android:id="@+id/wifiText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="Status"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="@color/colorAccent"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ipAddessLayout" />
 
         <ImageView
             android:id="@+id/wifiImageView"
@@ -153,37 +165,66 @@
             android:id="@+id/connectButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
             android:layout_marginTop="32dp"
             android:text="@string/button_connect"
             android:textColor="@color/black01dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ipAddessLayout" />
-
-        <Button
-            android:id="@+id/disconnectButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="32dp"
-            android:text="@string/button_disconnect"
-            android:textColor="@color/black01dp"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ipAddessLayout" />
-
-        <ProgressBar
-            android:id="@+id/pendingBar"
-            style="?android:attr/progressBarStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
             android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ipAddessLayout" />
+            app:layout_constraintTop_toBottomOf="@+id/statusText" />
+
+        <Button
+            android:id="@+id/disconnectButton"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/button_disconnect"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/connectButton" />
+
+        <ProgressBar
+            android:id="@+id/pendingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/connectButton"
+            app:layout_constraintEnd_toEndOf="@+id/connectButton"
+            app:layout_constraintStart_toStartOf="@+id/connectButton"
+            app:layout_constraintTop_toTopOf="@+id/connectButton" />
+
+        <TextView
+            android:id="@+id/statusText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/disconnected"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            app:layout_constraintStart_toEndOf="@+id/connectedImage"
+            app:layout_constraintTop_toBottomOf="@+id/wifiText" />
+
+        <ImageView
+            android:id="@+id/connectedImage"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/statusText"
+            app:layout_constraintStart_toStartOf="@+id/wifiText"
+            app:layout_constraintTop_toTopOf="@+id/statusText"
+            app:srcCompat="@drawable/ic_connected"
+            app:tint="@color/ok_green" />
+
+        <ImageView
+            android:id="@+id/disconnectedImage"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            app:layout_constraintBottom_toBottomOf="@+id/statusText"
+            app:layout_constraintStart_toStartOf="@+id/wifiText"
+            app:layout_constraintTop_toTopOf="@+id/statusText"
+            app:srcCompat="@drawable/ic_connected"
+            app:tint="@color/delete_red" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

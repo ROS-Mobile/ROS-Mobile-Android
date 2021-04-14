@@ -2,15 +2,14 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="@style/Theme.MaterialComponents.NoActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/black01dp</item>
         <item name="colorAccent">@color/colorAccent</item>
-
         <item name="windowNoTitle">true</item>
         <item name="actionOverflowMenuStyle">@style/MyOverflowMenu</item>
-        <item name="android:navigationBarColor">@color/black01dp</item>
+        <item name="android:navigationBarColor">@color/black04dp</item>
 
         <item name="snackbarStyle">@style/snackbar_style</item>
         <item name="snackbarTextViewStyle">@style/snackbar_text</item>

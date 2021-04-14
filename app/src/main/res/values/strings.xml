@@ -50,5 +50,8 @@
 
     <!-- Details -->
     <string name="widget_list_type">(%s)</string>
+    <string name="connected">Connected</string>
+    <string name="disconnected">Disconnected</string>
+    <string name="pending">Pending</string>
 
 </resources>

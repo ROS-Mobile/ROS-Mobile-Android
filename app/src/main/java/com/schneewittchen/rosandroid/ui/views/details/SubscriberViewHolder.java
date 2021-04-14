@@ -1,8 +1,11 @@
 package com.schneewittchen.rosandroid.ui.views.details;
 
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -25,6 +28,8 @@ import java.util.List;
  * @created on 17.03.21
  */
 class SubscriberViewHolder implements IBaseViewHolder {
+
+    private static String TAG = SubscriberViewHolder.class.getSimpleName();
 
     private AutoCompleteTextView topicNameTextView;
     private TextInputEditText topicTypeEditText;
@@ -55,6 +60,19 @@ class SubscriberViewHolder implements IBaseViewHolder {
 
         topicNameAdapter = new ArrayAdapter<>(view.getContext(),
                 R.layout.dropdown_menu_popup_item, topicNameItemList);
+
+
+        /*
+        topicNameAdapter = new ArrayAdapter<String>(view.getContext(),
+                R.layout.dropdown_menu_popup_item, topicNameItemList) {
+            @Override
+            public View getDropDownView(final int position, final View convertView, final ViewGroup parent) {
+                final View v = super.getDropDownView(position, convertView, parent);
+                v.post(() -> ((TextView) v).setSingleLine(false));
+                return v;
+            }
+        };
+        */
 
         topicNameTextView.setAdapter(topicNameAdapter);
         topicNameTextView.setOnClickListener(clickedView -> {
@@ -90,7 +108,7 @@ class SubscriberViewHolder implements IBaseViewHolder {
         String selectedName = topicNameItemList.get(position);
 
         // Search for topic type required for selected name
-        for (Topic rosTopic: availableTopics) {
+        for (Topic rosTopic : availableTopics) {
             if (rosTopic.name.equals(selectedName)) {
                 topicTypeEditText.setText(rosTopic.type);
             }
@@ -106,12 +124,12 @@ class SubscriberViewHolder implements IBaseViewHolder {
 
         availableTopics = viewModel.getTopicList();
 
-        for (Topic rosTopic: availableTopics) {
+        for (Topic rosTopic : availableTopics) {
             if (topicTypes.isEmpty()) {
                 topicNameItemList.add(rosTopic.name);
             }
 
-            for (String topicType: topicTypes) {
+            for (String topicType : topicTypes) {
                 if (rosTopic.type.equals(topicType)) {
                     topicNameItemList.add(rosTopic.name);
                     break;
@@ -122,7 +140,7 @@ class SubscriberViewHolder implements IBaseViewHolder {
         // Ros has no topics -> Default name
         if (topicNameItemList.isEmpty()) {
             topicNameItemList.add(entity.topic.name);
-        } else{
+        } else {
             Collections.sort(topicNameItemList);
         }
 
