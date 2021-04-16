@@ -10,6 +10,7 @@ import android.view.MotionEvent;
 
 import androidx.annotation.Nullable;
 
+import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.RosData;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.node.BaseData;
@@ -34,7 +35,7 @@ public class Viz2DView extends WidgetGroupView {
     private Paint borderPaint;
     private Paint paintBackground;
     private VisualizationView layerView;
-
+    private int border = 4;
 
     public Viz2DView(Context context) {
         super(context);
@@ -49,19 +50,15 @@ public class Viz2DView extends WidgetGroupView {
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         super.onLayout(changed, l, t, r, b);
-        layerView.layout(0, 0, getWidth(), getHeight());
+        layerView.layout(border, border, getWidth()-border, getHeight()-border);
     }
 
 
     private void init() {
-        borderPaint = new Paint();
-        borderPaint.setColor(Color.argb(100, 255, 255, 255));
-        borderPaint.setStyle(Paint.Style.STROKE);
-        borderPaint.setStrokeWidth(10);
-
-        // Background color
+        // Border color painted as Background
+        int borderColor = getContext().getResources().getColor(R.color.borderColor);
         paintBackground = new Paint();
-        paintBackground.setColor(Color.argb(100, 0, 0, 0));
+        paintBackground.setColor(borderColor);
         paintBackground.setStyle(Paint.Style.FILL);
 
         layerView = new VisualizationView(getContext());
@@ -80,19 +77,10 @@ public class Viz2DView extends WidgetGroupView {
         return layerView.onTouchEvent(event);
     }
 
+
     @Override
     public void onDraw(Canvas canvas) {
         canvas.drawPaint(paintBackground);
-
-        // Define image size based on the Bitmap width and height
-        float leftViz = 0F;
-        float topViz = 0F;
-        float widthViz = getWidth();
-        float heightViz = getHeight();
-
-        // Draw Border
-        canvas.drawRect(leftViz, topViz, widthViz, heightViz, borderPaint);
-
         super.onDraw(canvas);
     }
 

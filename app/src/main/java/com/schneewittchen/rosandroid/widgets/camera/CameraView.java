@@ -53,12 +53,12 @@ public class CameraView extends SubscriberWidgetView {
     
     
     private void init() {
-        this.cornerWidth = Utils.dpToPx(getContext(), 8);
+        this.cornerWidth = 0; //Utils.dpToPx(getContext(), 8);
 
         borderPaint = new Paint();
-        borderPaint.setColor(getResources().getColor(R.color.whiteHigh));
+        borderPaint.setColor(getResources().getColor(R.color.borderColor));
         borderPaint.setStyle(Paint.Style.STROKE);
-        borderPaint.setStrokeWidth(10);
+        borderPaint.setStrokeWidth(8);
 
         // Background color
         paintBackground = new Paint();

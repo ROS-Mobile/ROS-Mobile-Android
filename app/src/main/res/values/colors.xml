@@ -24,6 +24,8 @@
     <color name="whiteLow">#616161</color>
     <color name="white4p">#09FFFFFF</color>
 
+    <color name="borderColor">@color/whiteLow</color>
+    <color name="bgColor">@color/black00dp</color>
     <color name="drawerFadeColor">#BB121212</color>
     <color name="drawerHeaderBGColor">#BB121212</color>
     <color name="mtrl_textinput_default_box_stroke_color">@color/whiteMedium</color>

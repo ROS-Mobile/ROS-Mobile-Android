@@ -82,10 +82,10 @@ public class DebugView extends SubscriberWidgetView {
 
     private void init() {
         // Set canvas parameter
-        this.cornerWidth = Utils.dpToPx(getContext(), 8);
+        this.cornerWidth = 0; //Utils.dpToPx(getContext(), 8);
 
         paint = new Paint();
-        paint.setColor(getResources().getColor(R.color.whiteHigh));
+        paint.setColor(getResources().getColor(R.color.borderColor));
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(10);
         paint.setTextSize(20);

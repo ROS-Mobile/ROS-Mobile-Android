@@ -17,6 +17,7 @@
 package com.schneewittchen.rosandroid.ui.opengl.visualisation;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.opengl.GLSurfaceView;
 import android.util.AttributeSet;
@@ -71,13 +72,12 @@ public class VisualizationView extends GLSurfaceView {
 
     private void init() {
         this.layers = new ArrayList<>();
+        this.renderer = new XYOrthographicRenderer(this);
 
         setDebugFlags(DEBUG_CHECK_GL_ERROR);
-        setEGLConfigChooser(8, 8, 8, 8, 16, 0);
-        setZOrderOnTop(true);
+        setZOrderMediaOverlay(true);
         getHolder().setFormat(PixelFormat.TRANSLUCENT);
-
-        renderer = new XYOrthographicRenderer(this);
+        setEGLConfigChooser(8, 8, 8, 8, 16, 0);
         setRenderer(renderer);
         setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
 
