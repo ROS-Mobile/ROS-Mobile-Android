@@ -2,6 +2,7 @@ package com.schneewittchen.rosandroid.ui.activity;
 
 import android.Manifest;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -38,19 +39,23 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        if (savedInstanceState == null && !isCheckedIn()) {
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.main_container, IntroFragment.newInstance())
-                    .commitNow();
-        } else {
-            Toolbar myToolbar = findViewById(R.id.toolbar);
-            setSupportActionBar(myToolbar);
-
-            if (savedInstanceState == null) {
+        try {
+            if (savedInstanceState == null && requiresIntro()) {
                 getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.main_container, MainFragment.newInstance())
-                    .commitNow();
+                        .replace(R.id.main_container, IntroFragment.newInstance())
+                        .commitNow();
+            } else {
+                Toolbar myToolbar = findViewById(R.id.toolbar);
+                setSupportActionBar(myToolbar);
+
+                if (savedInstanceState == null) {
+                    getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.main_container, MainFragment.newInstance())
+                        .commitNow();
+                }
             }
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
         }
 
         this.requestPermissions();
@@ -79,8 +84,14 @@ public class MainActivity extends AppCompatActivity {
         ActivityCompat.requestPermissions(this, permissions, LOCATION_PERM);
     }
 
-    private boolean isCheckedIn() {
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("onboardingPrefs", MODE_PRIVATE);
-        return pref.getBoolean("CheckedIn", false);
+    // Check in required if update is available or onboarding has not been done yet
+    private boolean requiresIntro() throws PackageManager.NameNotFoundException {
+
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("introPrefs", MODE_PRIVATE);
+
+        return (pref.getInt("VersionNumber", 0) != getPackageManager().getPackageInfo(getPackageName(),0).versionCode) ||
+                !pref.getBoolean("CheckedIn", false);
+
     }
+
 }

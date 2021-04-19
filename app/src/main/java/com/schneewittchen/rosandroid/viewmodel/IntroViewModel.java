@@ -11,6 +11,8 @@ import com.schneewittchen.rosandroid.model.repositories.ConfigRepository;
 import com.schneewittchen.rosandroid.model.repositories.ConfigRepositoryImpl;
 import com.schneewittchen.rosandroid.ui.fragments.intro.ScreenItem;
 
+import org.apache.commons.lang.ArrayUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,11 +39,29 @@ public class IntroViewModel extends AndroidViewModel {
     }
 
 
-    public List<ScreenItem> getScreenItems() {
+    public List<ScreenItem> getOnboardingScreenItems() {
         List<ScreenItem> mList = new ArrayList<>();
         String[] titleArray = getApplication().getResources().getStringArray(R.array.intro_title);
         String[] descrArray = getApplication().getResources().getStringArray(R.array.intro_descr);
         TypedArray imgArray = getApplication().getResources().obtainTypedArray(R.array.intro_img);
+
+        for (int i = 0; i < titleArray.length; i++) {
+            mList.add(new ScreenItem(titleArray[i], descrArray[i], imgArray.getResourceId(i, -1)));
+        }
+
+        imgArray.recycle();
+
+        List<ScreenItem> mListUpdate = getUpdateScreenItems();
+        mList.addAll(mListUpdate);
+
+        return mList;
+    }
+
+    public List<ScreenItem> getUpdateScreenItems() {
+        List<ScreenItem> mList = new ArrayList<>();
+        String[] titleArray = getApplication().getResources().getStringArray(R.array.update_title);
+        String[] descrArray = getApplication().getResources().getStringArray(R.array.update_descr);
+        TypedArray imgArray = getApplication().getResources().obtainTypedArray(R.array.update_img);
 
         for (int i = 0; i < titleArray.length; i++) {
             mList.add(new ScreenItem(titleArray[i], descrArray[i], imgArray.getResourceId(i, -1)));
