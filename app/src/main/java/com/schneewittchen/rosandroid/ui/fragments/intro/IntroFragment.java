@@ -83,7 +83,7 @@ public class IntroFragment extends Fragment {
         introViewPagerAdapter = new IntroViewPagerAdapter(this.getContext(), screenItems);
         screenPager.setAdapter(introViewPagerAdapter);
 
-        // Steup tablayout
+        // Setup tablayout
         tabIndicator.setupWithViewPager(screenPager);
 
         // tablayout add change listener

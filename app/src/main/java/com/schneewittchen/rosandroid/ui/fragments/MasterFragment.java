@@ -1,14 +1,20 @@
 package com.schneewittchen.rosandroid.ui.fragments;
 
+import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.text.Editable;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -24,6 +30,9 @@ import com.schneewittchen.rosandroid.utility.Utils;
 import com.schneewittchen.rosandroid.viewmodel.MasterViewModel;
 
 import java.util.ArrayList;
+
+import static android.content.Context.LAYOUT_INFLATER_SERVICE;
+import static android.content.Context.WINDOW_SERVICE;
 
 
 /**
@@ -132,6 +141,9 @@ public class MasterFragment extends Fragment implements TextView.OnEditorActionL
         binding.disconnectButton.setOnClickListener(v -> mViewModel.disconnectFromMaster());
         binding.masterIpEditText.setOnEditorActionListener(this);
         binding.masterPortEditText.setOnEditorActionListener(this);
+
+        // Show new updates if required
+        showUpdatePopupWindow(this.getView());
     }
 
     private void updateIpSpinner() {
@@ -182,6 +194,32 @@ public class MasterFragment extends Fragment implements TextView.OnEditorActionL
         if (masterPort != null && masterPort.length() > 0) {
             mViewModel.setMasterPort(masterPort.toString());
         }
+    }
+
+    public void showUpdatePopupWindow(View view) {
+
+        // inflate the layout of the popup window
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.update_popup_window, null);
+
+        // create the popup window
+        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+        boolean focusable = true; // lets taps outside the popup also dismiss it
+        final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+
+        // show the popup window
+        // which view you pass in doesn't matter, it is only used for the window tolken
+        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+
+        // dismiss the popup window when touched
+        popupView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                popupWindow.dismiss();
+                return true;
+            }
+        });
     }
 
     @Override
