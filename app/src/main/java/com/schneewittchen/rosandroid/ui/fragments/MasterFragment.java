@@ -16,6 +16,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.dialog.MaterialDialogs;
 import com.google.android.material.textfield.TextInputLayout;
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.databinding.FragmentMasterBinding;
@@ -24,6 +26,7 @@ import com.schneewittchen.rosandroid.utility.Utils;
 import com.schneewittchen.rosandroid.viewmodel.MasterViewModel;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 
 /**
@@ -130,6 +133,7 @@ public class MasterFragment extends Fragment implements TextView.OnEditorActionL
                 mViewModel.connectToMaster();
         });
         binding.disconnectButton.setOnClickListener(v -> mViewModel.disconnectFromMaster());
+        binding.helpButton.setOnClickListener(v -> showConnectionHelpDialog());
         binding.masterIpEditText.setOnEditorActionListener(this);
         binding.masterPortEditText.setOnEditorActionListener(this);
     }
@@ -139,6 +143,15 @@ public class MasterFragment extends Fragment implements TextView.OnEditorActionL
         ipItemList = mViewModel.getIPAddressList();
         ipArrayAdapter.clear();
         ipArrayAdapter.addAll(ipItemList);
+    }
+
+    private void showConnectionHelpDialog() {
+        String[] items = getResources().getStringArray(R.array.connection_checklist);
+
+        new MaterialAlertDialogBuilder(this.requireContext())
+                .setTitle(R.string.connection_checklist_title)
+                .setItems(items, null)
+                .show();
     }
 
     private void setRosConnection(ConnectionType connectionType) {
@@ -158,6 +171,10 @@ public class MasterFragment extends Fragment implements TextView.OnEditorActionL
         } else if (connectionType == ConnectionType.PENDING) {
             pendingVisibility = View.VISIBLE;
             statustext = getContext().getString(R.string.pending);
+        }
+
+        if (connectionType == ConnectionType.FAILED) {
+            showConnectionHelpDialog();
         }
 
         binding.statusText.setText(statustext);

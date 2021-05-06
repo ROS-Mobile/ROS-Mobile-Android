@@ -23,19 +23,19 @@
 
     <!-- CostMap2D -->
     <string name="CostMap2D_description">
-        A costmap layer.
+        Displays an occupancy grid on the ground plane from a nav_msgs::OccupancyGrid.
     </string>
 
 
     <!-- Path -->
     <string name="Path_description">
-        A path layer.
+        Displays data from a nav_msgs::Path message as lines.
     </string>
 
 
     <!-- Pose -->
     <string name="Pose_description">
-        A pose layer.
+        Displays a pose from a geometry_msgs::PoseStamped message.
     </string>
 
 

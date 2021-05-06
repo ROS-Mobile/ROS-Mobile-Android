@@ -2,18 +2,14 @@ package com.schneewittchen.rosandroid.widgets.logger;
 
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.Spinner;
-
-import androidx.annotation.NonNull;
 
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
-import com.schneewittchen.rosandroid.ui.fragments.details.WidgetChangeListener;
 import com.schneewittchen.rosandroid.ui.views.details.SubscriberWidgetViewHolder;
 import com.schneewittchen.rosandroid.utility.Utils;
-import com.schneewittchen.rosandroid.widgets.button.ButtonEntity;
 
+import java.util.Collections;
 import java.util.List;
 
 
@@ -62,6 +58,6 @@ public class LoggerDetailVH extends SubscriberWidgetViewHolder {
 
     @Override
     public List<String> getTopicTypes() {
-        return null;
+        return Collections.singletonList(std_msgs.String._TYPE);
     }
 }

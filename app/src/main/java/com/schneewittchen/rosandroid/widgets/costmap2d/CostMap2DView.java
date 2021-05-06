@@ -85,7 +85,6 @@ public class CostMap2DView extends SubscriberLayerView {
         final int numTilesHigh = (int) Math.ceil(height / (float) TextureBitmap.STRIDE);
 
         final int numTiles = numTilesWide * numTilesHigh;
-        Log.i(TAG, "Num Tiles: " + numTiles);
         final Transform origin = Transform.fromPoseMessage(grid.getInfo().getOrigin());
 
         while (tiles.size() < numTiles) {
@@ -108,7 +107,6 @@ public class CostMap2DView extends SubscriberLayerView {
         int y = 0;
         final ChannelBuffer buffer = grid.getData();
         while (buffer.readable()) {
-            Preconditions.checkState(y < height);
             final int tileIndex = (y / TextureBitmap.STRIDE) * numTilesWide + x / TextureBitmap.STRIDE;
             final byte pixel = buffer.readByte();
             if (pixel == -1) {

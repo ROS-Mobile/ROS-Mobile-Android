@@ -2,7 +2,6 @@ package com.schneewittchen.rosandroid.widgets.logger;
 
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.node.BaseData;
 
-import std_msgs.String;
 
 /**
  * TODO: Description
@@ -16,10 +15,9 @@ import std_msgs.String;
 
 public class LoggerData extends BaseData {
 
-    private String data;
+    public String data;
 
-
-    public LoggerData(String data) {
-        this.data = data;
+    public LoggerData(std_msgs.String message) {
+        this.data = message.getData();
     }
 }

@@ -8,8 +8,20 @@
     <string name="delete">delete</string>
     <string name="widget_undo">%1$s removed from config!</string>
     <string name="add_configuration">Add configuration</string>
+
+    <!-- Master view -->
     <string name="master_ip_hint">Master URL</string>
     <string name="master_port_hint">Master port</string>
+    <string name="need_help_button">Need help connecting?</string>
+    <string name="connection_checklist_title">Have you checked before connecting: </string>
+    <string-array name="connection_checklist">
+        <item>Valid and active WIFI connection?</item>
+        <item>Correct IP and PORT of the ROS Master entered?</item>
+        <item>Is this device in the same network as the Master system?</item>
+        <item>Changed the environment variables of the Master system?</item>
+        <item>Master is running?</item>
+        <item>Correct topic names subscribed / published?</item>
+    </string-array>
 
     <!-- Buttons -->
     <string name="button_connect">Connect</string>

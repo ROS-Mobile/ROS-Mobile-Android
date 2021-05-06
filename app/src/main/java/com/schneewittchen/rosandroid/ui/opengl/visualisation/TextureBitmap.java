@@ -40,12 +40,12 @@ public class TextureBitmap implements OpenGlDrawable {
     /**
      * The maximum height of a texture.
      */
-    public final static int HEIGHT = 128;
+    public final static int HEIGHT = 512;
 
     /**
      * The maximum width of a texture.
      */
-    public final static int STRIDE = 128;
+    public final static int STRIDE = 512;
 
     private final int[] pixels;
     private final FloatBuffer surfaceVertices;
