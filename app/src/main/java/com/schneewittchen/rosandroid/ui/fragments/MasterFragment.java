@@ -1,14 +1,20 @@
 package com.schneewittchen.rosandroid.ui.fragments;
 
+import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.text.Editable;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -27,6 +33,9 @@ import com.schneewittchen.rosandroid.viewmodel.MasterViewModel;
 
 import java.util.ArrayList;
 import java.util.Objects;
+
+import static android.content.Context.LAYOUT_INFLATER_SERVICE;
+import static android.content.Context.WINDOW_SERVICE;
 
 
 /**
