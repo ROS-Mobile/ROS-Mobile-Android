@@ -1,18 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="update_title">
-        <item>Update Titel 1</item>
-        <item>Update Titel 2</item>
+        <item>Update 2.0:\nTransform layer system</item>
     </string-array>
 
     <string-array name="update_descr">
-        <item>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</item>
-        <item>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</item>
+        <item>Stack multiple maps, paths and poses on top of each other.</item>
     </string-array>
 
     <integer-array name="update_img">
-        <item>@drawable/intro_start</item>
-        <item>@drawable/intro_config</item>
+        <item>@drawable/intro_layers</item>
     </integer-array>
 
 </resources>
