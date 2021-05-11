@@ -1,9 +1,8 @@
-package com.schneewittchen.rosandroid.widgets.costmap2d;
+package com.schneewittchen.rosandroid.widgets.gridmap;
 
 import android.content.Context;
 import android.util.Log;
 
-import com.google.common.base.Preconditions;
 import com.schneewittchen.rosandroid.ui.opengl.visualisation.ROSColor;
 import com.schneewittchen.rosandroid.ui.opengl.visualisation.TextureBitmap;
 import com.schneewittchen.rosandroid.ui.opengl.visualisation.Tile;
@@ -32,9 +31,9 @@ import nav_msgs.OccupancyGrid;
  * @version 1.0.0
  * @created on 08.03.21
  */
-public class CostMap2DView extends SubscriberLayerView {
+public class GridMapView extends SubscriberLayerView {
 
-    public static final String TAG = CostMap2DView.class.getSimpleName();
+    public static final String TAG = GridMapView.class.getSimpleName();
 
     private static final int COLOR_UNKNOWN = 0xff888888;
 
@@ -43,7 +42,7 @@ public class CostMap2DView extends SubscriberLayerView {
     private int[] colorMap;
 
 
-    public CostMap2DView(Context context) {
+    public GridMapView(Context context) {
         super(context);
         tiles = new ArrayList<>();
         createColorMap();
@@ -76,11 +75,16 @@ public class CostMap2DView extends SubscriberLayerView {
 
     @Override
     public void onNewMessage(Message message) {
+        Log.i(TAG, "New Message");
+        long startTime = System.currentTimeMillis();
+
         OccupancyGrid grid = (OccupancyGrid) message;
 
         final float resolution = grid.getInfo().getResolution();
         final int width = grid.getInfo().getWidth();
         final int height = grid.getInfo().getHeight();
+        Log.i(TAG, "Size: " + width + " " + height);
+
         final int numTilesWide = (int) Math.ceil(width / (float) TextureBitmap.STRIDE);
         final int numTilesHigh = (int) Math.ceil(height / (float) TextureBitmap.STRIDE);
 
@@ -125,6 +129,8 @@ public class CostMap2DView extends SubscriberLayerView {
         for (Tile tile : tiles) {
             tile.update();
         }
+        Log.i(TAG, "Tiles updated");
+        Log.i(TAG, "Time: " + (System.currentTimeMillis() - startTime) );
 
         frame = GraphName.of(grid.getHeader().getFrameId());
     }

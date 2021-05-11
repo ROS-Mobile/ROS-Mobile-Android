@@ -13,7 +13,7 @@
     </string-array>
 
     <string-array name="layer_names">
-        <item>CostMap2D</item>
+        <item>GridMap</item>
         <item>Path</item>
         <item>Pose</item>
     </string-array>
@@ -21,9 +21,11 @@
 
     <!--___________________________Layers____________________________-->
 
-    <!-- CostMap2D -->
-    <string name="CostMap2D_description">
+    <!-- GridMap -->
+    <string name="GridMap_description">
         Displays an occupancy grid on the ground plane from a nav_msgs::OccupancyGrid.
+        The recommended maximum size of the grid map should not exceed 1,000,000 cells, otherwise
+        performance issues may occur.
     </string>
 
 
@@ -62,10 +64,6 @@
         It will then display the received Image in the Viz Tab.
     </string>
 
-    <string-array name="camera_msg_types">
-        <item>sensor_msgs/Image</item>
-        <item>sensor_msgs/CompressedImage</item>
-    </string-array>
 
 
     <!-- Debug -->
@@ -81,25 +79,6 @@
         onto the map visualized in the Viz Tab. The map will be thereby centered at the position.
         You can zoom in and out by pinching 2 or more fingers together or apart.
     </string>
-
-    <string-array name="gps_msg_types">
-        <item>sensor_msgs/NavSatFix</item>
-    </string-array>
-
-
-    <!-- GridMap -->
-    <string name="GridMap_description">
-        The Occupancy Grid Node is designed for displaying an occupancy grid map of the environment.
-        Therefore, it subscribes to the topic specified in the details and receives a
-        nav_msgs/OccupancyGrid message. It will then display the received occupancy grid onto the
-        window visualized in the Viz Tab. You can shift the displayed grid to any direction by
-        moving a finger in the same direction and you can zoom in and out by pinching 2 or more
-        fingers together or apart.
-    </string>
-
-    <string-array name="gridmap_msg_types">
-        <item>nav_msgs/OccupancyGrid</item>
-    </string-array>
 
 
     <!-- Joystick -->

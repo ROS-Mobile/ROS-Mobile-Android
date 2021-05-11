@@ -1,4 +1,4 @@
-package com.schneewittchen.rosandroid.widgets.costmap2d;
+package com.schneewittchen.rosandroid.widgets.gridmap;
 
 import android.view.View;
 
@@ -9,7 +9,6 @@ import java.util.Collections;
 import java.util.List;
 
 import nav_msgs.OccupancyGrid;
-import nav_msgs.Path;
 
 
 /**
@@ -19,7 +18,7 @@ import nav_msgs.Path;
  * @version 1.0.0
  * @created on 08.03.21
  */
-public class CostMap2DDetailVH extends SubscriberLayerViewHolder {
+public class GridMapDetailVH extends SubscriberLayerViewHolder {
 
 
     @Override
