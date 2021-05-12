@@ -2,7 +2,7 @@
 
 ROS-Mobile is an [Android](https://www.android.com/) application designed for dynamic control and visualization of mobile robotic system operated by the Robot Operating System ([ROS](http://wiki.ros.org/)). The application uses ROS nodes initializing publisher and subscriber with standard ROS messages. The overall code architecture pattern is Model View ViewModel ([MVVM]([https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93viewmodel](https://en.wikipedia.org/wiki/Model–view–viewmodel))), which stabilizes the application and makes it highly customizable. For a detailed overview of the functionality, we refer to our [wiki](https://github.com/ROS-Mobile/ROS-Mobile-Android/wiki).
 
-- Current stable Version: 1.2.0
+- Current stable Version: 2.0.0
 
 ## Cite
 
@@ -35,7 +35,7 @@ There are three different ways for installing ROS-Mobile onto your mobile device
 ##### Install current APK:
 
 - Download the current ROS-Mobile version as [apk file](https://github.com/ROS-Mobile/ROS-Mobile-Android/blob/master/app/release/app-release.apk) and store it in an easy-to-find location onto your mobile device
-- Allow third-party apps on your device. Therefore go to **Menu > Settings > Security** and check **Unknown Sources** 
+- Allow third-party apps on your device. Therefore go to **Menu > Settings > Security** and check **Unknown Sources**
 - Go now to the apk file, tap it, then hit install
 
 ##### Download from Google Playstore:
@@ -47,7 +47,7 @@ There are three different ways for installing ROS-Mobile onto your mobile device
 
 ## Currently available ROS Nodes
 
-The following Nodes are currently supported by ROS-Mobile. For a comprehensive overview over the functionality of each node have a look into [Nodes Description](https://github.com/ROS-Mobile/ROS-Mobile-Android/wiki/ROS-Nodes) in the wiki. Additional Nodes will be available in upcoming Versions or can be easily added independently. See the [How to add your own Nodes](https://github.com/ROS-Mobile/ROS-Mobile-Android/wiki/How-to-contribute%3F#add-your-own-nodes) section in the wiki. 
+The following Nodes are currently supported by ROS-Mobile. For a comprehensive overview over the functionality of each node have a look into [Nodes Description](https://github.com/ROS-Mobile/ROS-Mobile-Android/wiki/ROS-Nodes) in the wiki. Additional Nodes will be available in upcoming Versions or can be easily added independently. See the [How to add your own Nodes](https://github.com/ROS-Mobile/ROS-Mobile-Android/wiki/How-to-contribute%3F#add-your-own-nodes) section in the wiki.
 
 - Debug (similar to rostopic echo)
 
@@ -63,7 +63,7 @@ The following Nodes are currently supported by ROS-Mobile. For a comprehensive o
 
 - Logger (std_msgs/String)
 
-  
+
 
 ## Short Example Usage
 
@@ -86,7 +86,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 ## Contributor / Maintainer
 
@@ -97,6 +97,3 @@ Main-Developer:
 Contributor:
 
 [Marcus Davi](https://github.com/Marcus-Davi), [Dragos Circa](https://github.com/Cycov)
-
-
-
