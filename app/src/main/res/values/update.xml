@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="update_title">
+        <item>Update 2.0:\nTransform layer system</item>
+    </string-array>
+
+    <string-array name="update_descr">
+        <item>Stack multiple maps, paths and poses on top of each other.</item>
+    </string-array>
+
+    <integer-array name="update_img">
+        <item>@drawable/intro_layers</item>
+    </integer-array>
+
+</resources>

@@ -2,12 +2,10 @@ package com.schneewittchen.rosandroid.widgets.gridmap;
 
 import android.view.View;
 
-import androidx.annotation.NonNull;
+import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
+import com.schneewittchen.rosandroid.ui.views.details.SubscriberLayerViewHolder;
 
-import com.schneewittchen.rosandroid.ui.fragments.details.WidgetChangeListener;
-import com.schneewittchen.rosandroid.ui.views.BaseDetailSubscriberVH;
-
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import nav_msgs.OccupancyGrid;
@@ -17,19 +15,10 @@ import nav_msgs.OccupancyGrid;
  * TODO: Description
  *
  * @author Nico Studt
- * @version 1.0.1
- * @created on 13.02.20
- * @updated on 13.05.20
- * @modified by Nico Studt
- * @updated on 17.09.20
- * @modified by Nils Rottmann
+ * @version 1.0.0
+ * @created on 08.03.21
  */
-public class GridMapDetailVH extends BaseDetailSubscriberVH<GridMapEntity> {
-
-    public GridMapDetailVH(@NonNull View view, WidgetChangeListener updateListener) {
-        super(view, updateListener);
-    }
-
+public class GridMapDetailVH extends SubscriberLayerViewHolder {
 
 
     @Override
@@ -38,17 +27,17 @@ public class GridMapDetailVH extends BaseDetailSubscriberVH<GridMapEntity> {
     }
 
     @Override
-    protected void bindEntity(GridMapEntity entity) {
+    protected void bindEntity(BaseEntity entity) {
 
     }
 
     @Override
-    protected void updateEntity() {
+    protected void updateEntity(BaseEntity entity) {
 
     }
 
     @Override
     public List<String> getTopicTypes() {
-        return Arrays.asList(OccupancyGrid._TYPE);
+        return Collections.singletonList(OccupancyGrid._TYPE);
     }
 }

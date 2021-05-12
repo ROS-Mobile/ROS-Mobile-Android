@@ -1,6 +1,8 @@
 package com.schneewittchen.rosandroid.utility;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Rect;
 import android.net.wifi.SupplicantState;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
@@ -42,6 +44,35 @@ import java.util.List;
  * @modified by Nico Studt
  */
 public class Utils {
+
+    public static boolean isVisible(View view) {
+        if (view == null) {
+            return false;
+        }
+        if (!view.isShown()) {
+            return false;
+        }
+
+        final Rect actualPosition = new Rect();
+        view.getGlobalVisibleRect(actualPosition);
+
+        int width = Resources.getSystem().getDisplayMetrics().widthPixels;
+        int height = Resources.getSystem().getDisplayMetrics().heightPixels;
+
+        final Rect screen = new Rect(0, 0, width, height);
+        return actualPosition.intersect(screen);
+    }
+    /**
+     * Get a string resource with its identifier.
+     * @param context Current context
+     * @param resourceName Identifier
+     * @return String resource
+     */
+    public static String getStringByName(Context context, String resourceName) {
+        String packageName = context.getPackageName();
+        int resourceId = context.getResources().getIdentifier(resourceName, "string", packageName);
+        return context.getResources().getString(resourceId);
+    }
 
     public static void hideSoftKeyboard(View view) {
         final InputMethodManager imm = (InputMethodManager) view.getContext()

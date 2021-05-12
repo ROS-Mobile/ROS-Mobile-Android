@@ -2,12 +2,10 @@ package com.schneewittchen.rosandroid.widgets.gps;
 
 import android.view.View;
 
-import androidx.annotation.NonNull;
+import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
+import com.schneewittchen.rosandroid.ui.views.details.SubscriberWidgetViewHolder;
 
-import com.schneewittchen.rosandroid.ui.fragments.details.WidgetChangeListener;
-import com.schneewittchen.rosandroid.ui.views.BaseDetailSubscriberVH;
-
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import sensor_msgs.NavSatFix;
@@ -21,12 +19,10 @@ import sensor_msgs.NavSatFix;
  * @created on 05.05.20
  * @updated on 17.09.20
  * @modified by Nils Rottmann
+ * @updated on 20.03.21
+ * @modified by Nico Studt
  */
-public class GpsDetailVH extends BaseDetailSubscriberVH<GpsEntity> {
-
-    public GpsDetailVH(@NonNull View view, WidgetChangeListener updateListener) {
-        super(view, updateListener);
-    }
+public class GpsDetailVH extends SubscriberWidgetViewHolder {
 
 
     @Override
@@ -35,17 +31,17 @@ public class GpsDetailVH extends BaseDetailSubscriberVH<GpsEntity> {
     }
 
     @Override
-    protected void bindEntity(GpsEntity entity) {
+    protected void bindEntity(BaseEntity entity) {
 
     }
 
     @Override
-    protected void updateEntity() {
+    protected void updateEntity(BaseEntity entity) {
 
     }
 
     @Override
     public List<String> getTopicTypes() {
-        return Arrays.asList(NavSatFix._TYPE);
+        return Collections.singletonList(NavSatFix._TYPE);
     }
 }

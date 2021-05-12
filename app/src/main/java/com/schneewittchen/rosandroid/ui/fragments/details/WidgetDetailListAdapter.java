@@ -1,5 +1,6 @@
 package com.schneewittchen.rosandroid.ui.fragments.details;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,9 +12,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.schneewittchen.rosandroid.BuildConfig;
 import com.schneewittchen.rosandroid.R;
-import com.schneewittchen.rosandroid.model.entities.BaseEntity;
-import com.schneewittchen.rosandroid.ui.views.BaseDetailSubscriberVH;
-import com.schneewittchen.rosandroid.ui.views.BaseDetailViewHolder;
+import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
+import com.schneewittchen.rosandroid.ui.views.details.BaseDetailSubscriberVH;
+import com.schneewittchen.rosandroid.ui.views.details.BaseDetailViewHolder;
 import com.schneewittchen.rosandroid.utility.Constants;
 import com.schneewittchen.rosandroid.utility.Utils;
 import com.schneewittchen.rosandroid.viewmodel.DetailsViewModel;
@@ -33,8 +34,13 @@ import java.util.List;
  * @modified by Nico Studt
  * @updated on 25.09.20
  * @modified by Nico Studt
+ * @updated on 10.03.20
+ * @modified by Nico Studt
  */
-public class WidgetDetailListAdapter extends RecyclerView.Adapter<BaseDetailViewHolder<BaseEntity>> implements WidgetChangeListener {
+public class WidgetDetailListAdapter extends RecyclerView.Adapter<BaseDetailViewHolder<BaseEntity>>
+        implements WidgetChangeListener {
+
+    public static String TAG = WidgetDetailListAdapter.class.getSimpleName();
 
     private WidgetChangeListener widgetChangeListener;
     private final AsyncListDiffer<BaseEntity> mDiffer;
@@ -137,6 +143,9 @@ public class WidgetDetailListAdapter extends RecyclerView.Adapter<BaseDetailView
     }
 
     public void setWidgets(List<BaseEntity> newWidgets) {
+        for (BaseEntity entity: newWidgets) {
+            Log.i(TAG, "New Widget: " + entity);
+        }
         mDiffer.submitList(newWidgets);
     }
 

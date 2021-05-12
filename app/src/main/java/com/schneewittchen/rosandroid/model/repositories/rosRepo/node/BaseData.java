@@ -1,7 +1,7 @@
 package com.schneewittchen.rosandroid.model.repositories.rosRepo.node;
 
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.Topic;
-import com.schneewittchen.rosandroid.model.entities.BaseEntity;
+import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
 
 import org.ros.internal.message.Message;
 import org.ros.node.topic.Publisher;

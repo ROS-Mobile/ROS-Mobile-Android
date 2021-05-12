@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData;
 import com.schneewittchen.rosandroid.model.entities.ConfigEntity;
 import com.schneewittchen.rosandroid.model.entities.MasterEntity;
 import com.schneewittchen.rosandroid.model.entities.SSHEntity;
-import com.schneewittchen.rosandroid.model.entities.BaseEntity;
+import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
 
 import java.util.List;
 
@@ -47,13 +47,15 @@ public interface ConfigRepository {
     LiveData<MasterEntity> getMaster(long configId);
 
 
-    void createWidget(String widgetType);
+    void addWidget(Long parentId, BaseEntity widget);
 
-    void deleteWidget(BaseEntity widget);
+    void createWidget(Long parentId, String widgetType);
 
-    void addWidget(BaseEntity widget);
+    void deleteWidget(Long parentId, BaseEntity widget);
 
-    void updateWidget(BaseEntity widget);
+    void updateWidget(Long parentId, BaseEntity widget);
+
+    LiveData<BaseEntity> findWidget(long widgetId);
 
     LiveData<List<BaseEntity>> getWidgets(long id);
 

@@ -1,6 +1,6 @@
 package com.schneewittchen.rosandroid.widgets.camera;
 
-import com.schneewittchen.rosandroid.model.entities.SubscriberEntity;
+import com.schneewittchen.rosandroid.model.entities.widgets.SubscriberWidgetEntity;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.Topic;
 
 import sensor_msgs.Image;
@@ -15,7 +15,7 @@ import sensor_msgs.Image;
  * @updated on 27.10.2020
  * @modified by Nico Studt
  */
-public class CameraEntity extends SubscriberEntity {
+public class CameraEntity extends SubscriberWidgetEntity {
 
     int colorScheme;
     boolean drawBehind;

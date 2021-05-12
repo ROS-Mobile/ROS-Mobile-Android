@@ -2,7 +2,6 @@
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -82,7 +81,7 @@
                 android:id="@+id/update_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
+                android:layout_marginEnd="8dp"
                 android:background="?actionBarItemBackground"
                 android:src="@drawable/ic_refresh"
                 android:tint="@color/state_button_color"
@@ -94,7 +93,7 @@
                 android:id="@+id/open_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="16dp"
                 android:background="?actionBarItemBackground"
                 android:clickable="true"
                 android:focusable="true"
@@ -104,8 +103,15 @@
                 app:srcCompat="@drawable/ic_expand_less_white_24dp"
                 app:tint="@color/colorAccent" />
 
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_begin="48dp" />
+
             <LinearLayout
-                android:id="@+id/detailContend"
+                android:id="@+id/detailContent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:divider="@drawable/empty_divider"
@@ -118,126 +124,13 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/guideline2">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:id="@+id/textView6"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Viz location"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                        android:textColor="@color/colorAccent"
-                        android:textStyle="bold"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/textInputLayout"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="8dp"
-                        android:hint="X"
-                        app:boxBackgroundMode="outline"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/textInputLayout2"
-                        app:layout_constraintHorizontal_chainStyle="spread_inside"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView6">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/x_edit_text"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:ems="3"
-                            android:imeOptions="actionDone"
-                            android:inputType="number"
-                            android:singleLine="true"
-                            android:text="3" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/textInputLayout2"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
-                        android:hint="Y"
-                        app:boxBackgroundMode="outline"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/textInputLayout3"
-                        app:layout_constraintStart_toEndOf="@+id/textInputLayout">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/y_edit_text"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:ems="3"
-                            android:imeOptions="actionDone"
-                            android:inputType="number"
-                            android:singleLine="true"
-                            android:text="3" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/textInputLayout3"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
-                        android:hint="Width"
-                        app:boxBackgroundMode="outline"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/textInputLayout4"
-                        app:layout_constraintStart_toEndOf="@+id/textInputLayout2">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/width_edit_text"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:ems="3"
-                            android:imeOptions="actionDone"
-                            android:inputType="number"
-                            android:singleLine="true"
-                            android:text="8" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/textInputLayout4"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:hint="Height"
-                        app:boxBackgroundMode="outline"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/textInputLayout3">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/height_edit_text"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:ems="3"
-                            android:imeOptions="actionDone"
-                            android:inputType="number"
-                            android:singleLine="true"
-                            android:text="4" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                <include
+                    layout="@layout/viz_location_layout"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
             </LinearLayout>
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintGuide_begin="48dp" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -1,7 +1,9 @@
 package com.schneewittchen.rosandroid.model.repositories.rosRepo.node;
 
-import com.schneewittchen.rosandroid.model.entities.BaseEntity;
-import com.schneewittchen.rosandroid.model.entities.PublisherEntity;
+import android.util.Log;
+
+import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
+import com.schneewittchen.rosandroid.model.entities.widgets.PublisherLayerEntity;
 
 import org.ros.internal.message.Message;
 import org.ros.node.ConnectedNode;
@@ -104,11 +106,11 @@ public class PubNode extends AbstractNode {
     public void setWidget(BaseEntity widget) {
         super.setWidget(widget);
 
-        if (!(widget instanceof PublisherEntity)) {
+        if (!(widget instanceof PublisherLayerEntity)) {
             return;
         }
 
-        PublisherEntity pubEntity = (PublisherEntity) widget;
+        PublisherLayerEntity pubEntity = (PublisherLayerEntity) widget;
 
         this.setImmediatePublish(pubEntity.immediatePublish);
         this.setFrequency(pubEntity.publishRate);

@@ -9,8 +9,8 @@ import android.view.MotionEvent;
 import androidx.annotation.Nullable;
 
 import com.schneewittchen.rosandroid.R;
+import com.schneewittchen.rosandroid.ui.views.widgets.PublisherWidgetView;
 import com.schneewittchen.rosandroid.utility.Utils;
-import com.schneewittchen.rosandroid.ui.views.PublisherView;
 
 
 /**
@@ -20,7 +20,7 @@ import com.schneewittchen.rosandroid.ui.views.PublisherView;
  * @version 1.1.0
  * @created on 18.10.19
  */
-public class JoystickView extends PublisherView {
+public class JoystickView extends PublisherWidgetView {
 
     public static final String TAG = JoystickView.class.getSimpleName();
 

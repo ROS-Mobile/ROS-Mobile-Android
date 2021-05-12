@@ -41,13 +41,8 @@ public class MainViewModel extends AndroidViewModel {
             configTitle = new MediatorLiveData<>();
 
             configTitle.addSource(configRepo.getCurrentConfig(), configuration -> {
-                Log.i(TAG, "New Config: " + configuration);
-
-                if (configuration == null) {
-                    Log.i(TAG, "But its null");
-
+                if (configuration == null)
                     return;
-                }
 
                 configTitle.setValue(configuration.name);
             });

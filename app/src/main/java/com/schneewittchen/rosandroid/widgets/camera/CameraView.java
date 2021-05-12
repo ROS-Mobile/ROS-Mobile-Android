@@ -10,7 +10,7 @@ import android.util.AttributeSet;
 import androidx.annotation.Nullable;
 
 import com.schneewittchen.rosandroid.R;
-import com.schneewittchen.rosandroid.ui.views.SubscriberView;
+import com.schneewittchen.rosandroid.ui.views.widgets.SubscriberWidgetView;
 import com.schneewittchen.rosandroid.utility.Utils;
 
 import org.ros.internal.message.Message;
@@ -30,7 +30,7 @@ import sensor_msgs.Image;
  * @updated on 17.09.20
  * @modified by Nils Rottmann
  */
-public class CameraView extends SubscriberView {
+public class CameraView extends SubscriberWidgetView {
 
     public static final String TAG = CameraView.class.getSimpleName();
 
@@ -53,12 +53,12 @@ public class CameraView extends SubscriberView {
     
     
     private void init() {
-        this.cornerWidth = Utils.dpToPx(getContext(), 8);
+        this.cornerWidth = 0; //Utils.dpToPx(getContext(), 8);
 
         borderPaint = new Paint();
-        borderPaint.setColor(getResources().getColor(R.color.whiteHigh));
+        borderPaint.setColor(getResources().getColor(R.color.borderColor));
         borderPaint.setStyle(Paint.Style.STROKE);
-        borderPaint.setStrokeWidth(10);
+        borderPaint.setStrokeWidth(8);
 
         // Background color
         paintBackground = new Paint();

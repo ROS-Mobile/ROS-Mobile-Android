@@ -2,6 +2,7 @@ package com.schneewittchen.rosandroid.ui.fragments.intro;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,8 @@ import com.schneewittchen.rosandroid.ui.fragments.main.MainFragment;
 import com.schneewittchen.rosandroid.viewmodel.IntroViewModel;
 
 import java.util.List;
+
+import static android.content.Context.MODE_PRIVATE;
 
 
 /**
@@ -53,6 +56,7 @@ public class IntroFragment extends Fragment {
     IntroViewModel mViewModel;
     List<ScreenItem> screenItems;
     int itemPosition;
+    boolean requireCheckIn;
 
 
     public static IntroFragment newInstance() {
@@ -62,6 +66,9 @@ public class IntroFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+
+        requireCheckIn = requireCheckIn();
+
         // Create the view model
         mViewModel = new ViewModelProvider(this).get(IntroViewModel.class);
 
@@ -74,75 +81,97 @@ public class IntroFragment extends Fragment {
         videoView = view.findViewById(R.id.onboarding_video_view);
         buttonAnimation = AnimationUtils.loadAnimation(view.getContext(), R.anim.onboarding_buttton_animation);
 
-        // Set the video
-        getLifecycle().addObserver(videoView);
-
         // Setup the viewPager
-        screenItems = mViewModel.getScreenItems();
+        if (requireCheckIn) screenItems = mViewModel.getOnboardingScreenItems();
+        else screenItems = mViewModel.getUpdateScreenItems();
         screenPager = view.findViewById(R.id.screen_viewpager);
         introViewPagerAdapter = new IntroViewPagerAdapter(this.getContext(), screenItems);
         screenPager.setAdapter(introViewPagerAdapter);
 
-        // Steup tablayout
+        // Setup tablayout
         tabIndicator.setupWithViewPager(screenPager);
 
         // tablayout add change listener
         tabIndicator.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                if(tab.getPosition() == screenItems.size()) {
+                if (tab.getPosition() == screenItems.size()) {
                     loadVideoScreen();
                 }
             }
 
             @Override
-            public void onTabUnselected(TabLayout.Tab tab) {}
+            public void onTabUnselected(TabLayout.Tab tab) {
+            }
 
             @Override
-            public void onTabReselected(TabLayout.Tab tab) {}
+            public void onTabReselected(TabLayout.Tab tab) {
+            }
         });
 
-        // next button click listener
-        buttonNext.setOnClickListener(v -> jumpToNextScreen());
+        // Set the video
+        getLifecycle().addObserver(videoView);
 
+        // next button click listener
+        buttonNext.setOnClickListener(v -> {
+            try {
+                jumpToNextScreen();
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
+        });
         // Get started Button click listener
         buttonGetStarted.setOnClickListener(v -> loadConfigNameScreen());
-
         // NameConfig Click Listener
-        buttonConfiguration.setOnClickListener(v -> loadMainFragment());
+        buttonConfiguration.setOnClickListener(v -> {
+            try {
+                createFirstConfig();
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
+        });
+
     }
 
-    private void loadMainFragment() {
+    private void createFirstConfig() throws PackageManager.NameNotFoundException {
         // Get string for first config name
         Bundle bundle = new Bundle();
-        bundle.putString("configName",editTextConfigName.getText().toString());
+        bundle.putString("configName", editTextConfigName.getText().toString());
 
         // Save the Prefs
-        savePrefsData();
+        setCheckInPrefData();
 
+        loadMainFragment(bundle);
+    }
+
+    private void jumpToNextScreen() throws PackageManager.NameNotFoundException {
+        itemPosition = screenPager.getCurrentItem();
+        itemPosition++;
+
+        if (itemPosition < screenItems.size()) {
+            screenPager.setCurrentItem(itemPosition);
+
+        } else {
+            if (requireCheckIn) loadVideoScreen();
+            else {
+                setUpdatePrefData();
+                loadMainFragment(null);
+            }
+        }
+    }
+
+    private void loadMainFragment(Bundle bundle) {
         // Start the next fragment
         if (getActivity() == null) {
             return;
         }
 
         MainFragment mainFragment = new MainFragment();
-        mainFragment.setArguments(bundle);
+        if (bundle != null) mainFragment.setArguments(bundle);
         getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.main_container, mainFragment)
                 .addToBackStack(null)
                 .commit();
-    }
-
-    private void jumpToNextScreen() {
-        itemPosition = screenPager.getCurrentItem();
-        itemPosition++;
-
-        if(itemPosition < screenItems.size()) {
-            screenPager.setCurrentItem(itemPosition);
-
-        } else {
-            loadVideoScreen();
-        }
     }
 
     @Override
@@ -169,15 +198,34 @@ public class IntroFragment extends Fragment {
         editTextConfigName.setVisibility(View.VISIBLE);
     }
 
-    private void savePrefsData() {
+    private void setCheckInPrefData() throws PackageManager.NameNotFoundException {
         if (getContext() == null) {
             return;
         }
 
-        SharedPreferences pref = getContext().getSharedPreferences("onboardingPrefs", Context.MODE_PRIVATE);
+        SharedPreferences pref = getContext().getSharedPreferences("introPrefs", MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
-        editor.putBoolean("CheckedIn",true);
+        editor.putBoolean("CheckedIn", true);
         editor.apply();
+
+        setUpdatePrefData();
+    }
+
+    private void setUpdatePrefData() throws PackageManager.NameNotFoundException {
+        if (getContext() == null) {
+            return;
+        }
+
+        SharedPreferences pref = getContext().getSharedPreferences("introPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putInt("VersionNumber", getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(),0).versionCode);
+        editor.apply();
+    }
+
+    // Get pref data
+    private boolean requireCheckIn() {
+        SharedPreferences pref = getContext().getSharedPreferences("introPrefs", MODE_PRIVATE);
+        return !pref.getBoolean("CheckedIn", false);
     }
 
     @Nullable

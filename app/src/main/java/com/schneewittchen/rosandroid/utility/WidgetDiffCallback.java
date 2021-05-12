@@ -2,7 +2,7 @@ package com.schneewittchen.rosandroid.utility;
 
 import androidx.recyclerview.widget.DiffUtil;
 
-import com.schneewittchen.rosandroid.model.entities.BaseEntity;
+import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
 
 import java.util.List;
 

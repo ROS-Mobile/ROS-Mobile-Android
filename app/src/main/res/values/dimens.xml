@@ -5,4 +5,5 @@
     <dimen name="ic_delete">30dp</dimen>
     <dimen name="padd_10">10dp</dimen>
     <dimen name="toolbar_height">48dp</dimen>
+    <dimen name="widget_list_spacing">16dp</dimen>
 </resources>

@@ -13,12 +13,12 @@ public class Topic {
     /**
      * Topic name e.g. '/map'
      */
-    public String name;
+    public String name = "";
 
     /**
      * Type of the topic e.g. 'nav_msgs.OccupancyGrid'
      */
-    public String type;
+    public String type = "";
 
 
     public Topic(String name, String type) {
@@ -27,6 +27,10 @@ public class Topic {
     }
 
     public Topic(Topic other) {
+        if (other == null) {
+            return;
+        }
+
         this.name = other.name;
         this.type = other.type;
     }

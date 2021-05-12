@@ -1,14 +1,20 @@
 package com.schneewittchen.rosandroid.ui.fragments;
 
+import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.text.Editable;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,19 +22,20 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.dialog.MaterialDialogs;
 import com.google.android.material.textfield.TextInputLayout;
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.databinding.FragmentMasterBinding;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.connection.ConnectionType;
-import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.Topic;
 import com.schneewittchen.rosandroid.utility.Utils;
 import com.schneewittchen.rosandroid.viewmodel.MasterViewModel;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
-import java.util.Observer;
+
+import static android.content.Context.LAYOUT_INFLATER_SERVICE;
+import static android.content.Context.WINDOW_SERVICE;
 
 
 /**
@@ -112,7 +119,12 @@ public class MasterFragment extends Fragment implements TextView.OnEditorActionL
         // View model connection -------------------------------------------------------------------
 
         mViewModel.getMaster().observe(getViewLifecycleOwner(), master -> {
-            if (master == null) return;
+            if (master == null) {
+                binding.masterIpEditText.getText().clear();
+                binding.masterPortEditText.getText().clear();
+                return;
+            }
+
             binding.masterIpEditText.setText(master.ip);
             binding.masterPortEditText.setText(String.valueOf(master.port));
         });
@@ -130,6 +142,7 @@ public class MasterFragment extends Fragment implements TextView.OnEditorActionL
                 mViewModel.connectToMaster();
         });
         binding.disconnectButton.setOnClickListener(v -> mViewModel.disconnectFromMaster());
+        binding.helpButton.setOnClickListener(v -> showConnectionHelpDialog());
         binding.masterIpEditText.setOnEditorActionListener(this);
         binding.masterPortEditText.setOnEditorActionListener(this);
     }
@@ -141,24 +154,41 @@ public class MasterFragment extends Fragment implements TextView.OnEditorActionL
         ipArrayAdapter.addAll(ipItemList);
     }
 
+    private void showConnectionHelpDialog() {
+        String[] items = getResources().getStringArray(R.array.connection_checklist);
+
+        new MaterialAlertDialogBuilder(this.requireContext())
+                .setTitle(R.string.connection_checklist_title)
+                .setItems(items, null)
+                .show();
+    }
+
     private void setRosConnection(ConnectionType connectionType) {
-        int connectVisibility = View.GONE;
-        int disconnectVisibility = View.GONE;
-        int pendingVisibility = View.GONE;
+        int connectVisibility = View.INVISIBLE;
+        int disconnectVisibility = View.INVISIBLE;
+        int pendingVisibility = View.INVISIBLE;
+        String statustext = getContext().getString(R.string.connected);
 
         if (connectionType == ConnectionType.DISCONNECTED
                 || connectionType == ConnectionType.FAILED) {
             connectVisibility = View.VISIBLE;
-            binding.disconnectButton.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            statustext = getContext().getString(R.string.disconnected);
 
         } else if (connectionType == ConnectionType.CONNECTED) {
             disconnectVisibility = View.VISIBLE;
-            binding.disconnectButton.setBackgroundColor(getResources().getColor(R.color.delete_red));
 
         } else if (connectionType == ConnectionType.PENDING) {
             pendingVisibility = View.VISIBLE;
+            statustext = getContext().getString(R.string.pending);
         }
 
+        if (connectionType == ConnectionType.FAILED) {
+            showConnectionHelpDialog();
+        }
+
+        binding.statusText.setText(statustext);
+        binding.connectedImage.setVisibility(disconnectVisibility);
+        binding.disconnectedImage.setVisibility(connectVisibility);
         binding.connectButton.setVisibility(connectVisibility);
         binding.disconnectButton.setVisibility(disconnectVisibility);
         binding.pendingBar.setVisibility(pendingVisibility);
@@ -175,7 +205,7 @@ public class MasterFragment extends Fragment implements TextView.OnEditorActionL
         // Update master port
         Editable masterPort = binding.masterPortEditText.getText();
 
-        if (masterPort != null) {
+        if (masterPort != null && masterPort.length() > 0) {
             mViewModel.setMasterPort(masterPort.toString());
         }
     }
@@ -189,7 +219,7 @@ public class MasterFragment extends Fragment implements TextView.OnEditorActionL
                 updateMasterDetails();
 
                 view.clearFocus();
-                Utils.hideSoftKeyboard(Objects.requireNonNull(getView()));
+                Utils.hideSoftKeyboard(view);
 
                 return true;
         }

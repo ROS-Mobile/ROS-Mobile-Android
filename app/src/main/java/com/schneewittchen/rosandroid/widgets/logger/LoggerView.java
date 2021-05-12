@@ -9,17 +9,15 @@ import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.util.AttributeSet;
+import android.util.Log;
 
-import com.schneewittchen.rosandroid.model.repositories.rosRepo.node.BaseData;
-import com.schneewittchen.rosandroid.ui.views.SubscriberView;
-import com.schneewittchen.rosandroid.widgets.gps.GpsData;
+import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
+import com.schneewittchen.rosandroid.ui.views.widgets.SubscriberWidgetView;
 
 import org.ros.internal.message.Message;
 
 import javax.annotation.Nullable;
 
-import sensor_msgs.NavSatFix;
-import std_msgs.String;
 
 /**
  * TODO: Description
@@ -31,9 +29,11 @@ import std_msgs.String;
  * @modified by Nils Rottmann
  */
 
-public class LoggerView extends SubscriberView {
+public class LoggerView extends SubscriberWidgetView {
 
-    LoggerData data;
+    private static String TAG = LoggerView.class.getSimpleName();
+
+    String data;
     TextPaint textPaint;
     Paint backgroundPaint;
     StaticLayout staticLayout;
@@ -49,13 +49,18 @@ public class LoggerView extends SubscriberView {
         init();
     }
 
+
     @Override
     public void onNewMessage(Message message) {
-        this.data = new LoggerData((String) message);
+        if(!(message instanceof std_msgs.String)) return;
+
+        this.data = ((std_msgs.String)message).getData();
         this.invalidate();
     }
 
     private void init() {
+        data = "Logger";
+
         backgroundPaint = new Paint();
         backgroundPaint.setColor(Color.BLACK);
         backgroundPaint.setStyle(Paint.Style.FILL_AND_STROKE);
@@ -68,6 +73,7 @@ public class LoggerView extends SubscriberView {
 
     @Override
     protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
         float width = getWidth();
         float height = getHeight();
         float textLayoutWidth = width;
@@ -78,9 +84,9 @@ public class LoggerView extends SubscriberView {
             textLayoutWidth = height;
         }
 
-        canvas.drawRect(new Rect(0,0,(int)width,(int)height),backgroundPaint);
+        canvas.drawRect(new Rect(0, 0, (int) width, (int) height), backgroundPaint);
 
-        staticLayout = new StaticLayout(entity.text,
+        staticLayout = new StaticLayout(data,
                 textPaint,
                 (int) textLayoutWidth,
                 Layout.Alignment.ALIGN_CENTER,
@@ -88,8 +94,8 @@ public class LoggerView extends SubscriberView {
                 0,
                 false);
         canvas.save();
-        canvas.rotate(entity.rotation,width / 2,height / 2);
-        canvas.translate( ((width / 2)-staticLayout.getWidth()/2), height / 2 - staticLayout.getHeight() / 2);
+        canvas.rotate(entity.rotation, width / 2, height / 2);
+        canvas.translate(((width / 2) - staticLayout.getWidth() / 2), height / 2 - staticLayout.getHeight() / 2);
         staticLayout.draw(canvas);
         canvas.restore();
     }

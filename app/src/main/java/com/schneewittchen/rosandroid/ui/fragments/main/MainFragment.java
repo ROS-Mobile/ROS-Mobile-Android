@@ -1,29 +1,36 @@
 package com.schneewittchen.rosandroid.ui.fragments.main;
 
+import android.content.Context;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.lifecycle.ViewModelProvider;
-
-import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.ViewPager;
-
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.google.android.material.tabs.TabLayout;
 import com.schneewittchen.rosandroid.R;
-import com.schneewittchen.rosandroid.utility.Utils;
+import com.schneewittchen.rosandroid.databinding.UpdatePopupWindowBinding;
 import com.schneewittchen.rosandroid.viewmodel.MainViewModel;
+
+import static android.content.Context.LAYOUT_INFLATER_SERVICE;
+import static androidx.core.content.ContextCompat.getSystemService;
 
 
 /**
@@ -41,10 +48,8 @@ public class MainFragment extends Fragment implements OnBackPressedListener {
 
     public static final String TAG = MainFragment.class.getSimpleName();
 
-    ConfigTabsPagerAdapter pagerAdapter;
-    LockableViewPager viewPager;
     TabLayout tabLayout;
-
+    NavController navController;
     DrawerLayout drawerLayout;
     Toolbar toolbar;
     MainViewModel mViewModel;
@@ -57,15 +62,16 @@ public class MainFragment extends Fragment implements OnBackPressedListener {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        viewPager = view.findViewById(R.id.configViewpager);
         tabLayout = view.findViewById(R.id.tabs);
         toolbar = view.findViewById(R.id.toolbar);
         drawerLayout = view.findViewById(R.id.drawer_layout);
 
+        navController = Navigation.findNavController(requireActivity(), R.id.fragment_container);
+
         drawerLayout.setScrimColor(getResources().getColor(R.color.drawerFadeColor));
 
         // Connect toolbar to application
-        if(getActivity() instanceof AppCompatActivity){
+        if (getActivity() instanceof AppCompatActivity) {
 
             AppCompatActivity activity = (AppCompatActivity) getActivity();
             activity.setSupportActionBar(toolbar);
@@ -78,23 +84,37 @@ public class MainFragment extends Fragment implements OnBackPressedListener {
             toggle.syncState();
         }
 
+        // Select Master tab as home
+        tabLayout.selectTab(tabLayout.getTabAt(0));
+        navController.navigate(R.id.action_to_masterFragment);
+
         // Setup tabs for navigation
-        pagerAdapter = new ConfigTabsPagerAdapter(this.getChildFragmentManager());
-        viewPager.setAdapter(pagerAdapter);
-        viewPager.setCurrentItem(1,false);
-
-        tabLayout.setupWithViewPager(viewPager);
-
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+            public void onTabSelected(TabLayout.Tab tab) {
+                Log.i(TAG, "On Tab selected: " + tab.getText());
+
+                switch (tab.getText().toString()) {
+                    case "Master":
+                        navController.navigate(R.id.action_to_masterFragment);
+                        break;
+                    case "Details":
+                        navController.navigate(R.id.action_to_detailFragment);
+                        break;
+                    case "SSH":
+                        navController.navigate(R.id.action_to_sshFragment);
+                        break;
+                    default:
+                        navController.navigate(R.id.action_to_vizFragment);
+                }
+            }
 
             @Override
-            public void onPageSelected(int position) {}
+            public void onTabUnselected(TabLayout.Tab tab) {
+            }
 
             @Override
-            public void onPageScrollStateChanged(int state) {
-                Utils.hideSoftKeyboard(view);
+            public void onTabReselected(TabLayout.Tab tab) {
             }
         });
     }
@@ -105,7 +125,7 @@ public class MainFragment extends Fragment implements OnBackPressedListener {
 
         mViewModel = new ViewModelProvider(this).get(MainViewModel.class);
 
-        if(this.getArguments() != null) {
+        if (this.getArguments() != null) {
             mViewModel.createFirstConfig(this.getArguments().getString("configName"));
         }
 
@@ -120,31 +140,25 @@ public class MainFragment extends Fragment implements OnBackPressedListener {
         toolbar.setTitle(newTitle);
     }
 
-    public boolean onBackPressed(){
-        if(drawerLayout.isDrawerOpen(GravityCompat.START)){
+    public boolean onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
             return true;
         }
 
-        if (viewPager.getCurrentItem() != 1) {
-            viewPager.setCurrentItem(1,true);
-            return true;
-        }
-
-        return false;
+        return navController.popBackStack();
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int itemId = item.getItemId();
 
-        if (itemId == android.R.id.home){
-                drawerLayout.openDrawer(GravityCompat.START);
+        if (itemId == android.R.id.home) {
+            drawerLayout.openDrawer(GravityCompat.START);
         }
 
         return super.onOptionsItemSelected(item);
     }
-
 
     @Nullable
     @Override

@@ -7,14 +7,17 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-
 import com.google.android.material.textfield.TextInputEditText;
 import com.schneewittchen.rosandroid.R;
-import com.schneewittchen.rosandroid.ui.views.BaseDetailViewHolder;
-import com.schneewittchen.rosandroid.ui.fragments.details.WidgetChangeListener;
+import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
+import com.schneewittchen.rosandroid.ui.views.details.PublisherWidgetViewHolder;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
+
+import geometry_msgs.Twist;
 
 
 /**
@@ -28,10 +31,7 @@ import java.util.Locale;
  * @updated on 05.11.2020
  * @modified by Nico Studt
  */
-public class JoystickDetailVH extends BaseDetailViewHolder<JoystickEntity> {
-
-    private TextInputEditText topicNameEditText;
-    private TextInputEditText topicTypeEditText;
+public class JoystickDetailVH extends PublisherWidgetViewHolder {
 
     private Spinner xDirSpinner;
     private Spinner xAxisSpinner;
@@ -51,37 +51,29 @@ public class JoystickDetailVH extends BaseDetailViewHolder<JoystickEntity> {
     private ArrayAdapter<CharSequence> yAxisAdapter;
 
 
-    public JoystickDetailVH(@NonNull View view, WidgetChangeListener updateListener) {
-        super(view, updateListener);
-    }
-
-
     @Override
-    public void initView(View parentView) {
-        topicNameEditText = parentView.findViewById(R.id.topicNameEditText);
-        topicTypeEditText = parentView.findViewById(R.id.topicTypeEditText);
+    public void initView(View view) {
+        xDirSpinner = view.findViewById(R.id.xDirSpinner);
+        xAxisSpinner = view.findViewById(R.id.xAxisSpinner);
+        xScaleLeft = view.findViewById(R.id.xScaleLeft);
+        xScaleRight = view.findViewById(R.id.xScaleRight);
+        xScaleMiddle = view.findViewById(R.id.xScaleMiddle);
 
-        xDirSpinner = parentView.findViewById(R.id.xDirSpinner);
-        xAxisSpinner = parentView.findViewById(R.id.xAxisSpinner);
-        xScaleLeft = parentView.findViewById(R.id.xScaleLeft);
-        xScaleRight = parentView.findViewById(R.id.xScaleRight);
-        xScaleMiddle = parentView.findViewById(R.id.xScaleMiddle);
-
-        yDirSpinner = parentView.findViewById(R.id.yDirSpinner);
-        yAxisSpinner = parentView.findViewById(R.id.yAxisSpinner);
-        yScaleLeft = parentView.findViewById(R.id.yScaleLeft);
-        yScaleRight = parentView.findViewById(R.id.yScaleRight);
-        yScaleMiddle = parentView.findViewById(R.id.yScaleMiddle);
+        yDirSpinner = view.findViewById(R.id.yDirSpinner);
+        yAxisSpinner = view.findViewById(R.id.yAxisSpinner);
+        yScaleLeft = view.findViewById(R.id.yScaleLeft);
+        yScaleRight = view.findViewById(R.id.yScaleRight);
+        yScaleMiddle = view.findViewById(R.id.yScaleMiddle);
 
         // Init spinner
-        xDirAdapter = ArrayAdapter.createFromResource(parentView.getContext(),
-                R.array.geometry_msg_twist_dir, android.R.layout.simple_spinner_dropdown_item);
-        xAxisAdapter = ArrayAdapter.createFromResource(parentView.getContext(),
-                R.array.geometry_msg_twist_axis, android.R.layout.simple_spinner_dropdown_item);
-        yDirAdapter = ArrayAdapter.createFromResource(parentView.getContext(),
-                R.array.geometry_msg_twist_dir, android.R.layout.simple_spinner_dropdown_item);
-        yAxisAdapter = ArrayAdapter.createFromResource(parentView.getContext(),
-                R.array.geometry_msg_twist_axis, android.R.layout.simple_spinner_dropdown_item);
+        xDirAdapter = ArrayAdapter.createFromResource(view.getContext(),
+                R.array.joystick_twist_dir, android.R.layout.simple_spinner_dropdown_item);
+        xAxisAdapter = ArrayAdapter.createFromResource(view.getContext(),
+                R.array.joystick_twist_axis, android.R.layout.simple_spinner_dropdown_item);
+        yDirAdapter = ArrayAdapter.createFromResource(view.getContext(),
+                R.array.joystick_twist_dir, android.R.layout.simple_spinner_dropdown_item);
+        yAxisAdapter = ArrayAdapter.createFromResource(view.getContext(),
+                R.array.joystick_twist_axis, android.R.layout.simple_spinner_dropdown_item);
 
         xDirSpinner.setAdapter(xDirAdapter);
         xAxisSpinner.setAdapter(xAxisAdapter);
@@ -90,50 +82,34 @@ public class JoystickDetailVH extends BaseDetailViewHolder<JoystickEntity> {
     }
 
     @Override
-    public void bindEntity(JoystickEntity entity) {
-        topicNameEditText.setText(entity.topic.name);
-        topicTypeEditText.setText(entity.topic.type);
+    public void bindEntity(BaseEntity entity) {
+        JoystickEntity widget = (JoystickEntity) entity;
 
-        String[] xAxisMapping = entity.xAxisMapping.split("/");
+        String[] xAxisMapping = widget.xAxisMapping.split("/");
 
         xDirSpinner.setSelection(xDirAdapter.getPosition(xAxisMapping[0]));
         xAxisSpinner.setSelection(xAxisAdapter.getPosition(xAxisMapping[1]));
 
-        String[] yAxisMapping = entity.yAxisMapping.split("/");
+        String[] yAxisMapping = widget.yAxisMapping.split("/");
         yDirSpinner.setSelection(yDirAdapter.getPosition(yAxisMapping[0]));
         yAxisSpinner.setSelection(yAxisAdapter.getPosition(yAxisMapping[1]));
 
-        xScaleLeft.setText(String.format(Locale.US, "%.2f", entity.xScaleLeft));
-        xScaleRight.setText(String.format(Locale.US, "%.2f", entity.xScaleRight));
-        xScaleMiddle.setText(String.format(Locale.US, "%.2f", (entity.xScaleRight + entity.xScaleLeft) / 2));
-        yScaleLeft.setText(String.format(Locale.US, "%.2f", entity.yScaleLeft));
-        yScaleRight.setText(String.format(Locale.US, "%.2f", entity.yScaleRight));
-        yScaleMiddle.setText(String.format(Locale.US, "%.2f", (entity.yScaleRight + entity.yScaleLeft) / 2));
+        xScaleLeft.setText(String.format(Locale.US, "%.2f", widget.xScaleLeft));
+        xScaleRight.setText(String.format(Locale.US, "%.2f", widget.xScaleRight));
+        xScaleMiddle.setText(String.format(Locale.US, "%.2f", (widget.xScaleRight + widget.xScaleLeft) / 2));
+        yScaleLeft.setText(String.format(Locale.US, "%.2f", widget.yScaleLeft));
+        yScaleRight.setText(String.format(Locale.US, "%.2f", widget.yScaleRight));
+        yScaleMiddle.setText(String.format(Locale.US, "%.2f", (widget.yScaleRight + widget.yScaleLeft) / 2));
     }
 
+
     @Override
-    public void updateEntity() {
-        // Update Topic name
-        Editable newTopicName = topicNameEditText.getText();
-
-        if(newTopicName != null && newTopicName.length() > 0) {
-            entity.topic.name = newTopicName.toString();
-        } else {
-            topicNameEditText.setText(entity.topic.name);
-        }
-
-        // Update Topic Type
-        Editable newTopicType = topicTypeEditText.getText();
-
-        if(newTopicType != null && newTopicType.length() > 0) {
-            entity.topic.type = newTopicType.toString();
-        }else {
-            topicTypeEditText.setText(entity.topic.type);
-        }
+    public void updateEntity(BaseEntity entity) {
+        JoystickEntity widget = (JoystickEntity) entity;
 
         // Update joystick parameters
-        entity.xAxisMapping = xDirSpinner.getSelectedItem() + "/" + xAxisSpinner.getSelectedItem();
-        entity.yAxisMapping = yDirSpinner.getSelectedItem() + "/" + yAxisSpinner.getSelectedItem();
+        widget.xAxisMapping = xDirSpinner.getSelectedItem() + "/" + xAxisSpinner.getSelectedItem();
+        widget.yAxisMapping = yDirSpinner.getSelectedItem() + "/" + yAxisSpinner.getSelectedItem();
 
         for (String str: new String[]{"xScaleLeft", "xScaleRight", "yScaleLeft", "yScaleRight"}) {
             try {
@@ -142,10 +118,15 @@ public class JoystickDetailVH extends BaseDetailViewHolder<JoystickEntity> {
                 assert editText != null;
                 float value = Float.parseFloat(editText.getText().toString());
 
-                entity.getClass().getField(str).set(entity, value);
+                widget.getClass().getField(str).set(entity, value);
 
             } catch (Exception ignored) {
             }
         }
+    }
+
+    @Override
+    public List<String> getTopicTypes() {
+        return Collections.singletonList(Twist._TYPE);
     }
 }

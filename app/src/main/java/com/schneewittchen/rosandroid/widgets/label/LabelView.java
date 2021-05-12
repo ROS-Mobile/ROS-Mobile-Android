@@ -10,7 +10,8 @@ import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 
-import com.schneewittchen.rosandroid.ui.views.BaseView;
+import com.schneewittchen.rosandroid.ui.views.widgets.SubscriberWidgetView;
+import com.schneewittchen.rosandroid.ui.views.widgets.WidgetView;
 
 import javax.annotation.Nullable;
 
@@ -24,8 +25,9 @@ import javax.annotation.Nullable;
  * @modified by Nils Rottmann
  */
 
-public class LabelView extends BaseView {
-    public  static final String TAG = "LabelView";
+public class LabelView extends WidgetView {
+
+    public static final String TAG = LabelView.class.getSimpleName();
 
     TextPaint textPaint;
     Paint backgroundPaint;
@@ -36,7 +38,7 @@ public class LabelView extends BaseView {
         init();
     }
 
-    public  LabelView(Context context, @Nullable AttributeSet attrs) {
+    public LabelView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init();
     }
@@ -65,7 +67,7 @@ public class LabelView extends BaseView {
             textLayoutWidth = height;
         }
 
-        canvas.drawRect(new Rect(0,0,(int)width,(int)height),backgroundPaint);
+        canvas.drawRect(new Rect(0, 0, (int) width, (int) height), backgroundPaint);
 
         staticLayout = new StaticLayout(entity.text,
                 textPaint,
@@ -75,8 +77,8 @@ public class LabelView extends BaseView {
                 0,
                 false);
         canvas.save();
-        canvas.rotate(entity.rotation,width / 2,height / 2);
-        canvas.translate( ((width / 2)-staticLayout.getWidth()/2), height / 2 - staticLayout.getHeight() / 2);
+        canvas.rotate(entity.rotation, width / 2, height / 2);
+        canvas.translate(((width / 2) - staticLayout.getWidth() / 2), height / 2 - staticLayout.getHeight() / 2);
         staticLayout.draw(canvas);
         canvas.restore();
     }

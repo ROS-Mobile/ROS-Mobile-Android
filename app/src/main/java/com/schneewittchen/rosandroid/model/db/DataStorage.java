@@ -13,7 +13,7 @@ import com.schneewittchen.rosandroid.model.entities.MasterEntity;
 import com.schneewittchen.rosandroid.model.entities.SSHEntity;
 import com.schneewittchen.rosandroid.utility.Constants;
 import com.schneewittchen.rosandroid.utility.LambdaTask;
-import com.schneewittchen.rosandroid.model.entities.BaseEntity;
+import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
 import com.schneewittchen.rosandroid.model.entities.WidgetStorageData;
 
 import java.util.List;
@@ -164,8 +164,13 @@ public abstract class DataStorage extends RoomDatabase {
                 .execute();
     }
 
-    public LiveData<List<BaseEntity>> getWidgets(long id) {
-        return widgetDao().getWidgets(id);
+    public LiveData<BaseEntity> getWidget(long configId, long widgetId) {
+        return widgetDao().getWidget(configId, widgetId);
+    }
+
+
+    public LiveData<List<BaseEntity>> getWidgets(long configId) {
+        return widgetDao().getWidgets(configId);
     }
 
     public boolean widgetNameExists(long configId, String name) {
