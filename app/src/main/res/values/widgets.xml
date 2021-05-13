@@ -2,6 +2,7 @@
 <resources>
 
     <string-array name="widget_names">
+        <item>Battery</item>
         <item>Button</item>
         <item>Camera</item>
         <item>Debug</item>
@@ -42,6 +43,11 @@
 
 
     <!--___________________________Widgets____________________________-->
+
+    <!-- Battery -->
+    <string name="Battery_description">
+        The battery indicator displays charging activity and received
+    </string>
 
     <!-- Button -->
     <string name="Button_description">

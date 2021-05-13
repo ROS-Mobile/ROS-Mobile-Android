@@ -30,5 +30,10 @@
     <color name="drawerHeaderBGColor">#BB121212</color>
     <color name="mtrl_textinput_default_box_stroke_color">@color/whiteMedium</color>
 
+    <color name="battery1">#EF5350</color>
+    <color name="battery2">#FFA726</color>
+    <color name="battery3">#FFEE58</color>
+    <color name="battery4">#D4E157</color>
+    <color name="battery5">#9CCC65</color>
 
 </resources>
