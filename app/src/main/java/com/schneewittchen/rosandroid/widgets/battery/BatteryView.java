@@ -90,35 +90,7 @@ public class BatteryView extends SubscriberWidgetView {
         textPaint.setTextSize(textSize);
 
         updateColor();
-        
-        final Handler handler = new Handler();
-        Runnable runnable = new Runnable() {
-            public void run() {
-                if (c) {
-                    p += 0.01;
-                    if (p > 1) {
-                        p = 1;
-                        c = false;
-                    }
 
-                } else {
-                    p -= 0.01;
-                    if (p < 0) {
-                        p = 0;
-                        c = true;
-                    }
-                }
-
-                charging = c;
-
-                updatePercentage(p);
-                invalidate();
-
-                handler.postDelayed(this, 100);
-            }
-        };
-
-        runnable.run();
     }
 
     @Override
@@ -165,8 +137,8 @@ public class BatteryView extends SubscriberWidgetView {
         float bottom = height - borderWidth - textSize;
 
         // Draw pad
-        canvas.drawRoundRect(middleX - 30, top - borderWidth,
-                middleX +30, top,
+        canvas.drawRoundRect(middleX - width/4, top - borderWidth,
+                middleX + width/4, top,
                 borderWidth, borderWidth,
                 outerPaint);
 

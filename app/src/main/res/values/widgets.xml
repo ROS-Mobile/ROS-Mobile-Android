@@ -46,7 +46,7 @@
 
     <!-- Battery -->
     <string name="Battery_description">
-        The battery indicator displays charging activity and received
+        The battery indicator displays charging activity and charge percentage.
     </string>
 
     <!-- Button -->
