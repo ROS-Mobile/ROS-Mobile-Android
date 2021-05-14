@@ -16,6 +16,8 @@
 
 package com.schneewittchen.rosandroid.ui.opengl.visualisation;
 
+import android.util.Log;
+
 import com.google.common.base.Preconditions;
 
 import org.ros.math.RosMath;
@@ -33,6 +35,8 @@ import javax.microedition.khronos.opengles.GL10;
  * @author moesenle@google.com (Lorenz Moesenlechner)
  */
 public class XYOrthographicCamera {
+
+    public static final String TAG = XYOrthographicCamera.class.getSimpleName();
 
     /**
      * Pixels per meter in the world. If zoom is set to the number of pixels per

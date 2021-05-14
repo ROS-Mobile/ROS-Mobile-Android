@@ -1,7 +1,6 @@
 package com.schneewittchen.rosandroid.widgets.path;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
 import com.schneewittchen.rosandroid.ui.opengl.visualisation.ROSColor;
