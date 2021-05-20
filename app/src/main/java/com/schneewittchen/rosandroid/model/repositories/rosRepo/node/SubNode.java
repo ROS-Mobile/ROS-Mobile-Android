@@ -1,5 +1,7 @@
 package com.schneewittchen.rosandroid.model.repositories.rosRepo.node;
 
+import android.util.Log;
+
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.RosData;
 
 import org.ros.internal.message.Message;

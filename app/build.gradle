@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
     buildToolsVersion "29.0.3"
 
     defaultConfig {
         applicationId "com.schneewittchen.rosandroid"
         minSdkVersion 21
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 6
         versionName '2.0.0'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -45,6 +45,7 @@ dependencies {
 
     implementation 'androidx.legacy:legacy-support-core-utils:1.0.0'
 
+
     // ROS
     implementation "org.ros.rosjava_core:rosjava:0.3.6"
     implementation "org.ros.rosjava_messages:diagnostic_msgs:1.12.7"
@@ -70,4 +71,7 @@ dependencies {
 
     // Playing Youtube Videos
     implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:10.0.5'
+
+    // Color picker
+    implementation "com.github.skydoves:colorpickerview:2.2.3"
 }

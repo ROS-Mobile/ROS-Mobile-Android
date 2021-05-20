@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
+import com.schneewittchen.rosandroid.model.repositories.rosRepo.TransformProvider;
 import com.schneewittchen.rosandroid.ui.opengl.shape.GoalShape;
 import com.schneewittchen.rosandroid.ui.opengl.shape.Shape;
 import com.schneewittchen.rosandroid.ui.opengl.visualisation.ROSColor;
@@ -58,7 +59,7 @@ public class PoseView extends SubscriberLayerView {
         if (pose == null) return;
 
         GraphName source = GraphName.of(pose.getHeader().getFrameId());
-        FrameTransform frameTransform = view.getFrameTransformTree().transform(source, frame);
+        FrameTransform frameTransform = TransformProvider.getInstance().getTree().transform(source, frame);
 
         if (frameTransform == null) return;
 

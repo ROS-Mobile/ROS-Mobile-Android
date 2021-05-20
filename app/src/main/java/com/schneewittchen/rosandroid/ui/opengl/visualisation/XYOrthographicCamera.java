@@ -19,6 +19,7 @@ package com.schneewittchen.rosandroid.ui.opengl.visualisation;
 import android.util.Log;
 
 import com.google.common.base.Preconditions;
+import com.schneewittchen.rosandroid.model.repositories.rosRepo.TransformProvider;
 
 import org.ros.math.RosMath;
 import org.ros.namespace.GraphName;
@@ -83,10 +84,11 @@ public class XYOrthographicCamera {
     private GraphName frame;
 
 
-    public XYOrthographicCamera(FrameTransformTree frameTransformTree) {
-        this.frameTransformTree = frameTransformTree;
-        mutex = new Object();
-        resetTransform();
+    public XYOrthographicCamera() {
+        this.frameTransformTree = TransformProvider.getInstance().getTree();
+        this.mutex = new Object();
+
+        this.resetTransform();
     }
 
 
@@ -105,7 +107,6 @@ public class XYOrthographicCamera {
         if (this.frame == null) return false;
 
         FrameTransform frameTransform = frameTransformTree.transform(frame, this.frame);
-
         if (frameTransform == null) return false;
 
         OpenGlTransform.apply(gl, frameTransform.getTransform());

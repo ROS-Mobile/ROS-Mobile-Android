@@ -267,7 +267,7 @@ public class WidgetViewGroup extends ViewGroup {
 
         }
 
-        // Set data listener if view is a pulisher
+        // Set data listener if view is a publisher
         if (baseView instanceof IPublisherView) {
             ((IPublisherView)baseView).setDataListener(this::informDataChange);
         }

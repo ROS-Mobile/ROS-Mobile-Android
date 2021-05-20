@@ -18,7 +18,6 @@ package com.schneewittchen.rosandroid.ui.opengl.visualisation;
 
 import android.graphics.Color;
 import android.opengl.GLSurfaceView;
-import android.util.Log;
 
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.ui.views.widgets.LayerView;
@@ -40,7 +39,8 @@ public class XYOrthographicRenderer implements GLSurfaceView.Renderer {
     public static String TAG = XYOrthographicRenderer.class.getSimpleName();
 
     private final VisualizationView view;
-    private float bgR, bgG, bgB;
+    private final float bgR, bgG, bgB;
+
 
     public XYOrthographicRenderer(VisualizationView view) {
         this.view = view;
@@ -54,7 +54,6 @@ public class XYOrthographicRenderer implements GLSurfaceView.Renderer {
 
     @Override
     public void onSurfaceChanged(GL10 gl, int width, int height) {
-        Log.i(TAG, "On SurfaceChanged");
         Viewport viewport = new Viewport(width, height);
         viewport.apply(gl);
         view.getCamera().setViewport(viewport);
@@ -78,8 +77,6 @@ public class XYOrthographicRenderer implements GLSurfaceView.Renderer {
 
         view.getCamera().apply(gl);
         drawLayers(gl);
-
-
     }
 
     private void drawLayers(GL10 gl) {
@@ -101,4 +98,5 @@ public class XYOrthographicRenderer implements GLSurfaceView.Renderer {
             layer.onSurfaceCreated(view, gl, config);
         }
     }
+
 }

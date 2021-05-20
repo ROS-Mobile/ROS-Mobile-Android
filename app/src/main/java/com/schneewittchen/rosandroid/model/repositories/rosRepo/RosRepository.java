@@ -34,6 +34,7 @@ import org.ros.internal.node.response.Response;
 import org.ros.master.client.TopicType;
 import org.ros.namespace.GraphName;
 import org.ros.node.NodeConfiguration;
+import org.ros.rosjava_geometry.FrameTransformTree;
 
 import java.lang.ref.WeakReference;
 import java.net.URI;
@@ -41,6 +42,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import geometry_msgs.TransformStamped;
 import tf2_msgs.TFMessage;
 
 
@@ -73,7 +75,7 @@ public class RosRepository implements SubNode.NodeListener {
     private final MutableLiveData<RosData> receivedData;
     private NodeMainExecutorService nodeMainExecutorService;
     private NodeConfiguration nodeConfiguration;
-
+    private FrameTransformTree frameTransformTree;
 
     /**
      * Default private constructor. Initialize empty lists and maps of intern widgets and nodes.
@@ -84,6 +86,7 @@ public class RosRepository implements SubNode.NodeListener {
         this.currentNodes = new HashMap<>();
         this.rosConnected = new MutableLiveData<>(ConnectionType.DISCONNECTED);
         this.receivedData = new MutableLiveData<>();
+        this.frameTransformTree = TransformProvider.getInstance().getTree();
 
         this.initStaticNodes();
     }
@@ -120,6 +123,15 @@ public class RosRepository implements SubNode.NodeListener {
 
     @Override
     public void onNewMessage(RosData message) {
+        // Save transforms from tf messages
+        if (message.getMessage() instanceof TFMessage) {
+            TFMessage tf = (TFMessage) message.getMessage();
+
+            for (TransformStamped transform: tf.getTransforms()) {
+                frameTransformTree.update(transform);
+            }
+        }
+
         this.receivedData.postValue(message);
     }
 
