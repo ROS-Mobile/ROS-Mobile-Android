@@ -14,6 +14,7 @@ import android.util.TypedValue;
 import androidx.annotation.Nullable;
 
 import com.schneewittchen.rosandroid.R;
+import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
 import com.schneewittchen.rosandroid.ui.views.widgets.SubscriberWidgetView;
 
 import org.ros.internal.message.Message;
@@ -36,17 +37,13 @@ public class BatteryView extends SubscriberWidgetView {
     Paint outerPaint;
     Paint innerPaint;
     Paint textPaint;
-    Path lightningPath;
     int level;
     int perc;
     boolean charging;
     float textSize;
     float borderWidth;
-    BatteryState lastState;
-
-
-    float p;
-    boolean c;
+    String displayedText;
+    private boolean displayVoltage;
 
 
     public BatteryView(Context context) {
@@ -70,7 +67,7 @@ public class BatteryView extends SubscriberWidgetView {
                 getResources().getDisplayMetrics());
 
         borderWidth = 10;
-        level = 2;
+        level = 3;
 
         // Init paints
         innerPaint = new Paint();
@@ -94,30 +91,63 @@ public class BatteryView extends SubscriberWidgetView {
     }
 
     @Override
+    public void setWidgetEntity(BaseEntity widgetEntity) {
+        super.setWidgetEntity(widgetEntity);
+
+        BatteryEntity entity = (BatteryEntity) widgetEntity;
+        this.displayVoltage = entity.displayVoltage;
+
+        if (displayVoltage) {
+            this.updateVoltage(0f);
+        } else {
+            this.updatePercentage(0f);
+        }
+    }
+
+    @Override
     public void onNewMessage(Message message) {
         super.onNewMessage(message);
 
-        lastState = (BatteryState)message;
+        BatteryState state = (BatteryState)message;
 
-        this.charging = lastState.getPowerSupplyStatus() == BatteryState.POWER_SUPPLY_STATUS_CHARGING;
-        this.updatePercentage(lastState.getPercentage());
+        this.charging = state.getPowerSupplyStatus() == BatteryState.POWER_SUPPLY_STATUS_CHARGING;
+
+        if (displayVoltage) {
+            this.updateVoltage(state.getVoltage());
+        } else {
+            this.updatePercentage(state.getPercentage());
+        }
         this.invalidate();
     }
 
     private void updatePercentage(float value) {
-        perc = (int)(value * 100);
+        int perc = (int)(value * 100);
+        displayedText = perc + "%";
         level = Math.min(5, perc / 20 + 1);
         updateColor();
     }
 
+    private void updateVoltage(float value) {
+        if (value >= 10) {
+            displayedText = String.format("%.1fV", value);
+        } else {
+            displayedText = String.format("%.2fV", value);
+        }
+
+        level = -1;
+        updateColor();
+    }
+
     private void updateColor() {
+        Log.i(TAG, "Level: " + level);
         int color;
 
         if (level == 1)         color = R.color.battery1;
         else if (level == 2)    color = R.color.battery2;
         else if (level == 3)    color = R.color.battery3;
         else if (level == 4)    color = R.color.battery4;
-        else                    color = R.color.battery5;
+        else if (level == 5)    color = R.color.battery5;
+        else                    color = R.color.colorPrimary;
 
         innerPaint.setColor(getResources().getColor(color));
     }
@@ -168,13 +198,14 @@ public class BatteryView extends SubscriberWidgetView {
 
         } else {
             // Draw Bat level
+            int batLevel = level == -1? 5 : level;
             float innerLeft = left + borderWidth * 1.5f;
             float innerRight = right - borderWidth * 1.5f;
             float innerTop = top + borderWidth * 1.5f;
             float innerBottom = bottom - borderWidth * 1.5f;
             float heightStep = (innerBottom - innerTop + borderWidth) / MAX_LEVEL;
 
-            for (int i = 0; i < level; i++) {
+            for (int i = 0; i < batLevel; i++) {
                 float b = innerBottom - heightStep * i;
                 float t = b - heightStep + borderWidth;
 
@@ -183,7 +214,6 @@ public class BatteryView extends SubscriberWidgetView {
         }
 
         // Draw status text
-        String percText = perc + "%";
-        canvas.drawText(percText, middleX, height, textPaint);
+        canvas.drawText(displayedText, middleX, height, textPaint);
     }
 }
