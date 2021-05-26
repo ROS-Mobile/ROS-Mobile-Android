@@ -16,6 +16,7 @@
 
 package com.schneewittchen.rosandroid.ui.opengl.layer;
 
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
@@ -33,6 +34,8 @@ import com.schneewittchen.rosandroid.ui.opengl.visualisation.VisualizationView;
  * @author moesenle@google.com (Lorenz Moesenlechner)
  */
 public class CameraControl {
+
+    private static final String TAG = CameraControl.class.getSimpleName();
 
     private final VisualizationView vizView;
     private GestureDetectorCompat translateGestureDetector;
@@ -64,6 +67,7 @@ public class CameraControl {
 
                         @Override
                         public boolean onDoubleTap(final MotionEvent e) {
+                            Log.i(TAG, "Double Tap detected");
                             return true;
                         }
                     });

@@ -92,15 +92,15 @@ public class VisualizationView extends GLSurfaceView {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if(cameraControl.onTouchEvent(event)) {
-            this.requestRender();
-            return true;
-        }
-
         for (LayerView layer : Lists.reverse(layers)) {
             if (layer.onTouchEvent(this, event)) {
                 return true;
             }
+        }
+
+        if(cameraControl.onTouchEvent(event)) {
+            this.requestRender();
+            return true;
         }
 
         return super.onTouchEvent(event);

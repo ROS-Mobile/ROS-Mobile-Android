@@ -2,13 +2,9 @@ package com.schneewittchen.rosandroid.widgets.battery;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Path;
-import android.os.Handler;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 
 import androidx.annotation.Nullable;
@@ -38,7 +34,6 @@ public class BatteryView extends SubscriberWidgetView {
     Paint innerPaint;
     Paint textPaint;
     int level;
-    int perc;
     boolean charging;
     float textSize;
     float borderWidth;
@@ -139,7 +134,6 @@ public class BatteryView extends SubscriberWidgetView {
     }
 
     private void updateColor() {
-        Log.i(TAG, "Level: " + level);
         int color;
 
         if (level == 1)         color = R.color.battery1;
@@ -159,7 +153,6 @@ public class BatteryView extends SubscriberWidgetView {
         float width = getWidth();
         float height = getHeight();
         float middleX = width/2;
-        float middleY = height/2;
 
         float left = borderWidth/2;
         float right = width - borderWidth/2;
@@ -180,7 +173,7 @@ public class BatteryView extends SubscriberWidgetView {
             float batWidth = right - left;
             float batHeight = bottom - top;
             middleX = (right + left) /2;
-            middleY = (bottom + top) /2;
+            float middleY = (bottom + top) /2;
             float partWidth = batWidth / 5;
             float partHeight = batHeight / 6;
 
