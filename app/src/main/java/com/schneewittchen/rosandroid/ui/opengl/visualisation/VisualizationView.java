@@ -28,6 +28,7 @@ import com.google.common.collect.Lists;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.RosData;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.Topic;
 import com.schneewittchen.rosandroid.ui.opengl.layer.CameraControl;
+import com.schneewittchen.rosandroid.ui.views.widgets.IPublisherView;
 import com.schneewittchen.rosandroid.ui.views.widgets.ISubscriberView;
 import com.schneewittchen.rosandroid.ui.views.widgets.LayerView;
 
@@ -94,6 +95,7 @@ public class VisualizationView extends GLSurfaceView {
     public boolean onTouchEvent(MotionEvent event) {
         for (LayerView layer : Lists.reverse(layers)) {
             if (layer.onTouchEvent(this, event)) {
+                this.requestRender();
                 return true;
             }
         }
@@ -120,7 +122,12 @@ public class VisualizationView extends GLSurfaceView {
 
 
     public void addLayer(LayerView layer) {
+        layer.setParentView(this);
         layers.add(layer);
+
+        if (layer instanceof IPublisherView) {
+            layer.setFrame(camera.getFrame());
+        }
     }
 
     public void onNewData(RosData data) {

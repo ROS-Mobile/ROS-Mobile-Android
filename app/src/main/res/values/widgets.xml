@@ -18,6 +18,7 @@
         <item>LaserScan</item>
         <item>Path</item>
         <item>Pose</item>
+        <item>TouchGoal</item>
     </string-array>
 
 
@@ -46,6 +47,12 @@
         Displays a pose from a geometry_msgs::PoseStamped message.
     </string>
 
+
+    <!-- TouchGoal -->
+    <string name="TouchGoal_description">
+        Adds the ability to publish a goal as a geometry_msgs::PoseStamped message.
+        Double tap to set the position of the goal and drag to define the orientation.
+    </string>
 
     <!--___________________________Widgets____________________________-->
 

@@ -1,7 +1,6 @@
 package com.schneewittchen.rosandroid.widgets.laserscan;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
 import com.schneewittchen.rosandroid.ui.opengl.visualisation.ROSColor;
@@ -12,14 +11,10 @@ import com.schneewittchen.rosandroid.ui.views.widgets.SubscriberLayerView;
 import org.ros.internal.message.Message;
 import org.ros.namespace.GraphName;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import geometry_msgs.PoseStamped;
-import nav_msgs.Path;
 import sensor_msgs.LaserScan;
 
 

@@ -16,8 +16,6 @@
 
 package com.schneewittchen.rosandroid.ui.opengl.visualisation;
 
-import android.util.Log;
-
 import com.google.common.base.Preconditions;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.TransformProvider;
 
@@ -196,7 +194,14 @@ public class XYOrthographicCamera {
         final Transform translation = Transform.translation(toCameraFrame(pixelX, pixelY));
         final FrameTransform cameraToFrame =
                 frameTransformTree.transform(this.frame, frame);
+
+        if (cameraToFrame == null) return null;
+
         return cameraToFrame.getTransform().multiply(translation);
+    }
+
+    public Transform toFrame(float x, float y) {
+        return toFrame((int)x, (int)y, this.frame);
     }
 
     public GraphName getFrame() {

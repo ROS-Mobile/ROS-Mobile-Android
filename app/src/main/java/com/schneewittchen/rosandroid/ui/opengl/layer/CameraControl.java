@@ -67,7 +67,6 @@ public class CameraControl {
 
                         @Override
                         public boolean onDoubleTap(final MotionEvent e) {
-                            Log.i(TAG, "Double Tap detected");
                             return true;
                         }
                     });
