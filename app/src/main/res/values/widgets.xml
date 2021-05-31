@@ -10,6 +10,7 @@
         <item>Joystick</item>
         <item>Label</item>
         <item>Logger</item>
+        <item>RqtPlot</item>
         <item>Viz2D</item>
     </string-array>
 
@@ -134,6 +135,11 @@
         A Logger message which simply prints String messages published to set topic.
     </string>
 
+    <!-- RqtPlot -->
+    <string name="RqtPlot_description">
+        RqtPlot provides a GUI plugin visualizing numeric values in a 2D plot using different plotting
+        backends.
+    </string>
 
     <!-- Viz2D -->
     <string name="Viz2D_description">

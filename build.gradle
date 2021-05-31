@@ -8,8 +8,6 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:4.2.0'
     }
-
-    //apply from: "https://github.com/rosjava/android_core/raw/kinetic/buildscript.gradle"
 }
 
 subprojects {
