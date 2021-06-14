@@ -25,6 +25,8 @@ public interface SshRepository {
 
     void sendMessage(String message);
 
+    void abort();
+
     LiveData<String> getOutputData();
 
     void updateSSH(SSHEntity ssh);

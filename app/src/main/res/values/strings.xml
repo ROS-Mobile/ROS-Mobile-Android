@@ -66,4 +66,16 @@
     <string name="disconnected">Disconnected</string>
     <string name="pending">Pending</string>
 
+    <!-- SSH Autocompletion -->
+    <string-array name="ssh_autocmpletion">
+        <item>rostopic list </item>
+        <item>rostopic echo </item>
+        <item>rostopic info </item>
+        <item>rostopic hz </item>
+        <item>rosnode info </item>
+        <item>rosnode list </item>
+        <item>roslaunch </item>
+        <item>roscore</item>
+    </string-array>
+
 </resources>

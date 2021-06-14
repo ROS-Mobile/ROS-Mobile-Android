@@ -226,7 +226,7 @@
             app:layout_constraintEnd_toStartOf="@+id/sshSendButton"
             app:layout_constraintStart_toStartOf="parent">
 
-            <com.google.android.material.textfield.TextInputEditText
+            <com.google.android.material.textfield.MaterialAutoCompleteTextView
                 android:id="@+id/terminal_editText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -234,7 +234,6 @@
                 android:imeOptions="actionSend"
                 android:inputType="textNoSuggestions" />
         </com.google.android.material.textfield.TextInputLayout>
-
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/sshSendButton"
@@ -244,9 +243,23 @@
             android:backgroundTint="@color/colorAccent"
             app:fabSize="mini"
             app:layout_constraintBottom_toBottomOf="@+id/terminal_inputLayout"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/sshAbortButton"
             app:layout_constraintTop_toTopOf="@+id/terminal_inputLayout"
             app:srcCompat="@drawable/ic_send" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/sshAbortButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:backgroundTint="@color/colorAccent"
+            app:fabSize="mini"
+            app:layout_constraintBottom_toBottomOf="@+id/terminal_inputLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/terminal_inputLayout"
+            app:srcCompat="@drawable/ic_abort_btn" />
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.core.widget.NestedScrollView>
