@@ -32,6 +32,8 @@ import com.schneewittchen.rosandroid.ui.opengl.visualisation.VisualizationView;
  *
  * @author damonkohler@google.com (Damon Kohler)
  * @author moesenle@google.com (Lorenz Moesenlechner)
+ * @updated on 14.06.2021
+ * @modified by Nico Studt
  */
 public class CameraControl {
 
@@ -71,6 +73,7 @@ public class CameraControl {
                         }
                     });
         }
+
         if(rotate) {
             rotateGestureDetector =
                     new RotateGestureDetector((event1, event2, deltaAngle) -> {
@@ -101,13 +104,17 @@ public class CameraControl {
     }
 
     public boolean onTouchEvent(MotionEvent event) {
-        if (translateGestureDetector == null || rotateGestureDetector == null
-                || zoomGestureDetector == null) {
-            return false;
-        }
-        final boolean translateGestureHandled = translateGestureDetector.onTouchEvent(event);
-        final boolean rotateGestureHandled = rotateGestureDetector.onTouchEvent(event);
-        final boolean zoomGestureHandled = zoomGestureDetector.onTouchEvent(event);
-        return translateGestureHandled || rotateGestureHandled || zoomGestureHandled;
+        boolean handled = false;
+
+        if (translateGestureDetector != null)
+            handled = handled || translateGestureDetector.onTouchEvent(event);
+
+        if (rotateGestureDetector != null)
+            handled = handled || rotateGestureDetector.onTouchEvent(event);
+
+        if (zoomGestureDetector != null)
+            handled = handled || zoomGestureDetector.onTouchEvent(event);
+
+        return handled;
     }
 }

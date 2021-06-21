@@ -65,6 +65,8 @@ public class RqtPlotView extends SubscriberWidgetView {
             }
         }
 
+        yAxis.setTickSteps(entity.height);
+
     }
 
     @Override
@@ -122,7 +124,6 @@ public class RqtPlotView extends SubscriberWidgetView {
             Log.e(TAG, e.getLocalizedMessage());
             return;
         }
-
 
         this.invalidate();
     }
