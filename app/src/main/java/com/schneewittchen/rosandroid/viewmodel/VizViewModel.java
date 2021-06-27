@@ -37,6 +37,9 @@ public class VizViewModel extends AndroidViewModel {
         rosDomain = RosDomain.getInstance(application);
     }
 
+    public void updateWidget(BaseEntity widget) {
+        rosDomain.updateWidget(null, widget);
+    }
 
     public LiveData<List<BaseEntity>> getCurrentWidgets() {
         return rosDomain.getCurrentWidgets();

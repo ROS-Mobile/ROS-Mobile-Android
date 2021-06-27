@@ -13,6 +13,8 @@ import androidx.lifecycle.ViewModelProvider;
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.viewmodel.VizViewModel;
 import com.schneewittchen.rosandroid.ui.general.DataListener;
+import com.schneewittchen.rosandroid.ui.general.WidgetChangeListener;
+import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.node.BaseData;
 
 
@@ -25,7 +27,7 @@ import com.schneewittchen.rosandroid.model.repositories.rosRepo.node.BaseData;
  * @updated on 21.04.20
  * @modified by Nils Rottmann
  */
-public class VizFragment extends Fragment implements DataListener {
+public class VizFragment extends Fragment implements DataListener, WidgetChangeListener {
 
     public static final String TAG = VizFragment.class.getSimpleName();
 
@@ -51,6 +53,7 @@ public class VizFragment extends Fragment implements DataListener {
 
         widgetViewGroupview = view.findViewById(R.id.widget_groupview);
         widgetViewGroupview.setDataListener(this);
+        widgetViewGroupview.setOnWidgetDetailsChanged(this);
     }
 
     @Override
@@ -71,5 +74,10 @@ public class VizFragment extends Fragment implements DataListener {
     @Override
     public void onNewWidgetData(BaseData data) {
         mViewModel.publishData(data);
+    }
+
+    @Override
+    public void onWidgetDetailsChanged(BaseEntity widgetEntity) {
+        mViewModel.updateWidget(widgetEntity);
     }
 }

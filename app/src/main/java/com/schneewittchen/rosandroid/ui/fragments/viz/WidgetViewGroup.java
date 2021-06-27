@@ -6,11 +6,13 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.DragEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.schneewittchen.rosandroid.BuildConfig;
 import com.schneewittchen.rosandroid.R;
+import com.schneewittchen.rosandroid.ui.general.WidgetChangeListener;
 import com.schneewittchen.rosandroid.ui.views.widgets.WidgetGroupView;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.RosData;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.Topic;
@@ -25,6 +27,7 @@ import com.schneewittchen.rosandroid.ui.general.DataListener;
 import com.schneewittchen.rosandroid.ui.general.Position;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.node.BaseData;
 import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
+import com.schneewittchen.rosandroid.model.entities.widgets.IPositionEntity;
 
 import org.ros.internal.message.Message;
 
@@ -56,6 +59,7 @@ public class WidgetViewGroup extends ViewGroup {
     float tileWidth;
     List<BaseEntity> widgetList;
     DataListener dataListener;
+    WidgetChangeListener widgetDetailsChangedListener;
 
 
     public WidgetViewGroup(Context context, AttributeSet attrs) {
@@ -78,6 +82,21 @@ public class WidgetViewGroup extends ViewGroup {
         crossPaint.setStrokeWidth(stroke);
 
         this.setWillNotDraw(false);
+
+        this.setOnDragListener((view, event) -> {
+            if (event.getAction() == DragEvent.ACTION_DROP) {
+                WidgetView widget = (WidgetView) event.getLocalState();
+                IPositionEntity entity = (IPositionEntity)widget.getWidgetEntity().copy();
+
+                Position position = entity.getPosition();
+                position.x = Math.round((event.getX() - widget.getWidth() / 2f) / tileWidth);
+                position.y = tilesY - Math.round((event.getY() + widget.getHeight() / 2f) / tileWidth);
+                entity.setPosition(position);
+
+                this.widgetDetailsChangedListener.onWidgetDetailsChanged((BaseEntity) entity);
+            }
+            return true;
+        });
     }
 
 
@@ -340,5 +359,7 @@ public class WidgetViewGroup extends ViewGroup {
         this.dataListener = listener;
     }
 
-
+    public void setOnWidgetDetailsChanged(WidgetChangeListener listener) {
+        this.widgetDetailsChangedListener = listener;
+    }
 }

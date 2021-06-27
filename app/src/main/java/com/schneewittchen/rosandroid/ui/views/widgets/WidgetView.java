@@ -39,6 +39,12 @@ public abstract class WidgetView extends ViewGroup implements IBaseView {
 
     private void baseInit() {
         setWillNotDraw(false);
+
+        this.setOnLongClickListener(view -> {
+            DragShadowBuilder myShadow = new DragShadowBuilder(this);
+            this.startDrag(null, myShadow, this, 0);
+            return true;
+        });
     }
 
 

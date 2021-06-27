@@ -3,7 +3,7 @@ package com.schneewittchen.rosandroid.ui.views.details;
 import android.view.View;
 
 import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
-import com.schneewittchen.rosandroid.ui.fragments.details.WidgetChangeListener;
+import com.schneewittchen.rosandroid.ui.general.WidgetChangeListener;
 import com.schneewittchen.rosandroid.viewmodel.DetailsViewModel;
 
 /**
