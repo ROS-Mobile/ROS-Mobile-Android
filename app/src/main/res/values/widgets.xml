@@ -137,8 +137,7 @@
 
     <!-- RqtPlot -->
     <string name="RqtPlot_description">
-        RqtPlot provides a GUI plugin visualizing numeric values in a 2D plot using different plotting
-        backends.
+        RqtPlot provides a GUI plugin visualizing numeric values in a 2D plot.
     </string>
 
     <!-- Viz2D -->

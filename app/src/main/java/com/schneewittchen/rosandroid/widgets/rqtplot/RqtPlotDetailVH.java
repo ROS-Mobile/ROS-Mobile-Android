@@ -40,7 +40,6 @@ public class RqtPlotDetailVH extends SubscriberWidgetViewHolder implements TextV
     protected void bindEntity(BaseEntity entity) {
         RqtPlotEntity plotEntity = (RqtPlotEntity) entity;
         fieldEditText.setText(plotEntity.fieldPath);
-        Log.i(TAG, "After bind: " + plotEntity.fieldPath);
     }
 
     @Override
@@ -51,7 +50,6 @@ public class RqtPlotDetailVH extends SubscriberWidgetViewHolder implements TextV
             return;
 
         plotEntity.fieldPath = fieldEditText.getText().toString().trim();
-        Log.i(TAG, "New path: " + plotEntity.fieldPath);
 
     }
 
