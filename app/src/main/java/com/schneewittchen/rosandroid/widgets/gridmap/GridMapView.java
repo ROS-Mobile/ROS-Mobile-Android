@@ -98,7 +98,24 @@ public class GridMapView extends SubscriberLayerView {
                         y * resolution * TextureBitmap.HEIGHT,
                         0.),
                         Quaternion.identity())));
-                tiles.get(tileIndex).setStride(width);
+
+                boolean isLastColumn = (x == numTilesWide - 1);
+                int stride;
+                if (isLastColumn) {
+                    stride = width % TextureBitmap.STRIDE;
+                } else {
+                    stride = TextureBitmap.STRIDE;
+                }
+                tiles.get(tileIndex).setStride(stride);
+
+                boolean isLastRow = (y == numTilesHigh - 1);
+                int tileHeight;
+                if (isLastRow) {
+                    tileHeight = height % TextureBitmap.HEIGHT;
+                } else {
+                    tileHeight = TextureBitmap.HEIGHT;
+                }
+                tiles.get(tileIndex).setHeight(tileHeight);
             }
         }
 

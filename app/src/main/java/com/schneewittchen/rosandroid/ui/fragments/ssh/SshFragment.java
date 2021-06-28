@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -24,6 +26,8 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.databinding.FragmentSshBinding;
 import com.schneewittchen.rosandroid.viewmodel.SshViewModel;
+
+import java.util.Arrays;
 
 
 /**
@@ -44,9 +48,10 @@ public class SshFragment extends Fragment implements TextView.OnEditorActionList
     private FragmentSshBinding binding;
     private RecyclerView recyclerView;
     private SshRecyclerViewAdapter mAdapter;
-    private TextInputEditText terminalEditText;
+    private AutoCompleteTextView terminalEditText;
     private Button connectButton;
     private FloatingActionButton sendButton;
+    private FloatingActionButton abortButton;
     private boolean connected;
 
 
@@ -92,6 +97,14 @@ public class SshFragment extends Fragment implements TextView.OnEditorActionList
         terminalEditText = view.findViewById(R.id.terminal_editText);
         connectButton = view.findViewById(R.id.sshConnectButton);
         sendButton = view.findViewById(R.id.sshSendButton);
+        abortButton = view.findViewById(R.id.sshAbortButton);
+
+        // Define autocompletion
+        String[] autocompletion = getResources().getStringArray(R.array.ssh_autocmpletion);
+        Arrays.sort(autocompletion);
+        ArrayAdapter<String> adapter =
+                new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_list_item_1, autocompletion);
+        terminalEditText.setAdapter(adapter);
     }
 
     @Override
@@ -124,6 +137,10 @@ public class SshFragment extends Fragment implements TextView.OnEditorActionList
             mViewModel.sendViaSSH(message);
             terminalEditText.setText("");
             hideSoftKeyboard();
+        });
+
+        abortButton.setOnClickListener(v -> {
+            mViewModel.abortAction();
         });
 
         mViewModel.getOutputData().observe(this.getViewLifecycleOwner(), s -> {
