@@ -13,6 +13,7 @@ import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
 import com.schneewittchen.rosandroid.ui.views.widgets.SubscriberWidgetView;
 
 import org.ros.internal.message.Message;
+import org.ros.internal.message.field.Field;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -110,9 +111,24 @@ public class RqtPlotView extends SubscriberWidgetView {
 
                 // Check if last subPath
                 if (i == subPaths.size() -1) {
-                    float value = message.toRawMessage().getFloat32(path);
-                    data.add(value, header.getStamp());
-                    yAxis.setLimits(data.getMinValue(), data.getMaxValue());
+                    Float value = null;
+
+                    // Find value and cast to float
+                    for (Field field: message.toRawMessage().getFields()) {
+                        if (field.getName().equals(path)) {
+                            value = ((Number) field.getValue()).floatValue();
+                            break;
+                        }
+                    }
+
+                    // Add value to data
+                    if (value != null) {
+                        data.add(value, header.getStamp());
+                        yAxis.setLimits(data.getMinValue(), data.getMaxValue());
+
+                    } else {
+                        Log.i(TAG, "Field couldnt be resolved. Unknown type.");
+                    }
 
                 } else {
                     message = message.toRawMessage().getMessage(path);
@@ -156,7 +172,6 @@ public class RqtPlotView extends SubscriberWidgetView {
             canvas.drawLine(xNow, yNow, xNext, yNext, dataPaint);
         }
     }
-
 
 
     private class ScaleListener
