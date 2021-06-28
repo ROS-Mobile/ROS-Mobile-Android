@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="update_title">
-        <item>Update 2.0:\nTransform layer system</item>
+        <item>Update 2.1:\nNew Widgets and Bug Fixes</item>
     </string-array>
 
     <string-array name="update_descr">
-        <item>Stack multiple maps, paths and poses on top of each other.</item>
+        <item>\u2022 RqtPlot Widget added \n\u2022 Battery Widget added \n\u2022 LaserScan and TouchGoal added \n\u2022 SSH Tab improved</item>
     </string-array>
 
     <integer-array name="update_img">
-        <item>@drawable/intro_layers</item>
+        <item>@drawable/update</item>
     </integer-array>
 
 </resources>
