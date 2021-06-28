@@ -77,6 +77,8 @@ public class SshViewModel extends AndroidViewModel {
         sshRepositoryImpl.sendMessage(message);
     }
 
+    public void abortAction() {sshRepositoryImpl.abort();}
+
     public LiveData<Boolean> isConnected() {
         return sshRepositoryImpl.isConnected();
     }

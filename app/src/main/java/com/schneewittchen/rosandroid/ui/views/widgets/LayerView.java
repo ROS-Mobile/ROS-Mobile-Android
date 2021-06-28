@@ -33,6 +33,9 @@ public abstract class LayerView implements IBaseView {
 
     public abstract void draw(VisualizationView view, GL10 gl);
 
+    public void setFrame(GraphName frame) {
+        this.frame = frame;
+    }
     public GraphName getFrame() {
         return frame;
     }

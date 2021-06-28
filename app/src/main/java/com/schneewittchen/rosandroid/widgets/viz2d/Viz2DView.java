@@ -2,10 +2,8 @@ package com.schneewittchen.rosandroid.widgets.viz2d;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 
 import androidx.annotation.Nullable;
@@ -17,6 +15,7 @@ import com.schneewittchen.rosandroid.model.repositories.rosRepo.node.BaseData;
 import com.schneewittchen.rosandroid.ui.general.DataListener;
 import com.schneewittchen.rosandroid.ui.opengl.visualisation.VisualizationView;
 import com.schneewittchen.rosandroid.ui.views.widgets.LayerView;
+import com.schneewittchen.rosandroid.ui.views.widgets.PublisherLayerView;
 import com.schneewittchen.rosandroid.ui.views.widgets.WidgetGroupView;
 
 
@@ -106,6 +105,12 @@ public class Viz2DView extends WidgetGroupView {
 
     @Override
     public void addLayer(LayerView layer) {
+        if (layer instanceof PublisherLayerView) {
+            ((PublisherLayerView)layer).setDataListener(data -> {
+                if (dataListener != null) dataListener.onNewWidgetData(data);
+            });
+        }
+
         layerView.addLayer(layer);
     }
 }

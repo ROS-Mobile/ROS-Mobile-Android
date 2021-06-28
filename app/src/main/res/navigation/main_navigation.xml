@@ -39,7 +39,7 @@
 
     <fragment
         android:id="@+id/masterFragment"
-        android:name="com.schneewittchen.rosandroid.ui.fragments.MasterFragment"
+        android:name="com.schneewittchen.rosandroid.ui.fragments.master.MasterFragment"
         android:label="MasterFragment"
         tools:layout="@layout/fragment_master" />
 

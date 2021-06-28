@@ -6,8 +6,8 @@
     android:layout_height="wrap_content">
 
     <include
-        android:id="@+id/layout_subscriber_layer"
-        layout="@layout/detail_subscriber_layer"
+        android:id="@+id/layout_publisher_layer"
+        layout="@layout/detail_publisher_layer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"

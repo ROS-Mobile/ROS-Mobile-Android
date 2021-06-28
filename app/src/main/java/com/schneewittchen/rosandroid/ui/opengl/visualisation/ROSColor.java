@@ -41,38 +41,6 @@ public class ROSColor {
     }
 
 
-    public static ROSColor copyOf(ROSColor color) {
-        return new ROSColor(color.red, color.green, color.blue, color.alpha);
-    }
-
-    public static ROSColor fromHex(String hex) {
-        int length = hex.length();
-
-        if (length == 6) {
-            float red = Integer.parseInt(hex.substring(0, 2), 16) / 255.0f;
-            float green = Integer.parseInt(hex.substring(2, 4), 16) / 255.0f;
-            float blue = Integer.parseInt(hex.substring(4), 16) / 255.0f;
-            return new ROSColor(red, green, blue, 1);
-
-        } else if (length == 8) {
-            float alpha = Integer.parseInt(hex.substring(0, 2), 16) / 255.0f;
-            float red = Integer.parseInt(hex.substring(2, 4), 16) / 255.0f;
-            float green = Integer.parseInt(hex.substring(4, 6), 16) / 255.0f;
-            float blue = Integer.parseInt(hex.substring(6), 16) / 255.0f;
-            return new ROSColor(red, green, blue, alpha);
-        } else {
-            return new ROSColor(0, 0, 0, 0);
-        }
-    }
-
-    public static ROSColor fromHexAndAlpha(String hex, float alpha) {
-        Preconditions.checkArgument(hex.length() == 6);
-        float red = Integer.parseInt(hex.substring(0, 2), 16) / 255.0f;
-        float green = Integer.parseInt(hex.substring(2, 4), 16) / 255.0f;
-        float blue = Integer.parseInt(hex.substring(4), 16) / 255.0f;
-        return new ROSColor(red, green, blue, alpha);
-    }
-
     public ROSColor interpolate(ROSColor other, float fraction) {
         return new ROSColor(
                 (other.red - red) * fraction + red,
@@ -94,6 +62,11 @@ public class ROSColor {
         B = B & 0x000000FF;
 
         return A | R | G | B;
+    }
+
+    @Override
+    public String toString() {
+        return "Color = R:" + red + " B:" + blue + " G:" + green + " A:" + alpha;
     }
 
     public void apply(GL10 gl) {
@@ -130,5 +103,47 @@ public class ROSColor {
 
     public void setAlpha(float alpha) {
         this.alpha = alpha;
+    }
+
+
+    public static ROSColor copyOf(ROSColor color) {
+        return new ROSColor(color.red, color.green, color.blue, color.alpha);
+    }
+
+    public static ROSColor fromInt(int color) {
+        float a = ((color >> 24) & 0xFF) / 255f;
+        float r = ((color >> 16) & 0xFF) / 255f;
+        float g = ((color >> 8) & 0xFF) / 255f;
+        float b = (color & 0xFF) / 255f;
+
+        return new ROSColor(r, g, b, a);
+    }
+
+    public static ROSColor fromHex(String hex) {
+        int length = hex.length();
+
+        if (length == 6) {
+            float red = Integer.parseInt(hex.substring(0, 2), 16) / 255.0f;
+            float green = Integer.parseInt(hex.substring(2, 4), 16) / 255.0f;
+            float blue = Integer.parseInt(hex.substring(4), 16) / 255.0f;
+            return new ROSColor(red, green, blue, 1);
+
+        } else if (length == 8) {
+            float alpha = Integer.parseInt(hex.substring(0, 2), 16) / 255.0f;
+            float red = Integer.parseInt(hex.substring(2, 4), 16) / 255.0f;
+            float green = Integer.parseInt(hex.substring(4, 6), 16) / 255.0f;
+            float blue = Integer.parseInt(hex.substring(6), 16) / 255.0f;
+            return new ROSColor(red, green, blue, alpha);
+        } else {
+            return new ROSColor(0, 0, 0, 0);
+        }
+    }
+
+    public static ROSColor fromHexAndAlpha(String hex, float alpha) {
+        Preconditions.checkArgument(hex.length() == 6);
+        float red = Integer.parseInt(hex.substring(0, 2), 16) / 255.0f;
+        float green = Integer.parseInt(hex.substring(2, 4), 16) / 255.0f;
+        float blue = Integer.parseInt(hex.substring(4), 16) / 255.0f;
+        return new ROSColor(red, green, blue, alpha);
     }
 }

@@ -21,12 +21,14 @@ import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.opengl.GLSurfaceView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 
 import com.google.common.collect.Lists;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.RosData;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.Topic;
 import com.schneewittchen.rosandroid.ui.opengl.layer.CameraControl;
+import com.schneewittchen.rosandroid.ui.views.widgets.IPublisherView;
 import com.schneewittchen.rosandroid.ui.views.widgets.ISubscriberView;
 import com.schneewittchen.rosandroid.ui.views.widgets.LayerView;
 
@@ -52,7 +54,6 @@ public class VisualizationView extends GLSurfaceView {
 
     public static String TAG = VisualizationView.class.getSimpleName();
 
-    private FrameTransformTree frameTransformTree;
     private XYOrthographicCamera camera;
     private CameraControl cameraControl;
     private List<LayerView> layers;
@@ -81,9 +82,10 @@ public class VisualizationView extends GLSurfaceView {
         setRenderer(renderer);
         setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
 
-        frameTransformTree = new FrameTransformTree();
+        //frameTransformTree = new FrameTransformTree();
+        camera = new XYOrthographicCamera();
 
-        camera = new XYOrthographicCamera(frameTransformTree);
+        //camera = new XYOrthographicCamera(frameTransformTree);
         cameraControl = new CameraControl(this);
         cameraControl.init(true, true, true);
         camera.jumpToFrame("map");
@@ -91,15 +93,16 @@ public class VisualizationView extends GLSurfaceView {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        for (LayerView layer : Lists.reverse(layers)) {
+            if (layer.onTouchEvent(this, event)) {
+                this.requestRender();
+                return true;
+            }
+        }
+
         if(cameraControl.onTouchEvent(event)) {
             this.requestRender();
             return true;
-        }
-
-        for (LayerView layer : Lists.reverse(layers)) {
-            if (layer.onTouchEvent(this, event)) {
-                return true;
-            }
         }
 
         return super.onTouchEvent(event);
@@ -113,34 +116,24 @@ public class VisualizationView extends GLSurfaceView {
         return camera;
     }
 
-    public FrameTransformTree getFrameTransformTree() {
-        return frameTransformTree;
-    }
-
     public List<LayerView> getLayers() {
         return Collections.unmodifiableList(layers);
     }
 
 
     public void addLayer(LayerView layer) {
+        layer.setParentView(this);
         layers.add(layer);
+
+        if (layer instanceof IPublisherView) {
+            layer.setFrame(camera.getFrame());
+        }
     }
 
     public void onNewData(RosData data) {
         Message message = data.getMessage();
         Topic topic = data.getTopic();
         boolean dirtyView = false;
-
-        // React on TF change
-        if (message instanceof TFMessage) {
-            TFMessage tf = (TFMessage) message;
-
-            for (TransformStamped transform: tf.getTransforms()) {
-                frameTransformTree.update(transform);
-            }
-
-            dirtyView = false;
-        }
 
         // Forward message to sub layers
         for(LayerView layer: getLayers()) {

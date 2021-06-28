@@ -1,7 +1,5 @@
 package com.schneewittchen.rosandroid.model.repositories.rosRepo.node;
 
-import android.util.Log;
-
 import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
 import com.schneewittchen.rosandroid.model.entities.widgets.PublisherLayerEntity;
 
@@ -93,12 +91,11 @@ public class PubNode extends AbstractNode {
         if (publisher == null) {
             return;
         }
-        if (lastData == null || !publisher.hasSubscribers()) {
+        if (lastData == null) {
             return;
         }
 
         Message message = lastData.toRosMessage(publisher, widget);
-
         publisher.publish(message);
     }
 

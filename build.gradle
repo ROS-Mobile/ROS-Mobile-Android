@@ -6,10 +6,8 @@ buildscript {
     apply from: "https://github.com/rosjava/rosjava_bootstrap/raw/kinetic/buildscript.gradle"
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.1'
+        classpath 'com.android.tools.build:gradle:4.2.0'
     }
-
-    //apply from: "https://github.com/rosjava/android_core/raw/kinetic/buildscript.gradle"
 }
 
 subprojects {
@@ -30,7 +28,6 @@ subprojects {
 allprojects {
     repositories {
         google()
-        jcenter()
         maven { url 'https://repo1.maven.org/maven2' }
     }
 }

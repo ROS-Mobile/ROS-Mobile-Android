@@ -193,6 +193,18 @@ public class SshRepositoryImpl implements SshRepository {
     }
 
     @Override
+    public void abort() {
+        new Thread((() -> {
+            try {
+                commander.write(3);
+                commander.flush();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        })).start();
+    }
+
+    @Override
     public LiveData<String> getOutputData() {
         return outputData;
     }

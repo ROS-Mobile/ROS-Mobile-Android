@@ -2,6 +2,7 @@
 <resources>
 
     <string-array name="widget_names">
+        <item>Battery</item>
         <item>Button</item>
         <item>Camera</item>
         <item>Debug</item>
@@ -9,13 +10,16 @@
         <item>Joystick</item>
         <item>Label</item>
         <item>Logger</item>
+        <item>RqtPlot</item>
         <item>Viz2D</item>
     </string-array>
 
     <string-array name="layer_names">
         <item>GridMap</item>
+        <item>LaserScan</item>
         <item>Path</item>
         <item>Pose</item>
+        <item>TouchGoal</item>
     </string-array>
 
 
@@ -28,6 +32,10 @@
         performance issues may occur.
     </string>
 
+    <!-- LaserScan -->
+    <string name="LaserScan_description">
+        Displays data from a sensor_msgs::LaserScan message as points.
+    </string>
 
     <!-- Path -->
     <string name="Path_description">
@@ -41,7 +49,18 @@
     </string>
 
 
+    <!-- TouchGoal -->
+    <string name="TouchGoal_description">
+        Adds the ability to publish a goal as a geometry_msgs::PoseStamped message.
+        Double tap to set the position of the goal and drag to define the orientation.
+    </string>
+
     <!--___________________________Widgets____________________________-->
+
+    <!-- Battery -->
+    <string name="Battery_description">
+        The battery indicator displays charging activity and charge percentage.
+    </string>
 
     <!-- Button -->
     <string name="Button_description">
@@ -116,6 +135,10 @@
         A Logger message which simply prints String messages published to set topic.
     </string>
 
+    <!-- RqtPlot -->
+    <string name="RqtPlot_description">
+        RqtPlot provides a GUI plugin visualizing numeric values in a 2D plot.
+    </string>
 
     <!-- Viz2D -->
     <string name="Viz2D_description">

@@ -1,20 +1,15 @@
-package com.schneewittchen.rosandroid.ui.fragments;
+package com.schneewittchen.rosandroid.ui.fragments.master;
 
-import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.text.Editable;
-import android.view.Gravity;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -23,7 +18,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.dialog.MaterialDialogs;
 import com.google.android.material.textfield.TextInputLayout;
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.databinding.FragmentMasterBinding;
@@ -32,10 +26,6 @@ import com.schneewittchen.rosandroid.utility.Utils;
 import com.schneewittchen.rosandroid.viewmodel.MasterViewModel;
 
 import java.util.ArrayList;
-import java.util.Objects;
-
-import static android.content.Context.LAYOUT_INFLATER_SERVICE;
-import static android.content.Context.WINDOW_SERVICE;
 
 
 /**
@@ -48,10 +38,13 @@ import static android.content.Context.WINDOW_SERVICE;
  * @modified by Nico Studt
  * @updated on 16.11.2020
  * @modified by Nils Rottmann
+ * @updated on 13.05.2021
+ * @modified by Nico Studt
  */
 public class MasterFragment extends Fragment implements TextView.OnEditorActionListener {
 
     private static final String TAG = MasterFragment.class.getSimpleName();
+    private static final long MIN_HELP_TIMESPAM = 10 * 1000;
 
     private MasterViewModel mViewModel;
     private FragmentMasterBinding binding;
@@ -62,6 +55,7 @@ public class MasterFragment extends Fragment implements TextView.OnEditorActionL
     private ArrayAdapter<String> ipArrayAdapter;
 
     public static MasterFragment newInstance() {
+        Log.i(TAG, "New Master Fragment");
         return new MasterFragment();
     }
 
@@ -86,7 +80,7 @@ public class MasterFragment extends Fragment implements TextView.OnEditorActionL
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        mViewModel = new ViewModelProvider(this).get(MasterViewModel.class);
+        mViewModel = new ViewModelProvider(requireActivity()).get(MasterViewModel.class);
 
         // Define Views --------------------------------------------------------------
         ipAddressField = getView().findViewById(R.id.ipAddessTextView);
@@ -155,6 +149,7 @@ public class MasterFragment extends Fragment implements TextView.OnEditorActionL
     }
 
     private void showConnectionHelpDialog() {
+        mViewModel.updateHelpDisplay();
         String[] items = getResources().getStringArray(R.array.connection_checklist);
 
         new MaterialAlertDialogBuilder(this.requireContext())
@@ -182,7 +177,9 @@ public class MasterFragment extends Fragment implements TextView.OnEditorActionL
             statustext = getContext().getString(R.string.pending);
         }
 
-        if (connectionType == ConnectionType.FAILED) {
+        // Display connection help dialog if the connection failed and enough time has passed
+        // since the last display.
+        if (connectionType == ConnectionType.FAILED && mViewModel.shouldShowHelp()) {
             showConnectionHelpDialog();
         }
 

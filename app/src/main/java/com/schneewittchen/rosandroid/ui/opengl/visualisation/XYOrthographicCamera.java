@@ -17,6 +17,7 @@
 package com.schneewittchen.rosandroid.ui.opengl.visualisation;
 
 import com.google.common.base.Preconditions;
+import com.schneewittchen.rosandroid.model.repositories.rosRepo.TransformProvider;
 
 import org.ros.math.RosMath;
 import org.ros.namespace.GraphName;
@@ -33,6 +34,8 @@ import javax.microedition.khronos.opengles.GL10;
  * @author moesenle@google.com (Lorenz Moesenlechner)
  */
 public class XYOrthographicCamera {
+
+    public static final String TAG = XYOrthographicCamera.class.getSimpleName();
 
     /**
      * Pixels per meter in the world. If zoom is set to the number of pixels per
@@ -79,10 +82,11 @@ public class XYOrthographicCamera {
     private GraphName frame;
 
 
-    public XYOrthographicCamera(FrameTransformTree frameTransformTree) {
-        this.frameTransformTree = frameTransformTree;
-        mutex = new Object();
-        resetTransform();
+    public XYOrthographicCamera() {
+        this.frameTransformTree = TransformProvider.getInstance().getTree();
+        this.mutex = new Object();
+
+        this.resetTransform();
     }
 
 
@@ -101,7 +105,6 @@ public class XYOrthographicCamera {
         if (this.frame == null) return false;
 
         FrameTransform frameTransform = frameTransformTree.transform(frame, this.frame);
-
         if (frameTransform == null) return false;
 
         OpenGlTransform.apply(gl, frameTransform.getTransform());
@@ -191,7 +194,14 @@ public class XYOrthographicCamera {
         final Transform translation = Transform.translation(toCameraFrame(pixelX, pixelY));
         final FrameTransform cameraToFrame =
                 frameTransformTree.transform(this.frame, frame);
+
+        if (cameraToFrame == null) return null;
+
         return cameraToFrame.getTransform().multiply(translation);
+    }
+
+    public Transform toFrame(float x, float y) {
+        return toFrame((int)x, (int)y, this.frame);
     }
 
     public GraphName getFrame() {

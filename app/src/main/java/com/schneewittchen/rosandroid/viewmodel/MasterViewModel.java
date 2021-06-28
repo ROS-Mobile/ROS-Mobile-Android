@@ -3,6 +3,7 @@ package com.schneewittchen.rosandroid.viewmodel;
 import android.app.Application;
 import android.content.Context;
 import android.net.wifi.WifiManager;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -27,15 +28,20 @@ import java.util.ArrayList;
  * @modified by Nico Studt
  * @updated on 16.11.2020
  * @modified by Nils Rottmann
+ * @updated on 13.05.2021
+ * @modified by Nico Studt
  */
 public class MasterViewModel extends AndroidViewModel {
 
     private static final String TAG = MasterViewModel.class.getSimpleName();
+    private static final long MIN_HELP_TIMESPAM = 30 * 1000;
 
     private final RosDomain rosDomain;
 
     private MutableLiveData<String> networkSSIDLiveData;
     private final LiveData<MasterEntity> currentMaster;
+
+    private long lastTimeHelpShowed;
 
 
     public MasterViewModel(@NonNull Application application) {
@@ -45,6 +51,14 @@ public class MasterViewModel extends AndroidViewModel {
         currentMaster = rosDomain.getCurrentMaster();
     }
 
+
+    public void updateHelpDisplay() {
+        lastTimeHelpShowed = System.currentTimeMillis();
+    }
+
+    public boolean shouldShowHelp() {
+        return System.currentTimeMillis() - lastTimeHelpShowed >= MIN_HELP_TIMESPAM;
+    }
 
     public void setMasterIp(String ipString) {
         MasterEntity master = currentMaster.getValue();

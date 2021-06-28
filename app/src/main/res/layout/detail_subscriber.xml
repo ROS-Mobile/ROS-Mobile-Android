@@ -33,6 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="none"
+            android:text="topic"
             app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
     </com.google.android.material.textfield.TextInputLayout>

@@ -46,6 +46,11 @@ public class Tile {
     private int stride;
 
     /**
+     * Height of the {@link Tile}.
+     */
+    private int height;
+
+    /**
      * {@code true} when the {@link Tile} is ready to be drawn.
      */
     private boolean ready;
@@ -72,7 +77,7 @@ public class Tile {
 
     public void update() {
         Preconditions.checkNotNull(origin);
-        textureBitmap.updateFromPixelBuffer(pixelBuffer, stride, resolution, origin, COLOR_TRANSPARENT);
+        textureBitmap.updateFromPixelBuffer(pixelBuffer, stride, height, resolution, origin, COLOR_TRANSPARENT);
         pixelBuffer.clear();
         ready = true;
     }
@@ -83,5 +88,9 @@ public class Tile {
 
     public void setStride(int stride) {
         this.stride = stride;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
     }
 }

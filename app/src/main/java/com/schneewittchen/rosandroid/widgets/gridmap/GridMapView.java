@@ -1,7 +1,6 @@
 package com.schneewittchen.rosandroid.widgets.gridmap;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.schneewittchen.rosandroid.ui.opengl.visualisation.ROSColor;
 import com.schneewittchen.rosandroid.ui.opengl.visualisation.TextureBitmap;
@@ -75,15 +74,11 @@ public class GridMapView extends SubscriberLayerView {
 
     @Override
     public void onNewMessage(Message message) {
-        Log.i(TAG, "New Message");
-        long startTime = System.currentTimeMillis();
-
         OccupancyGrid grid = (OccupancyGrid) message;
 
         final float resolution = grid.getInfo().getResolution();
         final int width = grid.getInfo().getWidth();
         final int height = grid.getInfo().getHeight();
-        Log.i(TAG, "Size: " + width + " " + height);
 
         final int numTilesWide = (int) Math.ceil(width / (float) TextureBitmap.STRIDE);
         final int numTilesHigh = (int) Math.ceil(height / (float) TextureBitmap.STRIDE);
@@ -103,7 +98,24 @@ public class GridMapView extends SubscriberLayerView {
                         y * resolution * TextureBitmap.HEIGHT,
                         0.),
                         Quaternion.identity())));
-                tiles.get(tileIndex).setStride(width);
+
+                boolean isLastColumn = (x == numTilesWide - 1);
+                int stride;
+                if (isLastColumn) {
+                    stride = width % TextureBitmap.STRIDE;
+                } else {
+                    stride = TextureBitmap.STRIDE;
+                }
+                tiles.get(tileIndex).setStride(stride);
+
+                boolean isLastRow = (y == numTilesHigh - 1);
+                int tileHeight;
+                if (isLastRow) {
+                    tileHeight = height % TextureBitmap.HEIGHT;
+                } else {
+                    tileHeight = TextureBitmap.HEIGHT;
+                }
+                tiles.get(tileIndex).setHeight(tileHeight);
             }
         }
 
@@ -129,8 +141,6 @@ public class GridMapView extends SubscriberLayerView {
         for (Tile tile : tiles) {
             tile.update();
         }
-        Log.i(TAG, "Tiles updated");
-        Log.i(TAG, "Time: " + (System.currentTimeMillis() - startTime) );
 
         frame = GraphName.of(grid.getHeader().getFrameId());
     }

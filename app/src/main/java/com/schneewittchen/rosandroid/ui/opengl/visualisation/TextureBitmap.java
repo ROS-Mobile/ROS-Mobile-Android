@@ -17,6 +17,7 @@
 package com.schneewittchen.rosandroid.ui.opengl.visualisation;
 
 import android.graphics.Bitmap;
+import android.icu.text.SymbolTable;
 import android.opengl.GLUtils;
 
 import com.google.common.base.Preconditions;
@@ -110,7 +111,7 @@ public class TextureBitmap implements OpenGlDrawable {
         update(origin, stride, resolution, fillColor);
     }
 
-    public void updateFromPixelBuffer(ChannelBuffer pixels, int stride, float resolution,
+    public void updateFromPixelBuffer(ChannelBuffer pixels, int stride, int height, float resolution,
                                       Transform origin, int fillColor) {
         Preconditions.checkNotNull(pixels);
         Preconditions.checkNotNull(origin);
@@ -121,7 +122,7 @@ public class TextureBitmap implements OpenGlDrawable {
                 // If the pixel is within the bounds of the specified pixel array then
                 // we copy the specified value. Otherwise, we use the specified fill
                 // color.
-                if (x < stride && pixels.readable()) {
+                if (x < stride && y < height && pixels.readable()) {
                     this.pixels[i] = pixels.readInt();
                 } else {
                     this.pixels[i] = fillColor;

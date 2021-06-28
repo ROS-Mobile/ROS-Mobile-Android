@@ -1,15 +1,15 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
     buildToolsVersion "29.0.3"
 
     defaultConfig {
         applicationId "com.schneewittchen.rosandroid"
         minSdkVersion 21
-        targetSdkVersion 29
-        versionCode 6
-        versionName '2.0.0'
+        targetSdkVersion 30
+        versionCode 7
+        versionName '2.1.0'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -33,7 +33,7 @@ android {
 dependencies {
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'androidx.appcompat:appcompat:1.3.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
 
@@ -44,6 +44,7 @@ dependencies {
     implementation "androidx.viewpager2:viewpager2:1.0.0"
 
     implementation 'androidx.legacy:legacy-support-core-utils:1.0.0'
+
 
     // ROS
     implementation "org.ros.rosjava_core:rosjava:0.3.6"
@@ -58,8 +59,8 @@ dependencies {
     implementation 'org.ros.android_core:android_core_components:0.4.0'
 
     // Room
-    implementation "androidx.room:room-runtime:2.2.6"
-    annotationProcessor "androidx.room:room-compiler:2.2.6"
+    implementation "androidx.room:room-runtime:2.3.0"
+    annotationProcessor "androidx.room:room-compiler:2.3.0"
 
     // Parsing
     implementation 'com.google.code.gson:gson:2.8.6'
@@ -70,4 +71,7 @@ dependencies {
 
     // Playing Youtube Videos
     implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:10.0.5'
+
+    // Color picker
+    implementation "com.github.skydoves:colorpickerview:2.2.3"
 }
