@@ -74,6 +74,10 @@ public class JoystickView extends PublisherWidgetView {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        if (this.editMode) {
+            return super.onTouchEvent(event);
+        }
+
         float eventX = event.getX();
         float eventY = event.getY();
         float[] polars = convertFromPxToPolar(eventX, eventY);
@@ -96,6 +100,8 @@ public class JoystickView extends PublisherWidgetView {
 
     @Override
     public void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+
         float width = getWidth();
         float height = getHeight();
 

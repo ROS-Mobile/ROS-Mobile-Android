@@ -54,12 +54,16 @@ public class WidgetViewGroup extends ViewGroup {
     public static final int TILES_X = 8;
 
     Paint crossPaint;
+    Paint scaleShadowPaint;
     int tilesX;
     int tilesY;
     float tileWidth;
     List<BaseEntity> widgetList;
     DataListener dataListener;
     WidgetChangeListener widgetDetailsChangedListener;
+    boolean vizEditMode = false;
+    boolean drawWidgetScaleShadow = false;
+    Position widgetScaleShadowPosition = null;
 
 
     public WidgetViewGroup(Context context, AttributeSet attrs) {
@@ -81,10 +85,15 @@ public class WidgetViewGroup extends ViewGroup {
         crossPaint.setColor(crossColor);
         crossPaint.setStrokeWidth(stroke);
 
+        scaleShadowPaint = new Paint();
+        scaleShadowPaint.setColor(getResources().getColor(R.color.colorPrimary));
+        scaleShadowPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+        scaleShadowPaint.setAlpha(100);
+
         this.setWillNotDraw(false);
 
         this.setOnDragListener((view, event) -> {
-            if (event.getAction() == DragEvent.ACTION_DROP) {
+            if (event.getAction() == DragEvent.ACTION_DROP && this.vizEditMode) {
                 WidgetView widget = (WidgetView) event.getLocalState();
                 IPositionEntity entity = (IPositionEntity)widget.getWidgetEntity().copy();
 
@@ -181,6 +190,14 @@ public class WidgetViewGroup extends ViewGroup {
                 canvas.drawLine(drawX-lineLen, drawY, drawX+lineLen, drawY, crossPaint);
                 canvas.drawLine(drawX, drawY-lineLen, drawX, drawY+lineLen, crossPaint);
             }
+        }
+
+        if (drawWidgetScaleShadow && widgetScaleShadowPosition != null) {
+            int w = (int) (widgetScaleShadowPosition.width * tileWidth);
+            int h = (int) (widgetScaleShadowPosition.height * tileWidth);
+            int x = (int) (getPaddingLeft() + widgetScaleShadowPosition.x * tileWidth);
+            int y = (int) (getPaddingTop() + (tilesY - (widgetScaleShadowPosition.height + widgetScaleShadowPosition.y)) * tileWidth);
+            canvas.drawRect(x, y, x + w, y + h, scaleShadowPaint);
         }
     }
 
@@ -361,5 +378,26 @@ public class WidgetViewGroup extends ViewGroup {
 
     public void setOnWidgetDetailsChanged(WidgetChangeListener listener) {
         this.widgetDetailsChangedListener = listener;
+    }
+
+    public void setVizEditMode(boolean enabled) {
+        this.vizEditMode = enabled;
+        for (int i = 0; i < getChildCount(); ++i) {
+            WidgetView widgetView = (WidgetView)getChildAt(i);
+            widgetView.setOnScaleListener(tileWidth, (baseEntity, updateConfig) -> {
+                if (vizEditMode) {
+                    widgetScaleShadowPosition = ((IPositionEntity)baseEntity).getPosition();
+                    widgetScaleShadowPosition.height = Math.max(0, Math.min(widgetScaleShadowPosition.height, tilesY));
+                    widgetScaleShadowPosition.width = Math.max(0, Math.min(widgetScaleShadowPosition.width, tilesX));
+                    ((IPositionEntity)baseEntity).setPosition(widgetScaleShadowPosition);
+                    drawWidgetScaleShadow = !updateConfig;
+                    invalidate();
+                    if (updateConfig) {
+                        this.widgetDetailsChangedListener.onWidgetDetailsChanged(baseEntity);
+                    }
+                }
+            });
+            widgetView.setEditMode(enabled);
+        }
     }
 }
