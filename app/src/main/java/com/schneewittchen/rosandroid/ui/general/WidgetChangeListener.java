@@ -1,4 +1,4 @@
-package com.schneewittchen.rosandroid.ui.fragments.details;
+package com.schneewittchen.rosandroid.ui.general;
 
 import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
 

@@ -17,6 +17,7 @@ import com.google.android.material.button.MaterialButton;
 import com.schneewittchen.rosandroid.BuildConfig;
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
+import com.schneewittchen.rosandroid.ui.general.WidgetChangeListener;
 import com.schneewittchen.rosandroid.ui.views.details.DetailViewHolder;
 import com.schneewittchen.rosandroid.utility.Constants;
 import com.schneewittchen.rosandroid.utility.Utils;

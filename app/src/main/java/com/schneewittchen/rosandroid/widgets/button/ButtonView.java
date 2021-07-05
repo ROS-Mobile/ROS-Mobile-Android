@@ -67,6 +67,10 @@ public class ButtonView extends PublisherWidgetView {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        if (this.editMode) {
+            return super.onTouchEvent(event);
+        }
+
         switch (event.getActionMasked()) {
             case MotionEvent.ACTION_UP:
                 buttonPaint.setColor(getResources().getColor(R.color.colorPrimary));
@@ -86,6 +90,8 @@ public class ButtonView extends PublisherWidgetView {
 
     @Override
     public void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+
         float width = getWidth();
         float height = getHeight();
         float textLayoutWidth = width;

@@ -72,6 +72,9 @@ public class RqtPlotView extends SubscriberWidgetView {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        if (this.editMode) {
+            return super.onTouchEvent(event);
+        }
         scaleGestureDetector.onTouchEvent(event);
         return true;
     }
@@ -145,7 +148,7 @@ public class RqtPlotView extends SubscriberWidgetView {
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
+    public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
         float w = getWidth();
