@@ -96,4 +96,4 @@ Main-Developer:
 
 Contributor:
 
-[Marcus Davi](https://github.com/Marcus-Davi), [Dragos Circa](https://github.com/Cycov)
+[Marcus Davi](https://github.com/Marcus-Davi), [Dragos Circa](https://github.com/Cycov), [Sarthak Mittal](https://github.com/naiveHobo)
