@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.schneewittchen.rosandroid.BuildConfig;
 import com.schneewittchen.rosandroid.R;
+import com.schneewittchen.rosandroid.model.repositories.rosRepo.node.AbstractNode;
 import com.schneewittchen.rosandroid.ui.views.widgets.WidgetGroupView;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.RosData;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.Topic;
@@ -194,7 +195,7 @@ public class WidgetViewGroup extends ViewGroup {
         }
     }
 
-    public void setWidgets(List<BaseEntity> newWidgets) {
+    public void setWidgets(List<BaseEntity> newWidgets, HashMap<Topic, AbstractNode> map) {
         boolean changes = false;
 
         // Create widget check with ids
@@ -219,7 +220,7 @@ public class WidgetViewGroup extends ViewGroup {
                 }
 
             } else{
-                addViewFor(newWidget);
+                addViewFor(newWidget, map);
                 changes = true;
             }
         }
@@ -242,7 +243,7 @@ public class WidgetViewGroup extends ViewGroup {
 
 
 
-    private void addViewFor(BaseEntity entity) {
+    private void addViewFor(BaseEntity entity, HashMap<Topic, AbstractNode> map) {
         Log.i(TAG, "Add view for " + entity.name);
 
         IBaseView baseView = createViewFrom(entity);
@@ -258,6 +259,15 @@ public class WidgetViewGroup extends ViewGroup {
             for (BaseEntity subEntity: entity.childEntities)  {
                 IBaseView subView = createViewFrom(subEntity);
                 subView.setWidgetEntity(subEntity);
+
+                if (subView instanceof ISubscriberView) {
+                    if (map.get(subEntity.topic) != null) {
+                        if (map.get(subEntity.topic).getLastRosData().getMessage() != null) {
+                            ISubscriberView subscriberView = (ISubscriberView) subView;
+                            subscriberView.onNewMessage(map.get(subEntity.topic).getLastRosData().getMessage());
+                        }
+                    }
+                }
 
                 if (!(subView instanceof LayerView))
                     return;
@@ -276,7 +286,6 @@ public class WidgetViewGroup extends ViewGroup {
         if (baseView instanceof WidgetView) {
             this.addView((WidgetView)baseView);
         }
-
     }
 
     private IBaseView createViewFrom(BaseEntity entity) {

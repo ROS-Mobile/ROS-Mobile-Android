@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
+import android.text.PrecomputedText;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
@@ -29,6 +30,7 @@ import com.schneewittchen.rosandroid.model.repositories.rosRepo.node.PubNode;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.node.SubNode;
 
 import org.ros.address.InetAddressFactory;
+import org.ros.internal.message.Message;
 import org.ros.internal.node.client.MasterClient;
 import org.ros.internal.node.response.Response;
 import org.ros.master.client.TopicType;
@@ -437,6 +439,8 @@ public class RosRepository implements SubNode.NodeListener {
     public LiveData<RosData> getData() {
         return receivedData;
     }
+
+    public HashMap<Topic, AbstractNode> getLastRosData() { return currentNodes; }
 
     /**
      * Get a list from the ROS Master with all available topics.

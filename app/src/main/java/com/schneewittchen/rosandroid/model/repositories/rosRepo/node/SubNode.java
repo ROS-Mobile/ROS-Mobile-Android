@@ -1,5 +1,6 @@
 package com.schneewittchen.rosandroid.model.repositories.rosRepo.node;
 
+import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.RosData;
 
 import org.ros.internal.message.Message;
@@ -18,11 +19,9 @@ public class SubNode extends AbstractNode {
 
     private final NodeListener listener;
 
-
     public SubNode(NodeListener listener) {
         this.listener = listener;
     }
-
 
     @Override
     public void onStart(ConnectedNode parentNode) {
@@ -36,7 +35,8 @@ public class SubNode extends AbstractNode {
             Subscriber<? extends Message> subscriber = parentNode.newSubscriber(topic.name, topic.type);
 
             subscriber.addMessageListener(data -> {
-                listener.onNewMessage(new RosData(topic, data));
+                lastRosData = new RosData(topic, data);
+                listener.onNewMessage(lastRosData);
             });
 
         } catch(Exception e) {

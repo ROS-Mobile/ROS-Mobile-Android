@@ -13,11 +13,16 @@ import com.schneewittchen.rosandroid.model.repositories.rosRepo.RosRepository;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.connection.ConnectionType;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.RosData;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.Topic;
+import com.schneewittchen.rosandroid.model.repositories.rosRepo.node.AbstractNode;
 import com.schneewittchen.rosandroid.utility.LambdaTask;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.node.BaseData;
 import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
 
+import org.ros.internal.message.Message;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -131,4 +136,6 @@ public class RosDomain {
     }
 
     public List<Topic> getTopicList() { return rosRepo.getTopicList(); }
+
+    public HashMap<Topic, AbstractNode> getLastRosData() { return rosRepo.getLastRosData(); }
 }

@@ -60,7 +60,7 @@ public class VizFragment extends Fragment implements DataListener {
         mViewModel = new ViewModelProvider(this).get(VizViewModel.class);
 
         mViewModel.getCurrentWidgets().observe(getViewLifecycleOwner(), widgetEntities -> {
-            widgetViewGroupview.setWidgets(widgetEntities);
+            widgetViewGroupview.setWidgets(widgetEntities, mViewModel.getLastRosData());
         });
 
         mViewModel.getData().observe(getViewLifecycleOwner(), data -> {

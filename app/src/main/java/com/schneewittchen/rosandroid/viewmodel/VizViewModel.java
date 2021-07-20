@@ -9,9 +9,14 @@ import androidx.lifecycle.LiveData;
 
 import com.schneewittchen.rosandroid.domain.RosDomain;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.RosData;
+import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.Topic;
+import com.schneewittchen.rosandroid.model.repositories.rosRepo.node.AbstractNode;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.node.BaseData;
 import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
 
+import org.ros.internal.message.Message;
+
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -46,8 +51,9 @@ public class VizViewModel extends AndroidViewModel {
         return this.rosDomain.getData();
     }
 
-
     public void publishData(BaseData data) {
         rosDomain.publishData(data);
     }
+
+    public HashMap<Topic, AbstractNode> getLastRosData() { return rosDomain.getLastRosData(); }
 }

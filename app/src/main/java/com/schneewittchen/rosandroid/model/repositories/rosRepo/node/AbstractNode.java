@@ -2,6 +2,7 @@ package com.schneewittchen.rosandroid.model.repositories.rosRepo.node;
 
 import android.util.Log;
 
+import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.RosData;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.Topic;
 import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
 
@@ -24,7 +25,7 @@ public class AbstractNode implements NodeMain {
 
     protected Topic topic;
     protected BaseEntity widget;
-
+    protected RosData lastRosData;
 
     @Override
     public void onStart(ConnectedNode parentNode) {
@@ -63,6 +64,10 @@ public class AbstractNode implements NodeMain {
     public void setWidget(BaseEntity widget) {
         this.widget = widget;
         this.setTopic(widget.topic);
+    }
+
+    public RosData getLastRosData() {
+        return lastRosData;
     }
 
 }
