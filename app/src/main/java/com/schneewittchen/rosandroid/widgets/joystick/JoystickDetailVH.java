@@ -3,6 +3,7 @@ package com.schneewittchen.rosandroid.widgets.joystick;
 import android.text.Editable;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -45,6 +46,8 @@ public class JoystickDetailVH extends PublisherWidgetViewHolder {
     private EditText yScaleRight;
     private TextView yScaleMiddle;
 
+    private CheckBox stickLimitBox;
+
     private ArrayAdapter<CharSequence> xDirAdapter;
     private ArrayAdapter<CharSequence> xAxisAdapter;
     private ArrayAdapter<CharSequence> yDirAdapter;
@@ -64,6 +67,8 @@ public class JoystickDetailVH extends PublisherWidgetViewHolder {
         yScaleLeft = view.findViewById(R.id.yScaleLeft);
         yScaleRight = view.findViewById(R.id.yScaleRight);
         yScaleMiddle = view.findViewById(R.id.yScaleMiddle);
+
+        stickLimitBox = view.findViewById(R.id.stickLimitBox);
 
         // Init spinner
         xDirAdapter = ArrayAdapter.createFromResource(view.getContext(),
@@ -100,6 +105,8 @@ public class JoystickDetailVH extends PublisherWidgetViewHolder {
         yScaleLeft.setText(String.format(Locale.US, "%.2f", widget.yScaleLeft));
         yScaleRight.setText(String.format(Locale.US, "%.2f", widget.yScaleRight));
         yScaleMiddle.setText(String.format(Locale.US, "%.2f", (widget.yScaleRight + widget.yScaleLeft) / 2));
+
+        stickLimitBox.setChecked(widget.realisticStickLimits);
     }
 
 
@@ -123,6 +130,7 @@ public class JoystickDetailVH extends PublisherWidgetViewHolder {
             } catch (Exception ignored) {
             }
         }
+        widget.realisticStickLimits = stickLimitBox.isChecked();
     }
 
     @Override

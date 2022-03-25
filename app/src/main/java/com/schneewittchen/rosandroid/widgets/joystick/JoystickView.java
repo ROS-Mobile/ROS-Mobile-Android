@@ -101,9 +101,13 @@ public class JoystickView extends PublisherWidgetView {
 
         float[] px = convertFromPolarToPx(posX, posY);
 
-        // Outer ring
-        canvas.drawCircle(width/2, height/2, width/2-joystickRadius, outerPaint);
-
+        JoystickEntity entity = (JoystickEntity) widgetEntity;
+        if(entity.realisticStickLimits){
+            // Outer ring
+            canvas.drawCircle(width / 2, height / 2, width / 2 - joystickRadius, outerPaint);
+        }else {
+            canvas.drawRect(0, 0, width, height, outerPaint);
+        }
         // Inner drawings
         canvas.drawCircle(width/2, height/2, width/4-joystickRadius/2, linePaint);
         canvas.drawLine(joystickRadius, height/2, width-joystickRadius, height/2,  linePaint);
@@ -125,12 +129,21 @@ public class JoystickView extends PublisherWidgetView {
         double rad = Math.atan2(dy, dx);
 
         double len = Math.sqrt(dx*dx + dy*dy)/r;
-        len = Math.min(1, len);
+        JoystickEntity entity = (JoystickEntity) widgetEntity;
+        if (entity.realisticStickLimits) {
+            len = Math.min(1, len);
+        }
 
         float[] polar = new float[2];
 
         polar[0] = (float) (Math.cos(rad)*len);
         polar[1] = (float) (-Math.sin(rad)*len);
+
+        if(!entity.realisticStickLimits){
+            // clip polar between -1 and 1
+            polar[0] = Math.max(-1, Math.min(polar[0], 1));
+            polar[1] = Math.max(-1, Math.min(polar[1], 1));
+        }
 
         return polar;
     }
