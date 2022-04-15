@@ -106,7 +106,7 @@ public class JoystickView extends PublisherWidgetView {
             // Outer ring
             canvas.drawCircle(width / 2, height / 2, width / 2 - joystickRadius, outerPaint);
         }else {
-            canvas.drawRect(0, 0, width, height, outerPaint);
+            canvas.drawRect(joystickRadius, joystickRadius, width-joystickRadius, height-joystickRadius, outerPaint);
         }
         // Inner drawings
         canvas.drawCircle(width/2, height/2, width/4-joystickRadius/2, linePaint);
