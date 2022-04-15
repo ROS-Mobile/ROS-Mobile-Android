@@ -50,6 +50,7 @@ public class JoystickDetailVH extends PublisherWidgetViewHolder {
     private ArrayAdapter<CharSequence> yDirAdapter;
     private ArrayAdapter<CharSequence> yAxisAdapter;
 
+    boolean forceSetChecked = false;
 
     @Override
     public void initView(View view) {
@@ -66,6 +67,9 @@ public class JoystickDetailVH extends PublisherWidgetViewHolder {
         yScaleMiddle = view.findViewById(R.id.yScaleMiddle);
 
         stickLimitBox = view.findViewById(R.id.stickLimitBox);
+        stickLimitBox.setOnCheckedChangeListener(((buttonView, isChecked) -> {
+            if (!forceSetChecked) forceWidgetUpdate();
+        }));
 
         // Init spinner
         xDirAdapter = ArrayAdapter.createFromResource(view.getContext(),
@@ -103,7 +107,9 @@ public class JoystickDetailVH extends PublisherWidgetViewHolder {
         yScaleRight.setText(String.format(Locale.US, "%.2f", widget.yScaleRight));
         yScaleMiddle.setText(String.format(Locale.US, "%.2f", (widget.yScaleRight + widget.yScaleLeft) / 2));
 
+        forceSetChecked = true;
         stickLimitBox.setChecked(widget.rectangularStickLimits);
+        forceSetChecked = false;
     }
 
 
