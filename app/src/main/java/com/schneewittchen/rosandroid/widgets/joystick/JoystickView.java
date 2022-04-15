@@ -102,14 +102,17 @@ public class JoystickView extends PublisherWidgetView {
         float[] px = convertFromPolarToPx(posX, posY);
 
         JoystickEntity entity = (JoystickEntity) widgetEntity;
-        if(entity.realisticStickLimits){
-            // Outer ring
-            canvas.drawCircle(width / 2, height / 2, width / 2 - joystickRadius, outerPaint);
-        }else {
+        if(entity.rectangularStickLimits){
+            // Outer box
             canvas.drawRect(joystickRadius, joystickRadius, width-joystickRadius, height-joystickRadius, outerPaint);
+            // Inner box
+            canvas.drawRect(width/4 + joystickRadius/2, height/4+joystickRadius/2, width*(3f/4)-joystickRadius/2, height*(3f/4)-joystickRadius/2, linePaint);
+        }else {
+            // Outer ring
+            canvas.drawCircle(width/2, height/2, width/2- joystickRadius, outerPaint);
+            // Inner drawings
+            canvas.drawCircle(width/2, height/2, width/4 - joystickRadius/2, linePaint);
         }
-        // Inner drawings
-        canvas.drawCircle(width/2, height/2, width/4-joystickRadius/2, linePaint);
         canvas.drawLine(joystickRadius, height/2, width-joystickRadius, height/2,  linePaint);
         canvas.drawLine(width/2, height/2 - width/2 + joystickRadius ,
                         width/2, height/2 + width/2 - joystickRadius,  linePaint);
@@ -130,7 +133,7 @@ public class JoystickView extends PublisherWidgetView {
 
         double len = Math.sqrt(dx*dx + dy*dy)/r;
         JoystickEntity entity = (JoystickEntity) widgetEntity;
-        if (entity.realisticStickLimits) {
+        if (!entity.rectangularStickLimits) {
             len = Math.min(1, len);
         }
 
@@ -139,7 +142,7 @@ public class JoystickView extends PublisherWidgetView {
         polar[0] = (float) (Math.cos(rad)*len);
         polar[1] = (float) (-Math.sin(rad)*len);
 
-        if(!entity.realisticStickLimits){
+        if(entity.rectangularStickLimits){
             // clip polar between -1 and 1
             polar[0] = Math.max(-1, Math.min(polar[0], 1));
             polar[1] = Math.max(-1, Math.min(polar[1], 1));

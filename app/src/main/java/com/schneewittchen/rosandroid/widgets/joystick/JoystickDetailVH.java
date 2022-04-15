@@ -1,6 +1,5 @@
 package com.schneewittchen.rosandroid.widgets.joystick;
 
-import android.text.Editable;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
@@ -8,12 +7,10 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.google.android.material.textfield.TextInputEditText;
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
 import com.schneewittchen.rosandroid.ui.views.details.PublisherWidgetViewHolder;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -106,7 +103,7 @@ public class JoystickDetailVH extends PublisherWidgetViewHolder {
         yScaleRight.setText(String.format(Locale.US, "%.2f", widget.yScaleRight));
         yScaleMiddle.setText(String.format(Locale.US, "%.2f", (widget.yScaleRight + widget.yScaleLeft) / 2));
 
-        stickLimitBox.setChecked(widget.realisticStickLimits);
+        stickLimitBox.setChecked(widget.rectangularStickLimits);
     }
 
 
@@ -130,7 +127,7 @@ public class JoystickDetailVH extends PublisherWidgetViewHolder {
             } catch (Exception ignored) {
             }
         }
-        widget.realisticStickLimits = stickLimitBox.isChecked();
+        widget.rectangularStickLimits = stickLimitBox.isChecked();
     }
 
     @Override
