@@ -11,6 +11,7 @@
         <item>Label</item>
         <item>Logger</item>
         <item>RqtPlot</item>
+        <item>Switch</item>
         <item>Viz2D</item>
     </string-array>
 
@@ -66,6 +67,11 @@
     <string name="Button_description">
         A Button Node which, when pressed, publishes on a topic chosen
         by the user "True" and when released "False".
+    </string>
+
+    <!-- Switch -->
+    <string name="Swtich_description">
+        The Switch Node publishes a boolean message depending on the current switch state.
     </string>
 
     <string-array name="button_rotation">
