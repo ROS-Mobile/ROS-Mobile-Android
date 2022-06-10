@@ -17,8 +17,8 @@ import java.util.List;
  */
 public abstract class PublisherLayerViewHolder extends DetailViewHolder {
 
-    private LayerViewHolder layerViewHolder;
-    private PublisherViewHolder publisherViewHolder;
+    private final LayerViewHolder layerViewHolder;
+    private final PublisherViewHolder publisherViewHolder;
 
 
     public PublisherLayerViewHolder() {

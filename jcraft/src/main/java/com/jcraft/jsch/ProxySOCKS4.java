@@ -39,9 +39,9 @@ import java.io.*;
 import java.net.*;
 
 public class ProxySOCKS4 implements Proxy{
-  private static int DEFAULTPORT=1080;
-  private String proxy_host;
-  private int proxy_port;
+  private static final int DEFAULTPORT=1080;
+  private final String proxy_host;
+  private final int proxy_port;
   private InputStream in;
   private OutputStream out;
   private Socket socket;
@@ -124,7 +124,7 @@ public class ProxySOCKS4 implements Proxy{
         }
       }
       catch(UnknownHostException uhe){
-        throw new JSchException("ProxySOCKS4: "+uhe.toString(), uhe);
+        throw new JSchException("ProxySOCKS4: "+ uhe, uhe);
       }
 
       if(user!=null){
@@ -188,7 +188,7 @@ public class ProxySOCKS4 implements Proxy{
       try{ if(socket!=null)socket.close(); }
       catch(Exception eee){
       }
-      throw new JSchException("ProxySOCKS4: "+e.toString());
+      throw new JSchException("ProxySOCKS4: "+ e);
     }
   }
   public InputStream getInputStream(){ return in; }

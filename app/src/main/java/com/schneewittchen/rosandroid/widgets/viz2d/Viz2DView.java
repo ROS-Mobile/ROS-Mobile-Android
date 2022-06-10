@@ -34,7 +34,7 @@ public class Viz2DView extends WidgetGroupView {
     private Paint borderPaint;
     private Paint paintBackground;
     private VisualizationView layerView;
-    private int border = 4;
+    private final int border = 4;
 
     public Viz2DView(Context context) {
         super(context);

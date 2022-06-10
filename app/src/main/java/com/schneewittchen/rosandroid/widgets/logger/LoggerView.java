@@ -31,7 +31,7 @@ import javax.annotation.Nullable;
 
 public class LoggerView extends SubscriberWidgetView {
 
-    private static String TAG = LoggerView.class.getSimpleName();
+    private static final String TAG = LoggerView.class.getSimpleName();
 
     String data;
     TextPaint textPaint;

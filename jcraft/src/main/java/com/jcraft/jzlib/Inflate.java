@@ -115,7 +115,7 @@ final class Inflate{
   private int flags; 
 
   private int need_bytes = -1;
-  private byte[] crcbuf=new byte[4];
+  private final byte[] crcbuf=new byte[4];
 
   GZIPHeader gheader = null;
 
@@ -592,7 +592,7 @@ final class Inflate{
     return Z_OK;
   }
 
-  static private byte[] mark = {(byte)0, (byte)0, (byte)0xff, (byte)0xff};
+  static private final byte[] mark = {(byte)0, (byte)0, (byte)0xff, (byte)0xff};
 
   int inflateSync(){
     int n;       // number of bytes to look at

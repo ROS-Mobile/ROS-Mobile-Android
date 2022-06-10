@@ -27,7 +27,7 @@ import com.schneewittchen.rosandroid.ui.opengl.visualisation.ROSColor;
 public class MetricSpacePoiShape extends TriangleFanShape {
   
   private static final ROSColor COLOR = ROSColor.fromHexAndAlpha("377dfa", 1.0f);
-  private static final float VERTICES[] = {
+  private static final float[] VERTICES = {
       -0.2f, 0.2f, 0.f,
       0.2f, 0.2f, 0.f,
       0.5f, 0.f, 0.f,

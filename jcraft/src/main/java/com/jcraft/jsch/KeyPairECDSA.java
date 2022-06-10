@@ -31,7 +31,7 @@ package com.jcraft.jsch;
 
 public class KeyPairECDSA extends KeyPair{
 
-  private static byte[][] oids = {
+  private static final byte[][] oids = {
     {(byte)0x06, (byte)0x08, (byte)0x2a, (byte)0x86, (byte)0x48, // 256
      (byte)0xce, (byte)0x3d, (byte)0x03, (byte)0x01, (byte)0x07},
     {(byte)0x06, (byte)0x05, (byte)0x2b, (byte)0x81, (byte)0x04, // 384
@@ -40,7 +40,7 @@ public class KeyPairECDSA extends KeyPair{
      (byte)0x00, (byte)0x23},
   };
 
-  private static String[] names = {
+  private static final String[] names = {
     "nistp256", "nistp384", "nistp521"
   };
 

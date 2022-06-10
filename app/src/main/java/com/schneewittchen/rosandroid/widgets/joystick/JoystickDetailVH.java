@@ -108,7 +108,7 @@ public class JoystickDetailVH extends PublisherWidgetViewHolder {
         yScaleMiddle.setText(String.format(Locale.US, "%.2f", (widget.yScaleRight + widget.yScaleLeft) / 2));
 
         forceSetChecked = true;
-        stickLimitBox.setChecked(widget.rectangularStickLimits);
+        stickLimitBox.setChecked(widget.rectangularLimits);
         forceSetChecked = false;
     }
 
@@ -133,7 +133,7 @@ public class JoystickDetailVH extends PublisherWidgetViewHolder {
             } catch (Exception ignored) {
             }
         }
-        widget.rectangularStickLimits = stickLimitBox.isChecked();
+        widget.rectangularLimits = stickLimitBox.isChecked();
     }
 
     @Override

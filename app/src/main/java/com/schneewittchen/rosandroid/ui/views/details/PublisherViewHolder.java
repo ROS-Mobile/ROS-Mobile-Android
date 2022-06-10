@@ -29,7 +29,7 @@ public class PublisherViewHolder implements IBaseViewHolder, TextView.OnEditorAc
     private TextInputEditText topicTypeEditText;
     public List<String> topicTypes;
     public DetailsViewModel viewModel;
-    private DetailViewHolder parentViewHolder;
+    private final DetailViewHolder parentViewHolder;
 
 
     public PublisherViewHolder(DetailViewHolder parentViewHolder) {

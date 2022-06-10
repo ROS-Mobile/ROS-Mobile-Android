@@ -101,7 +101,7 @@ final class InfBlocks{
   int end;             // one byte after sliding window 
   int read;            // window read pointer 
   int write;           // window write pointer 
-  private boolean check;
+  private final boolean check;
 
   private final InfTree inftree=new InfTree();
 

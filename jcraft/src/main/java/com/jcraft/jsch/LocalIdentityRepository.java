@@ -34,8 +34,8 @@ import java.util.Vector;
 class LocalIdentityRepository implements IdentityRepository {
   private static final String name = "Local Identity Repository";
 
-  private Vector identities = new Vector();
-  private JSch jsch;
+  private final Vector identities = new Vector();
+  private final JSch jsch;
 
   LocalIdentityRepository(JSch jsch){
     this.jsch = jsch;

@@ -57,8 +57,8 @@ public class DebugView extends SubscriberWidgetView {
     private float lastY = 0.0f;
 
     // Mode
-    private static int NONE = 0;
-    private static int DRAG = 1;
+    private static final int NONE = 0;
+    private static final int DRAG = 1;
     private int mode;
 
     // Amount of translation
@@ -66,7 +66,7 @@ public class DebugView extends SubscriberWidgetView {
 
     // Drag parameters
     private int posY = 0;
-    private float dragSensitivity = 1; //0.05f;
+    private final float dragSensitivity = 1; //0.05f;
 
 
     public DebugView(Context context) {

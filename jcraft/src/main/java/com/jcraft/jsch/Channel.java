@@ -48,7 +48,7 @@ public abstract class Channel implements Runnable{
   static final int SSH_OPEN_RESOURCE_SHORTAGE=              4;
 
   static int index=0; 
-  private static java.util.Vector pool=new java.util.Vector();
+  private static final java.util.Vector pool=new java.util.Vector();
   static Channel getChannel(String type){
     if(type.equals("session")){
       return new ChannelSession();
@@ -243,7 +243,7 @@ public abstract class Channel implements Runnable{
           }
 
         }
-        byte[] b=new byte[1];
+        final byte[] b=new byte[1];
         public void write(int w) throws IOException{
           b[0]=(byte)w;
           write(b, 0, 1);

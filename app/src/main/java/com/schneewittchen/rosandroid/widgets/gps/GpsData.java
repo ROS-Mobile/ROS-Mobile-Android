@@ -17,7 +17,7 @@ import sensor_msgs.NavSatFix;
 
 public class GpsData extends BaseData {
 
-    private NavSatFix navSatFix;
+    private final NavSatFix navSatFix;
 
     public GpsData(NavSatFix navSatFix) {
         this.navSatFix = navSatFix;

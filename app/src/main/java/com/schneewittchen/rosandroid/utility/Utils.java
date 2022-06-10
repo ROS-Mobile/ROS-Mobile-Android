@@ -175,7 +175,7 @@ public class Utils {
                 }
                 count+=read;
             }
-            return isUTF8 ? new String(baos.toByteArray(), StandardCharsets.UTF_8) : new String(baos.toByteArray());
+            return isUTF8 ? new String(baos.toByteArray(), StandardCharsets.UTF_8) : baos.toString();
         } finally {
             try{ is.close(); } catch(Exception ignored){}
         }
@@ -339,7 +339,7 @@ public class Utils {
 
 
     public static String numberToDegrees(int number){
-        return new Integer(number).toString() + "°";
+        return new Integer(number) + "°";
     }
 
     public static int degreesToNumber(String degrees) {

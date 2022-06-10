@@ -11,7 +11,7 @@
         <item>Label</item>
         <item>Logger</item>
         <item>RqtPlot</item>
-        <item>Switch</item>
+        <item>SwitchButton</item>
         <item>Viz2D</item>
     </string-array>
 
@@ -70,7 +70,7 @@
     </string>
 
     <!-- Switch -->
-    <string name="Swtich_description">
+    <string name="SwitchButton_description">
         The Switch Node publishes a boolean message depending on the current switch state.
     </string>
 

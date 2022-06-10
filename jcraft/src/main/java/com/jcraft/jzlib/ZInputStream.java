@@ -62,13 +62,13 @@ public class ZInputStream extends FilterInputStream {
     compress=true;
   }
 
-  private byte[] buf1 = new byte[1];
+  private final byte[] buf1 = new byte[1];
   public int read() throws IOException {
     if(read(buf1, 0, 1)==-1) return -1;
     return(buf1[0]&0xFF);
   }
 
-  private byte[] buf = new byte[512];
+  private final byte[] buf = new byte[512];
 
   public int read(byte[] b, int off, int len) throws IOException {
     if(compress){

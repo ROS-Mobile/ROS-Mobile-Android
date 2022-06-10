@@ -131,9 +131,9 @@ public class ChannelSftp extends ChannelSession{
   public static final int RESUME=1;
   public static final int APPEND=2;
 
-  private boolean interactive=false;
+  private final boolean interactive=false;
   private int seq=1;
-  private int[] ackid=new int[1];
+  private final int[] ackid=new int[1];
 
   private Buffer buf;
   private Packet packet;
@@ -142,9 +142,9 @@ public class ChannelSftp extends ChannelSession{
   private Buffer obuf;
   private Packet opacket;
 
-  private int client_version=3;
+  private final int client_version=3;
   private int server_version=3;
-  private String version=String.valueOf(client_version);
+  private final String version=String.valueOf(client_version);
 
   private java.util.Hashtable extensions=null;
   private InputStream io_in=null;
@@ -172,7 +172,7 @@ public class ChannelSftp extends ChannelSession{
 
   private static final String file_separator= File.separator;
   private static final char file_separatorc= File.separatorChar;
-  private static boolean fs_is_bs=(byte) File.separatorChar == '\\';
+  private static final boolean fs_is_bs=(byte) File.separatorChar == '\\';
 
   private String cwd;
   private String home;
@@ -778,12 +778,12 @@ public class ChannelSftp extends ChannelSession{
       OutputStream out = new OutputStream(){
         private boolean init=true;
         private boolean isClosed=false;
-        private int[] ackid=new int[1];
+        private final int[] ackid=new int[1];
         private int startid=0;
         private int _ackid=0;
         private int ackcount=0;
         private int writecount=0;
-        private Header header=new Header();          
+        private final Header header=new Header();
 
         public void write(byte[] d) throws IOException{
           write(d, 0, d.length);
@@ -833,7 +833,7 @@ public class ChannelSftp extends ChannelSession{
           catch(Exception e){ throw new IOException(e.toString());  }
         }
 
-        byte[] _data=new byte[1];
+        final byte[] _data=new byte[1];
         public void write(int foo) throws IOException{
           _data[0]=(byte)foo;
           write(_data, 0, 1);
@@ -1345,7 +1345,7 @@ public class ChannelSftp extends ChannelSession{
            long offset=skip;
            boolean closed=false;
            int rest_length=0;
-           byte[] _data=new byte[1];
+           final byte[] _data=new byte[1];
            byte[] rest_byte=new byte[1024];
            Header header=new Header();
            int request_max=1;
@@ -1430,7 +1430,7 @@ public class ChannelSftp extends ChannelSession{
                return 0;
              }
              catch(SftpException e){
-               throw new IOException("error: "+e.toString());
+               throw new IOException("error: "+ e);
              }
 
              if(type!=SSH_FXP_STATUS && type!=SSH_FXP_DATA){ 
@@ -1709,7 +1709,7 @@ public class ChannelSftp extends ChannelSession{
              if(longname==null){
                // TODO: we need to generate long name from attrs
                //       for the sftp protocol 4(and later).
-               l=attrs.toString()+" "+f;
+               l= attrs +" "+f;
              }
              else{
                l=Util.byte2str(longname, fEncoding);
@@ -2962,7 +2962,7 @@ public class ChannelSftp extends ChannelSession{
   private String isUnique(String path) throws Exception{
     Vector v=glob_remote(path);
     if(v.size()!=1){
-      throw new SftpException(SSH_FX_FAILURE, path+" is not unique: "+v.toString());
+      throw new SftpException(SSH_FX_FAILURE, path+" is not unique: "+ v);
     }
     return (String)(v.elementAt(0));
   }

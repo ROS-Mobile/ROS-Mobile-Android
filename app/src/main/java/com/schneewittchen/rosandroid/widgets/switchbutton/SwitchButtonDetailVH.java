@@ -1,14 +1,11 @@
-package com.schneewittchen.rosandroid.widgets.button;
+package com.schneewittchen.rosandroid.widgets.switchbutton;
 
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.Spinner;
 
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
 import com.schneewittchen.rosandroid.ui.views.details.PublisherWidgetViewHolder;
-import com.schneewittchen.rosandroid.utility.Utils;
 
 import java.util.Collections;
 import java.util.List;
@@ -23,7 +20,7 @@ import std_msgs.Bool;
  * @version 1.0.0
  * @created on 10.05.2022
  */
-public class SwitchDetailVH extends PublisherWidgetViewHolder {
+public class SwitchButtonDetailVH extends PublisherWidgetViewHolder {
 
     private EditText textText;
 
@@ -34,14 +31,14 @@ public class SwitchDetailVH extends PublisherWidgetViewHolder {
 
     @Override
     protected void bindEntity(BaseEntity entity) {
-        SwitchEntity switchEntity = (SwitchEntity) entity;
+        SwitchButtonEntity switchEntity = (SwitchButtonEntity) entity;
 
         textText.setText(switchEntity.text);
     }
 
     @Override
     protected void updateEntity(BaseEntity entity) {
-        SwitchEntity switchEntity = (SwitchEntity) entity;
+        SwitchButtonEntity switchEntity = (SwitchButtonEntity) entity;
         switchEntity.text = textText.getText().toString();
     }
 

@@ -77,7 +77,7 @@ public class RosRepository implements SubNode.NodeListener {
     private final MutableLiveData<RosData> receivedData;
     private NodeMainExecutorService nodeMainExecutorService;
     private NodeConfiguration nodeConfiguration;
-    private FrameTransformTree frameTransformTree;
+    private final FrameTransformTree frameTransformTree;
 
     /**
      * Default private constructor. Initialize empty lists and maps of intern widgets and nodes.

@@ -38,7 +38,7 @@ public class CameraView extends SubscriberWidgetView {
     private Paint paintBackground;
     private float cornerWidth;
     private CameraData data;
-    private RectF imageRect = new RectF();
+    private final RectF imageRect = new RectF();
 
 
     public CameraView(Context context) {

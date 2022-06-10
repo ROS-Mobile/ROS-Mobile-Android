@@ -31,7 +31,7 @@ public class TouchGoalData extends BaseData {
     public Transform start;
     public Transform end;
     public GraphName frame;
-    private XYOrthographicCamera camera;
+    private final XYOrthographicCamera camera;
 
 
     public TouchGoalData(XYOrthographicCamera camera) {

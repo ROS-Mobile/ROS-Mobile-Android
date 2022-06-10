@@ -53,8 +53,8 @@ public class GpsView extends SubscriberWidgetView {
     // Open Street Map (OSM)
     private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
     private MapView map = null;
-    private GeoPoint locationGeoPoint = new GeoPoint(53.872018, 10.704724);
-    private GeoPoint centerGeoPoint = new GeoPoint(53.872018, 10.704724);
+    private final GeoPoint locationGeoPoint = new GeoPoint(53.872018, 10.704724);
+    private final GeoPoint centerGeoPoint = new GeoPoint(53.872018, 10.704724);
     IMapController mapController = null;
 
     // Rectangle Surrounding
@@ -69,12 +69,12 @@ public class GpsView extends SubscriberWidgetView {
     private double maxZoom = 18;
     private float zoomScale = 1;
     private float scaleFactor = 18;
-    private double dragSensitivity = 0.05;
+    private final double dragSensitivity = 0.05;
     private ScaleGestureDetector detector;
 
-    private static int NONE = 0;                // mode
-    private static int DRAG = 1;
-    private static int ZOOM = 2;
+    private static final int NONE = 0;                // mode
+    private static final int DRAG = 1;
+    private static final int ZOOM = 2;
     private int mode;
 
     private float startX = 0f;                  // finger position tracker
@@ -88,7 +88,7 @@ public class GpsView extends SubscriberWidgetView {
     private double accLat = 0;
     private double accLon = 0;
 
-    private boolean hadLongPressed = false;
+    private final boolean hadLongPressed = false;
 
 
     public GpsView(Context context) {

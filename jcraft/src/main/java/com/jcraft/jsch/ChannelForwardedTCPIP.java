@@ -35,7 +35,7 @@ import java.util.Vector;
 
 public class ChannelForwardedTCPIP extends Channel{
 
-  private static Vector pool = new Vector();
+  private static final Vector pool = new Vector();
 
   static private final int LOCAL_WINDOW_SIZE_MAX=0x20000;
 //static private final int LOCAL_WINDOW_SIZE_MAX=0x100000;

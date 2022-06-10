@@ -36,7 +36,7 @@ public class GridMapView extends SubscriberLayerView {
 
     private static final int COLOR_UNKNOWN = 0xff888888;
 
-    private List<Tile> tiles;
+    private final List<Tile> tiles;
     private GL10 previousGl;
     private int[] colorMap;
 

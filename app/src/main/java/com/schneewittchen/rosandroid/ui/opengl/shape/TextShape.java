@@ -17,7 +17,7 @@ public class TextShape extends BaseShape {
 
     private float x;
     private float y;
-    private FloatBuffer lines;
+    private final FloatBuffer lines;
 
 
     public TextShape(GLText glText, String text) {

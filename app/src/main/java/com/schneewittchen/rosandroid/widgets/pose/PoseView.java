@@ -38,7 +38,7 @@ public class PoseView extends SubscriberLayerView {
 
     public static final String TAG = PoseView.class.getSimpleName();
 
-    private Shape shape;
+    private final Shape shape;
     private PoseWithCovarianceStamped pose;
 
 

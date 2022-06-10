@@ -59,9 +59,9 @@ public abstract class LayerView implements IBaseView {
         this.parentView = parentView;
     }
 
-    public void onSurfaceChanged(VisualizationView view, GL10 gl, int width, int height) {};
+    public void onSurfaceChanged(VisualizationView view, GL10 gl, int width, int height) {}
 
-    public void onSurfaceCreated(VisualizationView view, GL10 gl, EGLConfig config) {};
+    public void onSurfaceCreated(VisualizationView view, GL10 gl, EGLConfig config) {}
 
     public boolean onTouchEvent(VisualizationView visualizationView, MotionEvent event) {
         return false;

@@ -30,14 +30,15 @@ public class TouchGoalView extends PublisherLayerView {
 
     public static final String TAG = TouchGoalView.class.getSimpleName();
 
-    private enum State {NORMAL, DOUBLETAPPED};
+    private enum State {NORMAL, DOUBLETAPPED}
+
     private State state = State.NORMAL;
     private TouchGoalData data;
-    private GestureDetectorCompat detector;
+    private final GestureDetectorCompat detector;
     private FloatBuffer circleBuffer;
     private FloatBuffer lineBuffer;
-    private int numPoints = 51;
-    private ROSColor color;
+    private final int numPoints = 51;
+    private final ROSColor color;
 
 
     public TouchGoalView(Context context) {

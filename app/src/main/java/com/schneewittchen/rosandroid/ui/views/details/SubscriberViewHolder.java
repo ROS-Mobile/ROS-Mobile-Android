@@ -29,7 +29,7 @@ import java.util.List;
  */
 class SubscriberViewHolder implements IBaseViewHolder {
 
-    private static String TAG = SubscriberViewHolder.class.getSimpleName();
+    private static final String TAG = SubscriberViewHolder.class.getSimpleName();
 
     private AutoCompleteTextView topicNameTextView;
     private TextInputEditText topicTypeEditText;
@@ -40,7 +40,7 @@ class SubscriberViewHolder implements IBaseViewHolder {
     private BaseEntity entity;
     public List<String> topicTypes;
     public DetailsViewModel viewModel;
-    private DetailViewHolder parentViewHolder;
+    private final DetailViewHolder parentViewHolder;
 
 
     public SubscriberViewHolder(DetailViewHolder parentViewHolder) {

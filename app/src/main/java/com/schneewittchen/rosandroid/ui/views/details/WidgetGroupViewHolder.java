@@ -35,7 +35,7 @@ public abstract class WidgetGroupViewHolder extends DetailViewHolder
 
     public static String TAG = WidgetGroupViewHolder.class.getSimpleName();
 
-    private WidgetViewHolder widgetViewHolder;
+    private final WidgetViewHolder widgetViewHolder;
     private RecyclerView recyclerView;
     private WidgetListAdapter mAdapter;
     private MaterialCardView addLayerCard;

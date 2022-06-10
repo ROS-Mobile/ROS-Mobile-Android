@@ -29,9 +29,9 @@ public class WidgetListAdapter extends RecyclerView.Adapter<WidgetListAdapter.Vi
 
     public static String TAG = WidgetDetailListAdapter.class.getSimpleName();
 
-    private List<BaseEntity> currentWidgets;
-    private Comparator<BaseEntity> compareByTime;
-    private WidgetClickListener clickListener;
+    private final List<BaseEntity> currentWidgets;
+    private final Comparator<BaseEntity> compareByTime;
+    private final WidgetClickListener clickListener;
 
 
     public WidgetListAdapter(WidgetClickListener clickListener) {

@@ -77,7 +77,7 @@ public class InflaterInputStream extends FilterInputStream {
 
   protected boolean myinflater = false;
 
-  private byte[] byte1 = new byte[1];
+  private final byte[] byte1 = new byte[1];
 
   public int read() throws IOException {
     if (closed) { throw new IOException("Stream closed"); }
@@ -134,7 +134,7 @@ public class InflaterInputStream extends FilterInputStream {
     }
   }
 
-  private byte[] b = new byte[512];
+  private final byte[] b = new byte[512];
 
   public long skip(long n) throws IOException {
     if (n < 0) {

@@ -27,7 +27,7 @@ public class DebugData extends BaseData {
 
     public static final String TAG = DebugData.class.getSimpleName();
     public String value;
-    private ArrayList<String> content;
+    private final ArrayList<String> content;
 
 
     public DebugData(Message message) {

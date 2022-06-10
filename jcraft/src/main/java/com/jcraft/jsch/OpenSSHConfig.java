@@ -162,8 +162,8 @@ public class OpenSSHConfig implements ConfigRepository {
 
   class MyConfig implements Config {
 
-    private String host;
-    private Vector _configs = new Vector();
+    private final String host;
+    private final Vector _configs = new Vector();
 
     MyConfig(String host){
       this.host = host;

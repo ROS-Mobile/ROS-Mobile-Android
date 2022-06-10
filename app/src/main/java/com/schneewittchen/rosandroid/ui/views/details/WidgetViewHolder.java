@@ -26,7 +26,7 @@ public class WidgetViewHolder implements IBaseViewHolder, TextView.OnEditorActio
     private EditText widthEdittext;
     private EditText heightEdittext;
     private EditText nameEdittext;
-    private DetailViewHolder parentViewHolder;
+    private final DetailViewHolder parentViewHolder;
 
 
     public WidgetViewHolder(DetailViewHolder parentViewHolder) {
