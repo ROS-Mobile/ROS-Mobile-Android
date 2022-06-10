@@ -108,7 +108,7 @@
         details section of the joystick, you can specify to which variables of the Twist message
         the joystick position should be mapped. Further, the mapping dimensions can be set. To change
         the location of the joystick for control, simply touch the joystick button in the Viz Tab
-        and push it around to the desired location. When thee button is released, it will
+        and push it around to the desired location. When the button is released, it will
         automatically go back to center.
     </string>
 
