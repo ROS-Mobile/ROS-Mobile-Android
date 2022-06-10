@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -212,6 +212,18 @@
         app:layout_constraintEnd_toEndOf="@+id/xAxisScale2"
         app:layout_constraintStart_toEndOf="@+id/xAxisScale2"
         app:layout_constraintTop_toBottomOf="@+id/xAxisScale2" />
+
+    <CheckBox
+        android:id="@+id/stickLimitBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="76dp"
+        android:text="Use Rectangular Stick Limits"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textColor="@color/colorAccent"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/xAxisScale2"
+        tools:layout_editor_absoluteX="0dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

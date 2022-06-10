@@ -262,9 +262,13 @@ public class WidgetViewGroup extends ViewGroup {
 
                 if (subView instanceof ISubscriberView) {
                     if (map.get(subEntity.topic) != null) {
-                        if (map.get(subEntity.topic).getLastRosData().getMessage() != null) {
-                            ISubscriberView subscriberView = (ISubscriberView) subView;
-                            subscriberView.onNewMessage(map.get(subEntity.topic).getLastRosData().getMessage());
+                        RosData lastData = map.get(subEntity.topic).getLastRosData();
+
+                        if (lastData != null) {
+                            if (lastData.getMessage() != null) {
+                                ISubscriberView subscriberView = (ISubscriberView) subView;
+                                subscriberView.onNewMessage(lastData.getMessage());
+                            }
                         }
                     }
                 }

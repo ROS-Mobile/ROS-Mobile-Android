@@ -1,18 +1,16 @@
 package com.schneewittchen.rosandroid.widgets.joystick;
 
-import android.text.Editable;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.google.android.material.textfield.TextInputEditText;
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
 import com.schneewittchen.rosandroid.ui.views.details.PublisherWidgetViewHolder;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -45,11 +43,14 @@ public class JoystickDetailVH extends PublisherWidgetViewHolder {
     private EditText yScaleRight;
     private TextView yScaleMiddle;
 
+    private CheckBox stickLimitBox;
+
     private ArrayAdapter<CharSequence> xDirAdapter;
     private ArrayAdapter<CharSequence> xAxisAdapter;
     private ArrayAdapter<CharSequence> yDirAdapter;
     private ArrayAdapter<CharSequence> yAxisAdapter;
 
+    boolean forceSetChecked = false;
 
     @Override
     public void initView(View view) {
@@ -64,6 +65,11 @@ public class JoystickDetailVH extends PublisherWidgetViewHolder {
         yScaleLeft = view.findViewById(R.id.yScaleLeft);
         yScaleRight = view.findViewById(R.id.yScaleRight);
         yScaleMiddle = view.findViewById(R.id.yScaleMiddle);
+
+        stickLimitBox = view.findViewById(R.id.stickLimitBox);
+        stickLimitBox.setOnCheckedChangeListener(((buttonView, isChecked) -> {
+            if (!forceSetChecked) forceWidgetUpdate();
+        }));
 
         // Init spinner
         xDirAdapter = ArrayAdapter.createFromResource(view.getContext(),
@@ -100,6 +106,10 @@ public class JoystickDetailVH extends PublisherWidgetViewHolder {
         yScaleLeft.setText(String.format(Locale.US, "%.2f", widget.yScaleLeft));
         yScaleRight.setText(String.format(Locale.US, "%.2f", widget.yScaleRight));
         yScaleMiddle.setText(String.format(Locale.US, "%.2f", (widget.yScaleRight + widget.yScaleLeft) / 2));
+
+        forceSetChecked = true;
+        stickLimitBox.setChecked(widget.rectangularStickLimits);
+        forceSetChecked = false;
     }
 
 
@@ -123,6 +133,7 @@ public class JoystickDetailVH extends PublisherWidgetViewHolder {
             } catch (Exception ignored) {
             }
         }
+        widget.rectangularStickLimits = stickLimitBox.isChecked();
     }
 
     @Override
