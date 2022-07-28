@@ -1,57 +1,69 @@
-package com.schneewittchen.rosandroid.widgets.button;
+package com.schneewittchen.rosandroid.widgets.directional;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
-import android.text.Layout;
-import android.text.StaticLayout;
-import android.text.TextPaint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
-
-
-
-import com.schneewittchen.rosandroid.R;
-import com.schneewittchen.rosandroid.ui.views.widgets.PublisherWidgetView;
 
 import androidx.annotation.Nullable;
 
+import com.schneewittchen.rosandroid.R;
+import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
+import com.schneewittchen.rosandroid.ui.views.widgets.PublisherWidgetView;
+import com.schneewittchen.rosandroid.widgets.button.ButtonData;
+
+import android.text.StaticLayout;
+import android.text.TextPaint;
+import android.graphics.Color;
+import android.graphics.Rect;
+import android.text.Layout;
 
 /**
  * TODO: Description
  *
- * @author Dragos Circa
- * @version 1.0.0
- * @created on 02.11.2020
- * @updated on 18.11.2020
- * @modified by Nils Rottmann
- * @updated on 10.03.2021
- * @modified by Nico Studt
+ * @author Nico Studt
+ * @version 1.1.0
+ * @created on 18.10.19
  */
+public class DirectionalView extends PublisherWidgetView {
 
-public class ButtonView extends PublisherWidgetView {
+    public class MoveThread extends Thread {
 
-    public static final String TAG = ButtonView.class.getSimpleName();
+        @Override
+        public void run() {
+            while (!Thread.currentThread().isInterrupted()) {
+                try {
+                    Thread.sleep(1);
+                    publishViewData(new DirectionalData());
+                } catch (InterruptedException ex) {
+                    Thread.currentThread().interrupt();
+                    ex.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public static final String TAG = DirectionalView.class.getSimpleName();
 
     Paint buttonPaint;
     TextPaint textPaint;
     StaticLayout staticLayout;
+    MoveThread t;
 
-
-    public ButtonView(Context context) {
+    public DirectionalView(Context context) {
         super(context);
         init();
     }
 
-    public ButtonView(Context context, @Nullable AttributeSet attrs) {
+    public DirectionalView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
 
-    private void init() {
+    private void init(){
         buttonPaint = new Paint();
         buttonPaint.setColor(getResources().getColor(R.color.colorPrimary));
         buttonPaint.setStyle(Paint.Style.FILL_AND_STROKE);
@@ -60,27 +72,33 @@ public class ButtonView extends PublisherWidgetView {
         textPaint.setColor(Color.BLACK);
         textPaint.setStyle(Paint.Style.FILL_AND_STROKE);
         textPaint.setTextSize(26 * getResources().getDisplayMetrics().density);
+        t = new MoveThread();
     }
 
     private void changeState(boolean pressed) {
-        this.publishViewData(new ButtonData(pressed));
         invalidate();
     }
+
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (this.editMode) {
             return super.onTouchEvent(event);
         }
-
         switch (event.getActionMasked()) {
+            case MotionEvent.ACTION_OUTSIDE:
+            case MotionEvent.ACTION_CANCEL:
+            case MotionEvent.ACTION_BUTTON_RELEASE:
             case MotionEvent.ACTION_UP:
                 buttonPaint.setColor(getResources().getColor(R.color.colorPrimary));
                 changeState(false);
+                t.interrupt();
+                t = new MoveThread();
                 break;
             case MotionEvent.ACTION_DOWN:
                 buttonPaint.setColor(getResources().getColor(R.color.color_attention));
                 changeState(true);
+                t.start();
                 break;
             default:
                 return false;
@@ -98,7 +116,7 @@ public class ButtonView extends PublisherWidgetView {
         float height = getHeight();
         float textLayoutWidth = width;
 
-        ButtonEntity entity = (ButtonEntity) widgetEntity;
+        DirectionalEntity entity = (DirectionalEntity) widgetEntity;
 
         if (entity.rotation == 90 || entity.rotation == 270) {
             textLayoutWidth = height;
