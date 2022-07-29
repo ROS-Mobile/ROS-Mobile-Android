@@ -12,7 +12,6 @@
         <item>Logger</item>
         <item>RqtPlot</item>
         <item>Viz2D</item>
-        <item>Test</item>
     </string-array>
 
     <string-array name="layer_names">
