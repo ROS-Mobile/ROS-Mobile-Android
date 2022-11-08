@@ -36,6 +36,7 @@ public class TouchGoalView extends PublisherLayerView {
     private TouchGoalData data;
     private FloatBuffer circleBuffer;
     private FloatBuffer lineBuffer;
+
     public TouchGoalView(Context context) {
         super(context);
         detector = new GestureDetectorCompat(context, new DoubleTapListener());

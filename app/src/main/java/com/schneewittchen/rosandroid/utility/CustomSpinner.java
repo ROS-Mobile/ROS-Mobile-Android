@@ -21,6 +21,7 @@ public class CustomSpinner extends AppCompatSpinner implements AdapterView.OnIte
 
     private OnSpinnerEventsListener mListener;
     private boolean mOpenInitiated = false;
+
     public CustomSpinner(Context context) {
         super(context);
         this.setOnItemSelectedListener(this);
