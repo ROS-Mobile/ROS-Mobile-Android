@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.schneewittchen.rosandroid.BuildConfig;
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
+import com.schneewittchen.rosandroid.ui.general.WidgetChangeListener;
 import com.schneewittchen.rosandroid.ui.views.details.BaseDetailSubscriberVH;
 import com.schneewittchen.rosandroid.ui.views.details.BaseDetailViewHolder;
 import com.schneewittchen.rosandroid.utility.Constants;

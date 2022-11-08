@@ -143,6 +143,10 @@ public class GpsView extends SubscriberWidgetView {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        if (this.editMode) {
+            return super.onTouchEvent(event);
+        }
+
         boolean dragged = false;
       
         gestureDetector.onTouchEvent(event);

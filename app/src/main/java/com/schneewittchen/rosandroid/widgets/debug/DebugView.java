@@ -173,6 +173,10 @@ public class DebugView extends SubscriberWidgetView {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        if (this.editMode) {
+            return super.onTouchEvent(event);
+        }
+
         // Handle double click
         gestureDetector.onTouchEvent(event);
 

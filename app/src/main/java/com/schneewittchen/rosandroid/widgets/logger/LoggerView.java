@@ -72,7 +72,7 @@ public class LoggerView extends SubscriberWidgetView {
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
+    public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         float width = getWidth();
         float height = getHeight();

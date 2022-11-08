@@ -12,7 +12,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.model.entities.widgets.SubscriberWidgetEntity;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.Topic;
-import com.schneewittchen.rosandroid.ui.fragments.details.WidgetChangeListener;
+import com.schneewittchen.rosandroid.ui.general.WidgetChangeListener;
 
 import java.util.ArrayList;
 import java.util.Collections;

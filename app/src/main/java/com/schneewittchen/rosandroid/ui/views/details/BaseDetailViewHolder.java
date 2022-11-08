@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
 import com.schneewittchen.rosandroid.model.entities.widgets.IPositionEntity;
-import com.schneewittchen.rosandroid.ui.fragments.details.WidgetChangeListener;
+import com.schneewittchen.rosandroid.ui.general.WidgetChangeListener;
 import com.schneewittchen.rosandroid.ui.general.Position;
 import com.schneewittchen.rosandroid.utility.Utils;
 import com.schneewittchen.rosandroid.viewmodel.DetailsViewModel;
