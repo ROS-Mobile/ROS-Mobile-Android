@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 32
     buildToolsVersion "29.0.3"
 
     defaultConfig {
         applicationId "com.schneewittchen.rosandroid"
         minSdkVersion 21
-        targetSdkVersion 30
+        targetSdkVersion 32
         versionCode 7
         versionName '2.1.0'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -33,14 +33,14 @@ android {
 dependencies {
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'androidx.appcompat:appcompat:1.3.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'androidx.appcompat:appcompat:1.5.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
 
-    implementation "androidx.navigation:navigation-fragment:2.3.5"
-    implementation "androidx.navigation:navigation-ui:2.3.5"
+    implementation "androidx.navigation:navigation-fragment:2.5.3"
+    implementation "androidx.navigation:navigation-ui:2.5.3"
 
-    implementation 'com.google.android.material:material:1.3.0'
+    implementation 'com.google.android.material:material:1.7.0'
     implementation "androidx.viewpager2:viewpager2:1.0.0"
 
     implementation 'androidx.legacy:legacy-support-core-utils:1.0.0'
@@ -59,8 +59,8 @@ dependencies {
     implementation 'org.ros.android_core:android_core_components:0.4.0'
 
     // Room
-    implementation "androidx.room:room-runtime:2.3.0"
-    annotationProcessor "androidx.room:room-compiler:2.3.0"
+    implementation "androidx.room:room-runtime:2.4.3"
+    annotationProcessor "androidx.room:room-compiler:2.4.3"
 
     // Parsing
     implementation 'com.google.code.gson:gson:2.8.6'
@@ -70,7 +70,7 @@ dependencies {
     implementation 'org.osmdroid:osmdroid-android:6.1.6'
 
     // Playing Youtube Videos
-    implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:10.0.5'
+    implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:11.0.1'
 
     // Color picker
     implementation "com.github.skydoves:colorpickerview:2.2.3"

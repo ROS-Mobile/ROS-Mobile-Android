@@ -21,7 +21,8 @@
         <activity
             android:name=".ui.activity.MainActivity"
             android:windowSoftInputMode="adjustResize"
-            android:screenOrientation="unspecified">
+            android:screenOrientation="unspecified"
+            android:exported="true">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,7 +31,8 @@
 
         </activity>
 
-        <service android:name=".model.repositories.rosRepo.node.NodeMainExecutorService">
+        <service android:name=".model.repositories.rosRepo.node.NodeMainExecutorService"
+            android:exported="true">
             <intent-filter>
                 <action android:name="org.ros.android.NodeMainExecutorService" />
             </intent-filter>
