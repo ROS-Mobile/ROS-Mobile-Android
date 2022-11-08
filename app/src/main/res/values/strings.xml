@@ -65,6 +65,7 @@
     <string name="connected">Connected</string>
     <string name="disconnected">Disconnected</string>
     <string name="pending">Pending</string>
+    <string name="cancel">cancel</string>
 
     <!-- SSH Autocompletion -->
     <string-array name="ssh_autocmpletion">

@@ -1,3 +1,41 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        google()
+        mavenCentral()
+        maven {
+            url 'https://repo1.maven.org/maven2'
+        }
+        maven {
+            url "https://github.com/rosjava/rosjava_mvn_repo/raw/master"
+        }
+        maven {
+            url "https://repository.springsource.com/maven/bundles/release"
+        }
+        maven {
+            url "https://repository.springsource.com/maven/bundles/external"
+        }
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        maven {
+            url 'https://repo1.maven.org/maven2'
+        }
+        maven {
+            url "https://github.com/rosjava/rosjava_mvn_repo/raw/master"
+        }
+        maven {
+            url "https://repository.springsource.com/maven/bundles/release"
+        }
+        maven {
+            url "https://repository.springsource.com/maven/bundles/external"
+        }
+    }
+}
+rootProject.name = "RosAndroid"
 include ':app'
-rootProject.name='RosAndroid'
 include ':jcraft'

@@ -2,12 +2,10 @@ package com.schneewittchen.rosandroid.ui.opengl.shape;
 
 import android.graphics.Typeface;
 
+import com.schneewittchen.rosandroid.ui.opengl.shape.texample.GLText;
 import com.schneewittchen.rosandroid.ui.opengl.visualisation.VisualizationView;
 
 import javax.microedition.khronos.opengles.GL10;
-
-import uk.co.blogspot.fractiousg.texample.GLText;
-
 
 public class TextShapeFactory {
 
