@@ -29,12 +29,11 @@ import com.schneewittchen.rosandroid.ui.views.widgets.WidgetGroupView;
 public class Viz2DView extends WidgetGroupView {
 
     public static final String TAG = Viz2DView.class.getSimpleName();
-
+    private final int border = 4;
     private DataListener dataListener;
     private Paint borderPaint;
     private Paint paintBackground;
     private VisualizationView layerView;
-    private final int border = 4;
 
     public Viz2DView(Context context) {
         super(context);
@@ -49,7 +48,7 @@ public class Viz2DView extends WidgetGroupView {
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         super.onLayout(changed, l, t, r, b);
-        layerView.layout(border, border, getWidth()-border, getHeight()-border);
+        layerView.layout(border, border, getWidth() - border, getHeight() - border);
     }
 
 
@@ -68,7 +67,7 @@ public class Viz2DView extends WidgetGroupView {
     public void setWidgetEntity(BaseEntity widgetEntity) {
         super.setWidgetEntity(widgetEntity);
 
-        layerView.getCamera().jumpToFrame(((Viz2DEntity)widgetEntity).frame);
+        layerView.getCamera().jumpToFrame(((Viz2DEntity) widgetEntity).frame);
     }
 
     @Override
@@ -92,7 +91,7 @@ public class Viz2DView extends WidgetGroupView {
 
     @Override
     public void publishViewData(BaseData data) {
-        if(dataListener == null) return;
+        if (dataListener == null) return;
 
         data.setTopic(widgetEntity.topic);
         dataListener.onNewWidgetData(data);
@@ -106,7 +105,7 @@ public class Viz2DView extends WidgetGroupView {
     @Override
     public void addLayer(LayerView layer) {
         if (layer instanceof PublisherLayerView) {
-            ((PublisherLayerView)layer).setDataListener(data -> {
+            ((PublisherLayerView) layer).setDataListener(data -> {
                 if (dataListener != null) dataListener.onNewWidgetData(data);
             });
         }

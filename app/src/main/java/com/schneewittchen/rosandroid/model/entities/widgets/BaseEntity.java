@@ -1,7 +1,5 @@
 package com.schneewittchen.rosandroid.model.entities.widgets;
 
-import android.util.Log;
-
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.Topic;
 
 import java.lang.reflect.Constructor;

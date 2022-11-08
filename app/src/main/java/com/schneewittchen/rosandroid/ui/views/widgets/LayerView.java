@@ -28,26 +28,28 @@ public abstract class LayerView implements IBaseView {
     protected VisualizationView parentView;
 
 
-    public LayerView(Context context) {}
+    public LayerView(Context context) {
+    }
 
 
     public abstract void draw(VisualizationView view, GL10 gl);
 
-    public void setFrame(GraphName frame) {
-        this.frame = frame;
-    }
     public GraphName getFrame() {
         return frame;
     }
 
-    @Override
-    public void setWidgetEntity(BaseEntity widgetEntity) {
-        this.widgetEntity = widgetEntity;
+    public void setFrame(GraphName frame) {
+        this.frame = frame;
     }
 
     @Override
     public BaseEntity getWidgetEntity() {
         return this.widgetEntity;
+    }
+
+    @Override
+    public void setWidgetEntity(BaseEntity widgetEntity) {
+        this.widgetEntity = widgetEntity;
     }
 
     @Override
@@ -59,9 +61,11 @@ public abstract class LayerView implements IBaseView {
         this.parentView = parentView;
     }
 
-    public void onSurfaceChanged(VisualizationView view, GL10 gl, int width, int height) {}
+    public void onSurfaceChanged(VisualizationView view, GL10 gl, int width, int height) {
+    }
 
-    public void onSurfaceCreated(VisualizationView view, GL10 gl, EGLConfig config) {}
+    public void onSurfaceCreated(VisualizationView view, GL10 gl, EGLConfig config) {
+    }
 
     public boolean onTouchEvent(VisualizationView visualizationView, MotionEvent event) {
         return false;

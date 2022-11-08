@@ -11,7 +11,6 @@ import androidx.annotation.Nullable;
 
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.ui.views.widgets.SubscriberWidgetView;
-import com.schneewittchen.rosandroid.utility.Utils;
 
 import org.ros.internal.message.Message;
 
@@ -33,12 +32,11 @@ import sensor_msgs.Image;
 public class CameraView extends SubscriberWidgetView {
 
     public static final String TAG = CameraView.class.getSimpleName();
-
+    private final RectF imageRect = new RectF();
     private Paint borderPaint;
     private Paint paintBackground;
     private float cornerWidth;
     private CameraData data;
-    private final RectF imageRect = new RectF();
 
 
     public CameraView(Context context) {
@@ -50,8 +48,8 @@ public class CameraView extends SubscriberWidgetView {
         super(context, attrs);
         init();
     }
-    
-    
+
+
     private void init() {
         this.cornerWidth = 0; //Utils.dpToPx(getContext(), 8);
 
@@ -84,18 +82,18 @@ public class CameraView extends SubscriberWidgetView {
         float top = topViz;
 
         if (data != null) {
-            float mapRatio = (float)data.map.getHeight() / data.map.getWidth();
-            float vizRatio = heightViz/widthViz;
+            float mapRatio = (float) data.map.getHeight() / data.map.getWidth();
+            float vizRatio = heightViz / widthViz;
 
             if (mapRatio >= vizRatio) {
                 height = heightViz;
-                width = (vizRatio/mapRatio) * widthViz;
+                width = (vizRatio / mapRatio) * widthViz;
                 left = 0.5F * (widthViz - width);
 
             } else if (vizRatio > mapRatio) {
                 width = widthViz;
-                height = (mapRatio/vizRatio) * heightViz;
-                top = 0.5F * (heightViz -height);
+                height = (mapRatio / vizRatio) * heightViz;
+                top = 0.5F * (heightViz - height);
             }
 
             imageRect.set(left, top, left + width, top + height);
@@ -110,15 +108,15 @@ public class CameraView extends SubscriberWidgetView {
     public void onNewMessage(Message message) {
         this.data = null;
 
-        if(message instanceof CompressedImage) {
+        if (message instanceof CompressedImage) {
             this.data = new CameraData((CompressedImage) message);
         } else if (message instanceof Image) {
             this.data = new CameraData((Image) message);
         } else {
             return;
         }
-        
+
         this.invalidate();
     }
-    
+
 }

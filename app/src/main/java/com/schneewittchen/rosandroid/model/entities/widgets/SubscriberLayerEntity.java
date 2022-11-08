@@ -9,6 +9,6 @@ package com.schneewittchen.rosandroid.model.entities.widgets;
  */
 public abstract class SubscriberLayerEntity
         extends BaseEntity
-        implements I2DLayerEntity, ISubscriberEntity{
+        implements I2DLayerEntity, ISubscriberEntity {
 
 }

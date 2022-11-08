@@ -13,5 +13,6 @@ import com.schneewittchen.rosandroid.ui.general.DataListener;
 public interface IPublisherView {
 
     void publishViewData(BaseData data);
+
     void setDataListener(DataListener listener);
 }

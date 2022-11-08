@@ -14,9 +14,9 @@ import nav_msgs.OccupancyGrid;
  * @created on 08.03.21
  */
 public class GridMapEntity extends SubscriberLayerEntity {
-    
+
     public GridMapEntity() {
         this.topic = new Topic("/move_base/local_costmap/costmap", OccupancyGrid._TYPE);
     }
-    
+
 }

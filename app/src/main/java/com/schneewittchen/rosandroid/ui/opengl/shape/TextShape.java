@@ -13,10 +13,9 @@ public class TextShape extends BaseShape {
 
     private final GLText glText;
     private final String text;
-
+    private final FloatBuffer lines;
     private float x;
     private float y;
-    private final FloatBuffer lines;
 
 
     public TextShape(GLText glText, String text) {

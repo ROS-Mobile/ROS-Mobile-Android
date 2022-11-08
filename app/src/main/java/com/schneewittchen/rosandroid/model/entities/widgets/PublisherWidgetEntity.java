@@ -12,7 +12,7 @@ import com.schneewittchen.rosandroid.ui.general.Position;
  */
 public abstract class PublisherWidgetEntity
         extends BaseEntity
-        implements IPositionEntity, IPublisherEntity{
+        implements IPositionEntity, IPublisherEntity {
 
     public float publishRate = 1f;
     public boolean immediatePublish = false;

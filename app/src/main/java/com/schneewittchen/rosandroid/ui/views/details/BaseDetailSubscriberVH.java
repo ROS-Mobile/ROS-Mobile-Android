@@ -65,7 +65,7 @@ public abstract class BaseDetailSubscriberVH<T extends SubscriberWidgetEntity> e
 
         topicNameTextView = parentView.findViewById(R.id.topicNameTextView);
         topicNameAdapter = new ArrayAdapter<>(parentView.getContext(),
-                                                R.layout.dropdown_menu_popup_item, topicNameItemList);
+                R.layout.dropdown_menu_popup_item, topicNameItemList);
 
         topicNameTextView.setAdapter(topicNameAdapter);
         topicNameTextView.setOnClickListener(clickedView -> {
@@ -105,7 +105,7 @@ public abstract class BaseDetailSubscriberVH<T extends SubscriberWidgetEntity> e
         String selectedName = topicNameItemList.get(position);
 
         // Search for topic type required for selected name
-        for (Topic rosTopic: availableTopics) {
+        for (Topic rosTopic : availableTopics) {
             if (rosTopic.name.equals(selectedName)) {
                 topicTypeEditText.setText(rosTopic.type);
             }
@@ -120,12 +120,12 @@ public abstract class BaseDetailSubscriberVH<T extends SubscriberWidgetEntity> e
 
         availableTopics = mViewModel.getTopicList();
 
-        for (Topic rosTopic: availableTopics) {
+        for (Topic rosTopic : availableTopics) {
             if (getTopicTypes().isEmpty()) {
                 topicNameItemList.add(rosTopic.name);
             }
 
-            for (String topicType: getTopicTypes()) {
+            for (String topicType : getTopicTypes()) {
                 if (rosTopic.type.equals(topicType)) {
                     topicNameItemList.add(rosTopic.name);
                     break;
@@ -136,7 +136,7 @@ public abstract class BaseDetailSubscriberVH<T extends SubscriberWidgetEntity> e
         // Ros has no topics -> Default name
         if (topicNameItemList.isEmpty()) {
             topicNameItemList.add(entity.topic.name);
-        } else{
+        } else {
             Collections.sort(topicNameItemList);
         }
 

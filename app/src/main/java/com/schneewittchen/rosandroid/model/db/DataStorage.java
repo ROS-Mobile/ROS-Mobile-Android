@@ -11,10 +11,10 @@ import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.model.entities.ConfigEntity;
 import com.schneewittchen.rosandroid.model.entities.MasterEntity;
 import com.schneewittchen.rosandroid.model.entities.SSHEntity;
+import com.schneewittchen.rosandroid.model.entities.WidgetStorageData;
+import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
 import com.schneewittchen.rosandroid.utility.Constants;
 import com.schneewittchen.rosandroid.utility.LambdaTask;
-import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
-import com.schneewittchen.rosandroid.model.entities.WidgetStorageData;
 
 import java.util.List;
 
@@ -47,9 +47,9 @@ public abstract class DataStorage extends RoomDatabase {
 
 
     public static synchronized DataStorage getInstance(final Context context) {
-        if (instance == null){
+        if (instance == null) {
             instance = Room.databaseBuilder(context.getApplicationContext(),
-                    DataStorage.class, Constants.DB_NAME)
+                            DataStorage.class, Constants.DB_NAME)
                     .fallbackToDestructiveMigration()
                     .build();
         }
@@ -63,8 +63,11 @@ public abstract class DataStorage extends RoomDatabase {
     // DAO Methods ---------------------------------------------------------------------------------
 
     public abstract ConfigDao configDao();
+
     public abstract MasterDao masterDao();
+
     public abstract WidgetDao widgetDao();
+
     public abstract SSHDao sshDao();
 
 

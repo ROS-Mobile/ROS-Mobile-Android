@@ -13,5 +13,6 @@ import com.schneewittchen.rosandroid.ui.general.Position;
 public interface IPositionEntity {
 
     Position getPosition();
+
     void setPosition(Position position);
 }

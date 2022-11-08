@@ -7,4 +7,5 @@ package com.schneewittchen.rosandroid.model.entities.widgets;
  * @version 1.0.0
  * @created on 01.04.21
  */
-public interface ISilentEntity { }
+public interface ISilentEntity {
+}

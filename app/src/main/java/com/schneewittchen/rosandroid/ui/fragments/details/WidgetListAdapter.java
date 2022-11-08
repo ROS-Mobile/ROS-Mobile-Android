@@ -100,12 +100,12 @@ public class WidgetListAdapter extends RecyclerView.Adapter<WidgetListAdapter.Vi
 
             nameTextView = itemView.findViewById(R.id.widget_name_textview);
             typeTextView = itemView.findViewById(R.id.widget_type_textview);
-            viewBackground  = itemView.findViewById(R.id.view_background);
-            viewForeground  = itemView.findViewById(R.id.view_foreground);
+            viewBackground = itemView.findViewById(R.id.view_background);
+            viewForeground = itemView.findViewById(R.id.view_foreground);
         }
 
         public CardView getCard() {
-            return (CardView)this.itemView;
+            return (CardView) this.itemView;
         }
 
         public void setEntity(BaseEntity entity) {

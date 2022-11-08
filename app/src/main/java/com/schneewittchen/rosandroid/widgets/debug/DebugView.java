@@ -16,7 +16,6 @@ import androidx.core.view.GestureDetectorCompat;
 
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.ui.views.widgets.SubscriberWidgetView;
-import com.schneewittchen.rosandroid.utility.Utils;
 
 import org.ros.internal.message.Message;
 
@@ -35,38 +34,30 @@ import java.util.ArrayList;
 public class DebugView extends SubscriberWidgetView {
 
     public static final String TAG = DebugView.class.getSimpleName();
-
+    // Mode
+    private static final int NONE = 0;
+    private static final int DRAG = 1;
+    private final float dragSensitivity = 1; //0.05f;
     // Canvas parameter
     private Paint paint;
     private Paint paintDark;
     private float cornerWidth;
-
     // GestureDetector for doubleClick
     private GestureDetectorCompat gestureDetector;
-
     // Views
     private ScrollView scrollView;
     private TextView textView;
-
     // Container for textView output
     private Boolean stopUpdate;
     private String output;
     private ArrayList<String> dataList;
-
     // Finger position tracker
     private float lastY = 0.0f;
-
-    // Mode
-    private static final int NONE = 0;
-    private static final int DRAG = 1;
     private int mode;
-
     // Amount of translation
     private float translateY = 0f;
-
     // Drag parameters
     private int posY = 0;
-    private final float dragSensitivity = 1; //0.05f;
 
 
     public DebugView(Context context) {

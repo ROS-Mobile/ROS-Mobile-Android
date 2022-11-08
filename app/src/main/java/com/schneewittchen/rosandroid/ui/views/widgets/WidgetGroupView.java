@@ -33,5 +33,7 @@ public abstract class WidgetGroupView extends WidgetView implements ISubscriberV
     public abstract void onNewData(RosData data);
 
     @Override
-    public void onNewMessage(Message message) { return; }
+    public void onNewMessage(Message message) {
+        return;
+    }
 }

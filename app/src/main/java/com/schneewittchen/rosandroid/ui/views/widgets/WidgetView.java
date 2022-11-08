@@ -65,7 +65,7 @@ public abstract class WidgetView extends ViewGroup implements IBaseView {
 
 
     public void updatePosition() {
-        this.position = ((IPositionEntity)widgetEntity).getPosition();
+        this.position = ((IPositionEntity) widgetEntity).getPosition();
     }
 
     public Position getPosition() {
@@ -73,7 +73,8 @@ public abstract class WidgetView extends ViewGroup implements IBaseView {
     }
 
     @Override
-    protected void onLayout(boolean changed, int l, int t, int r, int b) { }
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+    }
 
     @Override
     public void onDraw(Canvas canvas) {
@@ -84,16 +85,15 @@ public abstract class WidgetView extends ViewGroup implements IBaseView {
     }
 
     @Override
-    public void setWidgetEntity(BaseEntity widgetEntity) {
-        this.widgetEntity = widgetEntity;
-        this.updatePosition();
-    }
-
-    @Override
     public BaseEntity getWidgetEntity() {
         return this.widgetEntity;
     }
 
+    @Override
+    public void setWidgetEntity(BaseEntity widgetEntity) {
+        this.widgetEntity = widgetEntity;
+        this.updatePosition();
+    }
 
     @Override
     public boolean sameWidgetEntity(BaseEntity other) {

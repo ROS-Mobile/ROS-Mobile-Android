@@ -79,7 +79,7 @@ public class LaserScanView extends SubscriberLayerView {
     private void updateVertexBuffer2(LaserScan laserScan) {
         int vertexCount = 0;
         float[] ranges = laserScan.getRanges();
-        int size = (ranges.length+2) * 3;
+        int size = (ranges.length + 2) * 3;
 
         if (vertexBackBuffer == null || vertexBackBuffer.capacity() < size) {
             vertexBackBuffer = Vertices.allocateBuffer(size);

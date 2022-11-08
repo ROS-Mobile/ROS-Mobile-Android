@@ -19,9 +19,6 @@ import com.schneewittchen.rosandroid.ui.fragments.details.RecyclerWidgetItemTouc
 import com.schneewittchen.rosandroid.ui.fragments.details.WidgetListAdapter;
 import com.schneewittchen.rosandroid.utility.Utils;
 
-import java.util.Arrays;
-import java.util.Collections;
-
 
 /**
  * TODO: Description
@@ -31,7 +28,7 @@ import java.util.Collections;
  * @created on 17.03.21
  */
 public abstract class WidgetGroupViewHolder extends DetailViewHolder
-        implements RecyclerWidgetItemTouchHelper.TouchListener{
+        implements RecyclerWidgetItemTouchHelper.TouchListener {
 
     public static String TAG = WidgetGroupViewHolder.class.getSimpleName();
 
@@ -135,7 +132,7 @@ public abstract class WidgetGroupViewHolder extends DetailViewHolder
             dialogChecker.setMessage(description);
 
             dialogChecker.setPositiveButton("Create", (dialog1, which) ->
-                viewModel.createWidget(title));
+                    viewModel.createWidget(title));
 
             dialogChecker.setNegativeButton("Cancel", null);
 

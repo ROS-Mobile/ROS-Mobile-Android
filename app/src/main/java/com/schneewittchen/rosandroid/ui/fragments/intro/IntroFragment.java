@@ -1,6 +1,7 @@
 package com.schneewittchen.rosandroid.ui.fragments.intro;
 
-import android.content.Context;
+import static android.content.Context.MODE_PRIVATE;
+
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -25,8 +26,6 @@ import com.schneewittchen.rosandroid.ui.fragments.main.MainFragment;
 import com.schneewittchen.rosandroid.viewmodel.IntroViewModel;
 
 import java.util.List;
-
-import static android.content.Context.MODE_PRIVATE;
 
 
 /**
@@ -218,7 +217,7 @@ public class IntroFragment extends Fragment {
 
         SharedPreferences pref = getContext().getSharedPreferences("introPrefs", MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
-        editor.putInt("VersionNumber", getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(),0).versionCode);
+        editor.putInt("VersionNumber", getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0).versionCode);
         editor.apply();
     }
 

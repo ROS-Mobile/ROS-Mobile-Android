@@ -11,10 +11,10 @@ import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
+import androidx.annotation.Nullable;
+
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.ui.views.widgets.PublisherWidgetView;
-
-import androidx.annotation.Nullable;
 
 
 /**

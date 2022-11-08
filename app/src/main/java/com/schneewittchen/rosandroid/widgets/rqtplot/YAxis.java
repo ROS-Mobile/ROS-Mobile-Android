@@ -6,7 +6,6 @@ import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.text.TextPaint;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -123,7 +122,7 @@ public class YAxis {
         float range = max - min;
         double roughStep = range / (tickSteps - 1);
         //double[] normalizedSteps = {1, 1.5, 2, 2.5, 5, 7.5, 10}; // keep the 10 at the end
-        double[] normalizedSteps = { 1, 2, 5, 10 };
+        double[] normalizedSteps = {1, 2, 5, 10};
 
         double powX = Math.pow(10, -Math.floor(Math.log10(Math.abs(roughStep))));
         double normalizedStep = roughStep * powX;

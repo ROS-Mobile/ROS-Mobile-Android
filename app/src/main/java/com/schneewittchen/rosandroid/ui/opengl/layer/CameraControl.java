@@ -16,7 +16,6 @@
 
 package com.schneewittchen.rosandroid.ui.opengl.layer;
 
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
@@ -51,7 +50,7 @@ public class CameraControl {
 
 
     public void init(boolean translate, boolean rotate, boolean scale) {
-        if(translate) {
+        if (translate) {
             translateGestureDetector =
                     new GestureDetectorCompat(vizView.getContext(), new GestureDetector.SimpleOnGestureListener() {
                         @Override
@@ -74,7 +73,7 @@ public class CameraControl {
                     });
         }
 
-        if(rotate) {
+        if (rotate) {
             rotateGestureDetector =
                     new RotateGestureDetector((event1, event2, deltaAngle) -> {
                         final float focusX = (event1.getX(0) + event1.getX(1)) / 2;
@@ -84,7 +83,7 @@ public class CameraControl {
                     });
         }
 
-        if(scale) {
+        if (scale) {
             zoomGestureDetector =
                     new ScaleGestureDetector(vizView.getContext(),
                             new ScaleGestureDetector.SimpleOnScaleGestureListener() {

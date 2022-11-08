@@ -12,23 +12,23 @@ import android.view.ViewGroup;
 
 import com.schneewittchen.rosandroid.BuildConfig;
 import com.schneewittchen.rosandroid.R;
-import com.schneewittchen.rosandroid.ui.general.WidgetChangeListener;
-import com.schneewittchen.rosandroid.model.repositories.rosRepo.node.AbstractNode;
-import com.schneewittchen.rosandroid.ui.views.widgets.WidgetGroupView;
+import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
+import com.schneewittchen.rosandroid.model.entities.widgets.IPositionEntity;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.RosData;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.Topic;
+import com.schneewittchen.rosandroid.model.repositories.rosRepo.node.AbstractNode;
+import com.schneewittchen.rosandroid.model.repositories.rosRepo.node.BaseData;
+import com.schneewittchen.rosandroid.ui.general.DataListener;
+import com.schneewittchen.rosandroid.ui.general.Position;
+import com.schneewittchen.rosandroid.ui.general.WidgetChangeListener;
 import com.schneewittchen.rosandroid.ui.views.widgets.IBaseView;
 import com.schneewittchen.rosandroid.ui.views.widgets.IPublisherView;
 import com.schneewittchen.rosandroid.ui.views.widgets.ISubscriberView;
 import com.schneewittchen.rosandroid.ui.views.widgets.LayerView;
+import com.schneewittchen.rosandroid.ui.views.widgets.WidgetGroupView;
 import com.schneewittchen.rosandroid.ui.views.widgets.WidgetView;
 import com.schneewittchen.rosandroid.utility.Constants;
 import com.schneewittchen.rosandroid.utility.Utils;
-import com.schneewittchen.rosandroid.ui.general.DataListener;
-import com.schneewittchen.rosandroid.ui.general.Position;
-import com.schneewittchen.rosandroid.model.repositories.rosRepo.node.BaseData;
-import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
-import com.schneewittchen.rosandroid.model.entities.widgets.IPositionEntity;
 
 import org.ros.internal.message.Message;
 
@@ -73,7 +73,7 @@ public class WidgetViewGroup extends ViewGroup {
         this.widgetList = new ArrayList<>();
 
         TypedArray a = getContext().obtainStyledAttributes(attrs,
-                        R.styleable.WidgetViewGroup, 0, 0);
+                R.styleable.WidgetViewGroup, 0, 0);
 
         int crossColor = a.getColor(R.styleable.WidgetViewGroup_crossColor,
                 getResources().getColor(R.color.colorAccent));
@@ -96,7 +96,7 @@ public class WidgetViewGroup extends ViewGroup {
         this.setOnDragListener((view, event) -> {
             if (event.getAction() == DragEvent.ACTION_DROP && this.vizEditMode) {
                 WidgetView widget = (WidgetView) event.getLocalState();
-                IPositionEntity entity = (IPositionEntity)widget.getWidgetEntity().copy();
+                IPositionEntity entity = (IPositionEntity) widget.getWidgetEntity().copy();
 
                 Position position = entity.getPosition();
                 position.x = Math.round((event.getX() - widget.getWidth() / 2f) / tileWidth);
@@ -121,7 +121,7 @@ public class WidgetViewGroup extends ViewGroup {
         } else { // Landscape
             tilesY = TILES_X;
             tileWidth = height / tilesY;
-            tilesX = (int) ( width / tileWidth);
+            tilesX = (int) (width / tileWidth);
         }
     }
 
@@ -161,7 +161,7 @@ public class WidgetViewGroup extends ViewGroup {
         final View child = getChildAt(i);
 
         // Check if view is visible
-        if(child.getVisibility() == GONE)
+        if (child.getVisibility() == GONE)
             return;
 
         Position position = ((WidgetView) child).getPosition();
@@ -184,12 +184,12 @@ public class WidgetViewGroup extends ViewGroup {
         float endY = getHeight() - this.getPaddingBottom();
 
         // Draw x's
-        float lineLen = Utils.dpToPx(getContext(), 5)/2;
+        float lineLen = Utils.dpToPx(getContext(), 5) / 2;
 
-        for(float drawY = startY; drawY <= endY; drawY += tileWidth){
-            for(float drawX = startX; drawX <= endX; drawX += tileWidth){
-                canvas.drawLine(drawX-lineLen, drawY, drawX+lineLen, drawY, crossPaint);
-                canvas.drawLine(drawX, drawY-lineLen, drawX, drawY+lineLen, crossPaint);
+        for (float drawY = startY; drawY <= endY; drawY += tileWidth) {
+            for (float drawX = startX; drawX <= endX; drawX += tileWidth) {
+                canvas.drawLine(drawX - lineLen, drawY, drawX + lineLen, drawY, crossPaint);
+                canvas.drawLine(drawX, drawY - lineLen, drawX, drawY + lineLen, crossPaint);
             }
         }
 
@@ -213,19 +213,19 @@ public class WidgetViewGroup extends ViewGroup {
         Message message = data.getMessage();
         Topic topic = data.getTopic();
 
-        for(int i = 0; i < this.getChildCount(); i++) {
+        for (int i = 0; i < this.getChildCount(); i++) {
             View view = this.getChildAt(i);
 
-            if(!(view instanceof ISubscriberView)) continue;
+            if (!(view instanceof ISubscriberView)) continue;
 
-            if(view instanceof WidgetGroupView) {
-                ((WidgetGroupView)view).onNewData(data);
+            if (view instanceof WidgetGroupView) {
+                ((WidgetGroupView) view).onNewData(data);
 
             } else {
                 IBaseView baseView = (IBaseView) view;
 
-                if (baseView.getWidgetEntity().topic.equals(topic)){
-                    ((ISubscriberView)view).onNewMessage(message);
+                if (baseView.getWidgetEntity().topic.equals(topic)) {
+                    ((ISubscriberView) view).onNewMessage(message);
                 }
             }
         }
@@ -238,31 +238,31 @@ public class WidgetViewGroup extends ViewGroup {
         HashMap<Long, Boolean> widgetCheckMap = new HashMap<>();
         HashMap<Long, BaseEntity> widgetEntryMap = new HashMap<>();
 
-        for (BaseEntity oldWidget: this.widgetList) {
+        for (BaseEntity oldWidget : this.widgetList) {
             widgetCheckMap.put(oldWidget.id, false);
             widgetEntryMap.put(oldWidget.id, oldWidget);
         }
 
-        for (BaseEntity newWidget: newWidgets) {
+        for (BaseEntity newWidget : newWidgets) {
             if (widgetCheckMap.containsKey(newWidget.id)) {
                 widgetCheckMap.put(newWidget.id, true);
 
                 // Check if widget has changed
                 BaseEntity oldWidget = widgetEntryMap.get(newWidget.id);
 
-                if (!oldWidget.equals(newWidget)){
+                if (!oldWidget.equals(newWidget)) {
                     changeViewFor(newWidget);
                     changes = true;
                 }
 
-            } else{
+            } else {
                 addViewFor(newWidget, map);
                 changes = true;
             }
         }
 
         // Delete unused widgets
-        for (Long id: widgetCheckMap.keySet()) {
+        for (Long id : widgetCheckMap.keySet()) {
             if (!widgetCheckMap.get(id)) {
                 removeViewFor(widgetEntryMap.get(id));
                 changes = true;
@@ -278,7 +278,6 @@ public class WidgetViewGroup extends ViewGroup {
     }
 
 
-
     private void addViewFor(BaseEntity entity, HashMap<Topic, AbstractNode> map) {
         Log.i(TAG, "Add view for " + entity.name);
 
@@ -292,7 +291,7 @@ public class WidgetViewGroup extends ViewGroup {
         if (baseView instanceof WidgetGroupView) {
             WidgetGroupView groupView = (WidgetGroupView) baseView;
 
-            for (BaseEntity subEntity: entity.childEntities)  {
+            for (BaseEntity subEntity : entity.childEntities) {
                 IBaseView subView = createViewFrom(subEntity);
                 subView.setWidgetEntity(subEntity);
 
@@ -312,19 +311,19 @@ public class WidgetViewGroup extends ViewGroup {
                 if (!(subView instanceof LayerView))
                     return;
 
-                groupView.addLayer((LayerView)subView);
+                groupView.addLayer((LayerView) subView);
             }
 
         }
 
         // Set data listener if view is a publisher
         if (baseView instanceof IPublisherView) {
-            ((IPublisherView)baseView).setDataListener(this::informDataChange);
+            ((IPublisherView) baseView).setDataListener(this::informDataChange);
         }
 
         // Add as subview if the view is a widget view
         if (baseView instanceof WidgetView) {
-            this.addView((WidgetView)baseView);
+            this.addView((WidgetView) baseView);
         }
     }
 
@@ -358,7 +357,7 @@ public class WidgetViewGroup extends ViewGroup {
     private void changeViewFor(BaseEntity entity) {
         Log.i(TAG, "Change view for " + entity.name);
 
-        for(int i = 0; i < this.getChildCount(); i++) {
+        for (int i = 0; i < this.getChildCount(); i++) {
             IBaseView view = (IBaseView) this.getChildAt(i);
 
             if (view.sameWidgetEntity(entity)) {
@@ -371,11 +370,11 @@ public class WidgetViewGroup extends ViewGroup {
     private void removeViewFor(BaseEntity entity) {
         Log.i(TAG, "Remove view for " + entity.name);
 
-        for(int i = 0; i < this.getChildCount(); i++) {
+        for (int i = 0; i < this.getChildCount(); i++) {
             IBaseView view = (IBaseView) this.getChildAt(i);
 
             if (view.sameWidgetEntity(entity)) {
-                this.removeView((WidgetView)view);
+                this.removeView((WidgetView) view);
                 return;
             }
         }
@@ -396,13 +395,13 @@ public class WidgetViewGroup extends ViewGroup {
     public void setVizEditMode(boolean enabled) {
         this.vizEditMode = enabled;
         for (int i = 0; i < getChildCount(); ++i) {
-            WidgetView widgetView = (WidgetView)getChildAt(i);
+            WidgetView widgetView = (WidgetView) getChildAt(i);
             widgetView.setOnScaleListener(tileWidth, (baseEntity, updateConfig) -> {
                 if (vizEditMode) {
-                    widgetScaleShadowPosition = ((IPositionEntity)baseEntity).getPosition();
+                    widgetScaleShadowPosition = ((IPositionEntity) baseEntity).getPosition();
                     widgetScaleShadowPosition.height = Math.max(0, Math.min(widgetScaleShadowPosition.height, tilesY));
                     widgetScaleShadowPosition.width = Math.max(0, Math.min(widgetScaleShadowPosition.width, tilesX));
-                    ((IPositionEntity)baseEntity).setPosition(widgetScaleShadowPosition);
+                    ((IPositionEntity) baseEntity).setPosition(widgetScaleShadowPosition);
                     drawWidgetScaleShadow = !updateConfig;
                     invalidate();
                     if (updateConfig) {

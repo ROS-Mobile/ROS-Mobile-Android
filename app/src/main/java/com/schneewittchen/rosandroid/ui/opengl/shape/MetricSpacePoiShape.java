@@ -21,22 +21,22 @@ import com.schneewittchen.rosandroid.ui.opengl.visualisation.ROSColor;
 
 /**
  * Represents a pose.
- * 
+ *
  * @author damonkohler@google.com (Damon Kohler)
  */
 public class MetricSpacePoiShape extends TriangleFanShape {
-  
-  private static final ROSColor COLOR = ROSColor.fromHexAndAlpha("377dfa", 1.0f);
-  private static final float[] VERTICES = {
-      -0.2f, 0.2f, 0.f,
-      0.2f, 0.2f, 0.f,
-      0.5f, 0.f, 0.f,
-      0.2f, -0.2f, 0.f,
-      -0.2f, -0.2f, 0.f,
-      -0.2f, 0.2f, 0.f
-      };
 
-  public MetricSpacePoiShape() {
-    super(VERTICES, COLOR);
-  }
+    private static final ROSColor COLOR = ROSColor.fromHexAndAlpha("377dfa", 1.0f);
+    private static final float[] VERTICES = {
+            -0.2f, 0.2f, 0.f,
+            0.2f, 0.2f, 0.f,
+            0.5f, 0.f, 0.f,
+            0.2f, -0.2f, 0.f,
+            -0.2f, -0.2f, 0.f,
+            -0.2f, 0.2f, 0.f
+    };
+
+    public MetricSpacePoiShape() {
+        super(VERTICES, COLOR);
+    }
 }

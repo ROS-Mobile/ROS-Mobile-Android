@@ -1,10 +1,6 @@
 package com.schneewittchen.rosandroid.ui.views.widgets;
 
 import android.content.Context;
-import android.util.AttributeSet;
-import android.util.Log;
-
-import androidx.annotation.Nullable;
 
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.node.BaseData;
 import com.schneewittchen.rosandroid.ui.general.DataListener;
@@ -20,7 +16,7 @@ import javax.microedition.khronos.opengles.GL10;
  * @version 1.0.0
  * @created on 10.03.21
  */
-public abstract class PublisherLayerView extends LayerView implements IPublisherView{
+public abstract class PublisherLayerView extends LayerView implements IPublisherView {
 
     private DataListener dataListener;
 
@@ -32,7 +28,7 @@ public abstract class PublisherLayerView extends LayerView implements IPublisher
 
     @Override
     public void publishViewData(BaseData data) {
-        if(dataListener == null) return;
+        if (dataListener == null) return;
 
         data.setTopic(widgetEntity.topic);
         dataListener.onNewWidgetData(data);
@@ -44,5 +40,6 @@ public abstract class PublisherLayerView extends LayerView implements IPublisher
     }
 
     @Override
-    public void draw(VisualizationView view, GL10 gl) {}
+    public void draw(VisualizationView view, GL10 gl) {
+    }
 }

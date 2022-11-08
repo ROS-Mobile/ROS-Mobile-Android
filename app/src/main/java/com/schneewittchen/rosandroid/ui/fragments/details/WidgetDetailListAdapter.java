@@ -42,11 +42,21 @@ public class WidgetDetailListAdapter extends RecyclerView.Adapter<BaseDetailView
         implements WidgetChangeListener {
 
     public static String TAG = WidgetDetailListAdapter.class.getSimpleName();
-
-    private WidgetChangeListener widgetChangeListener;
     private final AsyncListDiffer<BaseEntity> mDiffer;
     private final ArrayList<Class<? extends BaseDetailViewHolder<BaseEntity>>> types;
     private final DetailsViewModel mViewModel;
+    private final DiffUtil.ItemCallback<BaseEntity> diffCallback = new DiffUtil.ItemCallback<BaseEntity>() {
+        @Override
+        public boolean areItemsTheSame(BaseEntity oldItem, BaseEntity newItem) {
+            return oldItem.id == newItem.id;
+        }
+
+        @Override
+        public boolean areContentsTheSame(BaseEntity oldItem, @NonNull BaseEntity newItem) {
+            return oldItem.equals(newItem);
+        }
+    };
+    private WidgetChangeListener widgetChangeListener;
 
 
     public WidgetDetailListAdapter(DetailsViewModel viewModel) {
@@ -54,7 +64,6 @@ public class WidgetDetailListAdapter extends RecyclerView.Adapter<BaseDetailView
         mDiffer = new AsyncListDiffer<>(this, diffCallback);
         types = new ArrayList<>();
     }
-
 
     @NonNull
     @Override
@@ -77,7 +86,6 @@ public class WidgetDetailListAdapter extends RecyclerView.Adapter<BaseDetailView
             return null;
         }
     }
-
 
     @Override
     public void onBindViewHolder(@NonNull BaseDetailViewHolder<BaseEntity> holder, int position) {
@@ -144,7 +152,7 @@ public class WidgetDetailListAdapter extends RecyclerView.Adapter<BaseDetailView
     }
 
     public void setWidgets(List<BaseEntity> newWidgets) {
-        for (BaseEntity entity: newWidgets) {
+        for (BaseEntity entity : newWidgets) {
             Log.i(TAG, "New Widget: " + entity);
         }
         mDiffer.submitList(newWidgets);
@@ -153,17 +161,4 @@ public class WidgetDetailListAdapter extends RecyclerView.Adapter<BaseDetailView
     public void setChangeListener(WidgetChangeListener widgetChangeListener) {
         this.widgetChangeListener = widgetChangeListener;
     }
-
-
-    private final DiffUtil.ItemCallback<BaseEntity> diffCallback = new DiffUtil.ItemCallback<BaseEntity>() {
-        @Override
-        public boolean areItemsTheSame(BaseEntity oldItem, BaseEntity newItem) {
-            return oldItem.id == newItem.id;
-        }
-
-        @Override
-        public boolean areContentsTheSame(BaseEntity oldItem, @NonNull BaseEntity newItem) {
-            return oldItem.equals(newItem);
-        }
-    };
 }

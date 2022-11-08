@@ -1,20 +1,17 @@
 package com.schneewittchen.rosandroid.viewmodel;
 
 import android.app.Application;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import com.schneewittchen.rosandroid.domain.RosDomain;
+import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.RosData;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.Topic;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.node.AbstractNode;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.node.BaseData;
-import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
-
-import org.ros.internal.message.Message;
 
 import java.util.HashMap;
 import java.util.List;
@@ -58,5 +55,7 @@ public class VizViewModel extends AndroidViewModel {
         rosDomain.publishData(data);
     }
 
-    public HashMap<Topic, AbstractNode> getLastRosData() { return rosDomain.getLastRosData(); }
+    public HashMap<Topic, AbstractNode> getLastRosData() {
+        return rosDomain.getLastRosData();
+    }
 }

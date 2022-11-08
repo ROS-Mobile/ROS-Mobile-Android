@@ -16,11 +16,11 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.schneewittchen.rosandroid.R;
-import com.schneewittchen.rosandroid.viewmodel.VizViewModel;
-import com.schneewittchen.rosandroid.ui.general.DataListener;
-import com.schneewittchen.rosandroid.ui.general.WidgetChangeListener;
 import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.node.BaseData;
+import com.schneewittchen.rosandroid.ui.general.DataListener;
+import com.schneewittchen.rosandroid.ui.general.WidgetChangeListener;
+import com.schneewittchen.rosandroid.viewmodel.VizViewModel;
 
 
 /**

@@ -90,7 +90,6 @@
     </string>
 
 
-
     <!-- Debug -->
     <string name="Debug_description">
         A Debug Node which can show all topics similar to rostopic info.

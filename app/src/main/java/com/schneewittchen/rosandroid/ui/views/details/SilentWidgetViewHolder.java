@@ -5,7 +5,6 @@ import android.view.View;
 import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
 
 
-
 /**
  * TODO: Description
  *

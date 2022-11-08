@@ -20,5 +20,5 @@ public class Viz2DEntity extends GroupEntity {
         this.height = 8;
         this.frame = "map";
     }
-    
+
 }

@@ -57,7 +57,7 @@ public class BatteryView extends SubscriberWidgetView {
         float borderDip = 10f;
 
         textSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, textDip,
-                        getResources().getDisplayMetrics());
+                getResources().getDisplayMetrics());
         borderWidth = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, borderDip,
                 getResources().getDisplayMetrics());
 
@@ -103,7 +103,7 @@ public class BatteryView extends SubscriberWidgetView {
     public void onNewMessage(Message message) {
         super.onNewMessage(message);
 
-        BatteryState state = (BatteryState)message;
+        BatteryState state = (BatteryState) message;
 
         this.charging = state.getPowerSupplyStatus() == BatteryState.POWER_SUPPLY_STATUS_CHARGING;
 
@@ -116,7 +116,7 @@ public class BatteryView extends SubscriberWidgetView {
     }
 
     private void updatePercentage(float value) {
-        int perc = (int)(value * 100);
+        int perc = (int) (value * 100);
         displayedText = perc + "%";
         level = Math.min(5, perc / 20 + 1);
         updateColor();
@@ -136,12 +136,12 @@ public class BatteryView extends SubscriberWidgetView {
     private void updateColor() {
         int color;
 
-        if (level == 1)         color = R.color.battery1;
-        else if (level == 2)    color = R.color.battery2;
-        else if (level == 3)    color = R.color.battery3;
-        else if (level == 4)    color = R.color.battery4;
-        else if (level == 5)    color = R.color.battery5;
-        else                    color = R.color.colorPrimary;
+        if (level == 1) color = R.color.battery1;
+        else if (level == 2) color = R.color.battery2;
+        else if (level == 3) color = R.color.battery3;
+        else if (level == 4) color = R.color.battery4;
+        else if (level == 5) color = R.color.battery5;
+        else color = R.color.colorPrimary;
 
         innerPaint.setColor(getResources().getColor(color));
     }
@@ -152,16 +152,16 @@ public class BatteryView extends SubscriberWidgetView {
         super.onDraw(canvas);
         float width = getWidth();
         float height = getHeight();
-        float middleX = width/2;
+        float middleX = width / 2;
 
-        float left = borderWidth/2;
-        float right = width - borderWidth/2;
+        float left = borderWidth / 2;
+        float right = width - borderWidth / 2;
         float top = borderWidth * 2;
         float bottom = height - borderWidth - textSize;
 
         // Draw pad
-        canvas.drawRoundRect(middleX - width/4, top - borderWidth,
-                middleX + width/4, top,
+        canvas.drawRoundRect(middleX - width / 4, top - borderWidth,
+                middleX + width / 4, top,
                 borderWidth, borderWidth,
                 outerPaint);
 
@@ -172,26 +172,26 @@ public class BatteryView extends SubscriberWidgetView {
             // Draw lightning
             float batWidth = right - left;
             float batHeight = bottom - top;
-            middleX = (right + left) /2;
-            float middleY = (bottom + top) /2;
+            middleX = (right + left) / 2;
+            float middleY = (bottom + top) / 2;
             float partWidth = batWidth / 5;
             float partHeight = batHeight / 6;
 
 
             float[][] path = new float[][]{
                     {middleX, middleY - partHeight},
-                    {middleX - partWidth, middleY + partHeight/5},
-                    {middleX + partWidth, middleY - partHeight/5},
+                    {middleX - partWidth, middleY + partHeight / 5},
+                    {middleX + partWidth, middleY - partHeight / 5},
                     {middleX, middleY + partHeight}
             };
 
-            for(int i = 0; i < path.length-1; i++) {
-                canvas.drawLine(path[i][0], path[i][1], path[i+1][0], path[i+1][1], innerPaint);
+            for (int i = 0; i < path.length - 1; i++) {
+                canvas.drawLine(path[i][0], path[i][1], path[i + 1][0], path[i + 1][1], innerPaint);
             }
 
         } else {
             // Draw Bat level
-            int batLevel = level == -1? 5 : level;
+            int batLevel = level == -1 ? 5 : level;
             float innerLeft = left + borderWidth * 1.5f;
             float innerRight = right - borderWidth * 1.5f;
             float innerTop = top + borderWidth * 1.5f;

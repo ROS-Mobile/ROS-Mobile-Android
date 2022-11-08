@@ -9,7 +9,6 @@ import java.util.Collections;
 import java.util.List;
 
 import geometry_msgs.PoseWithCovarianceStamped;
-import nav_msgs.Path;
 
 
 /**

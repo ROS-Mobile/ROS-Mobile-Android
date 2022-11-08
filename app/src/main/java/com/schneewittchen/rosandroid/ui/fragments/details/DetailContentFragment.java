@@ -1,7 +1,6 @@
 package com.schneewittchen.rosandroid.ui.fragments.details;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,7 +64,7 @@ public class DetailContentFragment extends Fragment implements WidgetChangeListe
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if(viewModel != null) {
+        if (viewModel != null) {
             viewModel.popPath(1);
         }
 
@@ -80,10 +79,10 @@ public class DetailContentFragment extends Fragment implements WidgetChangeListe
 
         // Construct back buttons
         backButtonOverview.setOnClickListener(v ->
-            navController.popBackStack(R.id.detailOverviewFragment, false));
+                navController.popBackStack(R.id.detailOverviewFragment, false));
 
         backButtonGroup.setOnClickListener(v ->
-            navController.popBackStack());
+                navController.popBackStack());
     }
 
     private void initView(BaseEntity baseEntity) {
@@ -94,7 +93,7 @@ public class DetailContentFragment extends Fragment implements WidgetChangeListe
             backButtonGroup.setVisibility(View.INVISIBLE);
             entity = baseEntity;
 
-        } else if(widgetPath.size() == 2){
+        } else if (widgetPath.size() == 2) {
             backButtonGroup.setText(baseEntity.name);
             backButtonGroup.setVisibility(View.VISIBLE);
             entity = baseEntity.getChildById(widgetPath.get(1));

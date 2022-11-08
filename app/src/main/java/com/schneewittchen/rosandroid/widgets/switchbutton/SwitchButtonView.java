@@ -2,7 +2,6 @@ package com.schneewittchen.rosandroid.widgets.switchbutton;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.text.Layout;
@@ -17,8 +16,6 @@ import androidx.annotation.Nullable;
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.ui.views.widgets.PublisherWidgetView;
 import com.schneewittchen.rosandroid.utility.Utils;
-import com.schneewittchen.rosandroid.widgets.switchbutton.SwitchButtonData;
-import com.schneewittchen.rosandroid.widgets.switchbutton.SwitchButtonEntity;
 
 
 /**
@@ -126,10 +123,10 @@ public class SwitchButtonView extends PublisherWidgetView {
         float height = getHeight();
 
         Paint innerSwitchPaint = switchState ? switchOnPaint : switchOffPaint;
-        canvas.drawRoundRect(5, 5, width - 10, height - 10, 10,  10, innerSwitchPaint);
+        canvas.drawRoundRect(5, 5, width - 10, height - 10, 10, 10, innerSwitchPaint);
 
         SwitchButtonEntity entity = (SwitchButtonEntity) widgetEntity;
-        String entityText = entity == null? "Switch" : entity.text;
+        String entityText = entity == null ? "Switch" : entity.text;
 
         TextPaint textPaint = switchState ? textPaintOn : textPaintOff;
         staticLayout = new StaticLayout(entityText, textPaint,

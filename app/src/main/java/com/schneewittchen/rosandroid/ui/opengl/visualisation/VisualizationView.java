@@ -17,11 +17,9 @@
 package com.schneewittchen.rosandroid.ui.opengl.visualisation;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.opengl.GLSurfaceView;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 
 import com.google.common.collect.Lists;
@@ -33,14 +31,10 @@ import com.schneewittchen.rosandroid.ui.views.widgets.ISubscriberView;
 import com.schneewittchen.rosandroid.ui.views.widgets.LayerView;
 
 import org.ros.internal.message.Message;
-import org.ros.rosjava_geometry.FrameTransformTree;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import geometry_msgs.TransformStamped;
-import tf2_msgs.TFMessage;
 
 
 /**
@@ -100,7 +94,7 @@ public class VisualizationView extends GLSurfaceView {
             }
         }
 
-        if(cameraControl.onTouchEvent(event)) {
+        if (cameraControl.onTouchEvent(event)) {
             this.requestRender();
             return true;
         }
@@ -136,10 +130,10 @@ public class VisualizationView extends GLSurfaceView {
         boolean dirtyView = false;
 
         // Forward message to sub layers
-        for(LayerView layer: getLayers()) {
+        for (LayerView layer : getLayers()) {
             if (layer instanceof ISubscriberView) {
                 if (layer.getWidgetEntity().topic.equals(topic)) {
-                    ((ISubscriberView)layer).onNewMessage(message);
+                    ((ISubscriberView) layer).onNewMessage(message);
                     dirtyView = true;
                 }
             }

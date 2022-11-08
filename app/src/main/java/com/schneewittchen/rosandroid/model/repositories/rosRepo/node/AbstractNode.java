@@ -2,9 +2,9 @@ package com.schneewittchen.rosandroid.model.repositories.rosRepo.node;
 
 import android.util.Log;
 
+import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.RosData;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.Topic;
-import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
 
 import org.ros.namespace.GraphName;
 import org.ros.node.ConnectedNode;

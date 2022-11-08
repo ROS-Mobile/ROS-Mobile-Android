@@ -21,12 +21,12 @@ import com.schneewittchen.rosandroid.utility.Utils;
  */
 public class WidgetViewHolder implements IBaseViewHolder, TextView.OnEditorActionListener {
 
+    private final DetailViewHolder parentViewHolder;
     private EditText xEdittext;
     private EditText yEdittext;
     private EditText widthEdittext;
     private EditText heightEdittext;
     private EditText nameEdittext;
-    private final DetailViewHolder parentViewHolder;
 
 
     public WidgetViewHolder(DetailViewHolder parentViewHolder) {

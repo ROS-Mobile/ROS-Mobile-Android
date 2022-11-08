@@ -6,8 +6,6 @@ import android.view.View;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.schneewittchen.rosandroid.ui.views.details.BaseDetailViewHolder;
-
 
 /**
  * TODO: Description
@@ -37,7 +35,7 @@ public class RecyclerWidgetItemTouchHelper extends ItemTouchHelper.SimpleCallbac
     @Override
     public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState) {
         if (viewHolder != null) {
-            final View foregroundView = ((WidgetListAdapter.ViewHolder)viewHolder).viewForeground;
+            final View foregroundView = ((WidgetListAdapter.ViewHolder) viewHolder).viewForeground;
 
             getDefaultUIUtil().onSelected(foregroundView);
         }

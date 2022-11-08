@@ -1,11 +1,8 @@
 package com.schneewittchen.rosandroid.ui.views.details;
 
-import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -13,8 +10,6 @@ import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.Topic;
 import com.schneewittchen.rosandroid.viewmodel.DetailsViewModel;
-
-import org.w3c.dom.Entity;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,7 +25,9 @@ import java.util.List;
 class SubscriberViewHolder implements IBaseViewHolder {
 
     private static final String TAG = SubscriberViewHolder.class.getSimpleName();
-
+    private final DetailViewHolder parentViewHolder;
+    public List<String> topicTypes;
+    public DetailsViewModel viewModel;
     private AutoCompleteTextView topicNameTextView;
     private TextInputEditText topicTypeEditText;
     private TextInputLayout topicNameInputLayout;
@@ -38,9 +35,6 @@ class SubscriberViewHolder implements IBaseViewHolder {
     private List<Topic> availableTopics;
     private List<String> topicNameItemList;
     private BaseEntity entity;
-    public List<String> topicTypes;
-    public DetailsViewModel viewModel;
-    private final DetailViewHolder parentViewHolder;
 
 
     public SubscriberViewHolder(DetailViewHolder parentViewHolder) {

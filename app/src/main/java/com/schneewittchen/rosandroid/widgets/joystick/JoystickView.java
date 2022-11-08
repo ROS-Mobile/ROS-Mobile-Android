@@ -47,8 +47,8 @@ public class JoystickView extends PublisherWidgetView {
     }
 
 
-    private void init(){
-        joystickRadius = Utils.cmToPx(getContext(), 1)/2;
+    private void init() {
+        joystickRadius = Utils.cmToPx(getContext(), 1) / 2;
         joystickPaint = new Paint();
         joystickPaint.setColor(getResources().getColor(R.color.colorAccent));
 
@@ -67,13 +67,13 @@ public class JoystickView extends PublisherWidgetView {
     @Override
     public void setWidgetEntity(BaseEntity widgetEntity) {
         super.setWidgetEntity(widgetEntity);
-        JoystickEntity joy = (JoystickEntity)widgetEntity;
+        JoystickEntity joy = (JoystickEntity) widgetEntity;
 
         this.rectangular = joy.rectangularLimits;
     }
 
     // Move to polarCoordinates
-    private void moveTo(float x, float y){
+    private void moveTo(float x, float y) {
         posX = x;
         posY = y;
         this.publishViewData(new JoystickData(posX, posY));
@@ -93,7 +93,7 @@ public class JoystickView extends PublisherWidgetView {
         float eventY = event.getY();
         float[] polars = convertFromPxToRelative(eventX, eventY);
 
-        switch(event.getActionMasked()) {
+        switch (event.getActionMasked()) {
             case MotionEvent.ACTION_UP:
                 moveTo(0, 0);
                 break;

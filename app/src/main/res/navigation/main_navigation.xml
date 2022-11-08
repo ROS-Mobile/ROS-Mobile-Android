@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<navigation
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_navigation"
@@ -11,7 +10,7 @@
         android:id="@+id/sshFragment"
         android:name="com.schneewittchen.rosandroid.ui.fragments.ssh.SshFragment"
         android:label="SshFragment"
-        tools:layout="@layout/fragment_ssh"/>
+        tools:layout="@layout/fragment_ssh" />
 
     <action
         android:id="@+id/action_to_sshFragment"
@@ -24,7 +23,7 @@
         android:id="@+id/detailOverviewFragment"
         android:name="com.schneewittchen.rosandroid.ui.fragments.details.DetailMainFragment"
         android:label="DetailOverviewFragment"
-        tools:layout="@layout/fragment_detail_main" >
+        tools:layout="@layout/fragment_detail_main">
         <action
             android:id="@+id/action_detailOverview_to_depth1"
             app:destination="@id/detailWidgetDepth1" />
@@ -76,6 +75,6 @@
         android:id="@+id/detailWidgetDepth2"
         android:name="com.schneewittchen.rosandroid.ui.fragments.details.DetailContentFragment"
         android:label="DetailGroupOverviewFragment"
-        tools:layout="@layout/fragment_detail_content"/>
+        tools:layout="@layout/fragment_detail_content" />
 
 </navigation>

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -36,9 +35,9 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingVertical="8dp"
+                android:background="@color/black01dp"
                 android:paddingHorizontal="16dp"
-                android:background="@color/black01dp">
+                android:paddingVertical="8dp">
 
                 <TextView
                     android:id="@+id/viz_options_textView"
@@ -56,9 +55,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="Edit Mode"
-                    app:thumbTint="@color/colorAccent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/viz_options_textView" />
+                    app:layout_constraintTop_toBottomOf="@+id/viz_options_textView"
+                    app:thumbTint="@color/colorAccent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -73,8 +72,8 @@
         android:layout_margin="8dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:contentDescription="@string/viz_options_open_content"
-        app:srcCompat="@drawable/ic_settings"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_settings" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

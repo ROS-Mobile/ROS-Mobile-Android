@@ -30,27 +30,6 @@ public class Triangulate {
     private static final float EPSILON = 1e-9f;
 
     /**
-     * Defines a point in 2D space.
-     */
-    public static class Point {
-        private final float x;
-        private final float y;
-
-        public Point(final float x, final float y) {
-            this.x = x;
-            this.y = y;
-        }
-
-        public float x() {
-            return x;
-        }
-
-        public float y() {
-            return y;
-        }
-    }
-
-    /**
      * Triangulate a contour/polygon.
      *
      * @param contour the vertices of the polygon
@@ -196,5 +175,26 @@ public class Triangulate {
             }
         }
         return true;
+    }
+
+    /**
+     * Defines a point in 2D space.
+     */
+    public static class Point {
+        private final float x;
+        private final float y;
+
+        public Point(final float x, final float y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        public float x() {
+            return x;
+        }
+
+        public float y() {
+            return y;
+        }
     }
 }

@@ -17,7 +17,7 @@ import com.schneewittchen.rosandroid.model.entities.MasterEntity;
  * @modified by Nico Studt
  */
 @Dao
-public abstract class MasterDao implements BaseDao<MasterEntity>{
+public abstract class MasterDao implements BaseDao<MasterEntity> {
 
     @Query("SELECT * FROM master_table WHERE configId = :configId LIMIT 1")
     abstract LiveData<MasterEntity> getMaster(long configId);

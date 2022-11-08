@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
     <!-- "Mark Favorite", should appear as action button if possible -->
@@ -10,11 +9,12 @@
         android:icon="@drawable/ic_add_white_24dp"
         android:title="Hinzufuegen"
         app:iconTint="@color/whiteMedium"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="ifRoom" />
 
     <!-- Settings, should always be in the overflow -->
-    <item android:id="@+id/action_settings"
+    <item
+        android:id="@+id/action_settings"
         android:title="Einstellungen"
-        app:showAsAction="never"/>
+        app:showAsAction="never" />
 
 </menu>

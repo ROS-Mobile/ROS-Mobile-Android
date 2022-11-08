@@ -19,7 +19,7 @@ import com.schneewittchen.rosandroid.utility.Utils;
  * @version 1.0.0
  * @created on 08.03.21
  */
-public class Viz2DDetailVH  extends WidgetGroupViewHolder implements TextView.OnEditorActionListener {
+public class Viz2DDetailVH extends WidgetGroupViewHolder implements TextView.OnEditorActionListener {
 
     private TextInputEditText frameEditText;
 
@@ -45,7 +45,7 @@ public class Viz2DDetailVH  extends WidgetGroupViewHolder implements TextView.On
 
     @Override
     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-        switch (actionId){
+        switch (actionId) {
             case EditorInfo.IME_ACTION_DONE:
             case EditorInfo.IME_ACTION_NEXT:
             case EditorInfo.IME_ACTION_PREVIOUS:

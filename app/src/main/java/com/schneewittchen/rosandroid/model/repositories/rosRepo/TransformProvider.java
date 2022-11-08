@@ -22,7 +22,7 @@ public class TransformProvider {
 
 
     public static TransformProvider getInstance() {
-        if (instance == null)  {
+        if (instance == null) {
             instance = new TransformProvider();
         }
 

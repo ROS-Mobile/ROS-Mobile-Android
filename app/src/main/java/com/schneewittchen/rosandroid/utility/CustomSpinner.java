@@ -19,38 +19,13 @@ import androidx.appcompat.widget.AppCompatSpinner;
 
 public class CustomSpinner extends AppCompatSpinner implements AdapterView.OnItemSelectedListener {
 
-    /**
-     * An interface which a client of this Spinner could use to receive
-     * open/closed events for this Spinner.
-     */
-    public interface OnSpinnerEventsListener {
-
-        /**
-         * Callback triggered when the spinner was opened.
-         */
-        void onSpinnerOpened(CustomSpinner spinner);
-
-        /**
-         * Callback triggered when an item of the spinner was selected.
-         */
-        void onSpinnerItemSelected(CustomSpinner spinner, Integer position);
-
-        /**
-         * Callback triggered when the spinner was closed.
-         */
-        void onSpinnerClosed(CustomSpinner spinner);
-
-    }
-
-
     private OnSpinnerEventsListener mListener;
     private boolean mOpenInitiated = false;
-
-
     public CustomSpinner(Context context) {
         super(context);
         this.setOnItemSelectedListener(this);
     }
+
 
     public CustomSpinner(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -59,7 +34,6 @@ public class CustomSpinner extends AppCompatSpinner implements AdapterView.OnIte
     public CustomSpinner(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
-
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -89,7 +63,7 @@ public class CustomSpinner extends AppCompatSpinner implements AdapterView.OnIte
     }
 
     @Override
-    public void onWindowFocusChanged (boolean hasFocus) {
+    public void onWindowFocusChanged(boolean hasFocus) {
         if (hasBeenOpened() && hasFocus) {
             performClosedEvent();
         }
@@ -131,6 +105,29 @@ public class CustomSpinner extends AppCompatSpinner implements AdapterView.OnIte
      */
     public boolean hasBeenOpened() {
         return mOpenInitiated;
+    }
+
+    /**
+     * An interface which a client of this Spinner could use to receive
+     * open/closed events for this Spinner.
+     */
+    public interface OnSpinnerEventsListener {
+
+        /**
+         * Callback triggered when the spinner was opened.
+         */
+        void onSpinnerOpened(CustomSpinner spinner);
+
+        /**
+         * Callback triggered when an item of the spinner was selected.
+         */
+        void onSpinnerItemSelected(CustomSpinner spinner, Integer position);
+
+        /**
+         * Callback triggered when the spinner was closed.
+         */
+        void onSpinnerClosed(CustomSpinner spinner);
+
     }
 
 }

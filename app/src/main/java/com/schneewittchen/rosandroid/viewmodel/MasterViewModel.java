@@ -3,7 +3,6 @@ package com.schneewittchen.rosandroid.viewmodel;
 import android.app.Application;
 import android.content.Context;
 import android.net.wifi.WifiManager;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -37,10 +36,8 @@ public class MasterViewModel extends AndroidViewModel {
     private static final long MIN_HELP_TIMESPAM = 30 * 1000;
 
     private final RosDomain rosDomain;
-
-    private MutableLiveData<String> networkSSIDLiveData;
     private final LiveData<MasterEntity> currentMaster;
-
+    private MutableLiveData<String> networkSSIDLiveData;
     private long lastTimeHelpShowed;
 
 
@@ -99,11 +96,11 @@ public class MasterViewModel extends AndroidViewModel {
         return rosDomain.getRosConnection();
     }
 
-    public String setDeviceIp(String deviceIp){
+    public String setDeviceIp(String deviceIp) {
         return deviceIp;
     }
 
-    public LiveData<String> getCurrentNetworkSSID(){
+    public LiveData<String> getCurrentNetworkSSID() {
         if (networkSSIDLiveData == null) {
             networkSSIDLiveData = new MutableLiveData<>();
         }
@@ -117,7 +114,9 @@ public class MasterViewModel extends AndroidViewModel {
         return Utils.getIPAddressList(true);
     }
 
-    public String getIPAddress() {return Utils.getIPAddress(true); }
+    public String getIPAddress() {
+        return Utils.getIPAddress(true);
+    }
 
     private void setWifiSSID() {
         WifiManager wifiManager = (WifiManager) getApplication().getApplicationContext()

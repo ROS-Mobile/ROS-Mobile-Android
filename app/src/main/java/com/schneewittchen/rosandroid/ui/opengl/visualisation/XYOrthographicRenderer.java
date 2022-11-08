@@ -46,9 +46,9 @@ public class XYOrthographicRenderer implements GLSurfaceView.Renderer {
         this.view = view;
         int bgColor = view.getContext().getResources().getColor(R.color.bgColor);
 
-        this.bgR = Color.red(bgColor)/255f;
-        this.bgG = Color.green(bgColor)/255f;
-        this.bgB = Color.blue(bgColor)/255f;
+        this.bgR = Color.red(bgColor) / 255f;
+        this.bgG = Color.green(bgColor) / 255f;
+        this.bgB = Color.blue(bgColor) / 255f;
     }
 
 

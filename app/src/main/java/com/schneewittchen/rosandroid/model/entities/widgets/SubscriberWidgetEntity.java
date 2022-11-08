@@ -11,7 +11,7 @@ import com.schneewittchen.rosandroid.ui.general.Position;
  */
 public abstract class SubscriberWidgetEntity
         extends BaseEntity
-        implements ISubscriberEntity, IPositionEntity{
+        implements ISubscriberEntity, IPositionEntity {
 
     public int posX;
     public int posY;

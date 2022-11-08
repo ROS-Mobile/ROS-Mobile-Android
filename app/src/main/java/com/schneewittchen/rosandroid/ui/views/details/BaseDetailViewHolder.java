@@ -18,8 +18,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
 import com.schneewittchen.rosandroid.model.entities.widgets.IPositionEntity;
-import com.schneewittchen.rosandroid.ui.general.WidgetChangeListener;
 import com.schneewittchen.rosandroid.ui.general.Position;
+import com.schneewittchen.rosandroid.ui.general.WidgetChangeListener;
 import com.schneewittchen.rosandroid.utility.Utils;
 import com.schneewittchen.rosandroid.viewmodel.DetailsViewModel;
 
@@ -51,7 +51,7 @@ public abstract class BaseDetailViewHolder<T extends BaseEntity> extends Recycle
 
     protected T entity;
     protected DetailsViewModel mViewModel;
-    
+
 
     public BaseDetailViewHolder(@NonNull View view, WidgetChangeListener changeListener) {
         super(view);
@@ -62,7 +62,9 @@ public abstract class BaseDetailViewHolder<T extends BaseEntity> extends Recycle
 
 
     protected abstract void initView(View parentView);
+
     protected abstract void bindEntity(T entity);
+
     protected abstract void updateEntity();
 
 
@@ -88,16 +90,16 @@ public abstract class BaseDetailViewHolder<T extends BaseEntity> extends Recycle
 
 
     protected void baseInitView(View parentView) {
-        title           = parentView.findViewById(R.id.title);
-        updateButton    = parentView.findViewById(R.id.update_button);
-        openButton      = parentView.findViewById(R.id.open_button);
-        renameButton    = parentView.findViewById(R.id.rename_button);
-        viewBackground  = parentView.findViewById(R.id.view_background);
-        viewForeground  = parentView.findViewById(R.id.view_foreground);
-        xEdittext       = parentView.findViewById(R.id.x_edit_text);
-        yEdittext       = parentView.findViewById(R.id.y_edit_text);
-        widthEditText   = parentView.findViewById(R.id.width_edit_text);
-        heightEdittext  = parentView.findViewById(R.id.height_edit_text);
+        title = parentView.findViewById(R.id.title);
+        updateButton = parentView.findViewById(R.id.update_button);
+        openButton = parentView.findViewById(R.id.open_button);
+        renameButton = parentView.findViewById(R.id.rename_button);
+        viewBackground = parentView.findViewById(R.id.view_background);
+        viewForeground = parentView.findViewById(R.id.view_foreground);
+        xEdittext = parentView.findViewById(R.id.x_edit_text);
+        yEdittext = parentView.findViewById(R.id.y_edit_text);
+        widthEditText = parentView.findViewById(R.id.width_edit_text);
+        heightEdittext = parentView.findViewById(R.id.height_edit_text);
 
         xEdittext.setOnEditorActionListener(this);
         yEdittext.setOnEditorActionListener(this);
@@ -108,7 +110,7 @@ public abstract class BaseDetailViewHolder<T extends BaseEntity> extends Recycle
             if (detailContend.getVisibility() == View.GONE) {
                 detailContend.setVisibility(View.VISIBLE);
                 openButton.setImageResource(R.drawable.ic_expand_less_white_24dp);
-            }else{
+            } else {
                 detailContend.setVisibility(View.GONE);
                 openButton.setImageResource(R.drawable.ic_expand_more_white_24dp);
             }
@@ -128,7 +130,7 @@ public abstract class BaseDetailViewHolder<T extends BaseEntity> extends Recycle
 
         title.setText(entity.name);
 
-        Position position = ((IPositionEntity)entity).getPosition();
+        Position position = ((IPositionEntity) entity).getPosition();
 
         xEdittext.setText(String.valueOf(position.x));
         yEdittext.setText(String.valueOf(position.y));
@@ -145,12 +147,12 @@ public abstract class BaseDetailViewHolder<T extends BaseEntity> extends Recycle
         position.width = Integer.parseInt(widthEditText.getText().toString());
         position.height = Integer.parseInt(heightEdittext.getText().toString());
 
-        ((IPositionEntity)entity).setPosition(position);
+        ((IPositionEntity) entity).setPosition(position);
     }
 
     @Override
     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-        switch (actionId){
+        switch (actionId) {
             case EditorInfo.IME_ACTION_DONE:
             case EditorInfo.IME_ACTION_NEXT:
             case EditorInfo.IME_ACTION_PREVIOUS:
@@ -172,11 +174,11 @@ public abstract class BaseDetailViewHolder<T extends BaseEntity> extends Recycle
         input.setText(entity.name);
         input.setInputType(InputType.TYPE_CLASS_TEXT);
 
-        AlertDialog dialog =  new AlertDialog.Builder(context)
+        AlertDialog dialog = new AlertDialog.Builder(context)
                 .setTitle(R.string.rename_widget)
                 .setView(input)
                 .setPositiveButton(R.string.ok, (view, which) ->
-                    rename(input.getText().toString()))
+                        rename(input.getText().toString()))
                 .setNegativeButton(R.string.cancel, (view, which) -> view.cancel())
                 .create();
 

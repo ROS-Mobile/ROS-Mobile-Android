@@ -14,7 +14,7 @@ import android.graphics.Paint;
  * @updated on
  * @modified by
  */
-public  class TiledBitmap {
+public class TiledBitmap {
 
     private final Bitmap[][] mArray;    // array where chunks is stored
     private final int mWidth;           // original (full) width of source image
@@ -35,6 +35,23 @@ public  class TiledBitmap {
         mChunkHeight = options.chunkHeight;
     }
 
+    public static Bitmap[][] divideBitmap(Bitmap bitmap) {
+        return divideBitmap(new Options(bitmap, 100, 100));
+    }
+
+    public static Bitmap[][] divideBitmap(Options options) {
+        Bitmap[][] arr = new Bitmap[options.xCount][options.yCount];
+
+        for (int x = 0; x < options.xCount; ++x) {
+            for (int y = 0; y < options.yCount; ++y) {
+                int w = Math.min(options.chunkWidth, options.source.getWidth() - (x * options.chunkWidth));
+                int h = Math.min(options.chunkHeight, options.source.getHeight() - (y * options.chunkHeight));
+                arr[x][y] = Bitmap.createBitmap(options.source, x * options.chunkWidth, y * options.chunkHeight, w, h);
+            }
+        }
+
+        return arr;
+    }
 
     public int getWidth() {
         return mWidth;
@@ -53,8 +70,8 @@ public  class TiledBitmap {
     }
 
     /**
-     *  x, y are viewport coords on the image itself;
-     *  w, h are viewport's width and height.
+     * x, y are viewport coords on the image itself;
+     * w, h are viewport's width and height.
      */
     public void draw(Canvas canvas, int x, int y, int w, int h, Paint paint) {
         if (x >= getWidth() || y >= getHeight() || x + w <= 0 || y + h <= 0)
@@ -82,26 +99,6 @@ public  class TiledBitmap {
             }
         }
     }
-
-
-    public static Bitmap[][] divideBitmap(Bitmap bitmap) {
-        return divideBitmap(new Options(bitmap, 100, 100));
-    }
-
-    public static Bitmap[][] divideBitmap(Options options) {
-        Bitmap[][] arr = new Bitmap[options.xCount][options.yCount];
-
-        for (int x = 0; x < options.xCount; ++x) {
-            for (int y = 0; y < options.yCount; ++y) {
-                int w = Math.min(options.chunkWidth, options.source.getWidth() - (x * options.chunkWidth));
-                int h = Math.min(options.chunkHeight, options.source.getHeight() - (y * options.chunkHeight));
-                arr[x][y] = Bitmap.createBitmap(options.source, x * options.chunkWidth, y * options.chunkHeight, w, h);
-            }
-        }
-
-        return arr;
-    }
-
 
     public static final class Options {
         final int chunkWidth;

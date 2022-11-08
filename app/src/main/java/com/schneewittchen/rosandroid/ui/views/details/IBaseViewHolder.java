@@ -14,6 +14,8 @@ import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
 interface IBaseViewHolder {
 
     void baseInitView(View view);
+
     void baseBindEntity(BaseEntity entity);
+
     void baseUpdateEntity(BaseEntity entity);
 }

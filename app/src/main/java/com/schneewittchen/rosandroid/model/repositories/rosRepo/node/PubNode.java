@@ -61,9 +61,9 @@ public class PubNode extends AbstractNode {
     /**
      * Enable or disable immediate publishing.
      * In the enabled state the node will create und send a ros message as soon as
-     * @link #setData(Object) is called.
      *
      * @param flag Enable immediate publishing
+     * @link #setData(Object) is called.
      */
     public void setImmediatePublish(boolean flag) {
         this.immediatePublish = flag;

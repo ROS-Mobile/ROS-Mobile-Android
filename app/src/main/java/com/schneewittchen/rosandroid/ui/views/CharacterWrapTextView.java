@@ -2,8 +2,6 @@ package com.schneewittchen.rosandroid.ui.views;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
-
 
 import androidx.appcompat.widget.AppCompatTextView;
 
@@ -46,9 +44,9 @@ public class CharacterWrapTextView extends AppCompatTextView {
         String currentLine = "";
         int row = 0;
 
-        for (String part: parts) {
+        for (String part : parts) {
             if (currentLine.length() + ("/" + part).length() > maxEms) {
-                output += (row == 0? "" : "\n") +  currentLine;
+                output += (row == 0 ? "" : "\n") + currentLine;
                 row++;
                 currentLine = "";
 

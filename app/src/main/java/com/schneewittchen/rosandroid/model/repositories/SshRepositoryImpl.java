@@ -10,7 +10,6 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 
-
 import com.jcraft.jsch.ChannelShell;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
@@ -42,7 +41,8 @@ public class SshRepositoryImpl implements SshRepository {
 
     public static final String TAG = SshRepositoryImpl.class.getSimpleName();
     private static SshRepositoryImpl mInstance;
-
+    private final ConfigRepository configRepository;
+    private final LiveData<SSHEntity> currentSSH;
     JSch jsch;
     Session session;
     ChannelShell channelssh;
@@ -50,13 +50,8 @@ public class SshRepositoryImpl implements SshRepository {
     InputStream output_from_the_channel;
     PrintStream commander;
     BufferedReader br;
-
     MutableLiveData<String> outputData;
     MutableLiveData<Boolean> connected;
-
-    private final ConfigRepository configRepository;
-    private final LiveData<SSHEntity> currentSSH;
-
     // Generate Handler
     Handler mainHandler;
 
@@ -103,7 +98,7 @@ public class SshRepositoryImpl implements SshRepository {
 
     private void startSessionTask(String username, String password, String ip, int port) throws JSchException, IOException {
         // Check if session already running
-        if(session != null && session.isConnected()){
+        if (session != null && session.isConnected()) {
             Log.i(TAG, "Session is running already");
             return;
         }
@@ -152,7 +147,7 @@ public class SshRepositoryImpl implements SshRepository {
             Log.i(TAG, "looper session");
 
             // Remove ANSI control chars (Terminal VT 100)
-            line = line.replaceAll("\u001B\\[[\\d;]*[^\\d;]","");
+            line = line.replaceAll("\u001B\\[[\\d;]*[^\\d;]", "");
             final String finalLine = line;
 
             // Publish lineData to LiveData
@@ -213,7 +208,7 @@ public class SshRepositoryImpl implements SshRepository {
     public void updateSSH(SSHEntity ssh) {
         Log.i(TAG, "Update SSH");
 
-        if(ssh == null) {
+        if (ssh == null) {
             Log.i(TAG, "SSH is null");
         }
 
