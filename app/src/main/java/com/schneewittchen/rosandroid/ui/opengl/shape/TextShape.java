@@ -1,5 +1,6 @@
 package com.schneewittchen.rosandroid.ui.opengl.shape;
 
+import com.schneewittchen.rosandroid.ui.opengl.shape.texample.GLText;
 import com.schneewittchen.rosandroid.ui.opengl.visualisation.Vertices;
 import com.schneewittchen.rosandroid.ui.opengl.visualisation.VisualizationView;
 
@@ -7,17 +8,14 @@ import java.nio.FloatBuffer;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import uk.co.blogspot.fractiousg.texample.GLText;
-
 
 public class TextShape extends BaseShape {
 
     private final GLText glText;
     private final String text;
-
+    private final FloatBuffer lines;
     private float x;
     private float y;
-    private FloatBuffer lines;
 
 
     public TextShape(GLText glText, String text) {

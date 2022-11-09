@@ -201,7 +201,7 @@ public class XYOrthographicCamera {
     }
 
     public Transform toFrame(float x, float y) {
-        return toFrame((int)x, (int)y, this.frame);
+        return toFrame((int) x, (int) y, this.frame);
     }
 
     public GraphName getFrame() {
@@ -259,14 +259,14 @@ public class XYOrthographicCamera {
         jumpToFrame(GraphName.of(frame));
     }
 
-    public void setViewport(Viewport viewport) {
-        Preconditions.checkNotNull(viewport);
-        this.viewport = viewport;
-    }
-
     public Viewport getViewport() {
         Preconditions.checkNotNull(viewport);
         return viewport;
+    }
+
+    public void setViewport(Viewport viewport) {
+        Preconditions.checkNotNull(viewport);
+        this.viewport = viewport;
     }
 
     public Transform getCameraToRosTransform() {

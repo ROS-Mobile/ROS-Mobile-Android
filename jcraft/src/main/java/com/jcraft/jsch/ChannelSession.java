@@ -32,7 +32,7 @@ package com.jcraft.jsch;
 import java.util.*;
 
 class ChannelSession extends Channel{
-  private static byte[] _session=Util.str2byte("session");
+  private static final byte[] _session=Util.str2byte("session");
 
   protected boolean agent_forwarding=false;
   protected boolean xforwading=false;

@@ -26,7 +26,7 @@ import java.lang.reflect.Type;
 public class WidgetSerializationAdapter implements JsonSerializer<BaseEntity>, JsonDeserializer<BaseEntity> {
 
     private static final String CLASSNAME = "CLASSNAME";
-    private static final String INSTANCE  = "INSTANCE";
+    private static final String INSTANCE = "INSTANCE";
 
 
     @Override

@@ -26,6 +26,7 @@
     <!-- Buttons -->
     <string name="button_connect">Connect</string>
     <string name="button_send">Send</string>
+    <string name="viz_options_open_content">Show viz options</string>
 
     <!-- SSH Connection -->
     <string name="ssh_connection">SSH Connection Data</string>
@@ -65,6 +66,7 @@
     <string name="connected">Connected</string>
     <string name="disconnected">Disconnected</string>
     <string name="pending">Pending</string>
+    <string name="cancel">cancel</string>
 
     <!-- SSH Autocompletion -->
     <string-array name="ssh_autocmpletion">

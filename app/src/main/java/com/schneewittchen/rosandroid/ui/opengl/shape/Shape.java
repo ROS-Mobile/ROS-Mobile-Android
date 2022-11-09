@@ -31,24 +31,24 @@ import org.ros.rosjava_geometry.Transform;
 public interface Shape extends OpenGlDrawable {
 
     /**
-     * @param color the {@link ROSColor} of this {@link Shape}
-     */
-    void setColor(ROSColor color);
-
-    /**
      * @return the {@link ROSColor} of this {@link Shape}
      */
     ROSColor getColor();
 
     /**
-     * @param transform the {@link Transform} that will be applied to this {@link Shape}
-     *                  before it is drawn
+     * @param color the {@link ROSColor} of this {@link Shape}
      */
-    void setTransform(Transform transform);
+    void setColor(ROSColor color);
 
     /**
      * @return the {@link Transform} that will be applied to this {@link Shape}
      * before it is drawn
      */
     Transform getTransform();
+
+    /**
+     * @param transform the {@link Transform} that will be applied to this {@link Shape}
+     *                  before it is drawn
+     */
+    void setTransform(Transform transform);
 }

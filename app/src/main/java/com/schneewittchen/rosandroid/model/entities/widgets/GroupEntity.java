@@ -14,7 +14,7 @@ import com.schneewittchen.rosandroid.ui.general.Position;
 public class GroupEntity extends BaseEntity
         implements IPositionEntity,
         ISubscriberEntity,
-        IPublisherEntity{
+        IPublisherEntity {
 
     public int posX;
     public int posY;

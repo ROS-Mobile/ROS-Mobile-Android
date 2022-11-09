@@ -5,7 +5,6 @@ import android.view.View;
 import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
 
 
-
 /**
  * TODO: Description
  *
@@ -15,7 +14,7 @@ import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
  */
 public abstract class SilentWidgetViewHolder extends DetailViewHolder {
 
-    private WidgetViewHolder widgetViewHolder;
+    private final WidgetViewHolder widgetViewHolder;
 
 
     public SilentWidgetViewHolder() {

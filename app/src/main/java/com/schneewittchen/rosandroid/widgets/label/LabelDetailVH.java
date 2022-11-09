@@ -7,13 +7,8 @@ import android.widget.Spinner;
 
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
-import com.schneewittchen.rosandroid.ui.fragments.details.WidgetChangeListener;
-import com.schneewittchen.rosandroid.ui.views.details.BaseDetailViewHolder;
-import com.schneewittchen.rosandroid.ui.views.details.DetailViewHolder;
 import com.schneewittchen.rosandroid.ui.views.details.SilentWidgetViewHolder;
-import com.schneewittchen.rosandroid.ui.views.details.WidgetViewHolder;
 import com.schneewittchen.rosandroid.utility.Utils;
-import androidx.annotation.NonNull;
 
 /**
  * TODO: Description

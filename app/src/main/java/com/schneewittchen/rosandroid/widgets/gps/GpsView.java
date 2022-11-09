@@ -47,104 +47,97 @@ import sensor_msgs.NavSatFix;
 
 // TODO: Add maybe a button for getting back to gps position
 public class GpsView extends SubscriberWidgetView {
-    
-    public static final String TAG = GpsView.class.getSimpleName();
 
+    public static final String TAG = GpsView.class.getSimpleName();
+    private static final int NONE = 0;                // mode
+    private static final int DRAG = 1;
+    private static final int ZOOM = 2;
     // Open Street Map (OSM)
     private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
-    private MapView map = null;
-    private GeoPoint locationGeoPoint = new GeoPoint(53.872018, 10.704724);
-    private GeoPoint centerGeoPoint = new GeoPoint(53.872018, 10.704724);
+    private final GeoPoint locationGeoPoint = new GeoPoint(53.872018, 10.704724);
+    private final GeoPoint centerGeoPoint = new GeoPoint(53.872018, 10.704724);
+    private final double dragSensitivity = 0.05;
+    private final boolean hadLongPressed = false;
     IMapController mapController = null;
-
     // Rectangle Surrounding
     Paint paint;
     float cornerWidth;
-
     // Grid Map Information
     GpsData data;
-
+    private MapView map = null;
     // Zoom Parameters, TODO: Add this into details
     private double minZoom = 1;         // min. and max. zoom
     private double maxZoom = 18;
     private float zoomScale = 1;
     private float scaleFactor = 18;
-    private double dragSensitivity = 0.05;
     private ScaleGestureDetector detector;
-
-    private static int NONE = 0;                // mode
-    private static int DRAG = 1;
-    private static int ZOOM = 2;
     private int mode;
-
     private float startX = 0f;                  // finger position tracker
     private float startY = 0f;
-
     private float translateX = 0f;              // Amount of translation
     private float translateY = 0f;
     private double moveLat = 0;
     private double moveLon = 0;
-
-    private double accLat = 0;
-    private double accLon = 0;
-
-    private boolean hadLongPressed = false;
-
-
-    public GpsView(Context context) {
-        super(context);
-        init();
-    }
-
-    public GpsView(Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
-        init();
-    }
-    
-
-    private void init() {
-        this.cornerWidth = Utils.dpToPx(this.getContext(), 8);
-        
-        paint = new Paint();
-        paint.setColor(getResources().getColor(R.color.whiteHigh));
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(10);
-        
-        // OSM (initialize the map)
-        Context ctx = this.getContext();
-        Configuration.getInstance().load(ctx, PreferenceManager.getDefaultSharedPreferences(ctx));
-        
-        map = new MapView(this.getContext(), null, null);
-        map.setTileSource(TileSourceFactory.MAPNIK);
-        
-        requestPermissionsIfNecessary(new String[]{
-                // WRITE_EXTERNAL_STORAGE is required in order to show the map
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
-        });
-        
-        map.getZoomController().setVisibility(CustomZoomButtonsController.Visibility.ALWAYS);
-        map.setMultiTouchControls(true);
-        minZoom = map.getMinZoomLevel();
-        maxZoom = map.getMaxZoomLevel();
-        
-        // Map controller
-        mapController = map.getController();
-        
-        // Touch
-        detector = new ScaleGestureDetector(getContext(), new ScaleListener());
-    }
-
     final GestureDetector gestureDetector = new GestureDetector(new GestureDetector.SimpleOnGestureListener() {
         public void onLongPress(MotionEvent e) {
             moveLat = 0;
             moveLon = 0;
         }
     });
+    private double accLat = 0;
+    private double accLon = 0;
+
+    public GpsView(Context context) {
+        super(context);
+        init();
+    }
+
+
+    public GpsView(Context context, @Nullable AttributeSet attrs) {
+        super(context, attrs);
+        init();
+    }
+
+    private void init() {
+        this.cornerWidth = Utils.dpToPx(this.getContext(), 8);
+
+        paint = new Paint();
+        paint.setColor(getResources().getColor(R.color.whiteHigh));
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(10);
+
+        // OSM (initialize the map)
+        Context ctx = this.getContext();
+        Configuration.getInstance().load(ctx, PreferenceManager.getDefaultSharedPreferences(ctx));
+
+        map = new MapView(this.getContext(), null, null);
+        map.setTileSource(TileSourceFactory.MAPNIK);
+
+        requestPermissionsIfNecessary(new String[]{
+                // WRITE_EXTERNAL_STORAGE is required in order to show the map
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+        });
+
+        map.getZoomController().setVisibility(CustomZoomButtonsController.Visibility.ALWAYS);
+        map.setMultiTouchControls(true);
+        minZoom = map.getMinZoomLevel();
+        maxZoom = map.getMaxZoomLevel();
+
+        // Map controller
+        mapController = map.getController();
+
+        // Touch
+        detector = new ScaleGestureDetector(getContext(), new ScaleListener());
+    }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        if (this.editMode) {
+            return super.onTouchEvent(event);
+        }
+
         boolean dragged = false;
-      
+
         gestureDetector.onTouchEvent(event);
 
         switch (event.getAction() & MotionEvent.ACTION_MASK) {
@@ -153,7 +146,7 @@ public class GpsView extends SubscriberWidgetView {
                 startX = event.getX();
                 startY = event.getY();
                 break;
-                
+
             case MotionEvent.ACTION_MOVE:
                 translateX = event.getX() - startX;
                 translateY = event.getY() - startY;
@@ -164,28 +157,28 @@ public class GpsView extends SubscriberWidgetView {
                     dragged = true;
                 }
                 break;
-                
+
             case MotionEvent.ACTION_POINTER_DOWN:
                 mode = ZOOM;
                 break;
-                
+
             case MotionEvent.ACTION_UP:
                 mode = NONE;
                 dragged = false;
                 break;
-                
+
             case MotionEvent.ACTION_POINTER_UP:
                 mode = DRAG;
                 break;
         }
         // Activate Zoom
         detector.onTouchEvent(event);
-        
+
         // Redraw the canvas
         if ((mode == DRAG && scaleFactor != 1f && dragged) || mode == ZOOM) {
             this.invalidate();
         }
-        
+
         return true;
     }
 
@@ -211,8 +204,8 @@ public class GpsView extends SubscriberWidgetView {
         zoomScale = (float) Math.pow(2, scaleFactor);
 
         // Just separating acceleration component
-        accLat = (translateY/zoomScale) * dragSensitivity;
-        accLon = (translateX/zoomScale) * dragSensitivity;
+        accLat = (translateY / zoomScale) * dragSensitivity;
+        accLon = (translateX / zoomScale) * dragSensitivity;
 
         moveLat = moveLat + accLat;
         moveLon = moveLon - accLon;
@@ -237,14 +230,14 @@ public class GpsView extends SubscriberWidgetView {
         // Put a rectangle around
         canvas.drawRoundRect(left, right, width, height, cornerWidth, cornerWidth, paint);
     }
-    
+
     @Override
     public void onNewMessage(Message message) {
         this.data = new GpsData((NavSatFix) message);
-        
+
         locationGeoPoint.setLatitude(this.data.getLat());
         locationGeoPoint.setLongitude(this.data.getLon());
-        
+
         this.invalidate();
     }
 
@@ -260,7 +253,7 @@ public class GpsView extends SubscriberWidgetView {
     }
 
     private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
-        
+
         @Override
         public boolean onScale(ScaleGestureDetector detector) {
             scaleFactor *= detector.getScaleFactor();

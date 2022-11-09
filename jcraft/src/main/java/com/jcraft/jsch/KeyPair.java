@@ -158,7 +158,7 @@ public abstract class KeyPair{
     }
   }
 
-  private static byte[] space=Util.str2byte(" ");
+  private static final byte[] space=Util.str2byte(" ");
 
   abstract byte[] getKeyTypeName();
   public abstract int getKeyType();

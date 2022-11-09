@@ -53,10 +53,10 @@ public class ConfigListAdapter extends RecyclerView.Adapter<ConfigListAdapter.My
         return configNameList.size();
     }
 
-    public void setConfigs(List<String> newConfigs){
+    public void setConfigs(List<String> newConfigs) {
         this.configNameList.clear();
         this.configNameList.addAll(newConfigs);
-        
+
         notifyDataSetChanged();
     }
 

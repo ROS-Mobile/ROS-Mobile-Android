@@ -16,7 +16,7 @@ import javax.microedition.khronos.opengles.GL10;
  * @version 1.0.0
  * @created on 10.03.21
  */
-public abstract class SubscriberLayerView extends LayerView implements ISubscriberView{
+public abstract class SubscriberLayerView extends LayerView implements ISubscriberView {
 
     public SubscriberLayerView(Context context) {
         super(context);
@@ -29,5 +29,6 @@ public abstract class SubscriberLayerView extends LayerView implements ISubscrib
     }
 
     @Override
-    public void draw(VisualizationView view, GL10 gl) {}
+    public void draw(VisualizationView view, GL10 gl) {
+    }
 }

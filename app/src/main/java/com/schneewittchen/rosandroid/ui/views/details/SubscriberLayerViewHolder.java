@@ -16,8 +16,8 @@ import java.util.List;
  */
 public abstract class SubscriberLayerViewHolder extends DetailViewHolder {
 
-    private LayerViewHolder layerViewHolder;
-    private SubscriberViewHolder subscriberViewHolder;
+    private final LayerViewHolder layerViewHolder;
+    private final SubscriberViewHolder subscriberViewHolder;
 
 
     public SubscriberLayerViewHolder() {

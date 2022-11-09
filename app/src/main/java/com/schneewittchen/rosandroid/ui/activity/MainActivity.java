@@ -29,9 +29,8 @@ import com.schneewittchen.rosandroid.ui.fragments.main.OnBackPressedListener;
  */
 public class MainActivity extends AppCompatActivity {
 
-    public static String TAG = MainActivity.class.getSimpleName();
     private static final int LOCATION_PERM = 101;
-
+    public static String TAG = MainActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +49,8 @@ public class MainActivity extends AppCompatActivity {
 
                 if (savedInstanceState == null) {
                     getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.main_container, MainFragment.newInstance())
-                        .commitNow();
+                            .replace(R.id.main_container, MainFragment.newInstance())
+                            .commitNow();
                 }
             }
         } catch (PackageManager.NameNotFoundException e) {
@@ -62,13 +61,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed(){
+    public void onBackPressed() {
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
 
-        if(fragment instanceof OnBackPressedListener) {
-            OnBackPressedListener listener = (OnBackPressedListener)fragment;
+        if (fragment instanceof OnBackPressedListener) {
+            OnBackPressedListener listener = (OnBackPressedListener) fragment;
 
-            if (listener.onBackPressed()){
+            if (listener.onBackPressed()) {
                 return;
             }
         }
@@ -78,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void requestPermissions() {
-        String[] permissions = new String[] {
+        String[] permissions = new String[]{
                 Manifest.permission.ACCESS_NETWORK_STATE,
                 Manifest.permission.ACCESS_FINE_LOCATION};
         ActivityCompat.requestPermissions(this, permissions, LOCATION_PERM);
@@ -89,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
         SharedPreferences pref = getApplicationContext().getSharedPreferences("introPrefs", MODE_PRIVATE);
 
-        return (pref.getInt("VersionNumber", 0) != getPackageManager().getPackageInfo(getPackageName(),0).versionCode) ||
+        return (pref.getInt("VersionNumber", 0) != getPackageManager().getPackageInfo(getPackageName(), 0).versionCode) ||
                 !pref.getBoolean("CheckedIn", false);
 
     }

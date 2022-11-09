@@ -1,5 +1,4 @@
-<resources
-    xmlns:tools="http://schemas.android.com/tools">
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.NoActionBar">
@@ -19,35 +18,35 @@
         <item name= "colorSurface">@color/black16dp</item>
            -->
 
-        </style>
+    </style>
 
 
-        <style name="GalaxyZooThemeToolbarDarkOverflow" parent="Theme.AppCompat.NoActionBar">
-            <item name="android:textColorPrimary">@color/abc_primary_text_material_light</item>
-            <item name="actionMenuTextColor">@color/abc_primary_text_material_light</item>
-            <item name="android:textColorSecondary">@color/abc_secondary_text_material_light</item>
-        </style>
+    <style name="GalaxyZooThemeToolbarDarkOverflow" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:textColorPrimary">@color/abc_primary_text_material_light</item>
+        <item name="actionMenuTextColor">@color/abc_primary_text_material_light</item>
+        <item name="android:textColorSecondary">@color/abc_secondary_text_material_light</item>
+    </style>
 
-        <style name="MyOverflowMenu" parent="Widget.AppCompat.PopupMenu.Overflow">
-            <item name="overlapAnchor">false</item>
-            <item name="android:overlapAnchor" tools:ignore="NewApi">false</item>
-            <item name="android:dropDownVerticalOffset">8.0dp</item>
-        </style>
-
-
-        <!-- Snackbar styles -->
-
-        <style name="snackbar_style" parent="Widget.MaterialComponents.Snackbar">
-            <item name="android:background">@color/black08dp</item>
-        </style>
-
-        <style name="snackbar_text" parent="@style/Widget.MaterialComponents.Snackbar.TextView">
-            <item name="android:textColor">@color/whiteHigh</item>
-        </style>
-
-        <style name="snackbar_button" parent="@style/Widget.MaterialComponents.Button.TextButton.Snackbar">
-            <item name="android:textColor">@color/color_attention</item>
-        </style>
+    <style name="MyOverflowMenu" parent="Widget.AppCompat.PopupMenu.Overflow">
+        <item name="overlapAnchor">false</item>
+        <item name="android:overlapAnchor" tools:ignore="NewApi">false</item>
+        <item name="android:dropDownVerticalOffset">8.0dp</item>
+    </style>
 
 
-        </resources>
+    <!-- Snackbar styles -->
+
+    <style name="snackbar_style" parent="Widget.MaterialComponents.Snackbar">
+        <item name="android:background">@color/black08dp</item>
+    </style>
+
+    <style name="snackbar_text" parent="@style/Widget.MaterialComponents.Snackbar.TextView">
+        <item name="android:textColor">@color/whiteHigh</item>
+    </style>
+
+    <style name="snackbar_button" parent="@style/Widget.MaterialComponents.Button.TextButton.Snackbar">
+        <item name="android:textColor">@color/color_attention</item>
+    </style>
+
+
+</resources>

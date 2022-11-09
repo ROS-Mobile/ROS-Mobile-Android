@@ -20,8 +20,8 @@ import com.schneewittchen.rosandroid.utility.Utils;
  */
 class LayerViewHolder implements IBaseViewHolder, TextView.OnEditorActionListener {
 
+    private final DetailViewHolder parentViewHolder;
     private EditText nameEdittext;
-    private DetailViewHolder parentViewHolder;
 
 
     public LayerViewHolder(DetailViewHolder parentViewHolder) {

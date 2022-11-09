@@ -1,15 +1,13 @@
 package com.schneewittchen.rosandroid.model.db;
 
-import android.util.Log;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.room.Dao;
 import androidx.room.Query;
 
+import com.schneewittchen.rosandroid.model.entities.WidgetStorageData;
 import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
 import com.schneewittchen.rosandroid.model.general.GsonWidgetParser;
-import com.schneewittchen.rosandroid.model.entities.WidgetStorageData;
 
 import java.util.List;
 
@@ -26,7 +24,7 @@ import java.util.List;
  * @modified by Nico Studt
  */
 @Dao
-public abstract class WidgetDao implements BaseDao<WidgetStorageData>{
+public abstract class WidgetDao implements BaseDao<WidgetStorageData> {
 
     public static String TAG = WidgetDao.class.getSimpleName();
 
@@ -37,7 +35,7 @@ public abstract class WidgetDao implements BaseDao<WidgetStorageData>{
 
     @Query("DELETE FROM widget_table WHERE id = :id")
     abstract int deleteById(long id);
-    
+
     @Query("DELETE FROM widget_table WHERE widget_config_id = :id")
     abstract int deleteWithConfigId(long id);
 

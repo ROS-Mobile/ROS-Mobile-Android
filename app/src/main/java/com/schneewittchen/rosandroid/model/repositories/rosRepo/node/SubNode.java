@@ -1,6 +1,5 @@
 package com.schneewittchen.rosandroid.model.repositories.rosRepo.node;
 
-import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.RosData;
 
 import org.ros.internal.message.Message;
@@ -39,7 +38,7 @@ public class SubNode extends AbstractNode {
                 listener.onNewMessage(lastRosData);
             });
 
-        } catch(Exception e) {
+        } catch (Exception e) {
             if (this.widget != null) {
                 this.widget.validMessage = false;
             }
@@ -48,7 +47,7 @@ public class SubNode extends AbstractNode {
 
     }
 
-    public interface NodeListener  {
+    public interface NodeListener {
         void onNewMessage(RosData message);
     }
 }

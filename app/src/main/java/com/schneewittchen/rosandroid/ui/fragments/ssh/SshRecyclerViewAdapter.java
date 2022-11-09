@@ -24,7 +24,7 @@ public class SshRecyclerViewAdapter extends RecyclerView.Adapter<SshRecyclerView
 
     @Override
     public SshRecyclerViewAdapter.SshViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        TextView v = (TextView)  LayoutInflater.from(parent.getContext())
+        TextView v = (TextView) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.ssh_text_view, parent, false);
         return new SshViewHolder(v);
     }
@@ -45,7 +45,7 @@ public class SshRecyclerViewAdapter extends RecyclerView.Adapter<SshRecyclerView
             dataset.remove(0);
         }
 
-        this.notifyItemInserted(dataset.size()-1);
+        this.notifyItemInserted(dataset.size() - 1);
     }
 
     // Return the size of your dataset (invoked by the layout manager)
@@ -61,7 +61,7 @@ public class SshRecyclerViewAdapter extends RecyclerView.Adapter<SshRecyclerView
      * you provide access to all the views for a data item in a view holder.
      */
     public static class SshViewHolder extends RecyclerView.ViewHolder {
-        
+
         // each data item is just a string in this case
         public TextView textView;
 

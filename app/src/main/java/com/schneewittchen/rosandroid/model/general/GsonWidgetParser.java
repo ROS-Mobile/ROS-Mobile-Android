@@ -27,6 +27,13 @@ public class GsonWidgetParser {
     private final Gson gson;
 
 
+    public GsonWidgetParser() {
+        gson = new GsonBuilder()
+                .registerTypeAdapter(BaseEntity.class, new WidgetSerializationAdapter())
+                .setPrettyPrinting()
+                .create();
+    }
+
     public static GsonWidgetParser getInstance() {
         if (instance == null) {
             instance = new GsonWidgetParser();
@@ -35,16 +42,9 @@ public class GsonWidgetParser {
         return instance;
     }
 
-
-    public GsonWidgetParser() {
-        gson = new GsonBuilder()
-                .registerTypeAdapter(BaseEntity.class, new WidgetSerializationAdapter())
-                .setPrettyPrinting()
-                .create();
-    }
-
     /**
      * Convert a Widget Storage Object list into a Base Widget list.
+     *
      * @param storageDataList Storage data list to convert
      * @return Converted widget list
      */
@@ -52,7 +52,7 @@ public class GsonWidgetParser {
         List<BaseEntity> widgets = new ArrayList<>();
 
         // Convert each storage object to a widget
-        for (WidgetStorageData storageData: storageDataList) {
+        for (WidgetStorageData storageData : storageDataList) {
             BaseEntity widget = convert(storageData);
 
             if (widget != null) {
@@ -65,6 +65,7 @@ public class GsonWidgetParser {
 
     /**
      * Convert a Widget Storage Object into a Base Widget.
+     *
      * @param storageData Storage data to convert
      * @return Converted widget
      */
@@ -86,6 +87,7 @@ public class GsonWidgetParser {
 
     /**
      * Convert a Base Widget into a widget storage object.
+     *
      * @param widget Widget to convert
      * @return Converted storage data
      */

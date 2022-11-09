@@ -22,7 +22,7 @@ public class ButtonData extends BaseData {
 
     public boolean pressed;
 
-    public  ButtonData(boolean pressed) {
+    public ButtonData(boolean pressed) {
         this.pressed = pressed;
     }
 

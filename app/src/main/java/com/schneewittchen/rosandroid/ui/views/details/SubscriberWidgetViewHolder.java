@@ -16,8 +16,8 @@ import java.util.List;
  */
 public abstract class SubscriberWidgetViewHolder extends DetailViewHolder {
 
-    private WidgetViewHolder widgetViewHolder;
-    private SubscriberViewHolder subscriberViewHolder;
+    private final WidgetViewHolder widgetViewHolder;
+    private final SubscriberViewHolder subscriberViewHolder;
 
 
     public SubscriberWidgetViewHolder() {

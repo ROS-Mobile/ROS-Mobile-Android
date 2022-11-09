@@ -36,7 +36,7 @@ public class GridMapView extends SubscriberLayerView {
 
     private static final int COLOR_UNKNOWN = 0xff888888;
 
-    private List<Tile> tiles;
+    private final List<Tile> tiles;
     private GL10 previousGl;
     private int[] colorMap;
 
@@ -53,7 +53,7 @@ public class GridMapView extends SubscriberLayerView {
 
         colorMap = new int[101];
         for (int i = 0; i < 101; i++) {
-            float fraction = (float)i/101;
+            float fraction = (float) i / 101;
             colorMap[i] = colorLow.interpolate(colorHigh, fraction).toInt();
         }
     }

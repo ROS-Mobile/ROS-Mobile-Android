@@ -1,7 +1,5 @@
 package com.schneewittchen.rosandroid.widgets.debug;
 
-import android.util.Log;
-
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.node.BaseData;
 
 import org.apache.commons.lang.StringUtils;
@@ -26,8 +24,8 @@ import java.util.List;
 public class DebugData extends BaseData {
 
     public static final String TAG = DebugData.class.getSimpleName();
+    private final ArrayList<String> content;
     public String value;
-    private ArrayList<String> content;
 
 
     public DebugData(Message message) {
@@ -42,7 +40,7 @@ public class DebugData extends BaseData {
     private void msgToString(Message message, int level) {
         List<Field> fields = message.toRawMessage().getFields();
 
-        for(Field field: fields) {
+        for (Field field : fields) {
             fieldToString(field, level);
         }
     }
@@ -54,8 +52,8 @@ public class DebugData extends BaseData {
         Object value = field.getValue();
 
         if (field instanceof ListField) {
-            for (Object o: ((ListField) field).getValue()) {
-                String listPrefix = StringUtils.repeat("\t", level+1) + "-";
+            for (Object o : ((ListField) field).getValue()) {
+                String listPrefix = StringUtils.repeat("\t", level + 1) + "-";
                 content.add(listPrefix);
 
                 if (o instanceof String) {
@@ -65,11 +63,11 @@ public class DebugData extends BaseData {
                 }
             }
 
-        }else if (value instanceof Field) {
+        } else if (value instanceof Field) {
             fieldToString(field, level + 1);
 
         } else if (value instanceof Message) {
-            msgToString((Message)value, level + 1);
+            msgToString((Message) value, level + 1);
 
         } else {
             String valueStr;
@@ -79,7 +77,7 @@ public class DebugData extends BaseData {
                 int length = Array.getLength(value);
                 valueStr = "[";
 
-                for(int i = 0; i < length; i++){
+                for (int i = 0; i < length; i++) {
                     if (i > 0)
                         valueStr += ", ";
 
@@ -93,8 +91,8 @@ public class DebugData extends BaseData {
                 valueStr = String.valueOf(value);
             }
 
-            String last = content.get(content.size() -1);
-            content.set(content.size() -1, last + " " + valueStr);
+            String last = content.get(content.size() - 1);
+            content.set(content.size() - 1, last + " " + valueStr);
         }
 
     }
@@ -103,7 +101,7 @@ public class DebugData extends BaseData {
         String loopDelim = "";
         StringBuilder out = new StringBuilder();
 
-        for(String s : content) {
+        for (String s : content) {
             out.append(loopDelim);
             out.append(s);
 

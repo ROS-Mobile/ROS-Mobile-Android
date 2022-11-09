@@ -57,7 +57,7 @@ public class ButtonDetailVH extends PublisherWidgetViewHolder {
 
     @Override
     protected void updateEntity(BaseEntity entity) {
-        ButtonEntity buttonEntity = (ButtonEntity)entity;
+        ButtonEntity buttonEntity = (ButtonEntity) entity;
 
         buttonEntity.text = textText.getText().toString();
         String degrees = rotationSpinner.getSelectedItem().toString();

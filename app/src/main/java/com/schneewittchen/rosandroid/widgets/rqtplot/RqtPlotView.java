@@ -16,7 +16,6 @@ import org.ros.internal.message.Message;
 import org.ros.internal.message.field.Field;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import javax.annotation.Nullable;
 
@@ -60,7 +59,7 @@ public class RqtPlotView extends SubscriberWidgetView {
         RqtPlotEntity entity = (RqtPlotEntity) widgetEntity;
 
         subPaths = new ArrayList<>();
-        for (String subPath: entity.fieldPath.split("/")) {
+        for (String subPath : entity.fieldPath.split("/")) {
             if (!subPath.isEmpty()) {
                 subPaths.add(subPath.trim().toLowerCase());
             }
@@ -72,6 +71,9 @@ public class RqtPlotView extends SubscriberWidgetView {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        if (this.editMode) {
+            return super.onTouchEvent(event);
+        }
         scaleGestureDetector.onTouchEvent(event);
         return true;
     }
@@ -84,7 +86,7 @@ public class RqtPlotView extends SubscriberWidgetView {
         yAxis = new YAxis(textSize);
 
         data = new PlotDataList();
-        data.setMaxTime(xAxis.getScale()*1.5f);
+        data.setMaxTime(xAxis.getScale() * 1.5f);
 
         scaleGestureDetector = new ScaleGestureDetector(this.getContext(), new ScaleListener());
 
@@ -110,11 +112,11 @@ public class RqtPlotView extends SubscriberWidgetView {
                 String path = subPaths.get(i);
 
                 // Check if last subPath
-                if (i == subPaths.size() -1) {
+                if (i == subPaths.size() - 1) {
                     Float value = null;
 
                     // Find value and cast to float
-                    for (Field field: message.toRawMessage().getFields()) {
+                    for (Field field : message.toRawMessage().getFields()) {
                         if (field.getName().equals(path)) {
                             value = ((Number) field.getValue()).floatValue();
                             break;
@@ -145,14 +147,14 @@ public class RqtPlotView extends SubscriberWidgetView {
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
+    public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
         float w = getWidth();
         float h = getHeight();
 
         // Draw background
-        canvas.drawRect(0, 0, w,  h, backgroundPaint);
+        canvas.drawRect(0, 0, w, h, backgroundPaint);
 
         xAxis.draw(canvas);
         yAxis.draw(canvas);
@@ -160,9 +162,9 @@ public class RqtPlotView extends SubscriberWidgetView {
         // Draw path
         if (data.size() < 2) return;
 
-        for (int i = 0; i < data.size()-1; i++) {
+        for (int i = 0; i < data.size() - 1; i++) {
             PlotDataList.PlotData now = data.get(i);
-            PlotDataList.PlotData next = data.get(i+1);
+            PlotDataList.PlotData next = data.get(i + 1);
 
             float xNow = xAxis.getPos(now, w);
             float yNow = yAxis.getPos(now, h);
@@ -180,7 +182,7 @@ public class RqtPlotView extends SubscriberWidgetView {
         @Override
         public boolean onScale(ScaleGestureDetector detector) {
             xAxis.scale(detector.getScaleFactor());
-            data.setMaxTime(xAxis.getScale()*1.5f);
+            data.setMaxTime(xAxis.getScale() * 1.5f);
             invalidate();
             return true;
         }

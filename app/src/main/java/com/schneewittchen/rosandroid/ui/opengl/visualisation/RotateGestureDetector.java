@@ -28,22 +28,13 @@ import org.ros.math.RosMath;
 public class RotateGestureDetector {
 
 
-    public interface OnRotateGestureListener {
-        boolean onRotate(MotionEvent event1, MotionEvent event2, double deltaAngle);
-    }
-
-
     private static final double MAX_DELTA_ANGLE = 1e-1;
-
     private final OnRotateGestureListener listener;
-
     private MotionEvent previousMotionEvent;
-
 
     public RotateGestureDetector(OnRotateGestureListener listener) {
         this.listener = listener;
     }
-
 
     private double angle(MotionEvent event) {
         double deltaX = (event.getX(0) - event.getX(1));
@@ -69,5 +60,9 @@ public class RotateGestureDetector {
         previousMotionEvent = MotionEvent.obtain(event);
 
         return result;
+    }
+
+    public interface OnRotateGestureListener {
+        boolean onRotate(MotionEvent event1, MotionEvent event2, double deltaAngle);
     }
 }

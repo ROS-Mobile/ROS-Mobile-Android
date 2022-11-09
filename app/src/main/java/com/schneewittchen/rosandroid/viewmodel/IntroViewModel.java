@@ -11,8 +11,6 @@ import com.schneewittchen.rosandroid.model.repositories.ConfigRepository;
 import com.schneewittchen.rosandroid.model.repositories.ConfigRepositoryImpl;
 import com.schneewittchen.rosandroid.ui.fragments.intro.ScreenItem;
 
-import org.apache.commons.lang.ArrayUtils;
-
 import java.util.ArrayList;
 import java.util.List;
 

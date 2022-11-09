@@ -59,7 +59,7 @@ public class GZIPHeader implements Cloneable {
   public static final byte OS_UNKNOWN = (byte) 0xff;
 
   boolean text = false;
-  private boolean fhcrc = false;
+  private final boolean fhcrc = false;
   long time;
   int xflags;
   int os = 255;

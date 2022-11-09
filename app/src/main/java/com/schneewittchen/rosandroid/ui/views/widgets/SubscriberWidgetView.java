@@ -13,7 +13,7 @@ import org.ros.internal.message.Message;
  * @version 1.0.0
  * @created on 10.03.21
  */
-public abstract class SubscriberWidgetView extends WidgetView implements ISubscriberView{
+public abstract class SubscriberWidgetView extends WidgetView implements ISubscriberView {
 
 
     public SubscriberWidgetView(Context context) {

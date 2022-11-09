@@ -49,11 +49,9 @@ import java.util.concurrent.ScheduledExecutorService;
  */
 public class NodeMainExecutorService extends Service implements NodeMainExecutor {
 
-    private static final String TAG = "NodeMainExecutorService";
-
     public static final String ACTION_START = "org.ros.android.ACTION_START_NODE_RUNNER_SERVICE";
     public static final String ACTION_SHUTDOWN = "org.ros.android.ACTION_SHUTDOWN_NODE_RUNNER_SERVICE";
-
+    private static final String TAG = "NodeMainExecutorService";
     private final NodeMainExecutor nodeMainExecutor;
     private final IBinder binder;
     private final ListenerGroup<NodeMainExecutorServiceListener> listeners;
@@ -77,8 +75,8 @@ public class NodeMainExecutorService extends Service implements NodeMainExecutor
         PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
         assert powerManager != null;
 
-        wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "ROSANDROID:" +TAG);
-        wakeLock.acquire(10*60*1000L /*10 minutes*/);
+        wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "ROSANDROID:" + TAG);
+        wakeLock.acquire(10 * 60 * 1000L /*10 minutes*/);
 
         int wifiLockType = WifiManager.WIFI_MODE_FULL;
 
@@ -179,14 +177,13 @@ public class NodeMainExecutorService extends Service implements NodeMainExecutor
         masterUri = uri;
     }
 
-    public void setRosHostname(String hostname) {
-        rosHostname = hostname;
-    }
-
     public String getRosHostname() {
         return rosHostname;
     }
 
+    public void setRosHostname(String hostname) {
+        rosHostname = hostname;
+    }
 
     /**
      * Class for clients to access. Because we know this service always runs in

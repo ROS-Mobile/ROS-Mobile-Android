@@ -50,8 +50,8 @@ public interface IdentityRepository {
    * whenever they are de-ciphered.
    */
   class Wrapper implements IdentityRepository {
-    private IdentityRepository ir;
-    private Vector cache = new Vector();
+    private final IdentityRepository ir;
+    private final Vector cache = new Vector();
     private boolean keep_in_cache = false;
     Wrapper(IdentityRepository ir){
       this(ir, false);

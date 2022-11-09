@@ -11,10 +11,10 @@ import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
+import androidx.annotation.Nullable;
+
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.ui.views.widgets.PublisherWidgetView;
-
-import androidx.annotation.Nullable;
 
 
 /**
@@ -67,6 +67,10 @@ public class ButtonView extends PublisherWidgetView {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        if (this.editMode) {
+            return super.onTouchEvent(event);
+        }
+
         switch (event.getActionMasked()) {
             case MotionEvent.ACTION_UP:
                 buttonPaint.setColor(getResources().getColor(R.color.colorPrimary));
@@ -86,6 +90,8 @@ public class ButtonView extends PublisherWidgetView {
 
     @Override
     public void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+
         float width = getWidth();
         float height = getHeight();
         float textLayoutWidth = width;

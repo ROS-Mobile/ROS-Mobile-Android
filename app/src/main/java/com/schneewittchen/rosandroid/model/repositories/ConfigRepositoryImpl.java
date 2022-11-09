@@ -14,11 +14,11 @@ import com.schneewittchen.rosandroid.model.db.DataStorage;
 import com.schneewittchen.rosandroid.model.entities.ConfigEntity;
 import com.schneewittchen.rosandroid.model.entities.MasterEntity;
 import com.schneewittchen.rosandroid.model.entities.SSHEntity;
+import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
 import com.schneewittchen.rosandroid.model.entities.widgets.I2DLayerEntity;
 import com.schneewittchen.rosandroid.utility.Constants;
 import com.schneewittchen.rosandroid.utility.LambdaTask;
 import com.schneewittchen.rosandroid.utility.Utils;
-import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
 
 import java.util.List;
 import java.util.Locale;

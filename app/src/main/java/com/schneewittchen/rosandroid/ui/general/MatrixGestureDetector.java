@@ -16,26 +16,19 @@ import android.view.MotionEvent;
 public class MatrixGestureDetector {
 
     private static final String TAG = "MatrixGestureDetector";
-
-    private int ptpIdx = 0;
     private final Matrix mTempMatrix = new Matrix();
     private final Matrix mMatrix;
     private final OnMatrixChangeListener mListener;
     private final float[] mSrc = new float[4];
     private final float[] mDst = new float[4];
+    private int ptpIdx = 0;
     private int mCount;
-
-
-    public interface OnMatrixChangeListener {
-        void onChange(Matrix matrix);
-    }
 
 
     public MatrixGestureDetector(Matrix matrix, MatrixGestureDetector.OnMatrixChangeListener listener) {
         this.mMatrix = matrix;
         this.mListener = listener;
     }
-
 
     public void onTouchEvent(MotionEvent event) {
         if (event.getPointerCount() > 2) {
@@ -65,7 +58,7 @@ public class MatrixGestureDetector {
                 mTempMatrix.setPolyToPoly(mSrc, ptpIdx, mDst, ptpIdx, mCount);
                 mMatrix.postConcat(mTempMatrix);
 
-                if(mListener != null) {
+                if (mListener != null) {
                     mListener.onChange(mMatrix);
                 }
 
@@ -78,5 +71,10 @@ public class MatrixGestureDetector {
                 mCount--;
                 break;
         }
+    }
+
+
+    public interface OnMatrixChangeListener {
+        void onChange(Matrix matrix);
     }
 }

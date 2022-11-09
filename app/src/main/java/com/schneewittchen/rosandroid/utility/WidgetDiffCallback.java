@@ -16,7 +16,7 @@ import java.util.List;
  * @updated on 24.09.20
  * @modified by Nico Studt
  */
-public class WidgetDiffCallback extends DiffUtil.Callback{
+public class WidgetDiffCallback extends DiffUtil.Callback {
 
     public static String TAG = WidgetDiffCallback.class.getSimpleName();
 

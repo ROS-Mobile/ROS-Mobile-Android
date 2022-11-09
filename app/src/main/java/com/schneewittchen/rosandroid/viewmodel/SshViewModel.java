@@ -22,8 +22,8 @@ import com.schneewittchen.rosandroid.model.repositories.SshRepositoryImpl;
 
 public class SshViewModel extends AndroidViewModel {
 
-    SshRepositoryImpl sshRepositoryImpl;
     private final LiveData<SSHEntity> currentSSH;
+    SshRepositoryImpl sshRepositoryImpl;
 
 
     public SshViewModel(@NonNull Application application) {
@@ -77,7 +77,9 @@ public class SshViewModel extends AndroidViewModel {
         sshRepositoryImpl.sendMessage(message);
     }
 
-    public void abortAction() {sshRepositoryImpl.abort();}
+    public void abortAction() {
+        sshRepositoryImpl.abort();
+    }
 
     public LiveData<Boolean> isConnected() {
         return sshRepositoryImpl.isConnected();

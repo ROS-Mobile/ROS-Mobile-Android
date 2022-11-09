@@ -69,7 +69,7 @@ public class ZOutputStream extends FilterOutputStream {
     compress=true;
   }
 
-  private byte[] buf1 = new byte[1];
+  private final byte[] buf1 = new byte[1];
   public void write(int b) throws IOException {
     buf1[0]=(byte)b;
     write(buf1, 0, 1);

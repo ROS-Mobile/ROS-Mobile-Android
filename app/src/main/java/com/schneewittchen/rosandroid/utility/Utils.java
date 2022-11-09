@@ -18,7 +18,6 @@ import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.net.ConnectException;
@@ -62,9 +61,11 @@ public class Utils {
         final Rect screen = new Rect(0, 0, width, height);
         return actualPosition.intersect(screen);
     }
+
     /**
      * Get a string resource with its identifier.
-     * @param context Current context
+     *
+     * @param context      Current context
      * @param resourceName Identifier
      * @return String resource
      */
@@ -92,19 +93,19 @@ public class Utils {
 
     public static float cmToPx(Context context, float cm) {
         DisplayMetrics dm = context.getResources().getDisplayMetrics();
-        float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_MM, cm*10, dm);
+        float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_MM, cm * 10, dm);
 
         return px;
     }
 
-    public static float dpToPx(Context context, float dp){
+    public static float dpToPx(Context context, float dp) {
         DisplayMetrics dm = context.getResources().getDisplayMetrics();
         float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, dm);
 
         return px;
     }
 
-    public static Object getObjectFromClassName(String relativeClassPath){
+    public static Object getObjectFromClassName(String relativeClassPath) {
         String classPath = BuildConfig.APPLICATION_ID + relativeClassPath;
 
         try {
@@ -130,12 +131,13 @@ public class Utils {
 
     /**
      * Convert byte array to hex string
+     *
      * @param bytes toConvert
      * @return hexValue
      */
     public static String bytesToHex(byte[] bytes) {
         StringBuilder sbuf = new StringBuilder();
-        for(int idx=0; idx < bytes.length; idx++) {
+        for (int idx = 0; idx < bytes.length; idx++) {
             int intVal = bytes[idx] & 0xff;
             if (intVal < 0x10) sbuf.append("0");
             sbuf.append(Integer.toHexString(intVal).toUpperCase());
@@ -145,46 +147,56 @@ public class Utils {
 
     /**
      * Get utf8 byte array.
+     *
      * @param str which to be converted
-     * @return  array of NULL if error was found
+     * @return array of NULL if error was found
      */
     public static byte[] getUTF8Bytes(String str) {
-        try { return str.getBytes(StandardCharsets.UTF_8); } catch (Exception ex) { return null; }
+        try {
+            return str.getBytes(StandardCharsets.UTF_8);
+        } catch (Exception ex) {
+            return null;
+        }
     }
 
     /**
      * Load UTF8withBOM or any ansi text file.
+     *
      * @param filename which to be converted to string
      * @return String value of File
      * @throws java.io.IOException if error occurs
      */
     public static String loadFileAsString(String filename) throws java.io.IOException {
-        final int BUFLEN=1024;
+        final int BUFLEN = 1024;
         BufferedInputStream is = new BufferedInputStream(new FileInputStream(filename), BUFLEN);
         try {
             ByteArrayOutputStream baos = new ByteArrayOutputStream(BUFLEN);
             byte[] bytes = new byte[BUFLEN];
-            boolean isUTF8=false;
-            int read,count=0;
-            while((read=is.read(bytes)) != -1) {
-                if (count==0 && bytes[0]==(byte)0xEF && bytes[1]==(byte)0xBB && bytes[2]==(byte)0xBF ) {
-                    isUTF8=true;
-                    baos.write(bytes, 3, read-3); // drop UTF8 bom marker
+            boolean isUTF8 = false;
+            int read, count = 0;
+            while ((read = is.read(bytes)) != -1) {
+                if (count == 0 && bytes[0] == (byte) 0xEF && bytes[1] == (byte) 0xBB && bytes[2] == (byte) 0xBF) {
+                    isUTF8 = true;
+                    baos.write(bytes, 3, read - 3); // drop UTF8 bom marker
                 } else {
                     baos.write(bytes, 0, read);
                 }
-                count+=read;
+                count += read;
             }
-            return isUTF8 ? new String(baos.toByteArray(), StandardCharsets.UTF_8) : new String(baos.toByteArray());
+            return isUTF8 ? new String(baos.toByteArray(), StandardCharsets.UTF_8) : baos.toString();
         } finally {
-            try{ is.close(); } catch(Exception ignored){}
+            try {
+                is.close();
+            } catch (Exception ignored) {
+            }
         }
     }
 
     /**
      * Returns MAC address of the given interface name.
+     *
      * @param interfaceName eth0, wlan0 or NULL=use first interface
-     * @return  mac address or empty string
+     * @return mac address or empty string
      */
     public static String getMACAddress(String interfaceName) {
         try {
@@ -194,13 +206,14 @@ public class Utils {
                     if (!intf.getName().equalsIgnoreCase(interfaceName)) continue;
                 }
                 byte[] mac = intf.getHardwareAddress();
-                if (mac==null) return "";
+                if (mac == null) return "";
                 StringBuilder buf = new StringBuilder();
-                for (byte aMac : mac) buf.append(String.format("%02X:",aMac));
-                if (buf.length()>0) buf.deleteCharAt(buf.length()-1);
+                for (byte aMac : mac) buf.append(String.format("%02X:", aMac));
+                if (buf.length() > 0) buf.deleteCharAt(buf.length() - 1);
                 return buf.toString();
             }
-        } catch (Exception ignored) { } // for now eat exceptions
+        } catch (Exception ignored) {
+        } // for now eat exceptions
         return "";
         /*try {
             // this is so Linux hack
@@ -212,8 +225,9 @@ public class Utils {
 
     /**
      * Get IP address from first non-localhost interface
-     * @param useIPv4   true=return ipv4, false=return ipv6
-     * @return  address or empty string
+     *
+     * @param useIPv4 true=return ipv4, false=return ipv6
+     * @return address or empty string
      */
     public static String getIPAddress(boolean useIPv4) {
         try {
@@ -237,13 +251,14 @@ public class Utils {
 
                             if (!isIPv4) {
                                 int delim = sAddr.indexOf('%'); // drop ip6 zone suffix
-                                return delim<0 ? sAddr.toUpperCase() : sAddr.substring(0, delim).toUpperCase();
+                                return delim < 0 ? sAddr.toUpperCase() : sAddr.substring(0, delim).toUpperCase();
                             }
                         }
                     }
                 }
             }
-        } catch (Exception ignored) { } // for now eat exceptions
+        } catch (Exception ignored) {
+        } // for now eat exceptions
 
         return "";
     }
@@ -251,8 +266,9 @@ public class Utils {
 
     /**
      * Get IP address from first non-localhost interface
-     * @param useIPv4   true=return ipv4, false=return ipv6
-     * @return  address or empty string
+     *
+     * @param useIPv4 true=return ipv4, false=return ipv6
+     * @return address or empty string
      */
     public static ArrayList<String> getIPAddressList(boolean useIPv4) {
 
@@ -279,22 +295,24 @@ public class Utils {
 
                             if (!isIPv4) {
                                 int delim = sAddr.indexOf('%'); // drop ip6 zone suffix
-                                ipAddresses.add(delim<0 ? sAddr.toUpperCase() : sAddr.substring(0, delim).toUpperCase());
+                                ipAddresses.add(delim < 0 ? sAddr.toUpperCase() : sAddr.substring(0, delim).toUpperCase());
                             }
                         }
                     }
                 }
             }
-        } catch (Exception ignored) { } // for now eat exceptions
+        } catch (Exception ignored) {
+        } // for now eat exceptions
 
         return ipAddresses;
     }
 
     /**
      * Check if host is reachable.
-     * @param host The host to check for availability. Can either be a machine name, such as "google.com",
-     *             or a textual representation of its IP address, such as "8.8.8.8".
-     * @param port The port number.
+     *
+     * @param host    The host to check for availability. Can either be a machine name, such as "google.com",
+     *                or a textual representation of its IP address, such as "8.8.8.8".
+     * @param port    The port number.
      * @param timeout The timeout in milliseconds.
      * @return True if the host is reachable. False otherwise.
      */
@@ -309,7 +327,7 @@ public class Utils {
         } catch (ConnectException e) {
             Log.e("Connection", "Failed do to unavailable network.");
 
-        }catch (SocketTimeoutException e) {
+        } catch (SocketTimeoutException e) {
             Log.e("Connection", "Failed do to reach host in time.");
 
         } catch (UnknownHostException e) {
@@ -337,9 +355,8 @@ public class Utils {
     }
 
 
-
-    public static String numberToDegrees(int number){
-        return new Integer(number).toString() + "°";
+    public static String numberToDegrees(int number) {
+        return new Integer(number) + "°";
     }
 
     public static int degreesToNumber(String degrees) {
@@ -348,7 +365,8 @@ public class Utils {
 
     /**
      * Check if class of an object contains a field by a given field name.
-     * @param object Object to check
+     *
+     * @param object    Object to check
      * @param fieldName Name of the field
      * @return Object class includes the field
      */

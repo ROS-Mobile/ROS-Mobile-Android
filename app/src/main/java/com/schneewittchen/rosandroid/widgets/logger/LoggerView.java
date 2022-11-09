@@ -9,9 +9,7 @@ import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.util.AttributeSet;
-import android.util.Log;
 
-import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
 import com.schneewittchen.rosandroid.ui.views.widgets.SubscriberWidgetView;
 
 import org.ros.internal.message.Message;
@@ -31,7 +29,7 @@ import javax.annotation.Nullable;
 
 public class LoggerView extends SubscriberWidgetView {
 
-    private static String TAG = LoggerView.class.getSimpleName();
+    private static final String TAG = LoggerView.class.getSimpleName();
 
     String data;
     TextPaint textPaint;
@@ -52,9 +50,9 @@ public class LoggerView extends SubscriberWidgetView {
 
     @Override
     public void onNewMessage(Message message) {
-        if(!(message instanceof std_msgs.String)) return;
+        if (!(message instanceof std_msgs.String)) return;
 
-        this.data = ((std_msgs.String)message).getData();
+        this.data = ((std_msgs.String) message).getData();
         this.invalidate();
     }
 
@@ -72,7 +70,7 @@ public class LoggerView extends SubscriberWidgetView {
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
+    public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         float width = getWidth();
         float height = getHeight();

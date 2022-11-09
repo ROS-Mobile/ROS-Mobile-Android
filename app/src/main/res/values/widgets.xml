@@ -11,6 +11,7 @@
         <item>Label</item>
         <item>Logger</item>
         <item>RqtPlot</item>
+        <item>SwitchButton</item>
         <item>Viz2D</item>
     </string-array>
 
@@ -68,6 +69,11 @@
         by the user "True" and when released "False".
     </string>
 
+    <!-- Switch -->
+    <string name="SwitchButton_description">
+        The Switch Node publishes a boolean message depending on the current switch state.
+    </string>
+
     <string-array name="button_rotation">
         <item>0°</item>
         <item>90°</item>
@@ -82,7 +88,6 @@
         the topic specified in the details and receives a sensor_msgs/Image message.
         It will then display the received Image in the Viz Tab.
     </string>
-
 
 
     <!-- Debug -->

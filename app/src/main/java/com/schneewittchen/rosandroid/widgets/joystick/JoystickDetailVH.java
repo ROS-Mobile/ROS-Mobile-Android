@@ -31,26 +31,22 @@ import geometry_msgs.Twist;
  */
 public class JoystickDetailVH extends PublisherWidgetViewHolder {
 
+    boolean forceSetChecked = false;
     private Spinner xDirSpinner;
     private Spinner xAxisSpinner;
     private EditText xScaleLeft;
     private EditText xScaleRight;
     private TextView xScaleMiddle;
-
     private Spinner yDirSpinner;
     private Spinner yAxisSpinner;
     private EditText yScaleLeft;
     private EditText yScaleRight;
     private TextView yScaleMiddle;
-
     private CheckBox stickLimitBox;
-
     private ArrayAdapter<CharSequence> xDirAdapter;
     private ArrayAdapter<CharSequence> xAxisAdapter;
     private ArrayAdapter<CharSequence> yDirAdapter;
     private ArrayAdapter<CharSequence> yAxisAdapter;
-
-    boolean forceSetChecked = false;
 
     @Override
     public void initView(View view) {
@@ -108,7 +104,7 @@ public class JoystickDetailVH extends PublisherWidgetViewHolder {
         yScaleMiddle.setText(String.format(Locale.US, "%.2f", (widget.yScaleRight + widget.yScaleLeft) / 2));
 
         forceSetChecked = true;
-        stickLimitBox.setChecked(widget.rectangularStickLimits);
+        stickLimitBox.setChecked(widget.rectangularLimits);
         forceSetChecked = false;
     }
 
@@ -121,7 +117,7 @@ public class JoystickDetailVH extends PublisherWidgetViewHolder {
         widget.xAxisMapping = xDirSpinner.getSelectedItem() + "/" + xAxisSpinner.getSelectedItem();
         widget.yAxisMapping = yDirSpinner.getSelectedItem() + "/" + yAxisSpinner.getSelectedItem();
 
-        for (String str: new String[]{"xScaleLeft", "xScaleRight", "yScaleLeft", "yScaleRight"}) {
+        for (String str : new String[]{"xScaleLeft", "xScaleRight", "yScaleLeft", "yScaleRight"}) {
             try {
                 EditText editText = (EditText) this.getClass().getDeclaredField(str).get(this);
 
@@ -133,7 +129,7 @@ public class JoystickDetailVH extends PublisherWidgetViewHolder {
             } catch (Exception ignored) {
             }
         }
-        widget.rectangularStickLimits = stickLimitBox.isChecked();
+        widget.rectangularLimits = stickLimitBox.isChecked();
     }
 
     @Override

@@ -61,7 +61,7 @@ public class XAxis {
 
         axisSpaceX = textHeight + 20;
         axisSpaceY = textWidth + 20;
-        textSpace = (axisSpaceX -textHeight) /2f;
+        textSpace = (axisSpaceX - textHeight) / 2f;
 
         this.updateScales();
     }
@@ -78,16 +78,16 @@ public class XAxis {
         canvas.drawLine(0, plotH, w, plotH, axisPaint);
 
         // Draw scales
-        for(int i = 0; i < scales.size(); i++) {
+        for (int i = 0; i < scales.size(); i++) {
             float scale = scales.get(i);
-            int alpha = (i % 2 == 0)? scaleAlpha : 255;
+            int alpha = (i % 2 == 0) ? scaleAlpha : 255;
 
             textPaint.setAlpha(alpha);
             linePaint.setAlpha(alpha);
 
-            float x = plotW * (1 - (scale/scaleFactor));
+            float x = plotW * (1 - (scale / scaleFactor));
             canvas.drawLine(x, 0, x, plotH, linePaint);
-            canvas.drawText("-"+scale, x, h - textSpace, textPaint);
+            canvas.drawText("-" + scale, x, h - textSpace, textPaint);
         }
     }
 
@@ -115,14 +115,14 @@ public class XAxis {
         }
 
         scales = new ArrayList<>(n);
-        float df = (float) (max/n);
-        for (float factor = df; factor < max; factor += df ) {
+        float df = (float) (max / n);
+        for (float factor = df; factor < max; factor += df) {
             scales.add(factor);
         }
     }
 
     private double getPowerOf2(float value, int next) {
-        double pow = Math.floor(Math.log(value) * LN2)  + next;
+        double pow = Math.floor(Math.log(value) * LN2) + next;
         return Math.pow(2, pow);
     }
 
@@ -131,6 +131,6 @@ public class XAxis {
     }
 
     public float getPos(PlotDataList.PlotData point, float w) {
-        return (w - axisSpaceY) * (1 - (point.secsToLatest()/scaleFactor));
+        return (w - axisSpaceY) * (1 - (point.secsToLatest() / scaleFactor));
     }
 }

@@ -84,13 +84,13 @@ public class ConfigurationsFragment extends Fragment {
             }
         });
 
-        mViewModel.getLastOpenedConfigNames().observe(getViewLifecycleOwner(), 
+        mViewModel.getLastOpenedConfigNames().observe(getViewLifecycleOwner(),
                 configNames -> lastOpenedAdapter.setConfigs(configNames));
 
         mViewModel.getConfigTitle().observe(getViewLifecycleOwner(), configTitle -> {
             if (configTitle == null) {
                 titleText.setText(R.string.no_config);
-            }else{
+            } else {
                 titleText.setText(configTitle);
             }
         });
@@ -106,7 +106,7 @@ public class ConfigurationsFragment extends Fragment {
                 (parent, view, position) -> openConfig(parent, position)));
     }
 
-    private void openConfig(RecyclerView parent,int position) {
+    private void openConfig(RecyclerView parent, int position) {
         String configName = lastOpenedAdapter.configNameList.get(position);
 
         mViewModel.chooseConfig(configName);
@@ -120,11 +120,11 @@ public class ConfigurationsFragment extends Fragment {
         final EditText input = new EditText(this.getContext());
         input.setInputType(InputType.TYPE_CLASS_TEXT);
 
-        AlertDialog dialog =  new AlertDialog.Builder(this.getContext())
+        AlertDialog dialog = new AlertDialog.Builder(this.getContext())
                 .setTitle(R.string.rename_config)
                 .setView(input)
                 .setPositiveButton(R.string.ok, (view, which) ->
-                    mViewModel.renameConfig(input.getText().toString()))
+                        mViewModel.renameConfig(input.getText().toString()))
                 .setNegativeButton(R.string.cancel, (view, which) -> view.cancel())
                 .create();
 

@@ -23,7 +23,7 @@ import java.util.List;
  * @modified by Nico Studt
  */
 @Dao
-public abstract class ConfigDao implements BaseDao<ConfigEntity>{
+public abstract class ConfigDao implements BaseDao<ConfigEntity> {
 
     static final String TAG = ConfigDao.class.getCanonicalName();
 

@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Transformations;
 
 import com.schneewittchen.rosandroid.model.entities.MasterEntity;
+import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
 import com.schneewittchen.rosandroid.model.repositories.ConfigRepository;
 import com.schneewittchen.rosandroid.model.repositories.ConfigRepositoryImpl;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.RosRepository;
@@ -14,15 +15,11 @@ import com.schneewittchen.rosandroid.model.repositories.rosRepo.connection.Conne
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.RosData;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.Topic;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.node.AbstractNode;
-import com.schneewittchen.rosandroid.utility.LambdaTask;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.node.BaseData;
-import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
-
-import org.ros.internal.message.Message;
+import com.schneewittchen.rosandroid.utility.LambdaTask;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -111,13 +108,17 @@ public class RosDomain {
         return this.currentWidgets;
     }
 
-    public LiveData<RosData> getData(){ return this.rosRepo.getData(); }
+    public LiveData<RosData> getData() {
+        return this.rosRepo.getData();
+    }
 
     public void updateMaster(MasterEntity master) {
         configRepository.updateMaster(master);
     }
 
-    public void setMasterDeviceIp(String deviceIp) {rosRepo.setMasterDeviceIp(deviceIp); }
+    public void setMasterDeviceIp(String deviceIp) {
+        rosRepo.setMasterDeviceIp(deviceIp);
+    }
 
     public void connectToMaster() {
         rosRepo.connectToMaster();
@@ -135,7 +136,11 @@ public class RosDomain {
         return rosRepo.getRosConnectionStatus();
     }
 
-    public List<Topic> getTopicList() { return rosRepo.getTopicList(); }
+    public List<Topic> getTopicList() {
+        return rosRepo.getTopicList();
+    }
 
-    public HashMap<Topic, AbstractNode> getLastRosData() { return rosRepo.getLastRosData(); }
+    public HashMap<Topic, AbstractNode> getLastRosData() {
+        return rosRepo.getLastRosData();
+    }
 }

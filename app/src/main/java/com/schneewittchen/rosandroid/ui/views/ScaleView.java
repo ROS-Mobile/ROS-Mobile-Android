@@ -64,12 +64,12 @@ public class ScaleView extends View {
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
 
-        lineStart = bigLineWidth/2;
-        lineEnd = w - bigLineWidth/2;
+        lineStart = bigLineWidth / 2;
+        lineEnd = w - bigLineWidth / 2;
         middleH = h / 2f;
-        segmentWidth = (lineEnd -lineStart) / segments;
-        firstQuarterHeight = h /4f;
-        thirdQuarterHeight = h /4f * 3f;
+        segmentWidth = (lineEnd - lineStart) / segments;
+        firstQuarterHeight = h / 4f;
+        thirdQuarterHeight = h / 4f * 3f;
     }
 
     @Override
@@ -86,7 +86,7 @@ public class ScaleView extends View {
             float startY = 0;
             float endY = getHeight();
 
-            if (i % (segments/2) != 0) {
+            if (i % (segments / 2) != 0) {
                 startY = firstQuarterHeight;
                 endY = thirdQuarterHeight;
                 paint = smallLinePaint;

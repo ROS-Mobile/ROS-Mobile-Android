@@ -1,16 +1,17 @@
-apply plugin: 'com.android.application'
+plugins {
+    id 'com.android.application'
+}
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion "29.0.3"
+    namespace 'com.schneewittchen.rosandroid'
+    compileSdk 32
 
     defaultConfig {
         applicationId "com.schneewittchen.rosandroid"
-        minSdkVersion 21
-        targetSdkVersion 30
+        minSdk 21
+        targetSdk 32
         versionCode 7
         versionName '2.1.0'
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -19,10 +20,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-
     compileOptions {
-        sourceCompatibility = 1.8
-        targetCompatibility = 1.8
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     viewBinding {
@@ -30,48 +30,52 @@ android {
     }
 }
 
-dependencies {
+configurations {
+    all*.exclude group: 'com.google.guava', module: 'listenablefuture'
+}
 
+dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'androidx.appcompat:appcompat:1.3.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'androidx.appcompat:appcompat:1.5.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
 
-    implementation "androidx.navigation:navigation-fragment:2.3.5"
-    implementation "androidx.navigation:navigation-ui:2.3.5"
+    implementation "androidx.navigation:navigation-fragment:2.5.3"
+    implementation "androidx.navigation:navigation-ui:2.5.3"
 
-    implementation 'com.google.android.material:material:1.3.0'
+    implementation 'com.google.android.material:material:1.7.0'
     implementation "androidx.viewpager2:viewpager2:1.0.0"
 
     implementation 'androidx.legacy:legacy-support-core-utils:1.0.0'
 
 
     // ROS
+    // For additional ros repos see https://github.com/rosjava/rosjava_mvn_repo/tree/master/org/ros
     implementation "org.ros.rosjava_core:rosjava:0.3.6"
+    implementation "org.ros.rosjava_core:rosjava_geometry:0.3.6"
+    implementation 'org.ros.rosjava_bootstrap:message_generation:0.3.3'
     implementation "org.ros.rosjava_messages:diagnostic_msgs:1.12.7"
     implementation 'org.ros.rosjava_messages:geometry_msgs:1.12.7'
-    implementation 'org.ros.rosjava_messages:nav_msgs:1.12.7'
-    implementation 'org.ros.rosjava_messages:std_msgs:0.5.11'
     implementation 'org.ros.rosjava_messages:map_msgs:1.13.0'
+    implementation 'org.ros.rosjava_messages:nav_msgs:1.12.7'
     implementation 'org.ros.rosjava_messages:sensor_msgs:1.12.7'
+    implementation 'org.ros.rosjava_messages:std_msgs:0.5.11'
     implementation 'org.ros.rosjava_messages:tf2_msgs:0.5.20'
-    implementation 'org.ros.rosjava_bootstrap:message_generation:0.3.3'
-    implementation 'org.ros.android_core:android_core_components:0.4.0'
 
     // Room
-    implementation "androidx.room:room-runtime:2.3.0"
-    annotationProcessor "androidx.room:room-compiler:2.3.0"
+    implementation "androidx.room:room-runtime:2.4.3"
+    annotationProcessor "androidx.room:room-compiler:2.4.3"
 
     // Parsing
-    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.google.code.gson:gson:2.10'
     implementation project(path: ':jcraft')
 
     // Open Street Maps (e.g. for GPS)
-    implementation 'org.osmdroid:osmdroid-android:6.1.6'
+    implementation 'org.osmdroid:osmdroid-android:6.1.14'
 
     // Playing Youtube Videos
-    implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:10.0.5'
+    implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:11.1.0'
 
     // Color picker
-    implementation "com.github.skydoves:colorpickerview:2.2.3"
+    implementation "com.github.skydoves:colorpickerview:2.2.4"
 }

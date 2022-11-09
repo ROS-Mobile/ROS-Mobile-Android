@@ -45,13 +45,11 @@ public class MasterFragment extends Fragment implements TextView.OnEditorActionL
 
     private static final String TAG = MasterFragment.class.getSimpleName();
     private static final long MIN_HELP_TIMESPAM = 10 * 1000;
-
-    private MasterViewModel mViewModel;
-    private FragmentMasterBinding binding;
-
-    private ArrayList<String> ipItemList;
     protected AutoCompleteTextView ipAddressField;
     protected TextInputLayout ipAddressLayout;
+    private MasterViewModel mViewModel;
+    private FragmentMasterBinding binding;
+    private ArrayList<String> ipItemList;
     private ArrayAdapter<String> ipArrayAdapter;
 
     public static MasterFragment newInstance() {
@@ -131,9 +129,9 @@ public class MasterFragment extends Fragment implements TextView.OnEditorActionL
         // User input ------------------------------------------------------------------------------
 
         binding.connectButton.setOnClickListener(v -> {
-                updateMasterDetails();
-                mViewModel.setMasterDeviceIp(ipAddressField.getText().toString());
-                mViewModel.connectToMaster();
+            updateMasterDetails();
+            mViewModel.setMasterDeviceIp(ipAddressField.getText().toString());
+            mViewModel.connectToMaster();
         });
         binding.disconnectButton.setOnClickListener(v -> mViewModel.disconnectFromMaster());
         binding.helpButton.setOnClickListener(v -> showConnectionHelpDialog());

@@ -28,7 +28,7 @@ public class PlotDataList extends ArrayList<PlotDataList.PlotData> {
     }
 
     private void cleanUp() {
-        while(!this.isEmpty()) {
+        while (!this.isEmpty()) {
             if (size() > maxNum || this.get(0).secsToLatest() > maxTime) {
                 this.remove(0);
             } else {
@@ -42,7 +42,7 @@ public class PlotDataList extends ArrayList<PlotDataList.PlotData> {
         this.maxValue = Math.max(value, maxValue);
 
         if (!isEmpty()) {
-            this.latestTime = this.get(size()-1).time;
+            this.latestTime = this.get(size() - 1).time;
         }
     }
 

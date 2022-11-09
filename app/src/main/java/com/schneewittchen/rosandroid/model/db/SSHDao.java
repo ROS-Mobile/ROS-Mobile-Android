@@ -17,7 +17,7 @@ import com.schneewittchen.rosandroid.model.entities.SSHEntity;
  * @modified by Nico Studt
  */
 @Dao
-public abstract class SSHDao implements BaseDao<SSHEntity>{
+public abstract class SSHDao implements BaseDao<SSHEntity> {
 
     @Query("SELECT * FROM ssh_table WHERE configId = :configId LIMIT 1")
     abstract LiveData<SSHEntity> getSSH(long configId);

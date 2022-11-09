@@ -9,4 +9,5 @@ package com.schneewittchen.rosandroid.model.entities.widgets;
  * @version 1.0.0
  * @created on 10.03.21
  */
-public interface I2DLayerEntity { }
+public interface I2DLayerEntity {
+}

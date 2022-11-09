@@ -45,7 +45,7 @@ public class PathView extends SubscriberLayerView {
     public void setWidgetEntity(BaseEntity widgetEntity) {
         super.setWidgetEntity(widgetEntity);
 
-        PathEntity entity = (PathEntity)widgetEntity;
+        PathEntity entity = (PathEntity) widgetEntity;
         lineColor = ROSColor.fromHex(entity.lineColor);
         lineWidth = entity.lineWidth;
     }
@@ -64,7 +64,7 @@ public class PathView extends SubscriberLayerView {
 
     @Override
     public void onNewMessage(Message message) {
-        Path path = (Path)message;
+        Path path = (Path) message;
 
         ByteBuffer pufferBuffer = ByteBuffer.allocateDirect(path.getPoses().size() * 3 * Float.SIZE);
         pufferBuffer.order(ByteOrder.nativeOrder());

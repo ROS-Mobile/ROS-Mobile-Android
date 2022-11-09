@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey;
 
 /**
  * TODO: Description
- *
+ * <p>
  * Replaced version of Base Entity.
  *
  * @author Nico Studt

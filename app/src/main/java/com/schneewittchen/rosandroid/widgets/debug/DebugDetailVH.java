@@ -6,15 +6,10 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
-import com.schneewittchen.rosandroid.ui.fragments.details.WidgetChangeListener;
-import com.schneewittchen.rosandroid.ui.views.details.BaseDetailSubscriberVH;
 import com.schneewittchen.rosandroid.ui.views.details.SubscriberWidgetViewHolder;
 import com.schneewittchen.rosandroid.utility.Utils;
-import com.schneewittchen.rosandroid.widgets.joystick.JoystickEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +53,7 @@ public class DebugDetailVH extends SubscriberWidgetViewHolder implements TextVie
 
     @Override
     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-        switch (actionId){
+        switch (actionId) {
             case EditorInfo.IME_ACTION_DONE:
             case EditorInfo.IME_ACTION_NEXT:
             case EditorInfo.IME_ACTION_PREVIOUS:

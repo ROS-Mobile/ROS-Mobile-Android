@@ -33,9 +33,9 @@ import java.io.*;
 import java.net.*;
 
 public class ProxyHTTP implements Proxy{
-  private static int DEFAULTPORT=80;
-  private String proxy_host;
-  private int proxy_port;
+  private static final int DEFAULTPORT=80;
+  private final String proxy_host;
+  private final int proxy_port;
   private InputStream in;
   private OutputStream out;
   private Socket socket;
@@ -153,7 +153,7 @@ public class ProxyHTTP implements Proxy{
       try{ if(socket!=null)socket.close(); }
       catch(Exception eee){
       }
-      String message="ProxyHTTP: "+e.toString();
+      String message="ProxyHTTP: "+ e;
       if(e instanceof Throwable)
         throw new JSchException(message, e);
       throw new JSchException(message);

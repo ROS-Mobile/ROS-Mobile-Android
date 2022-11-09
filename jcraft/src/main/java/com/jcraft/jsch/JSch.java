@@ -138,9 +138,9 @@ public class JSch{
     config.put("ClearAllForwardings", "no");
   }
 
-  private Vector sessionPool = new Vector();
+  private final Vector sessionPool = new Vector();
 
-  private IdentityRepository defaultIdentityRepository =
+  private final IdentityRepository defaultIdentityRepository =
     new LocalIdentityRepository(this);
 
   private IdentityRepository identityRepository = defaultIdentityRepository;

@@ -65,8 +65,8 @@ public class ECDHN implements com.jcraft.jsch.ECDH {
     return myKeyAgree.generateSecret();
   }
 
-  private static BigInteger two = BigInteger.ONE.add(BigInteger.ONE);
-  private static BigInteger three = two.add(BigInteger.ONE);
+  private static final BigInteger two = BigInteger.ONE.add(BigInteger.ONE);
+  private static final BigInteger three = two.add(BigInteger.ONE);
 
   // SEC 1: Elliptic Curve Cryptography, Version 2.0
   // http://www.secg.org/sec1-v2.pdf

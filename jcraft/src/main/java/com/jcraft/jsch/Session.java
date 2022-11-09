@@ -107,7 +107,7 @@ public class Session implements Runnable{
   private boolean isAuthed=false;
 
   private Thread connectThread=null;
-  private Object lock=new Object();
+  private final Object lock=new Object();
 
   boolean x11_forwarding=false;
   boolean agent_forwarding=false;
@@ -498,7 +498,7 @@ public class Session implements Runnable{
 	      //System.err.println("ee: "+ee); // SSH_MSG_DISCONNECT: 2 Too many authentication failures
               if(JSch.getLogger().isEnabled(Logger.WARN)){
                 JSch.getLogger().log(Logger.WARN, 
-                                     "an exception during authentication\n"+ee.toString());
+                                     "an exception during authentication\n"+ ee);
               }
               break loop;
 	    }
@@ -2074,7 +2074,7 @@ break;
       }
     }
     catch(NumberFormatException e){
-      throw new JSchException ("parseForwarding: "+e.toString());
+      throw new JSchException ("parseForwarding: "+ e);
     }
     return f;
   }
@@ -2149,7 +2149,7 @@ break;
     int getPort(){ return this.port; }
     void setPort(int port){ this.port=port; }
   }
-  private GlobalRequestReply grr=new GlobalRequestReply();
+  private final GlobalRequestReply grr=new GlobalRequestReply();
   private int _setPortForwardingR(String bind_address, int rport) throws JSchException{
     synchronized(grr){
     Buffer buf=new Buffer(100); // ??

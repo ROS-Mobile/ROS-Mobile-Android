@@ -1,16 +1,11 @@
 package com.schneewittchen.rosandroid.ui.fragments.main;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,11 +21,7 @@ import androidx.navigation.Navigation;
 
 import com.google.android.material.tabs.TabLayout;
 import com.schneewittchen.rosandroid.R;
-import com.schneewittchen.rosandroid.databinding.UpdatePopupWindowBinding;
 import com.schneewittchen.rosandroid.viewmodel.MainViewModel;
-
-import static android.content.Context.LAYOUT_INFLATER_SERVICE;
-import static androidx.core.content.ContextCompat.getSystemService;
 
 
 /**

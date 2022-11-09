@@ -21,15 +21,14 @@ import java.util.List;
  * @version 1.0.0
  * @created on 17.03.21
  */
-public class PublisherViewHolder implements IBaseViewHolder, TextView.OnEditorActionListener{
+public class PublisherViewHolder implements IBaseViewHolder, TextView.OnEditorActionListener {
 
     public static final String TAG = PublisherViewHolder.class.getSimpleName();
-
-    private TextInputEditText topicNameEditText;
-    private TextInputEditText topicTypeEditText;
+    private final DetailViewHolder parentViewHolder;
     public List<String> topicTypes;
     public DetailsViewModel viewModel;
-    private DetailViewHolder parentViewHolder;
+    private TextInputEditText topicNameEditText;
+    private TextInputEditText topicTypeEditText;
 
 
     public PublisherViewHolder(DetailViewHolder parentViewHolder) {
@@ -65,7 +64,7 @@ public class PublisherViewHolder implements IBaseViewHolder, TextView.OnEditorAc
 
     @Override
     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-        switch (actionId){
+        switch (actionId) {
             case EditorInfo.IME_ACTION_DONE:
             case EditorInfo.IME_ACTION_NEXT:
             case EditorInfo.IME_ACTION_PREVIOUS:

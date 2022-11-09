@@ -26,12 +26,11 @@ import geometry_msgs.PoseStamped;
 public class TouchGoalData extends BaseData {
 
     public static final String TAG = TouchGoalData.class.getSimpleName();
-
+    private final XYOrthographicCamera camera;
     public float startX, startY, endX, endY;
     public Transform start;
     public Transform end;
     public GraphName frame;
-    private XYOrthographicCamera camera;
 
 
     public TouchGoalData(XYOrthographicCamera camera) {

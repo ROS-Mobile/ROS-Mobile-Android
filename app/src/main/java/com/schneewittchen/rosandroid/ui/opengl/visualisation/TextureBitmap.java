@@ -17,7 +17,6 @@
 package com.schneewittchen.rosandroid.ui.opengl.visualisation;
 
 import android.graphics.Bitmap;
-import android.icu.text.SymbolTable;
 import android.opengl.GLUtils;
 
 import com.google.common.base.Preconditions;

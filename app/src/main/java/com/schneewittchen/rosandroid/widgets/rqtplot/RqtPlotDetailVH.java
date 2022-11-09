@@ -1,6 +1,5 @@
 package com.schneewittchen.rosandroid.widgets.rqtplot;
 
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -61,7 +60,7 @@ public class RqtPlotDetailVH extends SubscriberWidgetViewHolder implements TextV
 
     @Override
     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-        switch (actionId){
+        switch (actionId) {
             case EditorInfo.IME_ACTION_DONE:
             case EditorInfo.IME_ACTION_NEXT:
             case EditorInfo.IME_ACTION_PREVIOUS:

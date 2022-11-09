@@ -10,7 +10,6 @@ import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 
-import com.schneewittchen.rosandroid.ui.views.widgets.SubscriberWidgetView;
 import com.schneewittchen.rosandroid.ui.views.widgets.WidgetView;
 
 import javax.annotation.Nullable;
@@ -55,7 +54,7 @@ public class LabelView extends WidgetView {
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
+    public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         float width = getWidth();
         float height = getHeight();

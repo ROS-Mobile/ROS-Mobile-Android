@@ -11,8 +11,9 @@ import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
  */
 public interface IBaseView {
 
-    void setWidgetEntity(BaseEntity entity);
     BaseEntity getWidgetEntity();
+
+    void setWidgetEntity(BaseEntity entity);
 
     boolean sameWidgetEntity(BaseEntity other);
 }

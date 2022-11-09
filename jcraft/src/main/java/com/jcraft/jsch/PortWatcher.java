@@ -33,7 +33,7 @@ import java.net.*;
 import java.io.*;
 
 class PortWatcher implements Runnable{
-  private static java.util.Vector pool=new java.util.Vector();
+  private static final java.util.Vector pool=new java.util.Vector();
   private static InetAddress anyLocalAddress=null;
   static{
     // 0.0.0.0

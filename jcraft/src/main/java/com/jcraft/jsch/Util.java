@@ -306,7 +306,7 @@ class Util{
     return foo;
   }
 
-  private static String[] chars={
+  private static final String[] chars={
     "0","1","2","3","4","5","6","7","8","9", "a","b","c","d","e","f"
   };
   static String getFingerPrint(HASH hash, byte[] data){

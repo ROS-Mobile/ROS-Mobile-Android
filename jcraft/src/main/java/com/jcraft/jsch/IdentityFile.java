@@ -33,9 +33,9 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 
 class IdentityFile implements Identity{
-  private JSch jsch;
+  private final JSch jsch;
   private KeyPair kpair;
-  private String identity;
+  private final String identity;
 
   static IdentityFile newInstance(String prvfile, String pubfile, JSch jsch) throws JSchException{
     KeyPair kpair = KeyPair.load(jsch, prvfile, pubfile);

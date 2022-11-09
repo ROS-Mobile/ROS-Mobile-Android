@@ -58,7 +58,7 @@ public class ConfigurationsViewModel extends AndroidViewModel {
         currentConfigTitle.addSource(currentConfig, configuration -> {
             if (configuration != null) {
                 currentConfigTitle.postValue(configuration.name);
-            }else {
+            } else {
                 currentConfigTitle.postValue(null);
             }
         });
@@ -72,7 +72,7 @@ public class ConfigurationsViewModel extends AndroidViewModel {
             Collections.sort(configEntities, compareByLastOpened);
             List<String> nameList = new ArrayList<>();
 
-            for (ConfigEntity configEntity: configEntities) {
+            for (ConfigEntity configEntity : configEntities) {
                 nameList.add(configEntity.name);
             }
 
@@ -83,7 +83,7 @@ public class ConfigurationsViewModel extends AndroidViewModel {
         favoriteConfigNames.addSource(configList, configEntities -> {
             List<String> nameList = new ArrayList<>();
 
-            for (ConfigEntity configEntity: configEntities) {
+            for (ConfigEntity configEntity : configEntities) {
                 if (configEntity.isFavourite) {
                     nameList.add(configEntity.name);
                 }
@@ -119,10 +119,10 @@ public class ConfigurationsViewModel extends AndroidViewModel {
     }
 
     public void chooseConfig(String configName) {
-        if(configList.getValue() == null)
+        if (configList.getValue() == null)
             return;
 
-        for (ConfigEntity config: configList.getValue()) {
+        for (ConfigEntity config : configList.getValue()) {
             if (config.name.equals(configName)) {
                 rosDomain.disconnectFromMaster();
                 configRepository.chooseConfig(config.id);

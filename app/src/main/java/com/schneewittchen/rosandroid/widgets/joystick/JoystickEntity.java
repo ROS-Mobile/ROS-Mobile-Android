@@ -23,7 +23,7 @@ public class JoystickEntity extends PublisherWidgetEntity {
     public float xScaleRight;
     public float yScaleLeft;
     public float yScaleRight;
-    public boolean rectangularStickLimits;
+    public boolean rectangularLimits;
 
     public JoystickEntity() {
         this.width = 4;
@@ -37,7 +37,7 @@ public class JoystickEntity extends PublisherWidgetEntity {
         this.xScaleRight = -1;
         this.yScaleLeft = -1;
         this.yScaleRight = 1;
-        this.rectangularStickLimits = false;
+        this.rectangularLimits = false;
     }
 
 }

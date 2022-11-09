@@ -1,7 +1,6 @@
 package com.schneewittchen.rosandroid.widgets.battery;
 
 import android.view.View;
-import android.widget.CompoundButton;
 
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.schneewittchen.rosandroid.R;
@@ -43,7 +42,7 @@ public class BatteryDetailVH extends SubscriberWidgetViewHolder {
 
     @Override
     protected void updateEntity(BaseEntity entity) {
-        BatteryEntity batteryEntity = (BatteryEntity)entity;
+        BatteryEntity batteryEntity = (BatteryEntity) entity;
         batteryEntity.displayVoltage = voltageSwitch.isChecked();
     }
 

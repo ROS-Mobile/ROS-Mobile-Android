@@ -29,16 +29,13 @@ import javax.microedition.khronos.opengles.GL10;
 public class TouchGoalView extends PublisherLayerView {
 
     public static final String TAG = TouchGoalView.class.getSimpleName();
-
-    private enum State {NORMAL, DOUBLETAPPED};
+    private final GestureDetectorCompat detector;
+    private final int numPoints = 51;
+    private final ROSColor color;
     private State state = State.NORMAL;
     private TouchGoalData data;
-    private GestureDetectorCompat detector;
     private FloatBuffer circleBuffer;
     private FloatBuffer lineBuffer;
-    private int numPoints = 51;
-    private ROSColor color;
-
 
     public TouchGoalView(Context context) {
         super(context);
@@ -52,7 +49,7 @@ public class TouchGoalView extends PublisherLayerView {
         pufferBuffer.order(ByteOrder.nativeOrder());
         circleBuffer = pufferBuffer.asFloatBuffer();
 
-        float angDiff = (float) (Math.PI * 2 / (numPoints-1));
+        float angDiff = (float) (Math.PI * 2 / (numPoints - 1));
 
         for (int i = 0; i < numPoints; i++) {
             float angle = angDiff * i;
@@ -98,7 +95,7 @@ public class TouchGoalView extends PublisherLayerView {
         gl.glScalef(50, 50, 1.f);
         // Counter adjust for the camera zoom.
         float counterZoom = 1 / (float) view.getCamera().getZoom();
-        gl.glScalef(counterZoom,counterZoom,1);
+        gl.glScalef(counterZoom, counterZoom, 1);
 
         // Draw circle around goal start
         gl.glVertexPointer(3, GL10.GL_FLOAT, 0, circleBuffer);
@@ -129,6 +126,8 @@ public class TouchGoalView extends PublisherLayerView {
 
         return state == State.DOUBLETAPPED;
     }
+
+    private enum State {NORMAL, DOUBLETAPPED}
 
     class DoubleTapListener extends GestureDetector.SimpleOnGestureListener {
 
