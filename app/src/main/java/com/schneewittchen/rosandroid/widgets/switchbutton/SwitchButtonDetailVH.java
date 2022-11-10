@@ -22,24 +22,28 @@ import std_msgs.Bool;
  */
 public class SwitchButtonDetailVH extends PublisherWidgetViewHolder {
 
-    private EditText textText;
+    private EditText textOffText;
+    private EditText textOnText;
 
     @Override
     public void initView(View view) {
-        textText = view.findViewById(R.id.switchTextTypeText);
+        textOffText = view.findViewById(R.id.switchTextOffText);
+        textOnText = view.findViewById(R.id.switchTextONText);
     }
 
     @Override
     protected void bindEntity(BaseEntity entity) {
         SwitchButtonEntity switchEntity = (SwitchButtonEntity) entity;
 
-        textText.setText(switchEntity.text);
+        textOffText.setText(switchEntity.offText);
+        textOnText.setText(switchEntity.onText);
     }
 
     @Override
     protected void updateEntity(BaseEntity entity) {
         SwitchButtonEntity switchEntity = (SwitchButtonEntity) entity;
-        switchEntity.text = textText.getText().toString();
+        switchEntity.offText = textOffText.getText().toString();
+        switchEntity.onText = textOnText.getText().toString();
     }
 
     @Override

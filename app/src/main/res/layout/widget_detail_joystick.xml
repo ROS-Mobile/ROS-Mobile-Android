@@ -42,6 +42,7 @@
         android:layout_marginEnd="24dp"
         android:entries="@array/joystick_twist_dir"
         android:foregroundTintMode="add"
+        android:minHeight="48dp"
         app:layout_constraintBottom_toBottomOf="@+id/textView11"
         app:layout_constraintEnd_toStartOf="@+id/xAxisSpinner"
         app:layout_constraintTop_toTopOf="@+id/textView11" />
@@ -51,6 +52,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:entries="@array/joystick_twist_axis"
+        android:minHeight="48dp"
         app:layout_constraintBottom_toBottomOf="@+id/textView11"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textView11" />
@@ -80,7 +82,7 @@
     <EditText
         android:id="@+id/xScaleLeft"
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
+        android:layout_height="48dp"
         android:ems="3"
         android:inputType="numberSigned|numberDecimal"
         android:text="-1.0"
@@ -102,7 +104,7 @@
     <EditText
         android:id="@+id/xScaleRight"
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
+        android:layout_height="48dp"
         android:ems="3"
         android:inputType="numberSigned|numberDecimal"
         android:text="1.0"
@@ -143,6 +145,7 @@
         android:layout_marginEnd="24dp"
         android:layout_weight="1"
         android:entries="@array/joystick_twist_dir"
+        android:minHeight="48dp"
         app:layout_constraintBottom_toBottomOf="@+id/textView14"
         app:layout_constraintEnd_toStartOf="@+id/yAxisSpinner"
         app:layout_constraintTop_toTopOf="@+id/textView14" />
@@ -153,6 +156,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:entries="@array/joystick_twist_axis"
+        android:minHeight="48dp"
         app:layout_constraintBottom_toBottomOf="@+id/yDirSpinner"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/yDirSpinner" />
@@ -181,7 +185,7 @@
     <EditText
         android:id="@+id/yScaleLeft"
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
+        android:layout_height="48dp"
         android:ems="3"
         android:inputType="numberSigned|numberDecimal"
         android:text="-1.0"
@@ -203,7 +207,7 @@
     <EditText
         android:id="@+id/yScaleRight"
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
+        android:layout_height="48dp"
         android:ems="3"
         android:inputType="numberSigned|numberDecimal"
         android:text="-1.0"
@@ -213,17 +217,28 @@
         app:layout_constraintStart_toEndOf="@+id/xAxisScale2"
         app:layout_constraintTop_toBottomOf="@+id/xAxisScale2" />
 
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Limits"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textColor="@color/colorAccent"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/yScaleLeft" />
+
     <CheckBox
         android:id="@+id/stickLimitBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="76dp"
-        android:text="Use Rectangular Stick Limits"
+        android:layout_marginStart="16dp"
+        android:text=" Rectangular Limits"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
-        android:textColor="@color/colorAccent"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@+id/xAxisScale2"
-        tools:layout_editor_absoluteX="0dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

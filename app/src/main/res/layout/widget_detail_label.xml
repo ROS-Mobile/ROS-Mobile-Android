@@ -52,7 +52,8 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:text="Rotation"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/input_layout" />
 
@@ -60,9 +61,9 @@
         android:id="@+id/labelTextRotation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
         android:entries="@array/button_rotation"
         android:foregroundTintMode="add"
+        android:minHeight="48dp"
         app:layout_constraintBottom_toBottomOf="@+id/textView11"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textView11" />

@@ -2,11 +2,8 @@ package com.schneewittchen.rosandroid.widgets.button;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
-import android.text.Layout;
-import android.text.StaticLayout;
+import android.graphics.Typeface;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -14,7 +11,9 @@ import android.view.MotionEvent;
 import androidx.annotation.Nullable;
 
 import com.schneewittchen.rosandroid.R;
+import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
 import com.schneewittchen.rosandroid.ui.views.widgets.PublisherWidgetView;
+import com.schneewittchen.rosandroid.utility.Utils;
 
 
 /**
@@ -33,9 +32,14 @@ public class ButtonView extends PublisherWidgetView {
 
     public static final String TAG = ButtonView.class.getSimpleName();
 
-    Paint buttonPaint;
-    TextPaint textPaint;
-    StaticLayout staticLayout;
+    float cornerRadius = 10;
+    float lineWidth;
+    Paint buttonPaintOn;
+    Paint buttonPaintOff;
+    TextPaint textPaintOn;
+    TextPaint textPaintOff;
+
+    boolean pressed = false;
 
 
     public ButtonView(Context context) {
@@ -50,38 +54,55 @@ public class ButtonView extends PublisherWidgetView {
 
 
     private void init() {
-        buttonPaint = new Paint();
-        buttonPaint.setColor(getResources().getColor(R.color.colorPrimary));
-        buttonPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+        lineWidth = Utils.dpToPx(getContext(), 3);
 
-        textPaint = new TextPaint();
-        textPaint.setColor(Color.BLACK);
-        textPaint.setStyle(Paint.Style.FILL_AND_STROKE);
-        textPaint.setTextSize(26 * getResources().getDisplayMetrics().density);
+        textPaintOff = new TextPaint();
+        textPaintOff.setTextAlign(Paint.Align.CENTER);
+        textPaintOff.setColor(getResources().getColor(R.color.colorPrimaryDark));
+        textPaintOff.setTextSize(20 * getResources().getDisplayMetrics().density);
+        textPaintOff.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+
+        buttonPaintOff = new Paint();
+        buttonPaintOff.setColor(getResources().getColor(R.color.colorPrimary));
+        buttonPaintOff.setStyle(Paint.Style.FILL);
+
+        textPaintOn = new TextPaint();
+        textPaintOn.setTextAlign(Paint.Align.CENTER);
+        textPaintOn.setColor(getResources().getColor(R.color.colorPrimary));
+        textPaintOn.setTextSize(20 * getResources().getDisplayMetrics().density);
+        textPaintOn.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+
+        buttonPaintOn = new Paint();
+        buttonPaintOn.setColor(getResources().getColor(R.color.colorPrimary));
+        buttonPaintOn.setStyle(Paint.Style.STROKE);
+        buttonPaintOn.setStrokeWidth(lineWidth);
+    }
+
+    @Override
+    public void setWidgetEntity(BaseEntity widgetEntity) {
+        super.setWidgetEntity(widgetEntity);
+        invalidate();
     }
 
     private void changeState(boolean pressed) {
+        this.pressed = pressed;
         this.publishViewData(new ButtonData(pressed));
         invalidate();
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (this.editMode) {
-            return super.onTouchEvent(event);
+        if (super.onTouchEvent(event)) {
+            return true;
         }
 
         switch (event.getActionMasked()) {
             case MotionEvent.ACTION_UP:
-                buttonPaint.setColor(getResources().getColor(R.color.colorPrimary));
                 changeState(false);
                 break;
             case MotionEvent.ACTION_DOWN:
-                buttonPaint.setColor(getResources().getColor(R.color.color_attention));
                 changeState(true);
                 break;
-            default:
-                return false;
         }
 
         return true;
@@ -92,29 +113,22 @@ public class ButtonView extends PublisherWidgetView {
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
+        ButtonEntity entity = (ButtonEntity) widgetEntity;
         float width = getWidth();
         float height = getHeight();
-        float textLayoutWidth = width;
 
-        ButtonEntity entity = (ButtonEntity) widgetEntity;
+        TextPaint textPaint = pressed ? textPaintOn : textPaintOff;
+        Paint innerSwitchPaint = pressed ? buttonPaintOn : buttonPaintOff;
 
-        if (entity.rotation == 90 || entity.rotation == 270) {
-            textLayoutWidth = height;
-        }
+        float offset = (pressed ? lineWidth : 0) / 2f;
+        float baseline = (textPaint.descent() + textPaint.ascent()) / 2f;
+        float xPos = width / 2;
+        float yPos = height / 2f - baseline;
 
-        canvas.drawRect(new Rect(0, 0, (int) width, (int) height), buttonPaint);
-
-        staticLayout = new StaticLayout(entity.text,
-                textPaint,
-                (int) textLayoutWidth,
-                Layout.Alignment.ALIGN_CENTER,
-                1.0f,
-                0,
-                false);
+        canvas.drawRoundRect(offset, offset, width - offset, height - offset, cornerRadius, cornerRadius, innerSwitchPaint);
         canvas.save();
         canvas.rotate(entity.rotation, width / 2, height / 2);
-        canvas.translate(((width / 2) - staticLayout.getWidth() / 2), height / 2 - staticLayout.getHeight() / 2);
-        staticLayout.draw(canvas);
+        canvas.drawText(entity.text, xPos, yPos, textPaint);
         canvas.restore();
     }
 }

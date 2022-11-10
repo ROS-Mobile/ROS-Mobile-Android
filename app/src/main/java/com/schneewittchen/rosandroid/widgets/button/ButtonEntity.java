@@ -27,7 +27,7 @@ public class ButtonEntity extends PublisherWidgetEntity {
         this.height = 1;
         this.topic = new Topic("btn_press", Bool._TYPE);
         this.immediatePublish = true;
-        this.text = "A button";
+        this.text = "Button";
         this.rotation = 0;
     }
 

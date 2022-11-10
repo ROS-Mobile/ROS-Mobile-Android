@@ -100,8 +100,8 @@ public abstract class BaseEntity {
 
     public BaseEntity copy() {
         try {
-            Constructor constructor = this.getClass().getConstructor();
-            Object newObj = constructor.newInstance();
+            Constructor<? extends BaseEntity> constructor = this.getClass().getConstructor();
+            BaseEntity newObj = constructor.newInstance();
 
             for (Field f : this.getClass().getFields()) {
                 Object value = f.get(this);
@@ -123,7 +123,7 @@ public abstract class BaseEntity {
                 }
             }
 
-            return (BaseEntity) newObj;
+            return newObj;
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -134,31 +134,31 @@ public abstract class BaseEntity {
 
     @Override
     public String toString() {
-        String output = "[Widget: ";
+        StringBuilder output = new StringBuilder("[Widget: ");
 
         int i = 0;
         for (Field f : this.getClass().getFields()) {
 
             if (i > 0) {
-                output += ", ";
+                output.append(", ");
             }
 
             try {
-                output += f.getName() + ": ";
+                output.append(f.getName()).append(": ");
 
                 if (f.get(this) == null) {
-                    output += "null";
+                    output.append("null");
                 } else {
-                    output += f.get(this).toString();
+                    output.append(Objects.requireNonNull(f.get(this)));
                 }
 
-            } catch (IllegalAccessException e) {
+            } catch (IllegalAccessException ignored) {
             }
 
             i++;
         }
 
-        output += "]";
-        return output;
+        output.append("]");
+        return output.toString();
     }
 }

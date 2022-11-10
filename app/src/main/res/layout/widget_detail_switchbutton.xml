@@ -17,8 +17,7 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Parameters"
+        android:text="Texts"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
         android:textColor="@color/colorAccent"
         android:textStyle="bold"
@@ -31,7 +30,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:hint="Switch text"
+        android:hint="State OFF Text"
         app:boxBackgroundMode="outline"
         app:endIconCheckable="false"
         app:endIconMode="none"
@@ -40,13 +39,38 @@
         app:layout_constraintTop_toBottomOf="@id/textView">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/switchTextTypeText"
+            android:id="@+id/switchTextOffText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:imeOptions="actionDone"
             android:inputType="text"
             android:singleLine="true"
-            android:text="A switch" />
+            android:text="OFF" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/input_layout4"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="8dp"
+        android:hint="State ON Text"
+        app:boxBackgroundMode="outline"
+        app:endIconCheckable="false"
+        app:endIconMode="none"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/input_layout3">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/switchTextONText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:singleLine="true"
+            android:text="ON" />
 
     </com.google.android.material.textfield.TextInputLayout>
 

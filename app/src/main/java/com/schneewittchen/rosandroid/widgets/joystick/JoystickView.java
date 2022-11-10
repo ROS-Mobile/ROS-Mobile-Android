@@ -70,6 +70,7 @@ public class JoystickView extends PublisherWidgetView {
         JoystickEntity joy = (JoystickEntity) widgetEntity;
 
         this.rectangular = joy.rectangularLimits;
+        invalidate();
     }
 
     // Move to polarCoordinates
@@ -152,36 +153,6 @@ public class JoystickView extends PublisherWidgetView {
 
         // Stick
         canvas.drawCircle(px[0], px[1], joystickRadius, joystickPaint);
-
-        /*
-        float width = getWidth();
-        float height = getHeight();
-
-        float[] px = convertFromPolarToPx(posX, posY);
-
-        JoystickEntity entity = (JoystickEntity) widgetEntity;
-
-        if(entity.rectangularLimits){
-            // Outer box
-            canvas.drawRect(joystickRadius, joystickRadius, width-joystickRadius, height-joystickRadius, outerPaint);
-            // Inner box
-            canvas.drawRect(width/4 + joystickRadius/2, height/4+joystickRadius/2, width*(3f/4)-joystickRadius/2, height*(3f/4)-joystickRadius/2, linePaint);
-
-        } else {
-            // Outer ring
-            canvas.drawCircle(width/2, height/2, width/2- joystickRadius, outerPaint);
-            // Inner drawings
-            canvas.drawCircle(width/2, height/2, width/4 - joystickRadius/2, linePaint);
-        }
-
-        canvas.drawLine(joystickRadius, height/2, width-joystickRadius, height/2,  linePaint);
-        canvas.drawLine(width/2, height/2 - width/2 + joystickRadius ,
-                        width/2, height/2 + width/2 - joystickRadius,  linePaint);
-
-        // Stick
-        canvas.drawCircle(px[0], px[1], joystickRadius, joystickPaint);
-        */
-
     }
 
     private float[] convertFromPxToRelative(float x, float y) {

@@ -29,17 +29,12 @@ public class SwitchButtonView extends PublisherWidgetView {
 
     public static final String TAG = SwitchButtonView.class.getSimpleName();
 
-    Paint switchOnPaint;
-    Paint switchOffPaint;
-
-    Paint innerSwitchOnPaint;
-    Paint innerSwitchOffPaint;
-    Paint thumbSwitchOnPaint;
-    Paint thumbSwitchOffPaint;
+    float cornerRadius = 10;
+    float lineWidth;
+    Paint switchPaintOn;
+    Paint switchPaintOff;
     TextPaint textPaintOn;
     TextPaint textPaintOff;
-
-    StaticLayout staticLayout;
     boolean switchState = false;
 
 
@@ -55,42 +50,28 @@ public class SwitchButtonView extends PublisherWidgetView {
 
 
     private void init() {
-        switchOnPaint = new Paint();
-        switchOnPaint.setColor(getResources().getColor(R.color.colorPrimary));
-        switchOnPaint.setStyle(Paint.Style.FILL_AND_STROKE);
-
-        switchOffPaint = new Paint();
-        switchOffPaint.setColor(getResources().getColor(R.color.colorPrimary));
-        switchOffPaint.setStyle(Paint.Style.STROKE);
-        switchOffPaint.setStrokeWidth(Utils.dpToPx(getContext(), 3));
-
-        textPaintOn = new TextPaint();
-        textPaintOn.setColor(getResources().getColor(R.color.colorPrimaryDark));
-        textPaintOn.setTextSize(26 * getResources().getDisplayMetrics().density);
-        textPaintOn.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+        lineWidth = Utils.dpToPx(getContext(), 3);
 
         textPaintOff = new TextPaint();
-        textPaintOff.setColor(getResources().getColor(R.color.colorPrimary));
-        textPaintOff.setTextSize(26 * getResources().getDisplayMetrics().density);
+        textPaintOff.setTextAlign(Paint.Align.CENTER);
+        textPaintOff.setColor(getResources().getColor(R.color.colorPrimaryDark));
+        textPaintOff.setTextSize(20 * getResources().getDisplayMetrics().density);
         textPaintOff.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
 
+        switchPaintOff = new Paint();
+        switchPaintOff.setColor(getResources().getColor(R.color.colorPrimary));
+        switchPaintOff.setStyle(Paint.Style.FILL);
 
-        thumbSwitchOnPaint = new Paint();
-        thumbSwitchOnPaint.setColor(getResources().getColor(R.color.battery1));
-        thumbSwitchOnPaint.setStyle(Paint.Style.FILL);
+        textPaintOn = new TextPaint();
+        textPaintOn.setTextAlign(Paint.Align.CENTER);
+        textPaintOn.setColor(getResources().getColor(R.color.colorPrimary));
+        textPaintOn.setTextSize(20 * getResources().getDisplayMetrics().density);
+        textPaintOn.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
 
-        innerSwitchOnPaint = new Paint();
-        innerSwitchOnPaint.setColor(getResources().getColor(R.color.battery2));
-        innerSwitchOnPaint.setStyle(Paint.Style.FILL);
-
-        thumbSwitchOffPaint = new Paint();
-        thumbSwitchOffPaint.setColor(getResources().getColor(R.color.battery3));
-        thumbSwitchOffPaint.setStyle(Paint.Style.FILL);
-
-        innerSwitchOffPaint = new Paint();
-        innerSwitchOffPaint.setColor(getResources().getColor(R.color.battery5));
-        innerSwitchOffPaint.setStyle(Paint.Style.FILL);
-
+        switchPaintOn = new Paint();
+        switchPaintOn.setColor(getResources().getColor(R.color.colorPrimary));
+        switchPaintOn.setStyle(Paint.Style.STROKE);
+        switchPaintOn.setStrokeWidth(lineWidth);
     }
 
     private void changeState() {
@@ -101,16 +82,12 @@ public class SwitchButtonView extends PublisherWidgetView {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        Log.e(TAG, event.toString());
+        if (super.onTouchEvent(event)) {
+            return true;
+        }
 
         if (event.getActionMasked() == MotionEvent.ACTION_UP) {
-            float eventX = event.getX();
-            float eventY = event.getY();
-            float width = getWidth();
-            float height = getHeight();
-
-            if (eventX > 0 && eventX < width && eventY > 0 && eventY < height)
-                changeState();
+            changeState();
         }
 
         return true;
@@ -119,24 +96,24 @@ public class SwitchButtonView extends PublisherWidgetView {
 
     @Override
     public void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+
+        SwitchButtonEntity entity = (SwitchButtonEntity) widgetEntity;
         float width = getWidth();
         float height = getHeight();
 
-        Paint innerSwitchPaint = switchState ? switchOnPaint : switchOffPaint;
-        canvas.drawRoundRect(5, 5, width - 10, height - 10, 10, 10, innerSwitchPaint);
-
-        SwitchButtonEntity entity = (SwitchButtonEntity) widgetEntity;
-        String entityText = entity == null ? "Switch" : entity.text;
-
+        String text = switchState? entity.onText : entity.offText;
+        Paint innerSwitchPaint = switchState ? switchPaintOn : switchPaintOff;
         TextPaint textPaint = switchState ? textPaintOn : textPaintOff;
-        staticLayout = new StaticLayout(entityText, textPaint,
-                (int) width, Layout.Alignment.ALIGN_CENTER,
-                1.0f, 0, false);
 
+        float offset = (switchState? lineWidth : 0) / 2f;
+        float baseline = (textPaint.descent() + textPaint.ascent()) / 2f;
+        float xPos = width / 2;
+        float yPos = height / 2f - baseline;
+
+        canvas.drawRoundRect(offset, offset, width - offset, height - offset, cornerRadius, cornerRadius, innerSwitchPaint);
         canvas.save();
-        canvas.translate(((width - staticLayout.getWidth()) / 2f), (height - staticLayout.getHeight()) / 2f);
-
-        staticLayout.draw(canvas);
+        canvas.drawText(text, xPos, yPos, textPaint);
         canvas.restore();
     }
 }

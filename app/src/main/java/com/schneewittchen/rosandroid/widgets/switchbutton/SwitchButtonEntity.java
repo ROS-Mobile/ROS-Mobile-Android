@@ -15,7 +15,8 @@ import std_msgs.Bool;
  */
 public class SwitchButtonEntity extends PublisherWidgetEntity {
 
-    public String text;
+    public String onText;
+    public String offText;
 
 
     public SwitchButtonEntity() {
@@ -23,7 +24,8 @@ public class SwitchButtonEntity extends PublisherWidgetEntity {
         this.height = 1;
         this.topic = new Topic("switch_state", Bool._TYPE);
         this.immediatePublish = true;
-        this.text = "Switch";
+        this.onText = "ON";
+        this.offText = "OFF";
     }
 
 }

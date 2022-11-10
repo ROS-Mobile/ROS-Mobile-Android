@@ -24,7 +24,7 @@ public class LoggerEntity extends SubscriberWidgetEntity {
         this.width = 3;
         this.height = 1;
         this.topic = new Topic("log", std_msgs.String._TYPE);
-        this.text = "A logger";
+        this.text = "Logger";
         this.rotation = 0;
     }
 

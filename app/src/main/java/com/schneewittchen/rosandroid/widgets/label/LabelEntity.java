@@ -22,7 +22,7 @@ public class LabelEntity extends SilentWidgetEntity {
     public LabelEntity() {
         this.width = 3;
         this.height = 1;
-        this.text = "A label";
+        this.text = "Label";
         this.rotation = 0;
     }
 }
