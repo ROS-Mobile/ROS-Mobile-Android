@@ -12,6 +12,7 @@
         <item>Logger</item>
         <item>RqtPlot</item>
         <item>Viz2D</item>
+        <item>Gps2Ros</item>
     </string-array>
 
     <string-array name="layer_names">
@@ -110,6 +111,11 @@
         the location of the joystick for control, simply touch the joystick button in the Viz Tab
         and push it around to the desired location. When thee button is released, it will
         automatically go back to center.
+    </string>
+
+    <!-- Joystick -->
+    <string name="Gps2Ros_description">
+        TODO
     </string>
 
     <string-array name="joystick_twist_dir">
