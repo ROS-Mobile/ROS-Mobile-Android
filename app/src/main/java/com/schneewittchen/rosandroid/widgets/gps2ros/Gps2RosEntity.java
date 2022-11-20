@@ -5,6 +5,7 @@ import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.Topic;
 
 import sensor_msgs.NavSatFix;
 
+import androidx.core.app.ActivityCompat;
 
 /**
  * TODO: Description
@@ -13,11 +14,8 @@ import sensor_msgs.NavSatFix;
  * @version 0.0.1
  * @created on 19.11.22
  */
+
 public class Gps2RosEntity extends PublisherWidgetEntity {
-
-    public double longitude;
-    public double latitude;
-
 
     public Gps2RosEntity() {
         this.width = 4;
@@ -25,9 +23,5 @@ public class Gps2RosEntity extends PublisherWidgetEntity {
         this.topic = new Topic("gps_android", NavSatFix._TYPE);
         this.immediatePublish = false;
         this.publishRate = 20f;
-        this.longitude = 0.0;
-        this.latitude  = 0.0;
-
     }
-
 }
