@@ -2,11 +2,15 @@ package com.schneewittchen.rosandroid.widgets.gps2ros;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.text.Layout;
+import android.text.StaticLayout;
+import android.text.TextPaint;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.view.MotionEvent;
 
 import androidx.annotation.Nullable;
@@ -20,7 +24,6 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.location.Location;
 import android.util.Log;
-import android.location.LocationProvider;
 
 
 /**
@@ -34,18 +37,15 @@ public class Gps2RosView extends PublisherWidgetView implements LocationListener
 
     public static final String TAG = Gps2RosView.class.getSimpleName();
 
-    Paint textPaint;
-    float textSize;
-    float borderWidth;
-    String displayedText;
+    Paint buttonPaint;
+    TextPaint textPaint;
+    StaticLayout staticLayout;
+    boolean buttonPressed;
 
     protected LocationManager locationManager;
-    protected LocationListener locationListener;
-    protected boolean gps_enabled, network_enabled;
     double latitude;
     double longitude;
     Context context;
-
 
     public Gps2RosView(Context context) {
         super(context);
@@ -58,24 +58,20 @@ public class Gps2RosView extends PublisherWidgetView implements LocationListener
         this.context = context;
         init();
     }
-    
+
     private void init() {
 
-        float textDip = 18f;
-        float borderDip = 10f;
+        // By default it is ...
+        buttonPressed = false;
 
-        textSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, textDip,
-                getResources().getDisplayMetrics());
-        borderWidth = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, borderDip,
-                getResources().getDisplayMetrics());
+        buttonPaint = new Paint();
+        buttonPaint.setColor(getResources().getColor(R.color.colorPrimary));
+        buttonPaint.setStyle(Paint.Style.FILL_AND_STROKE);
 
-        borderWidth = 10;
-
-        textPaint = new Paint();
-        textPaint.setColor(getResources().getColor(R.color.whiteHigh));
-        textPaint.setTextAlign(Paint.Align.CENTER);
-        textPaint.setTextSize(textSize);
-
+        textPaint = new TextPaint();
+        textPaint.setColor(Color.BLACK);
+        textPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+        textPaint.setTextSize(26 * getResources().getDisplayMetrics().density);
 
         locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -86,76 +82,99 @@ public class Gps2RosView extends PublisherWidgetView implements LocationListener
             //                                          int[] grantResults)
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
-            Log.e("Gps2RosView","checkSelfPermission!");
+            Log.e("Gps2RosView","check permissions failed!");
             return;
         }
 
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
+        //locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
 
         final boolean gpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-
         if (!gpsEnabled) {
-            Log.e("Gps2RosView","gpsEnabled");
+            Log.e("Gps2RosView","gps is not enabled!");
             return;
         }
     }
 
+    private void changeState(boolean pressed) {
+        this.buttonPressed = pressed;
+        invalidate();
+    }
 
-        @Override
+    @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (this.editMode) {
             return super.onTouchEvent(event);
         }
-        Log.i("Gps2RosView","Longitude: "+longitude+" Latitude: " + latitude);
+
+        switch (event.getActionMasked()) {
+            case MotionEvent.ACTION_DOWN:
+                if(buttonPressed) {
+                    buttonPaint.setColor(getResources().getColor(R.color.colorPrimary));
+                    changeState(false);
+                }
+                else
+                {
+                    buttonPaint.setColor(getResources().getColor(R.color.color_attention));
+                    changeState(true);
+                }
+                break;
+            default:
+                return false;
+        }
 
         return true;
     }
 
     @Override
     public void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
         float width = getWidth();
         float height = getHeight();
-        float middleX = width/2;
+        float textLayoutWidth = width;
 
-        float left = borderWidth/2;
-        float right = width - borderWidth/2;
-        float top = borderWidth * 2;
-        float bottom = height - borderWidth - textSize;
+        Gps2RosEntity entity = (Gps2RosEntity) widgetEntity;
 
-        // Draw status text
-        displayedText = ("GPS 2 ROS");
-        canvas.drawText(displayedText, middleX, height, textPaint);
+        if (entity.rotation == 90 || entity.rotation == 270) {
+            textLayoutWidth = height;
+        }
+
+        canvas.drawRect(new Rect(0, 0, (int) width, (int) height), buttonPaint);
+
+        staticLayout = new StaticLayout(entity.text,
+                textPaint,
+                (int) textLayoutWidth,
+                Layout.Alignment.ALIGN_CENTER,
+                1.0f,
+                0,
+                false);
+        canvas.save();
+        canvas.rotate(entity.rotation, width / 2, height / 2);
+        canvas.translate(((width / 2) - staticLayout.getWidth() / 2), height / 2 - staticLayout.getHeight() / 2);
+        staticLayout.draw(canvas);
+        canvas.restore();
     }
 
     @Override
     public void onLocationChanged(Location location) {
-        latitude = location.getLatitude();
-        longitude = location.getLongitude();
-
-        Log.i("Gps2RosView","Longitude: "+longitude+" Latitude: " + latitude);
-
-        Gps2RosData data = new Gps2RosData(latitude,longitude);
-        this.publishViewData(data);
+        if(buttonPressed) {
+            latitude = location.getLatitude();
+            longitude = location.getLongitude();
+            Log.i("Gps2RosView","Longitude: "+longitude+" Latitude: " + latitude);
+            Gps2RosData data = new Gps2RosData(latitude,longitude);
+            this.publishViewData(data);
+        }
     }
 
     @Override
     public void onProviderDisabled(String provider) {
-
-        Log.d("Gps2RosView","disable");
     }
 
     @Override
     public void onProviderEnabled(String provider) {
-
-        Log.d("Gps2RosView","enable");
     }
 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
-
-        Log.d("Gps2RosView","status");
     }
 
 }

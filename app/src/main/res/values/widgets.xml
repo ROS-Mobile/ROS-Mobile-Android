@@ -102,8 +102,16 @@
 
     <!-- Gps2Ros -->
     <string name="Gps2Ros_description">
-        TODO
+        The ROS GPS Node 2 is designed to publish the phone GPS coordinates to the ROS as a sensor_msgs/NavSatFix message.
+        The publisher can be started or stopped by pressing its button in the Viz tab.
     </string>
+
+    <string-array name="Gps2Ros_rotation">
+        <item>0°</item>
+        <item>90°</item>
+        <item>180°</item>
+        <item>270°</item>
+    </string-array>
 
     <!-- Joystick -->
     <string name="Joystick_description">

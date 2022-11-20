@@ -4,8 +4,7 @@ import com.schneewittchen.rosandroid.model.entities.widgets.PublisherWidgetEntit
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.message.Topic;
 
 import sensor_msgs.NavSatFix;
-
-import androidx.core.app.ActivityCompat;
+import std_msgs.Bool;
 
 /**
  * TODO: Description
@@ -17,11 +16,16 @@ import androidx.core.app.ActivityCompat;
 
 public class Gps2RosEntity extends PublisherWidgetEntity {
 
+    public String text;
+    public int rotation;
+
     public Gps2RosEntity() {
         this.width = 4;
         this.height = 4;
         this.topic = new Topic("gps_android", NavSatFix._TYPE);
-        this.immediatePublish = false;
-        this.publishRate = 20f;
+        this.immediatePublish = true;
+        //this.publishRate = 20f;
+        this.text = "Publish GPS 2 ROS";
+        this.rotation = 0;
     }
 }
