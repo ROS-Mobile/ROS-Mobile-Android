@@ -100,6 +100,10 @@
         You can zoom in and out by pinching 2 or more fingers together or apart.
     </string>
 
+    <!-- Gps2Ros -->
+    <string name="Gps2Ros_description">
+        TODO
+    </string>
 
     <!-- Joystick -->
     <string name="Joystick_description">
@@ -111,11 +115,6 @@
         the location of the joystick for control, simply touch the joystick button in the Viz Tab
         and push it around to the desired location. When thee button is released, it will
         automatically go back to center.
-    </string>
-
-    <!-- Joystick -->
-    <string name="Gps2Ros_description">
-        TODO
     </string>
 
     <string-array name="joystick_twist_dir">
