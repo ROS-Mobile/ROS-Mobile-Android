@@ -209,7 +209,7 @@ public class LocationView extends PublisherWidgetView {
             double altitude;
             String type;
             Log.d("Gps2RosView", "time network " + networkTime + " time GPS "+ gpsTime);
-            if(gpsTime > (networkTime + 1000)) { // 1sec
+            if( 0 < gpsTime - networkTime) {
                 latitude = gpsLatitude;
                 longitude = gpsLongitude;
                 altitude = gpsAltitude;
