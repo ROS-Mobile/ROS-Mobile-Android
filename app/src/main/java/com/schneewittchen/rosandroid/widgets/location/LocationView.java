@@ -149,15 +149,10 @@ public class LocationView extends PublisherWidgetView {
 
         switch (event.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
-                if(entity.buttonPressed) {
-                    buttonPaint.setColor(getResources().getColor(R.color.colorPrimary));
+                if(entity.buttonPressed)
                     changeState(false);
-                }
                 else
-                {
-                    buttonPaint.setColor(getResources().getColor(R.color.color_attention));
                     changeState(true);
-                }
                 break;
             default:
                 return false;
