@@ -1,4 +1,4 @@
-package com.schneewittchen.rosandroid.widgets.gps2ros;
+package com.schneewittchen.rosandroid.widgets.location;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -22,7 +22,6 @@ import com.schneewittchen.rosandroid.ui.views.widgets.PublisherWidgetView;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
-import android.os.Bundle;
 import android.location.Location;
 import android.util.Log;
 
@@ -36,9 +35,9 @@ import java.util.ArrayList;
  * @version 0.0.1
  * @created on 19.11.22
  */
-public class Gps2RosView extends PublisherWidgetView {
+public class LocationView extends PublisherWidgetView {
 
-    public static final String TAG = Gps2RosView.class.getSimpleName();
+    public static final String TAG = LocationView.class.getSimpleName();
 
     Context context;
 
@@ -78,13 +77,13 @@ public class Gps2RosView extends PublisherWidgetView {
         }
     };
 
-    public Gps2RosView(Context context) {
+    public LocationView(Context context) {
         super(context);
         this.context = context;
         init();
     }
 
-    public Gps2RosView(Context context, @Nullable AttributeSet attrs) {
+    public LocationView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
         init();
@@ -135,7 +134,7 @@ public class Gps2RosView extends PublisherWidgetView {
     }
 
     private void changeState(boolean pressed) {
-        Gps2RosEntity entity = (Gps2RosEntity) widgetEntity;
+        LocationEntity entity = (LocationEntity) widgetEntity;
         entity.buttonPressed = pressed;
         invalidate();
     }
@@ -146,7 +145,7 @@ public class Gps2RosView extends PublisherWidgetView {
             return super.onTouchEvent(event);
         }
 
-        Gps2RosEntity entity = (Gps2RosEntity) widgetEntity;
+        LocationEntity entity = (LocationEntity) widgetEntity;
 
         switch (event.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
@@ -173,7 +172,7 @@ public class Gps2RosView extends PublisherWidgetView {
         float height = getHeight();
         float textLayoutWidth = width;
 
-        Gps2RosEntity entity = (Gps2RosEntity) widgetEntity;
+        LocationEntity entity = (LocationEntity) widgetEntity;
 
         if (entity.rotation == 90 || entity.rotation == 270) {
             textLayoutWidth = height;
@@ -202,7 +201,7 @@ public class Gps2RosView extends PublisherWidgetView {
 
     public void publishCoordinates() {
 
-        Gps2RosEntity entity = (Gps2RosEntity) widgetEntity;
+        LocationEntity entity = (LocationEntity) widgetEntity;
 
         if(entity.buttonPressed) {
             double latitude;
@@ -224,7 +223,7 @@ public class Gps2RosView extends PublisherWidgetView {
                 type = "NETWORK";
             }
             Log.d("Gps2RosView", type + " Longitude: " + longitude + " Latitude: " + latitude + " Altitude " + altitude);
-            this.publishViewData(new Gps2RosData(latitude, longitude, altitude, type));
+            this.publishViewData(new LocationData(latitude, longitude, altitude, type));
         }
     }
 

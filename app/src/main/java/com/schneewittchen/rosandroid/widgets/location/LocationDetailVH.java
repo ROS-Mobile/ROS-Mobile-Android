@@ -1,4 +1,4 @@
-package com.schneewittchen.rosandroid.widgets.gps2ros;
+package com.schneewittchen.rosandroid.widgets.location;
 
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -22,7 +22,7 @@ import sensor_msgs.NavSatFix;
  * @version 0.0.1
  * @created on 19.11.22
  */
-public class Gps2RosDetailVH extends PublisherWidgetViewHolder {
+public class LocationDetailVH extends PublisherWidgetViewHolder {
 
     private EditText textText;
     private Spinner rotationSpinner;
@@ -42,20 +42,20 @@ public class Gps2RosDetailVH extends PublisherWidgetViewHolder {
 
     @Override
     public void bindEntity(BaseEntity entity) {
-        Gps2RosEntity gps2rosEntity = (Gps2RosEntity) entity;
+        LocationEntity locationEntity = (LocationEntity) entity;
 
-        textText.setText(gps2rosEntity.text);
-        String degrees = Utils.numberToDegrees(gps2rosEntity.rotation);
+        textText.setText(locationEntity.text);
+        String degrees = Utils.numberToDegrees(locationEntity.rotation);
         rotationSpinner.setSelection(rotationAdapter.getPosition(degrees));
     }
 
     @Override
     public void updateEntity(BaseEntity entity) {
-        Gps2RosEntity gps2rosEntity = (Gps2RosEntity) entity;
+        LocationEntity locationEntity = (LocationEntity) entity;
 
-        gps2rosEntity.text = textText.getText().toString();
+        locationEntity.text = textText.getText().toString();
         String degrees = rotationSpinner.getSelectedItem().toString();
-        gps2rosEntity.rotation = Utils.degreesToNumber(degrees);
+        locationEntity.rotation = Utils.degreesToNumber(degrees);
     }
 
     @Override

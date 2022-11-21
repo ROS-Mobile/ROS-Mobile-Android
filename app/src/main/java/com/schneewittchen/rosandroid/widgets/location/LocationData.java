@@ -1,4 +1,4 @@
-package com.schneewittchen.rosandroid.widgets.gps2ros;
+package com.schneewittchen.rosandroid.widgets.location;
 
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.node.BaseData;
 import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
@@ -17,14 +17,14 @@ import sensor_msgs.NavSatFix;
  * @created on 19.11.22
  */
 
-public class Gps2RosData extends BaseData {
+public class LocationData extends BaseData {
 
     public double latitude;
     public double longitude;
     public double altitude;
     public String type;
 
-    public Gps2RosData(double latitude, double longitude, double altitude, String type) {
+    public LocationData(double latitude, double longitude, double altitude, String type) {
         this.latitude = latitude;
         this.longitude = longitude;
         this.altitude = altitude;

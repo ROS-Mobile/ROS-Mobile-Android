@@ -32,7 +32,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:hint="Gps2Ros text"
+        android:hint="Location text"
         app:boxBackgroundMode="outline"
         app:endIconCheckable="false"
         app:endIconMode="none"
@@ -47,7 +47,7 @@
             android:imeOptions="actionDone"
             android:inputType="text"
             android:singleLine="true"
-            android:text="Gps2Ros" />
+            android:text="Location" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -67,7 +67,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
-        android:entries="@array/Gps2Ros_rotation"
+        android:entries="@array/Location_rotation"
         android:foregroundTintMode="add"
         app:layout_constraintBottom_toBottomOf="@+id/textView11"
         app:layout_constraintEnd_toEndOf="parent"
