@@ -18,6 +18,7 @@ public class Gps2RosEntity extends PublisherWidgetEntity {
 
     public String text;
     public int rotation;
+    public boolean buttonPressed;
 
     public Gps2RosEntity() {
         this.width = 4;
@@ -27,5 +28,6 @@ public class Gps2RosEntity extends PublisherWidgetEntity {
         //this.publishRate = 20f;
         this.text = "Publish GPS 2 ROS";
         this.rotation = 0;
+        this.buttonPressed = false;
     }
 }

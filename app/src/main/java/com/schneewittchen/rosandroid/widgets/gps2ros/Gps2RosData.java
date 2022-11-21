@@ -16,14 +16,19 @@ import sensor_msgs.NavSatFix;
  * @version 0.0.1
  * @created on 19.11.22
  */
+
 public class Gps2RosData extends BaseData {
 
-    double latitude;
-    double longitude;
+    public double latitude;
+    public double longitude;
+    public double altitude;
+    public String type;
 
-    public Gps2RosData(double latitude, double longitude) {
+    public Gps2RosData(double latitude, double longitude, double altitude, String type) {
         this.latitude = latitude;
         this.longitude = longitude;
+        this.altitude = altitude;
+        this.type = type;
     }
 
     @Override
@@ -31,8 +36,10 @@ public class Gps2RosData extends BaseData {
 
         sensor_msgs.NavSatFix message = (NavSatFix) publisher.newMessage();
 
+        message.getHeader().setFrameId(type);
         message.setLatitude(latitude);
         message.setLongitude(longitude);
+        message.setAltitude(altitude);
 
         return message;
     }

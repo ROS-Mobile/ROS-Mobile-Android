@@ -15,6 +15,7 @@ import android.view.MotionEvent;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.ui.views.widgets.PublisherWidgetView;
@@ -25,6 +26,8 @@ import android.os.Bundle;
 import android.location.Location;
 import android.util.Log;
 
+import java.util.ArrayList;
+
 
 /**
  * TODO: Description
@@ -33,19 +36,47 @@ import android.util.Log;
  * @version 0.0.1
  * @created on 19.11.22
  */
-public class Gps2RosView extends PublisherWidgetView implements LocationListener {
+public class Gps2RosView extends PublisherWidgetView {
 
     public static final String TAG = Gps2RosView.class.getSimpleName();
+
+    Context context;
 
     Paint buttonPaint;
     TextPaint textPaint;
     StaticLayout staticLayout;
-    boolean buttonPressed;
 
     protected LocationManager locationManager;
-    double latitude;
-    double longitude;
-    Context context;
+    double gpsLatitude;
+    double gpsLongitude;
+    double gpsAltitude;
+    double networkLatitude;
+    double networkLongitude;
+    double networkAltitude;
+    long gpsTime = 0;
+    long networkTime = 0;
+
+    LocationListener locationListenerGps = new LocationListener() {
+        public void onLocationChanged(Location location) {
+            gpsTime = location.getTime();
+            gpsLatitude = location.getLatitude();
+            gpsLongitude = location.getLongitude();
+            gpsAltitude = location.getAltitude();
+            Log.d("Gps2RosView","GPS - Longitude: "+ gpsLongitude +" Latitude: " + gpsLatitude +" Altitude: " + gpsAltitude);
+            publishCoordinates();
+        }
+    };
+
+    LocationListener locationListenerNetwork = new LocationListener() {
+        public void onLocationChanged(Location location) {
+            networkTime = location.getTime();
+            networkLatitude = location.getLatitude();
+            networkLongitude = location.getLongitude();
+            networkAltitude = location.getAltitude();
+            Log.d("Gps2RosView","NETWORK - Longitude: "+networkLongitude+" Latitude: " + networkLatitude +" Altitude: " + networkAltitude);
+            publishCoordinates();
+        }
+    };
 
     public Gps2RosView(Context context) {
         super(context);
@@ -61,9 +92,6 @@ public class Gps2RosView extends PublisherWidgetView implements LocationListener
 
     private void init() {
 
-        // By default it is ...
-        buttonPressed = false;
-
         buttonPaint = new Paint();
         buttonPaint.setColor(getResources().getColor(R.color.colorPrimary));
         buttonPaint.setStyle(Paint.Style.FILL_AND_STROKE);
@@ -75,29 +103,40 @@ public class Gps2RosView extends PublisherWidgetView implements LocationListener
 
         locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            Log.e("Gps2RosView","check permissions failed!");
-            return;
+            requestPermissionsIfNecessary(new String[]{
+                    Manifest.permission.ACCESS_FINE_LOCATION
+            });
         }
 
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
-        //locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
-
         final boolean gpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        if (!gpsEnabled) {
-            Log.e("Gps2RosView","gps is not enabled!");
+        final boolean networkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+
+        if(gpsEnabled)
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListenerGps);
+        if (networkEnabled)
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListenerNetwork);
+
+        if(!gpsEnabled && !networkEnabled)
+        {
+            Log.e("Gps2RosView","gps and network locations are not enabled!");
             return;
         }
     }
 
+    private void requestPermissionsIfNecessary(String[] permissions) {
+        ArrayList<String> permissionsToRequest = new ArrayList<>();
+        for (String permission : permissions) {
+            if (ContextCompat.checkSelfPermission(this.getContext(), permission)
+                    != PackageManager.PERMISSION_GRANTED) {
+                // Permission is not granted
+                permissionsToRequest.add(permission);
+            }
+        }
+    }
+
     private void changeState(boolean pressed) {
-        this.buttonPressed = pressed;
+        Gps2RosEntity entity = (Gps2RosEntity) widgetEntity;
+        entity.buttonPressed = pressed;
         invalidate();
     }
 
@@ -107,9 +146,11 @@ public class Gps2RosView extends PublisherWidgetView implements LocationListener
             return super.onTouchEvent(event);
         }
 
+        Gps2RosEntity entity = (Gps2RosEntity) widgetEntity;
+
         switch (event.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
-                if(buttonPressed) {
+                if(entity.buttonPressed) {
                     buttonPaint.setColor(getResources().getColor(R.color.colorPrimary));
                     changeState(false);
                 }
@@ -138,6 +179,11 @@ public class Gps2RosView extends PublisherWidgetView implements LocationListener
             textLayoutWidth = height;
         }
 
+        if(!entity.buttonPressed)
+            buttonPaint.setColor(getResources().getColor(R.color.colorPrimary));
+        else
+            buttonPaint.setColor(getResources().getColor(R.color.color_attention));
+
         canvas.drawRect(new Rect(0, 0, (int) width, (int) height), buttonPaint);
 
         staticLayout = new StaticLayout(entity.text,
@@ -154,27 +200,32 @@ public class Gps2RosView extends PublisherWidgetView implements LocationListener
         canvas.restore();
     }
 
-    @Override
-    public void onLocationChanged(Location location) {
-        if(buttonPressed) {
-            latitude = location.getLatitude();
-            longitude = location.getLongitude();
-            Log.i("Gps2RosView","Longitude: "+longitude+" Latitude: " + latitude);
-            Gps2RosData data = new Gps2RosData(latitude,longitude);
-            this.publishViewData(data);
+    public void publishCoordinates() {
+
+        Gps2RosEntity entity = (Gps2RosEntity) widgetEntity;
+
+        if(entity.buttonPressed) {
+            double latitude;
+            double longitude;
+            double altitude;
+            String type;
+            Log.d("Gps2RosView", "time network " + networkTime + " time GPS "+ gpsTime);
+            if(gpsTime > (networkTime + 1000)) { // 1sec
+                latitude = gpsLatitude;
+                longitude = gpsLongitude;
+                altitude = gpsAltitude;
+                type = "GPS";
+            }
+            else
+            {
+                latitude = networkLatitude;
+                longitude = networkLongitude;
+                altitude = networkAltitude;
+                type = "NETWORK";
+            }
+            Log.d("Gps2RosView", type + " Longitude: " + longitude + " Latitude: " + latitude + " Altitude " + altitude);
+            this.publishViewData(new Gps2RosData(latitude, longitude, altitude, type));
         }
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
     }
 
 }
