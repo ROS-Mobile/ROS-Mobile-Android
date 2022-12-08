@@ -1,12 +1,13 @@
 package com.schneewittchen.rosandroid.widgets.location;
 
+import static com.google.android.gms.location.LocationServices.getFusedLocationProviderClient;
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.location.LocationListener;
-import android.location.LocationManager;
+import android.os.Looper;
 import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
@@ -17,12 +18,14 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.schneewittchen.rosandroid.R;
 import com.schneewittchen.rosandroid.ui.views.widgets.PublisherWidgetView;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
-import android.location.Location;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -45,37 +48,12 @@ public class LocationView extends PublisherWidgetView {
     TextPaint textPaint;
     StaticLayout staticLayout;
 
-    protected LocationManager locationManager;
-    double gpsLatitude;
-    double gpsLongitude;
-    double gpsAltitude;
-    double networkLatitude;
-    double networkLongitude;
-    double networkAltitude;
-    long gpsTime = 0;
-    long networkTime = 0;
+    LocationRequest locationRequest;
+    double altitude;
+    double latitude;
+    double longitude;
+    String provider;
 
-    LocationListener locationListenerGps = new LocationListener() {
-        public void onLocationChanged(Location location) {
-            gpsTime = location.getTime();
-            gpsLatitude = location.getLatitude();
-            gpsLongitude = location.getLongitude();
-            gpsAltitude = location.getAltitude();
-            Log.d("Gps2RosView","GPS - Longitude: "+ gpsLongitude +" Latitude: " + gpsLatitude +" Altitude: " + gpsAltitude);
-            publishCoordinates();
-        }
-    };
-
-    LocationListener locationListenerNetwork = new LocationListener() {
-        public void onLocationChanged(Location location) {
-            networkTime = location.getTime();
-            networkLatitude = location.getLatitude();
-            networkLongitude = location.getLongitude();
-            networkAltitude = location.getAltitude();
-            Log.d("Gps2RosView","NETWORK - Longitude: "+networkLongitude+" Latitude: " + networkLatitude +" Altitude: " + networkAltitude);
-            publishCoordinates();
-        }
-    };
 
     public LocationView(Context context) {
         super(context);
@@ -91,6 +69,8 @@ public class LocationView extends PublisherWidgetView {
 
     private void init() {
 
+        LocationEntity entity = (LocationEntity) widgetEntity;
+
         buttonPaint = new Paint();
         buttonPaint.setColor(getResources().getColor(R.color.colorPrimary));
         buttonPaint.setStyle(Paint.Style.FILL_AND_STROKE);
@@ -100,26 +80,31 @@ public class LocationView extends PublisherWidgetView {
         textPaint.setStyle(Paint.Style.FILL_AND_STROKE);
         textPaint.setTextSize(26 * getResources().getDisplayMetrics().density);
 
-        locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        locationRequest = new LocationRequest();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        //long interval = (long)(1.0/entity.publishRate)*1000;
+        //Log.i(TAG,"INTERVAL - --------------------" + interval);
+        long interval = 500;
+        locationRequest.setInterval(interval);
+        locationRequest.setFastestInterval(interval);
+        locationRequest.setSmallestDisplacement(0);
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             requestPermissionsIfNecessary(new String[]{
                     Manifest.permission.ACCESS_FINE_LOCATION
             });
         }
+        getFusedLocationProviderClient(context).requestLocationUpdates(locationRequest, new LocationCallback() {
+                    @Override
+                    public void onLocationResult(LocationResult locationResult) {
+                        provider = locationResult.getLastLocation().getProvider();
+                        altitude = locationResult.getLastLocation().getAltitude();
+                        latitude = locationResult.getLastLocation().getLatitude();
+                        longitude = locationResult.getLastLocation().getLongitude();
+                        publishCoordinates();
+                    }
+                },
+                Looper.myLooper());
 
-        final boolean gpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        final boolean networkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-
-        if(gpsEnabled)
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListenerGps);
-        if (networkEnabled)
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListenerNetwork);
-
-        if(!gpsEnabled && !networkEnabled)
-        {
-            Log.e("Gps2RosView","gps and network locations are not enabled!");
-            return;
-        }
     }
 
     private void requestPermissionsIfNecessary(String[] permissions) {
@@ -199,26 +184,8 @@ public class LocationView extends PublisherWidgetView {
         LocationEntity entity = (LocationEntity) widgetEntity;
 
         if(entity.buttonPressed) {
-            double latitude;
-            double longitude;
-            double altitude;
-            String type;
-            Log.d("Gps2RosView", "time network " + networkTime + " time GPS "+ gpsTime);
-            if( 0 < gpsTime - networkTime) {
-                latitude = gpsLatitude;
-                longitude = gpsLongitude;
-                altitude = gpsAltitude;
-                type = "GPS";
-            }
-            else
-            {
-                latitude = networkLatitude;
-                longitude = networkLongitude;
-                altitude = networkAltitude;
-                type = "NETWORK";
-            }
-            Log.d("Gps2RosView", type + " Longitude: " + longitude + " Latitude: " + latitude + " Altitude " + altitude);
-            this.publishViewData(new LocationData(latitude, longitude, altitude, type));
+            Log.d(TAG, " Provider: " + provider + " Longitude: " + longitude + " Latitude: " + latitude + " Altitude " + altitude);
+            this.publishViewData(new LocationData(latitude, longitude, altitude, provider));
         }
     }
 

@@ -22,13 +22,13 @@ public class LocationData extends BaseData {
     public double latitude;
     public double longitude;
     public double altitude;
-    public String type;
+    public String provider;
 
-    public LocationData(double latitude, double longitude, double altitude, String type) {
+    public LocationData(double latitude, double longitude, double altitude, String provider) {
         this.latitude = latitude;
         this.longitude = longitude;
         this.altitude = altitude;
-        this.type = type;
+        this.provider = provider;
     }
 
     @Override
@@ -36,7 +36,7 @@ public class LocationData extends BaseData {
 
         sensor_msgs.NavSatFix message = (NavSatFix) publisher.newMessage();
 
-        message.getHeader().setFrameId(type);
+        message.getHeader().setFrameId(provider);
         message.setLatitude(latitude);
         message.setLongitude(longitude);
         message.setAltitude(altitude);
