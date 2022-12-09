@@ -61,7 +61,7 @@ public class LocationView extends PublisherWidgetView {
             gpsLatitude = location.getLatitude();
             gpsLongitude = location.getLongitude();
             gpsAltitude = location.getAltitude();
-            Log.d("Gps2RosView","GPS - Longitude: "+ gpsLongitude +" Latitude: " + gpsLatitude +" Altitude: " + gpsAltitude);
+            Log.d(TAG,"GPS - Longitude: "+ gpsLongitude +" Latitude: " + gpsLatitude +" Altitude: " + gpsAltitude);
             publishCoordinates();
         }
     };
@@ -72,7 +72,7 @@ public class LocationView extends PublisherWidgetView {
             networkLatitude = location.getLatitude();
             networkLongitude = location.getLongitude();
             networkAltitude = location.getAltitude();
-            Log.d("Gps2RosView","NETWORK - Longitude: "+networkLongitude+" Latitude: " + networkLatitude +" Altitude: " + networkAltitude);
+            Log.d(TAG,"NETWORK - Longitude: "+networkLongitude+" Latitude: " + networkLatitude +" Altitude: " + networkAltitude);
             publishCoordinates();
         }
     };
@@ -119,7 +119,7 @@ public class LocationView extends PublisherWidgetView {
 
         if(!gpsEnabled && !networkEnabled)
         {
-            Log.e("Gps2RosView","gps and network locations are not enabled!");
+            Log.e(TAG,"gps and network locations are not enabled!");
             return;
         }
     }
@@ -205,7 +205,7 @@ public class LocationView extends PublisherWidgetView {
             double longitude;
             double altitude;
             String type;
-            Log.d("Gps2RosView", "time network " + networkTime + " time GPS "+ gpsTime);
+            Log.d(TAG, "time network " + networkTime + " time GPS "+ gpsTime);
             if( 0 < gpsTime - networkTime) {
                 latitude = gpsLatitude;
                 longitude = gpsLongitude;
@@ -219,7 +219,7 @@ public class LocationView extends PublisherWidgetView {
                 altitude = networkAltitude;
                 type = "NETWORK";
             }
-            Log.d("Gps2RosView", type + " Longitude: " + longitude + " Latitude: " + latitude + " Altitude " + altitude);
+            Log.d(TAG, type + " Longitude: " + longitude + " Latitude: " + latitude + " Altitude " + altitude);
             this.publishViewData(new LocationData(latitude, longitude, altitude, type));
         }
     }
