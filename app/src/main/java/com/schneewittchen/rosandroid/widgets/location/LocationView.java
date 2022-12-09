@@ -2,6 +2,7 @@ package com.schneewittchen.rosandroid.widgets.location;
 
 import static com.google.android.gms.location.LocationServices.getFusedLocationProviderClient;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -27,6 +28,7 @@ import com.schneewittchen.rosandroid.ui.views.widgets.PublisherWidgetView;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.util.Log;
+import android.view.WindowManager;
 
 import java.util.ArrayList;
 
@@ -69,6 +71,8 @@ public class LocationView extends PublisherWidgetView {
 
     private void init() {
 
+        ((Activity) getContext()).getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
         LocationEntity entity = (LocationEntity) widgetEntity;
 
         buttonPaint = new Paint();
@@ -88,9 +92,11 @@ public class LocationView extends PublisherWidgetView {
         locationRequest.setInterval(interval);
         locationRequest.setFastestInterval(interval);
         locationRequest.setSmallestDisplacement(0);
-        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_BACKGROUND_LOCATION) != PackageManager.PERMISSION_GRANTED  ) {
             requestPermissionsIfNecessary(new String[]{
-                    Manifest.permission.ACCESS_FINE_LOCATION
+                    Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_BACKGROUND_LOCATION
             });
         }
         getFusedLocationProviderClient(context).requestLocationUpdates(locationRequest, new LocationCallback() {
