@@ -1,6 +1,6 @@
 # ROS-Mobile
 
-ROS-Mobile is an [Android](https://www.android.com/) application designed for dynamic control and visualization of mobile robotic system operated by the Robot Operating System ([ROS](http://wiki.ros.org/)). The application uses ROS nodes initializing publisher and subscriber with standard ROS messages. The overall code architecture pattern is Model View ViewModel ([MVVM]([https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93viewmodel](https://en.wikipedia.org/wiki/Model–view–viewmodel))), which stabilizes the application and makes it highly customizable. For a detailed overview of the functionality, we refer to our [wiki](https://github.com/ROS-Mobile/ROS-Mobile-Android/wiki).
+ROS-Mobile is an [Android](https://www.android.com/) application designed for dynamic control and visualization of mobile robotic system operated by the Robot Operating System ([ROS](http://wiki.ros.org/)). The application uses ROS nodes initializing publisher and subscriber with standard ROS messages. The overall code architecture pattern is Model View ViewModel ([MVVM](https://en.wikipedia.org/wiki/Model–view–viewmodel)), which stabilizes the application and makes it highly customizable. For a detailed overview of the functionality, we refer to our [wiki](https://github.com/ROS-Mobile/ROS-Mobile-Android/wiki).
 
 - Current stable Version: 2.0.0
 
@@ -8,7 +8,10 @@ ROS-Mobile is an [Android](https://www.android.com/) application designed for dy
 
 If you use ROS-Mobile for your research, please cite
 
-```
+<details>
+<summary>Citation Formats
+
+```bibtex
 @article{rottmann2020ros,
   title={ROS-Mobile: An Android application for the Robot Operating System},
   author={Rottmann, Nils and Studt, Nico and Ernst, Floris and Rueckert, Elmar},
@@ -16,6 +19,13 @@ If you use ROS-Mobile for your research, please cite
   year={2020}
 }
 ```
+
+</summary>
+
+Markdown: [Rottmann et al., 2020](https://arxiv.org/abs/2011.02781)
+
+Plain text: `N. Rottmann, N. Studt, F. Ernst, and E. Rueckert. 2020. ROS-Mobile: An Android application for the Robot Operating System. arXiv preprint arXiv:2011.02781.(2020).`
+</details>
 
 ## Requirements
 
@@ -67,12 +77,10 @@ The following Nodes are currently supported by ROS-Mobile. For a comprehensive o
 
 ## Short Example Usage
 
-<p float="left" align="middle">
-  <img src="/images/ShortExample01.jpg" width="200 hspace="50" />
-  <img src="/images/ShortExample02.jpg" width="200 hspace="50" />
-  <img src="/images/ShortExample03.jpg" width="200 hspace="50" />
-  <img src="/images/ShortExample04.jpg" width="200 hspace="50" />
-</p>
+![Example 1](images/ShortExample01.jpg)|![Example 2](images/ShortExample02.jpg)
+:-------------------------------------:|:----------------------------------------:
+![Example 3](images/ShortExample03.jpg)|![Example 4](images/ShortExample04.jpg)
+
 
 
 Manually map an apartment environment using a differential drive robot. Therefore, we connected the application with the ROS master running the differential drive robot over wireless LAN by inserting the correct IP address in the *MASTER* configuration tab, first figure. Adding ROS nodes in the *DETAILS* tab, second figure and third figure, enables the control of the differential drive robot via a joystick method sending *geometry\_msgs/Twist* to a *cmd\_vel* topic and the visualization of the generated occupancy grid map by subscribing to the *map* topic via a gridmap method. In the *VIZ* tab, most right figure, the recorded occupancy grid map is displayed as well as the joystick. The joystick can be used via touch for sending control inputs over the *cmd\_vel* topic to the differential drive robot. For a more detailed examples, we refer to our [wiki](https://github.com/ROS-Mobile/ROS-Mobile-Android/wiki/Example-Applications).
