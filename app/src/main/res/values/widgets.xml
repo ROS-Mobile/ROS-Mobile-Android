@@ -12,6 +12,7 @@
         <item>Logger</item>
         <item>RqtPlot</item>
         <item>Viz2D</item>
+        <item>Location</item>
     </string-array>
 
     <string-array name="layer_names">
@@ -99,6 +100,18 @@
         You can zoom in and out by pinching 2 or more fingers together or apart.
     </string>
 
+    <!-- Gps2Ros -->
+    <string name="Location_description">
+        The Location node is designed to publish the phone GPS and or network coordinates to ROS as a sensor_msgs/NavSatFix message.
+        The publisher can be started or stopped by pressing its button in the Viz tab.
+    </string>
+
+    <string-array name="Location_rotation">
+        <item>0°</item>
+        <item>90°</item>
+        <item>180°</item>
+        <item>270°</item>
+    </string-array>
 
     <!-- Joystick -->
     <string name="Joystick_description">
