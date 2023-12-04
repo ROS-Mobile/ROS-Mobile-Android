@@ -1,5 +1,7 @@
 package com.schneewittchen.rosandroid.widgets.button;
 
+import android.util.Log;
+
 import com.schneewittchen.rosandroid.model.entities.widgets.BaseEntity;
 import com.schneewittchen.rosandroid.model.repositories.rosRepo.node.BaseData;
 
@@ -28,6 +30,7 @@ public class ButtonData extends BaseData {
 
     @Override
     public Message toRosMessage(Publisher<Message> publisher, BaseEntity widget) {
+        Log.d("name", widget.name);
         std_msgs.Bool message = (Bool) publisher.newMessage();
         message.setData(pressed);
         return message;

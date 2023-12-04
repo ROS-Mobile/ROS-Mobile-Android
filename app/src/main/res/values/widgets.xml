@@ -8,7 +8,7 @@
         <item>Debug</item>
         <item>Gps</item>
         <item>Joystick</item>
-        <item>Label</item>
+        <item>Directional</item>
         <item>Logger</item>
         <item>RqtPlot</item>
         <item>Viz2D</item>
@@ -99,7 +99,6 @@
         You can zoom in and out by pinching 2 or more fingers together or apart.
     </string>
 
-
     <!-- Joystick -->
     <string name="Joystick_description">
         The Joystick node is designed for teleoperational control of robotic systems.
@@ -123,6 +122,31 @@
         <item>Z</item>
     </string-array>
 
+
+    <!-- Directional Key -->
+    <string name="Directional_description">
+        The Directional node is designed for teleoperational control of robotic systems. You can create
+        a button which allows the robot to move or turn.
+        It will communicate to the topic specified in the details. The inherited message is thereby
+        the geometry_msgs/Twist. In the details section of the directional, you can specify the axis
+        of the speed and the kind of speed (linear / angular).
+    </string>
+
+    <string-array name="directional_twist_dir">
+        <item>Linear</item>
+        <item>Angular</item>
+    </string-array>
+
+    <string-array name="directional_twist_axis">
+        <item>X</item>
+        <item>Y</item>
+        <item>Z</item>
+    </string-array>
+
+    <string-array name="directional_twist_sense">
+        <item>Positive</item>
+        <item>Negative</item>
+    </string-array>
 
     <!-- Label -->
     <string name="Label_description">
